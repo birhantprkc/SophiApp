@@ -16,8 +16,8 @@ namespace SophiApp.Services
         private readonly IHttpService httpService;
         private readonly IProcessService processService;
         private readonly string jepriCursorsZip;
-        private readonly string jepriDarkUrl = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark_new.zip"; // TODO: Change repo
-        private readonly string jepriLightUrl = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light_new.zip"; // TODO: Change repo
+        private readonly string jepriDarkUrl = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"; // TODO: Change repo
+        private readonly string jepriLightUrl = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"; // TODO: Change repo
         private readonly string tarExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe");
         private readonly string jepriDarkCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Dark Free");
         private readonly string jepriLightCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Light Free");
@@ -61,7 +61,7 @@ namespace SophiApp.Services
             Registry.CurrentUser.OpenSubKey(cursorsRegistryPath, true)?.SetValue("SizeNWSE", "%SystemRoot%\\cursors\\aero_nwse.cur", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey(cursorsRegistryPath, true)?.SetValue("SizeWE", "%SystemRoot%\\cursors\\aero_ew.cur", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey(cursorsRegistryPath, true)?.SetValue("UpArrow", "%SystemRoot%\\cursors\\aero_up.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey(cursorsRegistryPath, true)?.SetValue("Wait", "%SystemRoot%\\cursors\\aero_up.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey(cursorsRegistryPath, true)?.SetValue("Wait", "%SystemRoot%\\cursors\\aero_busy.cur", RegistryValueKind.ExpandString);
         }
 
         /// <inheritdoc/>

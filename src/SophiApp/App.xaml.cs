@@ -30,12 +30,12 @@ public partial class App : Application
             .ConfigureServices((context, services) =>
             {
                 // Services
-                _ = services.AddScoped<IInstrumentationService, InstrumentationService>();
-                _ = services.AddScoped<ILoggerService, LoggerService>();
                 _ = services.AddSingleton<ICommonDataService, CommonDataService>();
                 _ = services.AddSingleton<IFileService, FileService>();
                 _ = services.AddSingleton<IFirewallService, FirewallService>();
                 _ = services.AddSingleton<IInitializeService, InitializeService>();
+                _ = services.AddSingleton<IInstrumentationService, InstrumentationService>();
+                _ = services.AddSingleton<ILoggerService, LoggerService>();
                 _ = services.AddSingleton<IModelService, ModelService>();
                 _ = services.AddSingleton<INavigationService, NavigationService>();
                 _ = services.AddSingleton<IPageService, PageService>();

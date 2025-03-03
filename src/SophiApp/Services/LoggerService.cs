@@ -193,6 +193,6 @@ namespace SophiApp.Services
 
         /// <inheritdoc/>
         public void LogModelSetStateException<T>(Exception exception, string name, T parameter)
-            where T : struct => Log.Error(exception, "An error occurred while set state in the UI model {Model:l} with parameter {Parameter:l}: {Message}", name, parameter, exception.Message);
+            where T : struct => Log.Error("An error occurred while set state in the UI model {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
     }
 }
