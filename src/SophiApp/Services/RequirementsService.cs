@@ -243,12 +243,12 @@ namespace SophiApp.Services
             {
                 using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
                 var json = client.GetFromJsonAsync<AppVersionWrapper>(commonDataService.AppVersionUrl).Result;
-                var version = json?.SophiApp_release ?? new Version(0, 0, 0);
-                App.Logger.LogAppUpdate(version);
+                var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
+                App.Logger.LogAppUpdate(jsonVersion);
 
-                if (version > commonDataService.AppVersion)
+                if (jsonVersion > commonDataService.AppVersion)
                 {
-                    var payload = string.Format("AppUpdateNotification".GetLocalized(), version.ToString(3), commonDataService.AppReleaseUrl);
+                    var payload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), commonDataService.AppReleaseUrl);
                     appNotificationService.Show(payload);
                 }
             }

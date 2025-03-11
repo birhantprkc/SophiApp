@@ -489,15 +489,6 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         }
 
         /// <inheritdoc/>
-        public void SetEnabled(Task? task, bool enabled)
-        {
-            if (task is not null)
-            {
-                task.Enabled = enabled;
-            }
-        }
-
-        /// <inheritdoc/>
         public void UnregisterCleanupNotificationTask()
         {
             notificationPsFile.Delete();
@@ -540,7 +531,7 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
             File.WriteAllText(tempVbsFile.FullName, tempVbsAction, Encoding.Default);
 
             _ = RegisterTask(
-                name: "Sophia\\TempTask",
+                name: "Sophia\\Temp",
                 description: string.Format("TaskScheduler_TempTask_Description".GetLocalized(), Environment.UserName),
                 action: "wscript.exe",
                 arguments: tempVbsFile.FullName,
@@ -554,7 +545,16 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         {
             tempPsFile.Delete();
             tempVbsFile.Delete();
-            UnregisterTask("Sophia\\TempTask");
+            UnregisterTask("Sophia\\Temp");
+        }
+
+        /// <inheritdoc/>
+        public void SetEnabled(Task? task, bool enabled)
+        {
+            if (task is not null)
+            {
+                task.Enabled = enabled;
+            }
         }
 
         /// <inheritdoc/>

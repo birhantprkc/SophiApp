@@ -18,9 +18,9 @@ public class AppNotificationService : IAppNotificationService
     {
         Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications", true)?.DeleteValue("ToastEnabled", false);
         Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Windows.ActionCenter.SmartOptOut", true)?.DeleteValue("Enable", false);
-        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Sophia", true)?.DeleteValue("ShowBanner", false);
-        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Sophia", true)?.DeleteValue("ShowInActionCenter", false);
-        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Sophia", true)?.DeleteValue("Enabled", false);
+        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\SophiApp", true)?.DeleteValue("ShowBanner", false);
+        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\SophiApp", true)?.DeleteValue("ShowInActionCenter", false);
+        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\SophiApp", true)?.DeleteValue("Enabled", false);
         Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer", true)?.DeleteValue("DisableNotificationCenter", false);
         Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications", true)?.DeleteValue("NoToastApplicationNotification", false);
     }

@@ -1033,7 +1033,7 @@ namespace SophiApp.Customizations
             {
                 AppNotificationService.EnableToastNotification();
                 RegistryService.SetVolumeCachesStateFlags();
-                AppNotificationService.RegisterAsToastSender("Sophia");
+                AppNotificationService.RegisterAsToastSender("SophiApp");
                 AppNotificationService.RegisterCleanupProtocolAsToastSender();
                 ScheduledTaskService.RegisterCleanupTask();
                 ScheduledTaskService.RegisterCleanupNotificationTask();
@@ -1057,7 +1057,7 @@ namespace SophiApp.Customizations
             if (isEnabled)
             {
                 AppNotificationService.EnableToastNotification();
-                AppNotificationService.RegisterAsToastSender("Sophia");
+                AppNotificationService.RegisterAsToastSender("SophiApp");
                 ScheduledTaskService.RegisterSoftwareDistributionTask();
                 return;
             }
@@ -1077,7 +1077,7 @@ namespace SophiApp.Customizations
             if (isEnabled)
             {
                 AppNotificationService.EnableToastNotification();
-                AppNotificationService.RegisterAsToastSender("Sophia");
+                AppNotificationService.RegisterAsToastSender("SophiApp");
                 ScheduledTaskService.RegisterTempTask();
                 return;
             }

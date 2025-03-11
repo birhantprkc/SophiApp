@@ -29,6 +29,7 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly IModelService modelService;
     private readonly IProcessService processService;
     private readonly IAppxPackagesService packagesService;
+    private readonly IAppNotificationService appNotificationService;
 
     private List<UIModel> uwpAllUsersModels = [];
     private List<UIModel> uwpCurrentUserModels = [];
@@ -74,6 +75,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
+    /// <param name="appNotificationService">A service for working with toast notifications API.</param>
     /// <param name="navigationService">Page navigation service.</param>
     /// <param name="navigationViewService">A service for navigating to View.</param>
     /// <param name="commonDataService">A service for working with common app data.</param>
@@ -84,6 +86,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// <param name="processService">A service for working with Windows process API.</param>
     /// <param name="packagesService">A service for working with appx packages API.</param>
     public ShellViewModel(
+        IAppNotificationService appNotificationService,
         INavigationService navigationService,
         INavigationViewService navigationViewService,
         ICommonDataService commonDataService,
@@ -94,6 +97,7 @@ public partial class ShellViewModel : ObservableRecipient
         IProcessService processService,
         IAppxPackagesService packagesService)
     {
+        this.appNotificationService = appNotificationService;
         this.requirementsService = requirementsService;
         this.processService = processService;
         this.packagesService = packagesService ?? throw new ArgumentNullException(nameof(packagesService));
@@ -380,6 +384,7 @@ public partial class ShellViewModel : ObservableRecipient
         processService.KillAllProcesses("explorer");
         SetUpCustomizationsPanelIsVisible = false;
         NavigationViewHitTestVisible = true;
+        appNotificationService.EnableToastNotification();
     }
 
     private void ApplicableModelsCancel()

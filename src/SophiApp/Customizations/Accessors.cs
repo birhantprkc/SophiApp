@@ -574,8 +574,8 @@ namespace SophiApp.Customizations
         public static int ControlPanelView()
         {
             var panelPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel";
-            var viewValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue("AllItemsIconView") as int? ?? -1;
-            var pageValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue("StartupPage") as int? ?? -1;
+            var viewValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue("AllItemsIconView") as int? ?? 0;
+            var pageValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue("StartupPage") as int? ?? 0;
 
             if (viewValue.Equals(0) && pageValue.Equals(0))
             {
@@ -903,7 +903,7 @@ namespace SophiApp.Customizations
                 throw new InvalidOperationException("The VBSCRIPT component is not installed");
             }
 
-            var tempTask = ScheduledTaskService.GetTaskOrDefault("Sophia\\TempTask");
+            var tempTask = ScheduledTaskService.GetTaskOrDefault("Sophia\\Temp");
 
             if (tempTask is not null && tempTask.Definition.Principal.UserId != Environment.UserName)
             {
