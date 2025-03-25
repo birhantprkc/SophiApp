@@ -60,30 +60,5 @@ namespace SophiApp.Contracts.Services
         /// Detect latest version of the app.
         /// </summary>
         Result AppUpdateDetection();
-
-        /// <summary>
-        /// Detect that Microsoft Defender files exist.
-        /// </summary>
-        Result GetMsDefenderFilesExist();
-
-        /// <summary>
-        /// Detect whether Windows Security Settings page was not hidden from UI.
-        /// </summary>
-        Result GetWindowsSecurityState();
-
-        /// <summary>
-        /// Get Microsoft Defender services state.
-        /// </summary>
-        Result GetMsDefenderServicesState();
-
-        /// <summary>
-        /// Detect execution of "Get-MpPreference" cmdlet passes without exception.
-        /// </summary>
-        Result GetMsDefenderPreferenceException();
-
-        /// <summary>
-        /// Get a Microsoft Defender state.
-        /// </summary>
-        Result GetMsDefenderState();
     }
 }

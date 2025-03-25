@@ -7,7 +7,7 @@ namespace SophiApp.Contracts.Services
     using System.ServiceProcess;
 
     /// <summary>
-    /// A service for working with Windows API.
+    /// A service for working with Windows services API.
     /// </summary>
     public interface IOsService
     {
@@ -25,10 +25,12 @@ namespace SophiApp.Contracts.Services
         void SetServiceStartMode(ServiceController service, ServiceStartMode mode);
 
         /// <summary>
-        /// Determines whether the specified service exists.
+        /// Returns true if the service exists.
+        /// If the service does not exist false is returned.
+        /// If the service is not started, an attempt to start it.
         /// </summary>
-        /// <param name="service">Service name.</param>
-        bool IsServiceExist(string service);
+        /// <param name="name">Service name.</param>
+        bool IsExistTryStart(string name);
 
         /// <summary>
         /// Determines that the VBSCRIPT component is installed.

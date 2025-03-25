@@ -75,8 +75,8 @@
                                      FontSize="{Binding Path=ViewModel.FontOptions.DescriptionTextSize, ElementName=PageUwp}"/>
                             </TextBlock>
                             <ItemsRepeater ItemsSource="{x:Bind ViewModel.UwpAppsModels, Mode=OneWay}"
-                                       Grid.Row="1"
-                                       HorizontalAlignment="Left">
+                                           Grid.Row="1"
+                                           HorizontalAlignment="Left">
                                 <ItemsRepeater.ItemTemplate>
                                     <DataTemplate>
                                         <ItemContainer>
@@ -97,8 +97,7 @@
                     </ScrollView>
                 </StackPanel>
             </Border>
-            <ItemsRepeater ItemsSource="{Binding ElementName=PageUwp, Path=UWPModels}"
-                           Margin="0, 0, 0, 20">
+            <ItemsRepeater ItemsSource="{Binding ElementName=PageUwp, Path=UWPModels}" Margin="0, 0, 0, 20">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="10"/>
                 </ItemsRepeater.Layout>

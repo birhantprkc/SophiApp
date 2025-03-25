@@ -151,10 +151,19 @@ namespace SophiApp.Services
         public string DetectedMalware { get; set; } = string.Empty;
 
         /// <inheritdoc/>
-        public string MsDefenderFileMissing { get; set; } = string.Empty;
+        public bool DefenderControlledFolderAccess { get; set; } = false;
 
         /// <inheritdoc/>
-        public string MsDefenderServiceStopped { get; set; } = string.Empty;
+        public string DefenderFileMissing { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public string DefenderServiceBroken { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public bool DefenderMpPreferenceBroken { get; set; } = false;
+
+        /// <inheritdoc/>
+        public bool DefenderEnabled { get; set; } = false;
 
         /// <inheritdoc/>
         public string AppVersionUrl => "https://raw.githubusercontent.com/Sophia-Community/SophiApp/master/sophiapp_versions.json";

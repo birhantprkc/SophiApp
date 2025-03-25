@@ -37,14 +37,29 @@ namespace SophiApp.Contracts.Services
         string DetectedMalware { get; set; }
 
         /// <summary>
-        /// Gets or sets Microsoft Defender missing files name.
+        /// Gets or sets a value indicating whether Microsoft Defender controlled folder access state.
         /// </summary>
-        string MsDefenderFileMissing { get; set; }
+        bool DefenderControlledFolderAccess { get; set; }
 
         /// <summary>
-        /// Gets or sets Microsoft Defender stopped service name.
+        /// Gets or sets Microsoft Defender missing files name.
         /// </summary>
-        string MsDefenderServiceStopped { get; set; }
+        string DefenderFileMissing { get; set; }
+
+        /// <summary>
+        /// Gets or sets Microsoft Defender broken service name.
+        /// </summary>
+        string DefenderServiceBroken { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Microsoft Defender preference state.
+        /// </summary>
+        bool DefenderMpPreferenceBroken { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Microsoft Defender enabled state.
+        /// </summary>
+        bool DefenderEnabled { get; set; }
 
         /// <summary>
         /// Gets app version.

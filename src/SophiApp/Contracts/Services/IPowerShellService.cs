@@ -17,11 +17,6 @@ namespace SophiApp.Contracts.Services
         void ClearCommonDialogViews();
 
         /// <summary>
-        /// Detect execution of "Get-MpPreference" cmdlet passes without exception.
-        /// </summary>
-        bool GetMsDefenderPreferenceException();
-
-        /// <summary>
         /// Execute the script using version 5.1 of PowerShell.
         /// </summary>
         /// <typeparam name="T">Return object type.</typeparam>

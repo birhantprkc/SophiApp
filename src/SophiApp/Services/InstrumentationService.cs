@@ -95,7 +95,7 @@ namespace SophiApp.Services
             catch (Exception ex)
             {
                 App.Logger.LogAntivirusProductsException(ex);
-                return new List<ManagementObject>();
+                return [];
             }
         }
 
@@ -111,14 +111,14 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool GetAntispywareEnabled()
+        public bool GetAntiSpywareEnabled()
         {
             using var managementObject = new ManagementObjectSearcher(scope: "root/microsoft/windows/defender", queryString: $"Select * from MSFT_MpComputerStatus")
                 .Get()
                 .Cast<ManagementObject>()
                 .FirstOrDefault();
 
-            return managementObject?.GetPropertyValue("AntispywareEnabled") as bool? ?? throw new InvalidOperationException($"Failed to obtain AntispywareEnabled value from WMI class MSFT_MpComputerStatus in the {nameof(IInstrumentationService)}");
+            return managementObject?.GetPropertyValue("AntispywareEnabled") as bool? ?? throw new InvalidOperationException($"Failed to obtain AntiSpywareEnabled value from WMI class MSFT_MpComputerStatus in the {nameof(IInstrumentationService)}");
         }
 
         /// <inheritdoc/>

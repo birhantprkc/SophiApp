@@ -22,8 +22,6 @@ namespace SophiApp.Services
         private readonly ICommonDataService commonDataService;
         private readonly IDiskService diskService;
         private readonly IInstrumentationService instrumentationService;
-        private readonly IOsService osService;
-        private readonly IPowerShellService powerShellService;
         private readonly IProcessService processService;
 
         /// <summary>
@@ -34,8 +32,6 @@ namespace SophiApp.Services
         /// <param name="commonDataService">A service for transferring app data between DI layers.</param>
         /// <param name="diskService">A service for working with disk API.</param>
         /// <param name="instrumentationService">A service for working with WMI API.</param>
-        /// <param name="osService">A service for working with Windows services API.</param>
-        /// /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
         /// <param name="processService">A service for working with Windows process API.</param>
         public RequirementsService(
             IAppNotificationService appNotificationService,
@@ -43,8 +39,6 @@ namespace SophiApp.Services
             ICommonDataService commonDataService,
             IDiskService diskService,
             IInstrumentationService instrumentationService,
-            IOsService osService,
-            IPowerShellService powerShellService,
             IProcessService processService)
         {
             this.appNotificationService = appNotificationService;
@@ -52,8 +46,6 @@ namespace SophiApp.Services
             this.commonDataService = commonDataService;
             this.diskService = diskService;
             this.instrumentationService = instrumentationService;
-            this.osService = osService;
-            this.powerShellService = powerShellService;
             this.processService = processService;
         }
 
@@ -258,78 +250,6 @@ namespace SophiApp.Services
             }
 
             return Result.Success();
-        }
-
-        /// <inheritdoc/>
-        public Result GetMsDefenderFilesExist()
-        {
-            var system32Folder = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            var defenderFiles = new List<string>()
-            {
-                $"{system32Folder}\\smartscreen.exe",
-                $"{system32Folder}\\SecurityHealthSystray.exe",
-                $"{system32Folder}\\CompatTelRunner.exe",
-            };
-
-            return defenderFiles.TrueForAll(file =>
-            {
-                if (File.Exists(file))
-                {
-                    return true;
-                }
-
-                App.Logger.LogMsDefenderFilesException(file);
-                commonDataService.MsDefenderFileMissing = file;
-                return false;
-            }) ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsDefenderFilesMissing));
-        }
-
-        /// <inheritdoc/>
-        public Result GetWindowsSecurityState()
-        {
-            var settingsPageVisibility = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer")
-                ?.GetValue("SettingsPageVisibility") as string;
-            return settingsPageVisibility?.Contains("hide:windowsdefender") ?? false
-                ? Result.Failure(nameof(RequirementsFailure.SecuritySettingsPageHidden))
-                : Result.Success();
-        }
-
-        /// <inheritdoc/>
-        public Result GetMsDefenderServicesState()
-        {
-            var services = new List<string>() { "Windefend", "Wscsvc" };
-
-            return services.TrueForAll(serviceName =>
-            {
-                if (osService.IsServiceExist(serviceName))
-                {
-                    return true;
-                }
-
-                App.Logger.LogMsDefenderServiceNotFound(service: serviceName);
-                commonDataService.MsDefenderServiceStopped = $"OsRequirementsFailure_MsDefender_{serviceName}_NotFound";
-                return false;
-            }) ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsDefenderServiceNotFound));
-        }
-
-        /// <inheritdoc/>
-        public Result GetMsDefenderPreferenceException()
-        {
-            return powerShellService.GetMsDefenderPreferenceException() ? Result.Failure(nameof(RequirementsFailure.MsDefenderPreferenceException)) : Result.Success();
-        }
-
-        /// <inheritdoc/>
-        public Result GetMsDefenderState()
-        {
-            var isEnterpriseG = commonDataService.OsProperties.Edition.Contains("EnterpriseG", StringComparison.InvariantCultureIgnoreCase);
-            var msDefenderProductState = instrumentationService.GetAntivirusProductsOrDefault().Find(product => product.GetPropertyValue("instanceGuid")
-            .Equals("{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"))?.GetPropertyValue("productState");
-            var msDefenderState = msDefenderProductState is null ? "00" : string.Format("0x{0:x}", msDefenderProductState).Substring(3, 2);
-            var msDefenderEnabled = !(msDefenderState.Equals("00") || msDefenderState.Equals("01")) && !isEnterpriseG;
-            var msDefenderAntiSpywareEnabled = !Registry.LocalMachine.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows Defender")?.GetValue("DisableAntiSpyware", 0) !.Equals(1) ?? false;
-            var msDefenderRealtimeMonitoringEnabled = !Registry.LocalMachine.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection")?.GetValue("DisableRealtimeMonitoring", 0) !.Equals(1) ?? true;
-            var msDefenderBehaviorMonitoringEnabled = !Registry.LocalMachine.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection")?.GetValue("DisableBehaviorMonitoring", 0) !.Equals(1) ?? true;
-            return msDefenderEnabled && msDefenderAntiSpywareEnabled && msDefenderRealtimeMonitoringEnabled && msDefenderBehaviorMonitoringEnabled ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsDefenderIsBroken));
         }
     }
 }

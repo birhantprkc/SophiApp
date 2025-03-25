@@ -272,13 +272,24 @@ namespace SophiApp.Contracts.Services
         /// Handles occur during the Microsoft Defender files is missing exception.
         /// </summary>
         /// <param name="file">A missing file.</param>
-        void LogMsDefenderFilesException(string file);
+        void LogDefenderFileMissing(string file);
 
         /// <summary>
         /// Handles occur during the Microsoft Defender services not found.
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
-        void LogMsDefenderServiceNotFound(string service);
+        void LogDefenderServiceBroken(string service);
+
+        /// <summary>
+        /// Handles occur when execution of the Get-MpPreference cmdlet throws an exception.
+        /// </summary>
+        void LogDefenderMpPreferenceBroken();
+
+        /// <summary>
+        /// Handles an exception when accessing to WMI MSFT_MpComputerStatus class in the <see cref="IInstrumentationService"/>.
+        /// </summary>
+        /// <param name="exception">Represents errors that occur during app executing.</param>
+        void LogDefenderAntiSpywareEnabledException(Exception exception);
 
         /// <summary>
         /// Handles an exception when accessing to get UI model state.

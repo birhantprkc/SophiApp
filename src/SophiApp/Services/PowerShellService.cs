@@ -12,6 +12,7 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class PowerShellService : IPowerShellService
     {
+        private const string SetExecutionPolicy = "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force;";
         private readonly IProcessService processService;
 
         /// <summary>
@@ -31,25 +32,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool GetMsDefenderPreferenceException()
-        {
-            var command = @"try
-{
-    Get-MpPreference -ErrorAction Stop | Out-Null
-    return $false
-}
-catch
-{
-    return $true
-}";
-            return Invoke<bool>(command);
-        }
-
-        /// <inheritdoc/>
         public T Invoke<T>(string script)
             where T : struct
         {
-            return (T)Invoke(script.Insert(0, "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force;"))[0].BaseObject;
+            return (T)Invoke(script.Insert(0, SetExecutionPolicy))[0].BaseObject;
         }
 
         /// <inheritdoc/>
@@ -57,7 +43,7 @@ catch
         {
             using var runspace = RunspaceFactory.CreateOutOfProcessRunspace(new TypeTable(Array.Empty<string>()), new PowerShellProcessInstance(new Version(5, 1), null, null, false));
             runspace.Open();
-            using var instance = PowerShell.Create(runspace).AddScript(script.Insert(0, "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force;"));
+            using var instance = PowerShell.Create(runspace).AddScript(script.Insert(0, SetExecutionPolicy));
             return [.. instance.Invoke()];
         }
 

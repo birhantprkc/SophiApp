@@ -150,7 +150,7 @@ namespace SophiApp.Services
         public void LogStopTextSearch(Stopwatch timer, int count) => Log.Information("The text search took seconds {Seconds} and return {Count} UI model(s)", timer.Elapsed.TotalSeconds, count);
 
         /// <inheritdoc/>
-        public void LogNavigateToRequirementsFailure(RequirementsFailure failure) => Log.Information("Failure to meet {Service:l} requirements due to {Name:l}", nameof(IRequirementsService), failure);
+        public void LogNavigateToRequirementsFailure(RequirementsFailure failure) => Log.Information("Failure to meet {Service:l} requirements due to {Name}", nameof(IRequirementsService), failure);
 
         /// <inheritdoc/>
         public void LogOsPropertiesException(Exception exception) => Log.Error(exception, "Failed to obtain the {Property:l} in the {Service:l}: {Message}", nameof(OsProperties), nameof(IInstrumentationService), exception.Message);
@@ -162,7 +162,7 @@ namespace SophiApp.Services
         public void LogProcessOwnerException(Exception exception) => Log.Error(exception, "Failed to obtain process owner API in the {Service:l}: {Message}", nameof(IInstrumentationService), exception.Message);
 
         /// <inheritdoc/>
-        public void LogAntivirusProductsException(Exception exception) => Log.Error(exception, "Failed to obtain antivirus product API in the {Service:l}: {Message}", nameof(IInstrumentationService), exception.Message);
+        public void LogAntivirusProductsException(Exception exception) => Log.Error(exception, "Failed to obtain AntiVirusProduct API in the {Service:l}: {Message}", nameof(IInstrumentationService), exception.Message);
 
         /// <inheritdoc/>
         public void LogUnhandledException(Exception exception) => Log.Fatal(exception, "AN UNHANDLED EXCEPTION OCCURED: {Message}", exception.Message);
@@ -183,10 +183,16 @@ namespace SophiApp.Services
         public void LogAppUpdateException(Exception exception) => Log.Error(exception, "Failed to obtain app update requirements in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
 
         /// <inheritdoc/>
-        public void LogMsDefenderFilesException(string file) => Log.Error("Microsoft Defender file missing: {File}", file);
+        public void LogDefenderFileMissing(string file) => Log.Error("Microsoft Defender file missing: {File}", file);
 
         /// <inheritdoc/>
-        public void LogMsDefenderServiceNotFound(string service) => Log.Error("Microsoft Defender service: {Service:l} not found", service);
+        public void LogDefenderServiceBroken(string service) => Log.Error("Microsoft Defender service broken or not running: {Service:l}", service);
+
+        /// <inheritdoc/>
+        public void LogDefenderMpPreferenceBroken() => Log.Error("Microsoft Defender: executing the cmdlet “(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess” raised an exception");
+
+        /// <inheritdoc/>
+        public void LogDefenderAntiSpywareEnabledException(Exception exception) => Log.Error("Failed to obtain AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
 
         /// <inheritdoc/>
         public void LogModelGetStateException(string name, Exception exception) => Log.Error("An error occurred while get state in the UI model {Model:l}: {Message}", name, exception.Message);

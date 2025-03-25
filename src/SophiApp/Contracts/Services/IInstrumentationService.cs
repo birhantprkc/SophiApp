@@ -58,7 +58,7 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Get Microsoft Defender antispyware enabled property value.
         /// </summary>
-        bool GetAntispywareEnabled();
+        bool GetAntiSpywareEnabled();
 
         /// <summary>
         /// Get the processor virtualization state.

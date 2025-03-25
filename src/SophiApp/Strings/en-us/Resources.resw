@@ -323,26 +323,20 @@
   <data name="OsRequirementsFailure_FeatureExperiencePackRemoved" xml:space="preserve">
     <value>Windows Feature Experience Pack broken or removed from Windows.</value>
   </data>
-  <data name="OsRequirementsFailure_MsDefenderFilesMissing" xml:space="preserve">
+  <data name="OsRequirementsFailure_DefenderFilesMissing" xml:space="preserve">
     <value>File "{0}" broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_RebootRequired" xml:space="preserve">
     <value>The PC is waiting to be restarted.</value>
   </data>
-  <data name="OsRequirements_GetMsDefenderFilesExist" xml:space="preserve">
-    <value>Detecting Microsoft Defender components exists</value>
-  </data>
   <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
     <value>Detecting a pending reboot</value>
   </data>
   <data name="OsRequirements_UpdateDetection" xml:space="preserve">
-    <value>Detecting if currennt SophiApp build is the latest one</value>
+    <value>Detecting if current SophiApp build is the latest one</value>
   </data>
-  <data name="OsRequirementsFailure_MsDefenderIsBroken" xml:space="preserve">
+  <data name="OsRequirementsFailure_DefenderIsBroken" xml:space="preserve">
     <value>Microsoft Defender broken or removed from Windows.</value>
-  </data>
-  <data name="OsRequirements_GetMsDefenderServicesState" xml:space="preserve">
-    <value>Detecting Microsoft Defender services state</value>
   </data>
   <data name="OsRequirements_GetMsDefenderState" xml:space="preserve">
     <value>Detecting Microsoft Defender state</value>
@@ -485,11 +479,8 @@
   <data name="TaskSchedulerPage_OpenTaskScheduler.Content" xml:space="preserve">
     <value>Open Task Scheduler</value>
   </data>
-  <data name="OsRequirementsFailure_MsDefender_Windefend_NotFound" xml:space="preserve">
-    <value>Microsoft Defender was not found on you PC.</value>
-  </data>
-  <data name="OsRequirementsFailure_MsDefender_Wscsvc_NotFound" xml:space="preserve">
-    <value>Служба Центр обеспечения безопасности is not found on you PC.</value>
+  <data name="OsRequirementsFailure_DefenderServiceBroken" xml:space="preserve">
+    <value>Windows service "{0}" broken or not running on you PC.</value>
   </data>
   <data name="Panel_ApplyCustomizations_Apply.Text" xml:space="preserve">
     <value>Apply changes?</value>
@@ -512,11 +503,8 @@
   <data name="OsRequirements_GetMicrosoftStoreState" xml:space="preserve">
     <value>Get Microsoft Store state</value>
   </data>
-  <data name="OsRequirementsFailure_SecuritySettingsPageHidden" xml:space="preserve">
-    <value>The Windows Security Settings page was hidden from UI.</value>
-  </data>
-  <data name="OsRequirements_GetSecuritySettingsPageState" xml:space="preserve">
-    <value>Get Windows Security Settings page state</value>
+  <data name="OsRequirementsFailure_DefenderSettingsPageHidden" xml:space="preserve">
+    <value>Microsoft Defender settings page was hidden from UI.</value>
   </data>
   <data name="UIModel_BitmapImageNewContext_Title" xml:space="preserve">
     <value>Show "Bitmap image" item in the "New" context menu</value>

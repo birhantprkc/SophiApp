@@ -57,14 +57,15 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool IsServiceExist(string service)
+        public bool IsExistTryStart(string name)
         {
             try
             {
-                using var serviceController = new ServiceController(service);
-                return serviceController.ServiceName.Equals(service);
+                using var service = new ServiceController(name);
+                TryStart(service);
+                return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -91,5 +92,20 @@ namespace SophiApp.Services
 
         [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
         private static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);
+
+        private void TryStart(ServiceController service)
+        {
+            try
+            {
+                if (!service.Status.Equals(ServiceControllerStatus.Running))
+                {
+                    service.Start();
+                }
+            }
+            catch
+            {
+                // Do nothing.
+            }
+        }
     }
 }

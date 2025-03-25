@@ -9,18 +9,17 @@ namespace SophiApp.Helpers
     /// </summary>
     public enum RequirementsFailure
     {
+        DefenderFileMissing,
+        DefenderIsBroken,
+        DefenderServiceBroken,
+        DefenderSettingsPageHidden,
         EventLogBroken,
         FeatureExperiencePackRemoved,
         Is32BitOs,
         MalwareDetected,
-        MsDefenderFilesMissing,
-        MsDefenderPreferenceException,
-        MsDefenderIsBroken,
-        MsDefenderServiceNotFound,
         MsStoreRemoved,
         RebootRequired,
         RunByNotLoggedUser,
-        SecuritySettingsPageHidden,
         Win10EnterpriseSVersion,
         Win10UnsupportedBuild,
         Win10UpdateBuildRevisionLess3448,

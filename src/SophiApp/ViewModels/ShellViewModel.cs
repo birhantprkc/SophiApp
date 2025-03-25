@@ -22,14 +22,15 @@ using System.Threading;
 /// </summary>
 public partial class ShellViewModel : ObservableRecipient
 {
-    private readonly StartupViewModel startupModel;
-    private readonly RequirementsFailureViewModel failureViewModel;
-    private readonly IRequirementsService requirementsService;
+    private readonly IAppNotificationService appNotificationService;
+    private readonly IAppxPackagesService packagesService;
     private readonly ICommonDataService commonDataService;
+    private readonly IDefenderService defenderService;
     private readonly IModelService modelService;
     private readonly IProcessService processService;
-    private readonly IAppxPackagesService packagesService;
-    private readonly IAppNotificationService appNotificationService;
+    private readonly IRequirementsService requirementsService;
+    private readonly RequirementsFailureViewModel failureViewModel;
+    private readonly StartupViewModel startupModel;
 
     private List<UIModel> uwpAllUsersModels = [];
     private List<UIModel> uwpCurrentUserModels = [];
@@ -76,33 +77,36 @@ public partial class ShellViewModel : ObservableRecipient
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
     /// <param name="appNotificationService">A service for working with toast notifications API.</param>
+    /// <param name="packagesService">A service for working with appx packages API.</param>
+    /// <param name="commonDataService">A service for working with common app data.</param>
+    /// <param name="defenderService">A service for working with Microsoft Defender API.</param>
+    /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="navigationService">Page navigation service.</param>
     /// <param name="navigationViewService">A service for navigating to View.</param>
-    /// <param name="commonDataService">A service for working with common app data.</param>
-    /// <param name="requirementsService">Service for working with OS requirements.</param>
-    /// <param name="startupViewModel">Implements the <see cref="StartupViewModel"/> class.</param>
-    /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
-    /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="processService">A service for working with Windows process API.</param>
-    /// <param name="packagesService">A service for working with appx packages API.</param>
+    /// <param name="requirementsService">Service for working with OS requirements.</param>
+    /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
+    /// <param name="startupViewModel">Implements the <see cref="StartupViewModel"/> class.</param>
     public ShellViewModel(
         IAppNotificationService appNotificationService,
+        IAppxPackagesService packagesService,
+        ICommonDataService commonDataService,
+        IDefenderService defenderService,
+        IModelService modelService,
         INavigationService navigationService,
         INavigationViewService navigationViewService,
-        ICommonDataService commonDataService,
-        IRequirementsService requirementsService,
-        StartupViewModel startupViewModel,
-        RequirementsFailureViewModel requirementsFailureViewModel,
-        IModelService modelService,
         IProcessService processService,
-        IAppxPackagesService packagesService)
+        IRequirementsService requirementsService,
+        RequirementsFailureViewModel requirementsFailureViewModel,
+        StartupViewModel startupViewModel)
     {
         this.appNotificationService = appNotificationService;
-        this.requirementsService = requirementsService;
-        this.processService = processService;
-        this.packagesService = packagesService ?? throw new ArgumentNullException(nameof(packagesService));
-        this.modelService = modelService;
         this.commonDataService = commonDataService;
+        this.defenderService = defenderService;
+        this.modelService = modelService;
+        this.packagesService = packagesService;
+        this.processService = processService;
+        this.requirementsService = requirementsService;
         startupModel = startupViewModel;
         NavigationViewService = navigationViewService;
         NavigationService = navigationService;
@@ -191,7 +195,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// </summary>
     public async Task ExecuteAsync()
     {
-        var numberOfRequirements = 16;
+        var numberOfRequirements = 12;
         await Task.Run(() =>
         {
             _ = Result.Try(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
@@ -257,32 +261,9 @@ public partial class ShellViewModel : ObservableRecipient
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
-                startupModel.StatusText = "OsRequirements_GetMsDefenderFilesExist".GetLocalized();
-            }))
-            .Bind(requirementsService.GetMsDefenderFilesExist)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
-                startupModel.StatusText = "OsRequirements_GetSecuritySettingsPageState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetWindowsSecurityState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
-                startupModel.StatusText = "OsRequirements_GetMsDefenderServicesState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetMsDefenderServicesState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
                 startupModel.StatusText = "OsRequirements_GetMsDefenderState".GetLocalized();
             }))
-            .Bind(requirementsService.GetMsDefenderState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
-            }))
-            .Bind(requirementsService.GetMsDefenderPreferenceException)
+            .Bind(defenderService.GetState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
@@ -382,9 +363,10 @@ public partial class ShellViewModel : ObservableRecipient
         EnvironmentHelper.ForcedRefresh();
         processService.KillAllProcesses("StartMenuExperienceHost");
         processService.KillAllProcesses("explorer");
+        appNotificationService.EnableToastNotification();
+        defenderService.EnableControlledFolder();
         SetUpCustomizationsPanelIsVisible = false;
         NavigationViewHitTestVisible = true;
-        appNotificationService.EnableToastNotification();
     }
 
     private void ApplicableModelsCancel()

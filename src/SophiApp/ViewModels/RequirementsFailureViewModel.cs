@@ -62,11 +62,10 @@ namespace SophiApp.ViewModels
                 RequirementsFailure.EventLogBroken => "OsRequirementsFailure_EventLogStopped".GetLocalized(),
                 RequirementsFailure.MsStoreRemoved => "OsRequirementsFailure_MsStoreRemoved".GetLocalized(),
                 RequirementsFailure.RebootRequired => "OsRequirementsFailure_RebootRequired".GetLocalized(),
-                RequirementsFailure.MsDefenderFilesMissing => string.Format("OsRequirementsFailure_MsDefenderFilesMissing".GetLocalized(), commonDataService.MsDefenderFileMissing),
-                RequirementsFailure.SecuritySettingsPageHidden => "OsRequirementsFailure_SecuritySettingsPageHidden".GetLocalized(),
-                RequirementsFailure.MsDefenderServiceNotFound => commonDataService.MsDefenderServiceStopped.GetLocalized(),
-                RequirementsFailure.MsDefenderIsBroken => "OsRequirementsFailure_MsDefenderIsBroken".GetLocalized(),
-                RequirementsFailure.MsDefenderPreferenceException => "OsRequirementsFailure_MsDefenderIsBroken".GetLocalized(),
+                RequirementsFailure.DefenderFileMissing => string.Format("OsRequirementsFailure_DefenderFilesMissing".GetLocalized(), commonDataService.DefenderFileMissing),
+                RequirementsFailure.DefenderSettingsPageHidden => "OsRequirementsFailure_DefenderSettingsPageHidden".GetLocalized(),
+                RequirementsFailure.DefenderServiceBroken => string.Format("OsRequirementsFailure_DefenderServiceBroken".GetLocalized(), commonDataService.DefenderServiceBroken),
+                RequirementsFailure.DefenderIsBroken => "OsRequirementsFailure_DefenderIsBroken".GetLocalized(),
                 _ => throw new ArgumentOutOfRangeException(paramName: nameof(reason), message: $"Value: {reason} is not found in {typeof(RequirementsFailure).FullName} enumeration.")
             };
         }
