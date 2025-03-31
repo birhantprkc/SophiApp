@@ -12,12 +12,7 @@ using SophiApp.Contracts.Services;
 /// <inheritdoc/>
 public class FileService : IFileService
 {
-    /// <summary>
     /// <inheritdoc/>
-    /// </summary>
-    /// <typeparam name="T"><inheritdoc/></typeparam>
-    /// <param name="folderPath"><inheritdoc/></param>
-    /// <param name="fileName"><inheritdoc/></param>
     public T? ReadFromJson<T>(string folderPath, string fileName)
     {
         var path = Path.Combine(folderPath, fileName);
@@ -30,13 +25,7 @@ public class FileService : IFileService
         return default;
     }
 
-    /// <summary>
     /// <inheritdoc/>
-    /// </summary>
-    /// <typeparam name="T"><inheritdoc/></typeparam>
-    /// <param name="folderPath"><inheritdoc/></param>
-    /// <param name="fileName"><inheritdoc/></param>
-    /// <param name="content"><inheritdoc/></param>
     [MethodImpl(MethodImplOptions.Synchronized)]
     public void SaveToJson<T>(string folderPath, string fileName, T content)
     {
@@ -47,12 +36,6 @@ public class FileService : IFileService
 
         var fileContent = JsonConvert.SerializeObject(content, Formatting.Indented);
         File.WriteAllText(Path.Combine(folderPath, fileName), fileContent, Encoding.Default);
-    }
-
-    /// <inheritdoc/>
-    public void Save(string file, string content)
-    {
-        Save(file, content, Encoding.Default);
     }
 
     /// <inheritdoc/>

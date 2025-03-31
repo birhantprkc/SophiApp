@@ -1147,7 +1147,7 @@ namespace SophiApp.Customizations
             {
                 _ = PowerShellService.Invoke($"auditpol /set /subcategory:\"{viewerGuid}\" /success:enable /failure:enable");
                 Registry.LocalMachine.OpenSubKey(viewerAuditPath, true)?.SetValue(auditValueName, 1, RegistryValueKind.DWord);
-                FileService.Save(file: viewerXmlPath, content: viewerXml);
+                FileService.Save(file: viewerXmlPath, content: viewerXml, encoding: Encoding.Default);
                 return;
             }
 

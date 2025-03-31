@@ -4,23 +4,68 @@
 
 namespace SophiApp.Contracts.Services;
 
+using Microsoft.UI.Xaml;
+
 /// <summary>
 /// A service for working with app settings.
 /// </summary>
 public interface ISettingsService
 {
     /// <summary>
-    /// Reads the settings from a file.
+    /// Gets a minimum font size for UI elements description.
     /// </summary>
-    /// <typeparam name="T">Type of setting to read.</typeparam>
-    /// <param name="key">Name of the setting to be read.</param>
-    Task<T?> ReadSettingAsync<T>(string key);
+    public int TextDescriptionMinSize { get; }
 
     /// <summary>
-    /// Writes the settings to a file.
+    /// Gets a maximum font size for UI elements description.
     /// </summary>
-    /// <typeparam name="T">Type of setting to write.</typeparam>
-    /// <param name="key">Setting key to be write.</param>
-    /// <param name="value">Setting value to be write.</param>
-    Task SaveSettingAsync<T>(string key, T value);
+    public int TextDescriptionMaxSize { get; }
+
+    /// <summary>
+    /// Gets a minimum font size for UI elements title.
+    /// </summary>
+    public int TextTitleMinSize { get; }
+
+    /// <summary>
+    /// Gets a maximum font size for UI elements title.
+    /// </summary>
+    public int TextTitleMaxSize { get; }
+
+    /// <summary>
+    /// Initialize <see cref="ISettingsService"/> data.
+    /// </summary>
+    Task InitializeAsync();
+
+    /// <summary>
+    /// Read UI elements descriptions size from a file.
+    /// </summary>
+    Task<int> ReadTextDescriptionSizeAsync();
+
+    /// <summary>
+    /// Read UI elements title size from a file.
+    /// </summary>
+    Task<int> ReadTextTitleSizeAsync();
+
+    /// <summary>
+    /// Reads app theme from a file.
+    /// </summary>
+    Task<ElementTheme> ReadThemeAsync();
+
+    /// <summary>
+    /// Write UI elements description size to a file.
+    /// </summary>
+    /// <param name="size">UI elements description size.</param>
+    Task SaveTextDescriptionSizeAsync(int size);
+
+    /// <summary>
+    /// Write UI elements title size to a file.
+    /// </summary>
+    /// <param name="size">UI elements title size.</param>
+    Task SaveTextTitleSizeAsync(int size);
+
+    /// <summary>
+    /// Write app theme to a file.
+    /// </summary>
+    /// <param name="theme">Specifies a UI theme that should be used for UI elements.</param>
+    Task SaveThemeAsync(ElementTheme theme);
 }

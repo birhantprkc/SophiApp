@@ -29,17 +29,10 @@ public interface IFileService
     void SaveToJson<T>(string folderPath, string fileName, T content);
 
     /// <summary>
-    /// Save and create a path if it does not exist the data to a file.
+    /// Create a path, if it does not exist, and save data to a file.
     /// </summary>
     /// <param name="file">The file to write to.</param>
     /// <param name="content">The lines to write to the file.</param>
-    void Save(string file, string content);
-
-    /// <summary>
-    /// Save and create a path if it does not exist the data to a file.
-    /// </summary>
-    /// <param name="file">The file to write to.</param>
-    /// <param name="content">The lines to write to the file.</param>
-    /// <param name="encoding">The encoding to apply to the content.</param>
+    /// <param name="encoding">Represents a character encoding.</param>
     void Save(string file, string content, Encoding encoding);
 }

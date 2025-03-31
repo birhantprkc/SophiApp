@@ -11,33 +11,36 @@ using SophiApp.Views;
 /// <inheritdoc/>
 public class InitializeService : IInitializeService
 {
-    private readonly IThemesService themeSelectorService;
+    private readonly IThemesService themesService;
     private readonly ICommonDataService commonDataService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InitializeService"/> class.
     /// </summary>
-    /// <param name="themeSelectorService">A service for working with app themes.</param>
+    /// <param name="themesService">A service for working with app themes.</param>
     /// <param name="commonDataService">A service for working with common app data.</param>
+    /// <param name="settingsService">A service for working with app settings.</param>
     public InitializeService(
-        IThemesService themeSelectorService,
-        ICommonDataService commonDataService)
+        IThemesService themesService,
+        ICommonDataService commonDataService,
+        ISettingsService settingsService)
     {
-        this.themeSelectorService = themeSelectorService;
+        this.themesService = themesService;
         this.commonDataService = commonDataService;
+        this.settingsService = settingsService;
     }
 
-    /// <summary>
     /// <inheritdoc/>
-    /// </summary>
-    /// <param name="args"><inheritdoc/></param>
     public async Task InitializeAsync(object args)
     {
-        InitializeMainWindow();
-        await InitializeThemeAsync();
+        await settingsService.InitializeAsync();
+        InitializeAppWindow();
+        await themesService.InitializeAsync();
+        await themesService.SetRequestedThemeAsync();
     }
 
-    private void InitializeMainWindow()
+    private void InitializeAppWindow()
     {
         App.MainWindow.Title = commonDataService.GetFullName();
 
@@ -49,11 +52,5 @@ public class InitializeService : IInitializeService
 
         App.MainWindow.CenterOnScreen();
         App.MainWindow.Activate();
-    }
-
-    private async Task InitializeThemeAsync()
-    {
-        await themeSelectorService.InitializeAsync();
-        await themeSelectorService.SetRequestedThemeAsync();
     }
 }

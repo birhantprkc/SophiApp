@@ -10,34 +10,29 @@ using SophiApp.Helpers;
 /// <inheritdoc/>
 public class ThemesService : IThemesService
 {
-    private const string SettingsKey = "AppTheme";
-    private readonly ISettingsService localSettingsService;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ThemesService"/> class.
     /// </summary>
-    /// <param name="localSettingsService">Service for working with settings file.</param>
-    public ThemesService(ISettingsService localSettingsService)
+    /// <param name="settingsService">Service for working with app settings.</param>
+    public ThemesService(ISettingsService settingsService)
     {
-        this.localSettingsService = localSettingsService;
+        this.settingsService = settingsService;
     }
 
     /// <inheritdoc/>
-    public ElementTheme Theme { get; private set; } = ElementTheme.Default;
+    public ElementTheme Theme { get; private set; }
 
     /// <inheritdoc/>
-    public async Task InitializeAsync()
-    {
-        Theme = await LoadThemeFromSettingsAsync();
-        await Task.CompletedTask;
-    }
+    public async Task InitializeAsync() => Theme = await settingsService.ReadThemeAsync();
 
     /// <inheritdoc/>
     public async Task SetThemeAsync(ElementTheme theme)
     {
         Theme = theme;
         await SetRequestedThemeAsync();
-        await SaveThemeInSettingsAsync(Theme);
+        await settingsService.SaveThemeAsync(theme);
         App.Logger.LogChangeTheme(Theme);
     }
 
@@ -47,27 +42,9 @@ public class ThemesService : IThemesService
         if (App.MainWindow.Content is FrameworkElement rootElement)
         {
             rootElement.RequestedTheme = Theme;
-
             TitleBarHelper.UpdateTitleBar(Theme);
         }
 
         await Task.CompletedTask;
-    }
-
-    private async Task<ElementTheme> LoadThemeFromSettingsAsync()
-    {
-        var themeName = await localSettingsService.ReadSettingAsync<string>(SettingsKey);
-
-        if (Enum.TryParse(themeName, out ElementTheme cacheTheme))
-        {
-            return cacheTheme;
-        }
-
-        return ElementTheme.Default;
-    }
-
-    private async Task SaveThemeInSettingsAsync(ElementTheme theme)
-    {
-        await localSettingsService.SaveSettingAsync(SettingsKey, theme.ToString());
     }
 }

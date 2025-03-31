@@ -16,7 +16,7 @@ using SophiApp.Helpers;
 /// </summary>
 public partial class SettingsViewModel : ObservableRecipient
 {
-    private readonly IThemesService themeSelectorService;
+    private readonly IThemesService themesService;
 
     [ObservableProperty]
     private string build;
@@ -33,7 +33,7 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private ObservableCollection<ElementThemeWrapper> themes = new ()
     {
-        new (ElementTheme.Default, "Settings_Themes_Default"), new (ElementTheme.Dark, "Settings_Themes_Dark"), new (ElementTheme.Light, "Settings_Themes_Light"),
+        new (ElementTheme.Default, "Settings_Themes_Default"), new (ElementTheme.Light, "Settings_Themes_Light"), new (ElementTheme.Dark, "Settings_Themes_Dark"),
     };
 
     [ObservableProperty]
@@ -43,19 +43,19 @@ public partial class SettingsViewModel : ObservableRecipient
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
     /// </summary>
-    /// <param name="themeSelectorService">A service for working with app themes.</param>
+    /// <param name="themesService">A service for working with app themes.</param>
     /// <param name="commonDataService">A service for transferring app data between layers of DI.</param>
     /// <param name="uriService">A service for working with URI.</param>
     /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
-    public SettingsViewModel(IThemesService themeSelectorService, ICommonDataService commonDataService, IUriService uriService, ShellViewModel shellViewModel)
+    public SettingsViewModel(IThemesService themesService, ICommonDataService commonDataService, IUriService uriService, ShellViewModel shellViewModel)
     {
         build = commonDataService.GetBuildName();
         delimiter = commonDataService.GetDelimiter();
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
         OpenLinkCommand = new AsyncRelayCommand<string>(url => uriService.OpenUrlAsync(url!));
-        selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themeSelectorService.Theme));
-        this.themeSelectorService = themeSelectorService;
+        selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
+        this.themesService = themesService;
         version = commonDataService.GetFullName();
     }
 
@@ -75,7 +75,7 @@ public partial class SettingsViewModel : ObservableRecipient
             if (value != selectedTheme)
             {
                 selectedTheme = value;
-                _ = themeSelectorService.SetThemeAsync(selectedTheme.ElementTheme);
+                _ = themesService.SetThemeAsync(selectedTheme.ElementTheme);
             }
         }
     }

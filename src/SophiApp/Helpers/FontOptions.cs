@@ -13,8 +13,6 @@ namespace SophiApp.Helpers
     /// </summary>
     public class FontOptions : INotifyPropertyChanged
     {
-        private const string TitleTextSizeSettingKey = "TextHeaderSize";
-        private const string DescriptionTextSizeSettingKey = "TextDescriptionSize";
         private readonly ISettingsService settingsService = App.GetService<ISettingsService>();
         private int descriptionTextSize;
         private int titleTextSize;
@@ -25,12 +23,12 @@ namespace SophiApp.Helpers
         /// <summary>
         /// Gets a minimum font size for UI elements description.
         /// </summary>
-        public int DescriptionTextMinSize { get; } = 14;
+        public int DescriptionTextMinSize { get; private set; }
 
         /// <summary>
         /// Gets a maximum font size for UI elements description.
         /// </summary>
-        public int DescriptionTextMaxSize { get; } = 24;
+        public int DescriptionTextMaxSize { get; private set; }
 
         /// <summary>
         /// Gets or sets the font size for UI elements description.
@@ -44,7 +42,7 @@ namespace SophiApp.Helpers
                 {
                     descriptionTextSize = value;
                     App.Logger.LogDescriptionTextSizeChanged(value);
-                    SaveTextSizeSetting(DescriptionTextSizeSettingKey, value);
+                    Task.Run(async () => await settingsService.SaveTextDescriptionSizeAsync(value));
                     OnPropertyChanged(nameof(DescriptionTextSize));
                 }
             }
@@ -53,12 +51,12 @@ namespace SophiApp.Helpers
         /// <summary>
         /// Gets a minimum font size for UI elements title.
         /// </summary>
-        public int TitleTextMinSize { get; } = 16;
+        public int TitleTextMinSize { get; private set; }
 
         /// <summary>
-        /// Gets a maximum font size for UI elements header.
+        /// Gets a maximum font size for UI elements title.
         /// </summary>
-        public int TitleTextMaxSize { get; } = 26;
+        public int TitleTextMaxSize { get; private set; }
 
         /// <summary>
         /// Gets or sets the font size for UI elements title.
@@ -72,7 +70,7 @@ namespace SophiApp.Helpers
                 {
                     titleTextSize = value;
                     App.Logger.LogTitleTextSizeChanged(value);
-                    SaveTextSizeSetting(TitleTextSizeSettingKey, value);
+                    Task.Run(async () => await settingsService.SaveTextTitleSizeAsync(value));
                     OnPropertyChanged(nameof(TitleTextSize));
                 }
             }
@@ -83,20 +81,15 @@ namespace SophiApp.Helpers
         /// </summary>
         public async Task InitializeAsync()
         {
-            TitleTextSize = await ReadTextSizeSettingAsync(TitleTextSizeSettingKey, TitleTextMinSize, TitleTextMaxSize);
-            DescriptionTextSize = await ReadTextSizeSettingAsync(DescriptionTextSizeSettingKey, DescriptionTextMinSize, DescriptionTextMaxSize);
+            DescriptionTextMinSize = settingsService.TextDescriptionMinSize;
+            DescriptionTextMaxSize = settingsService.TextDescriptionMaxSize;
+            DescriptionTextSize = await settingsService.ReadTextDescriptionSizeAsync();
+
+            TitleTextMinSize = settingsService.TextTitleMinSize;
+            TitleTextMaxSize = settingsService.TextTitleMaxSize;
+            TitleTextSize = await settingsService.ReadTextTitleSizeAsync();
         }
 
-        private async Task<int> ReadTextSizeSettingAsync(string settingKey, int settingMinValue, int settingMaxValue)
-        {
-            var textSize = await settingsService.ReadSettingAsync<int>(settingKey);
-            return textSize > 0 && textSize <= settingMaxValue ? textSize : settingMinValue;
-        }
-
-        private void SaveTextSizeSetting(string settingKey, int settingValue)
-            => Task.Run(async () => await settingsService.SaveSettingAsync(settingKey, settingValue));
-
-        private void OnPropertyChanged([CallerMemberName] string? name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
