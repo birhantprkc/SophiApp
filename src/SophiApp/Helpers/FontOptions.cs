@@ -81,13 +81,13 @@ namespace SophiApp.Helpers
         /// </summary>
         public async Task InitializeAsync()
         {
-            DescriptionTextMinSize = settingsService.TextDescriptionMinSize;
-            DescriptionTextMaxSize = settingsService.TextDescriptionMaxSize;
-            DescriptionTextSize = await settingsService.ReadTextDescriptionSizeAsync();
+            DescriptionTextMinSize = settingsService.DescriptionTextMinSize;
+            DescriptionTextMaxSize = settingsService.DescriptionTextMaxSize;
+            descriptionTextSize = await settingsService.ReadTextDescriptionSizeAsync();
 
-            TitleTextMinSize = settingsService.TextTitleMinSize;
-            TitleTextMaxSize = settingsService.TextTitleMaxSize;
-            TitleTextSize = await settingsService.ReadTextTitleSizeAsync();
+            TitleTextMinSize = settingsService.TitleTextMinSize;
+            TitleTextMaxSize = settingsService.TitleTextMaxSize;
+            titleTextSize = await settingsService.ReadTextTitleSizeAsync();
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

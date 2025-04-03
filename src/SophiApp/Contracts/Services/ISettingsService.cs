@@ -5,6 +5,7 @@
 namespace SophiApp.Contracts.Services;
 
 using Microsoft.UI.Xaml;
+using Windows.Graphics;
 
 /// <summary>
 /// A service for working with app settings.
@@ -12,24 +13,34 @@ using Microsoft.UI.Xaml;
 public interface ISettingsService
 {
     /// <summary>
+    /// Gets app <see cref="MainWindow"/> minimal height.
+    /// </summary>
+    double AppWindowMinHeight { get; }
+
+    /// <summary>
+    /// Gets app <see cref="MainWindow"/> minimal width.
+    /// </summary>
+    double AppWindowMinWidth { get; }
+
+    /// <summary>
     /// Gets a minimum font size for UI elements description.
     /// </summary>
-    public int TextDescriptionMinSize { get; }
+    int DescriptionTextMinSize { get; }
 
     /// <summary>
     /// Gets a maximum font size for UI elements description.
     /// </summary>
-    public int TextDescriptionMaxSize { get; }
+    int DescriptionTextMaxSize { get; }
 
     /// <summary>
     /// Gets a minimum font size for UI elements title.
     /// </summary>
-    public int TextTitleMinSize { get; }
+    int TitleTextMinSize { get; }
 
     /// <summary>
     /// Gets a maximum font size for UI elements title.
     /// </summary>
-    public int TextTitleMaxSize { get; }
+    int TitleTextMaxSize { get; }
 
     /// <summary>
     /// Initialize <see cref="ISettingsService"/> data.
@@ -37,34 +48,73 @@ public interface ISettingsService
     Task InitializeAsync();
 
     /// <summary>
-    /// Read UI elements descriptions size from a file.
+    /// Read app <see cref="MainWindow"/> position from a settings file.
+    /// </summary>
+    Task<PointInt32> ReadAppWindowPositionAsync();
+
+    /// <summary>
+    /// Read app <see cref="MainWindow"/> height from a settings file.
+    /// </summary>
+    Task<double> ReadAppWindowHeightAsync();
+
+    /// <summary>
+    /// Read app <see cref="MainWindow"/> state from a settings file.
+    /// </summary>
+    Task<WindowState> ReadAppWindowStateAsync();
+
+    /// <summary>
+    /// Read app <see cref="MainWindow"/> width from a settings file.
+    /// </summary>
+    Task<double> ReadAppWindowWidthAsync();
+
+    /// <summary>
+    /// Read UI elements descriptions size from a settings file.
     /// </summary>
     Task<int> ReadTextDescriptionSizeAsync();
 
     /// <summary>
-    /// Read UI elements title size from a file.
+    /// Read UI elements title size from a settings file.
     /// </summary>
     Task<int> ReadTextTitleSizeAsync();
 
     /// <summary>
-    /// Reads app theme from a file.
+    /// Reads app <see cref="ElementTheme"/> from a settings file.
     /// </summary>
     Task<ElementTheme> ReadThemeAsync();
 
     /// <summary>
-    /// Write UI elements description size to a file.
+    /// Write app <see cref="MainWindow"/> position to a settings file.
+    /// </summary>
+    /// <param name="point">Defines a point in a two-dimensional plane.</param>
+    Task SaveAppWindowPositionAsync(PointInt32 point);
+
+    /// <summary>
+    /// Write app <see cref="MainWindow"/> size to a settings file.
+    /// </summary>
+    /// <param name="height">A <see cref="MainWindow"/> height.</param>
+    /// <param name="width">A <see cref="MainWindow"/> width.</param>
+    Task SaveAppWindowSizeAsync(double height, double width);
+
+    /// <summary>
+    /// Write app <see cref="MainWindow"/> state to a settings file.
+    /// </summary>
+    /// <param name="state">Specifies app window state.</param>
+    Task SaveAppWindowStateAsync(WindowState state);
+
+    /// <summary>
+    /// Write UI elements description size to a settings file.
     /// </summary>
     /// <param name="size">UI elements description size.</param>
     Task SaveTextDescriptionSizeAsync(int size);
 
     /// <summary>
-    /// Write UI elements title size to a file.
+    /// Write UI elements title size to a settings file.
     /// </summary>
     /// <param name="size">UI elements title size.</param>
     Task SaveTextTitleSizeAsync(int size);
 
     /// <summary>
-    /// Write app theme to a file.
+    /// Write app <see cref="ElementTheme"/> to a settings file.
     /// </summary>
     /// <param name="theme">Specifies a UI theme that should be used for UI elements.</param>
     Task SaveThemeAsync(ElementTheme theme);

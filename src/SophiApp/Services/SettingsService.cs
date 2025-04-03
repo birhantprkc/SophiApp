@@ -8,15 +8,21 @@ using Microsoft.UI.Xaml;
 using SophiApp.Contracts.Services;
 using SophiApp.Extensions;
 using SophiApp.Helpers;
+using Windows.Graphics;
 using Windows.Storage;
 
 /// <inheritdoc/>
 public class SettingsService : ISettingsService
 {
-    private const string AppThemeSettingKey = "AppTheme";
+    private const string AppThemeKey = "AppTheme";
+    private const string AppWindowPositionXKey = "AppWindowPositionX";
+    private const string AppWindowPositionYKey = "AppWindowPositionY";
+    private const string AppWindowHeightKey = "AppWindowHeight";
+    private const string AppWindowWidthKey = "AppWindowWidth";
+    private const string AppWindowStateKey = "AppWindowState";
     private const string SettingsFile = "Settings.json";
-    private const string TextDescriptionSizeSettingKey = "TextDescriptionSize";
-    private const string TextTitleSizeSettingKey = "TextTitleSize";
+    private const string TextDescriptionSizeKey = "TextDescriptionSize";
+    private const string TextTitleSizeKey = "TextTitleSize";
 
     private readonly IFileService fileService;
     private readonly string settingsFolder = AppContext.BaseDirectory;
@@ -32,45 +38,93 @@ public class SettingsService : ISettingsService
     }
 
     /// <inheritdoc/>
-    public int TextDescriptionMinSize { get; } = 14;
+    public double AppWindowMinHeight => 855;
 
     /// <inheritdoc/>
-    public int TextDescriptionMaxSize { get; } = 24;
+    public double AppWindowMinWidth => 1200;
 
     /// <inheritdoc/>
-    public int TextTitleMinSize { get; } = 16;
+    public int DescriptionTextMinSize => 14;
 
     /// <inheritdoc/>
-    public int TextTitleMaxSize { get; } = 26;
+    public int DescriptionTextMaxSize => 24;
+
+    /// <inheritdoc/>
+    public int TitleTextMinSize => 16;
+
+    /// <inheritdoc/>
+    public int TitleTextMaxSize => 26;
 
     /// <inheritdoc/>
     public async Task InitializeAsync() => settings = await Task.Run(() => fileService.ReadFromJson<IDictionary<string, object>>(settingsFolder, SettingsFile)) ?? new Dictionary<string, object>();
 
     /// <inheritdoc/>
+    public async Task<PointInt32> ReadAppWindowPositionAsync()
+    {
+        var x = await ReadSettingAsync<int>(AppWindowPositionXKey);
+        var y = await ReadSettingAsync<int>(AppWindowPositionYKey);
+        return new PointInt32(x, y);
+    }
+
+    /// <inheritdoc/>
+    public async Task<double> ReadAppWindowHeightAsync()
+    {
+        var height = await ReadSettingAsync<double>(AppWindowHeightKey);
+        return height > AppWindowMinHeight ? height : AppWindowMinHeight;
+    }
+
+    /// <inheritdoc/>
+    public async Task<WindowState> ReadAppWindowStateAsync() => await ReadSettingAsync<WindowState>(AppWindowStateKey);
+
+    /// <inheritdoc/>
+    public async Task<double> ReadAppWindowWidthAsync()
+    {
+        var width = await ReadSettingAsync<double>(AppWindowWidthKey);
+        return width > AppWindowMinWidth ? width : AppWindowMinWidth;
+    }
+
+    /// <inheritdoc/>
     public async Task<int> ReadTextDescriptionSizeAsync()
     {
-        var textDescriptionSize = await ReadSettingAsync<int>(TextDescriptionSizeSettingKey);
-        return textDescriptionSize > 0 && textDescriptionSize <= TextDescriptionMaxSize ? textDescriptionSize : TextDescriptionMinSize;
+        var descriptionTextSize = await ReadSettingAsync<int>(TextDescriptionSizeKey);
+        return descriptionTextSize > DescriptionTextMinSize && descriptionTextSize <= DescriptionTextMaxSize ? descriptionTextSize : DescriptionTextMinSize;
     }
 
     /// <inheritdoc/>
     public async Task<int> ReadTextTitleSizeAsync()
     {
-        var textTitleSize = await ReadSettingAsync<int>(TextTitleSizeSettingKey);
-        return textTitleSize > 0 && textTitleSize <= TextTitleMaxSize ? textTitleSize : TextTitleMinSize;
+        var titleTextSize = await ReadSettingAsync<int>(TextTitleSizeKey);
+        return titleTextSize > TitleTextMinSize && titleTextSize <= TitleTextMaxSize ? titleTextSize : TitleTextMinSize;
     }
 
     /// <inheritdoc/>
-    public async Task<ElementTheme> ReadThemeAsync() => await ReadSettingAsync<ElementTheme>(AppThemeSettingKey);
+    public async Task<ElementTheme> ReadThemeAsync() => await ReadSettingAsync<ElementTheme>(AppThemeKey);
 
     /// <inheritdoc/>
-    public async Task SaveTextDescriptionSizeAsync(int size) => await SaveSettingAsync(TextDescriptionSizeSettingKey, size);
+    public async Task SaveAppWindowPositionAsync(PointInt32 point)
+    {
+        await SaveSettingAsync(AppWindowPositionXKey, point.X);
+        await SaveSettingAsync(AppWindowPositionYKey, point.Y);
+    }
 
     /// <inheritdoc/>
-    public async Task SaveTextTitleSizeAsync(int size) => await SaveSettingAsync(TextTitleSizeSettingKey, size);
+    public async Task SaveAppWindowSizeAsync(double height, double width)
+    {
+        await SaveSettingAsync(AppWindowHeightKey, height);
+        await SaveSettingAsync(AppWindowWidthKey, width);
+    }
 
     /// <inheritdoc/>
-    public async Task SaveThemeAsync(ElementTheme theme) => await SaveSettingAsync(AppThemeSettingKey, theme);
+    public async Task SaveAppWindowStateAsync(WindowState state) => await SaveSettingAsync(AppWindowStateKey, state);
+
+    /// <inheritdoc/>
+    public async Task SaveTextDescriptionSizeAsync(int size) => await SaveSettingAsync(TextDescriptionSizeKey, size);
+
+    /// <inheritdoc/>
+    public async Task SaveTextTitleSizeAsync(int size) => await SaveSettingAsync(TextTitleSizeKey, size);
+
+    /// <inheritdoc/>
+    public async Task SaveThemeAsync(ElementTheme theme) => await SaveSettingAsync(AppThemeKey, theme);
 
     private async Task<T?> ReadSettingAsync<T>(string key)
     {

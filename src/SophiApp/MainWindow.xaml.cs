@@ -4,7 +4,9 @@
 
 namespace SophiApp;
 
+using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
+using Windows.Graphics;
 using Windows.UI.ViewManagement;
 
 /// <summary>
@@ -14,6 +16,7 @@ public sealed partial class MainWindow : WindowEx
 {
     private readonly Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
     private readonly UISettings settings;
+    private readonly ISettingsService settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -27,6 +30,7 @@ public sealed partial class MainWindow : WindowEx
         dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
         settings = new UISettings();
         settings.ColorValuesChanged += Settings_ColorValuesChanged;
+        settingsService = App.GetService<ISettingsService>();
     }
 
     /// <summary>
@@ -34,6 +38,25 @@ public sealed partial class MainWindow : WindowEx
     /// </summary>
     /// <param name="sender">Contains a set of common app user interface settings and operations.</param>
     /// <param name="args">Arguments passed to the method.</param>
-    private void Settings_ColorValuesChanged(UISettings sender, object args)
-        => dispatcherQueue.TryEnqueue(TitleBarHelper.ApplySystemThemeToCaptionButtons);
+    private void Settings_ColorValuesChanged(UISettings sender, object args) => dispatcherQueue.TryEnqueue(TitleBarHelper.ApplySystemThemeToCaptionButtons);
+
+    private void MainWindow_StateChanged(object sender, WindowState e) => Task.Run(async () => await settingsService.SaveAppWindowStateAsync(WindowState));
+
+    private void MainWindow_PositionChanged(object sender, PointInt32 e)
+    {
+        if (Visible && e.X > 0 && e.Y > 0)
+        {
+            _ = Task.Run(async () => await settingsService.SaveAppWindowPositionAsync(e));
+        }
+    }
+
+    private void MainWindow_SizeChanged(object sender, Microsoft.UI.Xaml.WindowSizeChangedEventArgs args)
+    {
+        if (Visible && WindowState == WindowState.Normal)
+        {
+            var height = Height;
+            var width = Width;
+            _ = Task.Run(async () => await settingsService.SaveAppWindowSizeAsync(height, width));
+        }
+    }
 }

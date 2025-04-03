@@ -286,7 +286,6 @@ public partial class ShellViewModel : ObservableRecipient
                 uwpCurrentUserModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: false);
                 UwpAppsModels = new (uwpAllUsersModels);
             })
-            .Tap(async () => await FontOptions.InitializeAsync())
             .Match(
                 onSuccess: () => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {

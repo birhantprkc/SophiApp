@@ -235,7 +235,7 @@
                         MinWidth="235"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Left"
-                        Margin="10, 10, 10, 7"
+                        Margin="10, 10, 10, 15"
                         Canvas.ZIndex="2"
                         IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
             <i:Interaction.Behaviors>
