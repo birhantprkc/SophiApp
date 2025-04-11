@@ -48,6 +48,9 @@ public partial class ShellViewModel : ObservableRecipient
     private bool isBackEnabled;
 
     [ObservableProperty]
+    private List<string> loggedActions = [];
+
+    [ObservableProperty]
     private object? selectedNavigationViewItem;
 
     [ObservableProperty]

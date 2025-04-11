@@ -67,6 +67,11 @@ namespace SophiApp.Contracts.Services
         Version AppVersion { get; }
 
         /// <summary>
+        /// Initialize <see cref="ICommonDataService"/> data.
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
         /// Gets app name and version.
         /// </summary>
         string GetFullName();

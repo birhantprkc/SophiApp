@@ -43,6 +43,7 @@ public class InitializeService : IInitializeService
     /// <inheritdoc/>
     public async Task InitializeAsync(object args)
     {
+        commonDataService.Initialize();
         await settingsService.InitializeAsync();
         await InitializeAppWindow();
         await themesService.InitializeAsync();

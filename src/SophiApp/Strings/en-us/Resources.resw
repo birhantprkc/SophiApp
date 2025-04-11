@@ -1034,4 +1034,10 @@
   <data name="UIModel_EditWithPaintContext_Title" xml:space="preserve">
     <value>Show the "Edit with Paint" item in the media files context menu</value>
   </data>
+  <data name="NavigationItem_Log.Text" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="Page_Log.Text" xml:space="preserve">
+    <value>Log</value>
+  </data>
 </root>

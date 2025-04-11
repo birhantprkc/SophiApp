@@ -106,7 +106,8 @@ namespace SophiApp.Services
         private static InputCursor userCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         private static InputCursor urlCursor = InputSystemCursor.Create(InputSystemCursorShape.Hand);
         private readonly AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
-        private readonly OsProperties osProperties;
+        private readonly IInstrumentationService instrumentationService;
+        private OsProperties osProperties = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommonDataService"/> class.
@@ -114,8 +115,7 @@ namespace SophiApp.Services
         /// <param name="instrumentationService">Service for working with WMI.</param>
         public CommonDataService(IInstrumentationService instrumentationService)
         {
-            osProperties = instrumentationService.GetOsPropertiesOrDefault();
-            App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
+            this.instrumentationService = instrumentationService;
         }
 
         /// <summary>
@@ -173,6 +173,13 @@ namespace SophiApp.Services
 
         /// <inheritdoc/>
         public Version AppVersion => assembly.Version!;
+
+        /// <inheritdoc/>
+        public void Initialize()
+        {
+            osProperties = instrumentationService.GetOsPropertiesOrDefault();
+            App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
+        }
 
         /// <inheritdoc/>
         public string GetBuildName() => "Daria";

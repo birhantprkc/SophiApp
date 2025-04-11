@@ -62,9 +62,10 @@ public partial class App : Application
 
                 // ViewModels
                 _ = services.AddScoped<RequirementsFailureViewModel>();
-                _ = services.AddScoped<ShellViewModel>();
                 _ = services.AddScoped<StartupViewModel>();
+                _ = services.AddSingleton<ShellViewModel>();
                 _ = services.AddTransient<ContextMenuViewModel>();
+                _ = services.AddTransient<LogViewModel>();
                 _ = services.AddTransient<PersonalizationViewModel>();
                 _ = services.AddTransient<PrivacyViewModel>();
                 _ = services.AddTransient<ProVersionViewModel>();
@@ -76,6 +77,7 @@ public partial class App : Application
                 _ = services.AddTransient<UwpViewModel>();
 
                 // Views
+                _ = services.AddSingleton<LogPage>();
                 _ = services.AddTransient<ContextMenuPage>();
                 _ = services.AddTransient<PersonalizationPage>();
                 _ = services.AddTransient<PrivacyPage>();

@@ -85,6 +85,15 @@
         <Setter Property="Margin" Value="0, 0, 10, 15" />
     </Style>
 
+    <Style x:Key="UIControlLogPageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
+        <Setter Property="IsTextSelectionEnabled" Value="True"/>
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="15, 1, 15 , 1" />
+    </Style>
+
     <Style x:Key="ApplyCustomizationsTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
         <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="TextWrapping" Value="NoWrap"/>

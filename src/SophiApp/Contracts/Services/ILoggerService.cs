@@ -281,9 +281,9 @@ namespace SophiApp.Contracts.Services
         void LogDefenderServiceBroken(string service);
 
         /// <summary>
-        /// Handles occur when execution of the Get-MpPreference cmdlet throws an exception.
+        /// Handles occur when execution of the Get-MpPreference cmdlet return null value.
         /// </summary>
-        void LogDefenderMpPreferenceBroken();
+        void LogDefenderMpPreferenceIsNull();
 
         /// <summary>
         /// Handles an exception when accessing to WMI MSFT_MpComputerStatus class in the <see cref="IInstrumentationService"/>.

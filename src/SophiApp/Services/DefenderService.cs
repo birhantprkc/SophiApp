@@ -148,7 +148,7 @@ namespace SophiApp.Services
             if (folderAccessIsEnabled is null)
             {
                 commonDataService.DefenderMpPreferenceBroken = true;
-                App.Logger.LogDefenderMpPreferenceBroken();
+                App.Logger.LogDefenderMpPreferenceIsNull();
             }
         }
 
