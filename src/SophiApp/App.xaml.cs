@@ -77,7 +77,7 @@ public partial class App : Application
                 _ = services.AddTransient<UwpViewModel>();
 
                 // Views
-                _ = services.AddSingleton<LogPage>();
+                _ = services.AddTransient<LogPage>();
                 _ = services.AddTransient<ContextMenuPage>();
                 _ = services.AddTransient<PersonalizationPage>();
                 _ = services.AddTransient<PrivacyPage>();

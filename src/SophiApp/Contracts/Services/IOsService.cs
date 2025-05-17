@@ -18,6 +18,12 @@ namespace SophiApp.Contracts.Services
         uint GetNewsInterestsHashData(bool enable);
 
         /// <summary>
+        /// Gets the status of the service.
+        /// </summary>
+        /// <param name="name">Service name.</param>
+        ServiceControllerStatus? GetStatus(string name);
+
+        /// <summary>
         /// Sets the startup mode of the Windows service.
         /// </summary>
         /// <param name="service">Represents a Windows service and allows you to connect to a running or stopped.</param>
@@ -26,11 +32,9 @@ namespace SophiApp.Contracts.Services
 
         /// <summary>
         /// Returns true if the service exists.
-        /// If the service does not exist false is returned.
-        /// If the service is not started, an attempt to start it.
         /// </summary>
         /// <param name="name">Service name.</param>
-        bool IsExistTryStart(string name);
+        bool Exist(string name);
 
         /// <summary>
         /// Determines that the VBSCRIPT component is installed.

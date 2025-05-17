@@ -19,12 +19,18 @@ namespace SophiApp.Helpers
         /// Copy <paramref name="text"/> to clipboard.
         /// </summary>
         /// <param name="text">The text.</param>
-        public static void CopyTextToClipboard(string? text)
+        public static void CopyToClipboard(string? text)
         {
             var dataPackage = new DataPackage() { RequestedOperation = DataPackageOperation.Copy };
             dataPackage.SetText(text);
             Clipboard.SetContent(dataPackage);
         }
+
+        /// <summary>
+        /// Copy <paramref name="text"/> to clipboard.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        public static void CopyToClipboard(List<string> text) => CopyToClipboard(string.Join("\r", text));
 
         /// <summary>
         /// Shows the flyout placed in relation to the specified element using the specified options.

@@ -4,9 +4,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:interactions="using:Microsoft.Xaml.Interactivity"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-             xmlns:media="using:Microsoft.Xaml.Interactions.Media"
+             xmlns:media="using:Microsoft.Xaml.Interactivity"
              mc:Ignorable="d"
              Height="66">
 

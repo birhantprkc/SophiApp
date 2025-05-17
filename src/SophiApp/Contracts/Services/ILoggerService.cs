@@ -172,6 +172,14 @@ namespace SophiApp.Contracts.Services
             where T : struct;
 
         /// <summary>
+        /// Write Microsoft Defender services status.
+        /// </summary>
+        /// <param name="service">Microsoft Defender service name.</param>
+        /// <param name="isExist">A service is exist.</param>
+        /// <param name="isRunning">A service is running.</param>
+        void LogDefenderServiceStatus(string service, bool isExist, bool isRunning);
+
+        /// <summary>
         /// Write information about state a "For all users" checkbox in the UWP page.
         /// </summary>
         /// <param name="state">A "For all users" checkbox state.</param>
@@ -182,6 +190,12 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="size">A description text size.</param>
         void LogDescriptionTextSizeChanged(int size);
+
+        /// <summary>
+        /// Write Log page visibility state.
+        /// </summary>
+        /// <param name="isVisible">A log page visibility state.</param>
+        void LogPageVisibility(bool isVisible);
 
         /// <summary>
         /// Write information about the resizing of UI elements title text.
@@ -275,12 +289,6 @@ namespace SophiApp.Contracts.Services
         void LogDefenderFileMissing(string file);
 
         /// <summary>
-        /// Handles occur during the Microsoft Defender services not found.
-        /// </summary>
-        /// <param name="service">Microsoft Defender service name.</param>
-        void LogDefenderServiceBroken(string service);
-
-        /// <summary>
         /// Handles occur when execution of the Get-MpPreference cmdlet return null value.
         /// </summary>
         void LogDefenderMpPreferenceIsNull();
@@ -290,6 +298,12 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="exception">Represents errors that occur during app executing.</param>
         void LogDefenderAntiSpywareEnabledException(Exception exception);
+
+        /// <summary>
+        /// Handles occur during the Microsoft Defender services not found.
+        /// </summary>
+        /// <param name="service">Microsoft Defender service name.</param>
+        void LogDefenderServiceBroken(string service);
 
         /// <summary>
         /// Handles an exception when accessing to get UI model state.

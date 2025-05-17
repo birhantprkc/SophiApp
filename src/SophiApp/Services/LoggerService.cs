@@ -228,6 +228,13 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void LogDefenderServiceStatus(string service, bool isExist, bool isRunning)
+        {
+            Log.Information("A service {Service:l} is exist: {IsExist:l} and has running status: {IsRunning:l}", service, isExist, isRunning);
+            shellViewModel.LoggedActions.Add($"[INF] A service {service} is exist: {isExist} and has running status: {isRunning}");
+        }
+
+        /// <inheritdoc/>
         public void LogUwpForAllUsersState(bool state)
         {
             Log.Information("The UWP For All Users checkbox state has been changed to {State}", state);
@@ -239,6 +246,13 @@ namespace SophiApp.Services
         {
             Log.Information("The text size of UI element descriptions set to {Size}", size);
             shellViewModel.LoggedActions.Add($"[INF] The text size of UI element descriptions set to {size}");
+        }
+
+        /// <inheritdoc/>
+        public void LogPageVisibility(bool isVisible)
+        {
+            Log.Information("The log page visibility set to {IsVisible}", isVisible);
+            shellViewModel.LoggedActions.Add($"[INF] The log page visibility set to {isVisible}");
         }
 
         /// <inheritdoc/>
@@ -343,13 +357,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderServiceBroken(string service)
-        {
-            Log.Error("Microsoft Defender service broken or not running: {Service:l}", service);
-            shellViewModel.LoggedActions.Add($"[ERR] Microsoft Defender service broken or not running: {service}");
-        }
-
-        /// <inheritdoc/>
         public void LogDefenderMpPreferenceIsNull()
         {
             Log.Error("Executing cmdlet “(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess” return null");
@@ -361,6 +368,13 @@ namespace SophiApp.Services
         {
             Log.Error("Failed to obtain AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
             shellViewModel.LoggedActions.Add($"[ERR] Failed to obtain AntiSpywareEnabled value in the {nameof(IDefenderService)}: {exception.Message}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderServiceBroken(string service)
+        {
+            Log.Error("Microsoft Defender service broken or not running: {Service:l}", service);
+            shellViewModel.LoggedActions.Add($"[ERR] Microsoft Defender service broken or not running: {service}");
         }
 
         /// <inheritdoc/>

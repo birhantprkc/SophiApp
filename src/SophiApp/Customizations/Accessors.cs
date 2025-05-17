@@ -451,7 +451,7 @@ namespace SophiApp.Customizations
             var searchEnabled = Registry.CurrentUser.OpenSubKey(searchPath)?.GetValue("BingSearchEnabled") as int? ?? -1;
             var searchSuggestions = Registry.CurrentUser.OpenSubKey(suggestionPath)?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
 
-            if (searchEnabled.Equals(1) && searchSuggestions.Equals(1))
+            if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
                 throw new InvalidOperationException("The value of the BingSearchEnabled and DisableSearchBoxSuggestions parameters is 1");
             }

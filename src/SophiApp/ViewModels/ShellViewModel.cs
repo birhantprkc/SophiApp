@@ -32,49 +32,37 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly RequirementsFailureViewModel failureViewModel;
     private readonly StartupViewModel startupModel;
 
-    private List<UIModel> uwpAllUsersModels = [];
-    private List<UIModel> uwpCurrentUserModels = [];
-
-    [ObservableProperty]
-    private ObservableCollection<UIModel> applicableModels = [];
-
-    [ObservableProperty]
-    private string delimiter;
-
-    [ObservableProperty]
-    private ObservableCollection<UIModel> foundModels = [];
-
     [ObservableProperty]
     private bool isBackEnabled;
-
     [ObservableProperty]
-    private List<string> loggedActions = [];
-
-    [ObservableProperty]
-    private object? selectedNavigationViewItem;
-
+    private bool logPageVisible = true;
     [ObservableProperty]
     private bool navigationViewHitTestVisible = false;
-
-    [ObservableProperty]
-    private bool setUpCustomizationsPanelIsVisible = false;
-
     [ObservableProperty]
     private bool setUpCustomizationsPanelCancelButtonIsVisible = false;
-
     [ObservableProperty]
-    private string setUpCustomizationsPanelText = string.Empty;
-
-    [ObservableProperty]
-    private int progressBarValue = 0;
-
+    private bool setUpCustomizationsPanelIsVisible = false;
     [ObservableProperty]
     private bool uwpForAllUsersState = true;
-
+    private CancellationTokenSource? cancellationTokenSource;
+    [ObservableProperty]
+    private int progressBarValue = 0;
+    [ObservableProperty]
+    private List<string> loggedActions = [];
+    private List<UIModel> uwpAllUsersModels = [];
+    private List<UIModel> uwpCurrentUserModels = [];
+    [ObservableProperty]
+    private object? selectedNavigationViewItem;
+    [ObservableProperty]
+    private ObservableCollection<UIModel> applicableModels = [];
+    [ObservableProperty]
+    private ObservableCollection<UIModel> foundModels = [];
     [ObservableProperty]
     private ObservableCollection<UIModel> uwpAppsModels = [];
-
-    private CancellationTokenSource? cancellationTokenSource;
+    [ObservableProperty]
+    private string delimiter;
+    [ObservableProperty]
+    private string setUpCustomizationsPanelText = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
@@ -121,6 +109,7 @@ public partial class ShellViewModel : ObservableRecipient
         ApplicableModelsCancel_Command = new RelayCommand(ApplicableModelsCancel);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
         ExpandingRadioButtonClicked_Command = new RelayCommand<UIRadioGroupItemModel>(ExpandingRadioButtonClicked);
+        SetLogPageVisibility_Command = new RelayCommand<bool>(SetLogPageVisibility);
         OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
         SearchBoxQuerySubmitted_Command = new AsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args => SearchBoxQuerySubmittedAsync(args!));
         UIModelClicked_Command = new RelayCommand<UIModel>(model => UIModelClicked(model!));
@@ -149,6 +138,11 @@ public partial class ShellViewModel : ObservableRecipient
     public IRelayCommand<UIRadioGroupItemModel> ExpandingRadioButtonClicked_Command { get; }
 
     /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.
+    /// </summary>
+    public IRelayCommand<bool> SetLogPageVisibility_Command { get; }
+
+    /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click "Search" in AutoSuggestBox.
     /// </summary>
     public IAsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs> SearchBoxQuerySubmitted_Command { get; }
@@ -174,9 +168,9 @@ public partial class ShellViewModel : ObservableRecipient
     public IRelayCommand UwpForAllUsersClicked_Command { get; }
 
     /// <summary>
-    /// Gets or sets and saves the app font sizes to a setting file.
+    /// Gets and saves the app font sizes to a setting file.
     /// </summary>
-    public FontOptions FontOptions { get; set; } = new ();
+    public FontOptions FontOptions { get; } = new ();
 
     /// <summary>
     /// Gets <see cref="INavigationService"/>.
@@ -327,6 +321,12 @@ public partial class ShellViewModel : ObservableRecipient
         groupModel.SelectedId = item!.Id;
         ApplicableModels.Add(groupModel);
         App.Logger.LogApplicableModelAdded(groupModel.Name, item.Id);
+    }
+
+    private void SetLogPageVisibility(bool isVisible)
+    {
+        LogPageVisible = isVisible;
+        App.Logger.LogPageVisibility(isVisible);
     }
 
     /// <summary>

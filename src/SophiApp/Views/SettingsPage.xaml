@@ -33,7 +33,6 @@
                               DisplayMemberPath="Description"/>
                 </controls:ContentBlock.Content>
             </controls:ContentBlock>
-
             <controls:IconHyperlink Grid.Row="0"
                                     Width="553"
                                     Margin="0, 0, 1, 13"
@@ -42,7 +41,6 @@
                                     Text="{x:Bind service:CommonDataService.GitHubText}"
                                     Command="{x:Bind ViewModel.OpenLinkCommand}"
                                     CommandParameter="{x:Bind service:CommonDataService.GitHubLink}"/>
-
             <controls:IconHyperlink Grid.Row="0"
                                     Width="270"
                                     Margin="0, 0, 283, 13"
@@ -52,7 +50,6 @@
                                     Text="{x:Bind service:CommonDataService.TelegramText}"
                                     Command="{x:Bind ViewModel.OpenLinkCommand}"
                                     CommandParameter="{x:Bind service:CommonDataService.TelegramLink}"/>
-
             <controls:IconHyperlink Grid.Row="0"
                                     Width="270"
                                     Margin="0, 0, 1, 13"
@@ -62,7 +59,6 @@
                                     Text="{x:Bind service:CommonDataService.DiscordText}"
                                     Command="{x:Bind ViewModel.OpenLinkCommand}"
                                     CommandParameter="{x:Bind service:CommonDataService.DiscordLink}"/>
-
             <controls:ContentBlock x:Uid="SettingsPage_AboutApp"
                                    Grid.Row="1"
                                    Width="412"
@@ -91,7 +87,6 @@
                     </StackPanel>
                 </controls:ContentBlock.Content>
             </controls:ContentBlock>
-
             <controls:ContentBlock x:Uid="SettingsPage_SetDefaultSettings"
                                    Grid.Row="1"
                                    Width="412"
@@ -104,7 +99,6 @@
                             Style="{StaticResource AccentButtonStyle}"/>
                 </controls:ContentBlock.Content>
             </controls:ContentBlock>
-
             <controls:ContentBlock x:Uid="SettingsPage_TeamMates"
                                    Grid.Row="1"
                                    Width="412"
@@ -155,7 +149,6 @@
                     </StackPanel>
                 </controls:ContentBlock.Content>
             </controls:ContentBlock>
-
             <controls:ContentBlock x:Uid="SettingsPage_FontOptions"
                                    Grid.Row="2"
                                    Width="412"
@@ -175,6 +168,31 @@
                                 Value="{x:Bind ViewModel.FontOptions.DescriptionTextSize, Mode=TwoWay}"
                                 StepFrequency="2"/>
                     </StackPanel>
+                </controls:ContentBlock.Content>
+            </controls:ContentBlock>
+            <controls:ContentBlock x:Uid="SettingsPage_LogPage"
+                                   Grid.Row="2"
+                                   Width="412"
+                                   Height="100"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Top">
+                <controls:ContentBlock.Content>
+                    <Grid Margin="0, 0, 15, 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox x:Name="ShowLogPageCheckBox"
+                                  Grid.Column="0"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{x:Bind ViewModel.LogPageVisible, Mode=OneWay}"
+                                  Command="{x:Bind ViewModel.LogPageVisibleCommand, Mode=OneWay}"
+                                  CommandParameter="{Binding Path=IsChecked, ElementName=ShowLogPageCheckBox}"/>
+                        <TextBlock x:Uid="SettingsPage_ShowLogPage"
+                                   Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   Margin="0, 0, 5, 1"/>
+                    </Grid>
                 </controls:ContentBlock.Content>
             </controls:ContentBlock>
         </Grid>

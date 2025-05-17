@@ -64,6 +64,6 @@ namespace SophiApp.ControlTemplates
             => ContextMenuHelper.ShowContextMenu(sender, TextCommandsFlyout, args);
 
         private void TextCommandsFlyoutCopyTitle_Click(object sender, RoutedEventArgs e)
-            => ContextMenuHelper.CopyTextToClipboard(UwpNameTextBlock.Text);
+            => ContextMenuHelper.CopyToClipboard(UwpNameTextBlock.Text);
     }
 }

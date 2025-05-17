@@ -1040,4 +1040,13 @@
   <data name="Page_Log.Text" xml:space="preserve">
     <value>Log</value>
   </data>
+  <data name="SettingsPage_LogPage.Title" xml:space="preserve">
+    <value>Log page</value>
+  </data>
+  <data name="SettingsPage_ShowLogPage.Text" xml:space="preserve">
+    <value>Show log page in navigation menu</value>
+  </data>
+  <data name="ContextMenu_CopyAll.Label" xml:space="preserve">
+    <value>Copy all</value>
+  </data>
 </root>

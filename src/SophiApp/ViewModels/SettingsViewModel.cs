@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
+using Views;
 
 /// <summary>
 /// Implements the <see cref="SettingsViewModel"/> class.
@@ -31,10 +32,10 @@ public partial class SettingsViewModel : ObservableRecipient
     private bool navigationViewHitTestVisible;
 
     [ObservableProperty]
-    private ObservableCollection<ElementThemeWrapper> themes = new ()
-    {
+    private ObservableCollection<ElementThemeWrapper> themes =
+    [
         new (ElementTheme.Default, "Settings_Themes_Default"), new (ElementTheme.Light, "Settings_Themes_Light"), new (ElementTheme.Dark, "Settings_Themes_Dark"),
-    };
+    ];
 
     [ObservableProperty]
     private string version;
@@ -53,6 +54,8 @@ public partial class SettingsViewModel : ObservableRecipient
         delimiter = commonDataService.GetDelimiter();
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
+        LogPageVisible = shellViewModel.LogPageVisible;
+        LogPageVisibleCommand = shellViewModel.SetLogPageVisibility_Command;
         OpenLinkCommand = new AsyncRelayCommand<string>(url => uriService.OpenUrlAsync(url!));
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
@@ -81,7 +84,17 @@ public partial class SettingsViewModel : ObservableRecipient
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether <see cref="LogPage"/> is visible.
+    /// </summary>
+    public bool LogPageVisible { get; set; }
+
+    /// <summary>
     /// Gets a resource using an identifier.
     /// </summary>
-    public IAsyncRelayCommand OpenLinkCommand { get; }
+    public IRelayCommand OpenLinkCommand { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.
+    /// </summary>
+    public IRelayCommand<bool> LogPageVisibleCommand { get; }
 }

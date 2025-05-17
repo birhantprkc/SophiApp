@@ -134,7 +134,7 @@
     "Type": "CheckBox",
     "Tag": "Privacy",
     "ViewId": 116,
-    "Windows10Support": "False",
+    "Windows10Support": "True",
     "Windows11Support": "True"
   },
   {

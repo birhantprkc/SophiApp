@@ -45,10 +45,10 @@ namespace SophiApp.ControlTemplates
         }
 
         private void TextCommandsFlyoutCopyDescription_Click(object sender, RoutedEventArgs e)
-           => ContextMenuHelper.CopyTextToClipboard(DescriptionTextBlock.Text);
+           => ContextMenuHelper.CopyToClipboard(DescriptionTextBlock.Text);
 
         private void TextCommandsFlyoutCopyTitle_Click(object sender, RoutedEventArgs e)
-            => ContextMenuHelper.CopyTextToClipboard(TitleTextBlock.Text);
+            => ContextMenuHelper.CopyToClipboard(TitleTextBlock.Text);
 
         private void TextCheckBox_ContextRequested(UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs args)
             => ContextMenuHelper.ShowContextMenu(sender, TextCommandsFlyout, args);

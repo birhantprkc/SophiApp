@@ -8,6 +8,7 @@ namespace SophiApp.Services
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
     using SophiApp.Helpers;
+    using System.ServiceProcess;
 
     /// <inheritdoc/>
     public class DefenderService : IDefenderService
@@ -18,7 +19,7 @@ namespace SophiApp.Services
         private readonly IPowerShellService powerShellService;
         private readonly IProcessService processService;
 
-        private readonly List<string> servicesName = ["Windefend", "SecurityHealthService", "wscsvc"];
+        private readonly List<string> servicesName = ["Windefend", "SecurityHealthService", "wscsvc", "wdFilter"];
         private bool servicesStatus = false;
 
         /// <summary>
@@ -128,7 +129,11 @@ namespace SophiApp.Services
         {
             servicesStatus = servicesName.TrueForAll(service =>
             {
-                if (osService.IsExistTryStart(service))
+                var isExist = osService.Exist(service);
+                var isRunning = osService.GetStatus(service)?.Equals(ServiceControllerStatus.Running) ?? false;
+                App.Logger.LogDefenderServiceStatus(service, isExist, isRunning);
+
+                if (isExist && isRunning)
                 {
                     return true;
                 }

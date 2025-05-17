@@ -10,31 +10,41 @@
     xmlns:controls="using:SophiApp.ControlTemplates"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <CommandBarFlyout x:Name="LogPageItemsCommandsFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton x:Uid="ContextMenu_CopyAll"
+                              Icon="Copy"
+                              Click="LogPageItemsCommandsFlyout_Click"/>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </Page.Resources>
+
     <Grid Margin="{StaticResource PageBottomMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <Grid Grid.Row="0">
             <TextBlock x:Uid="Page_Log" Style="{StaticResource PageTitleTextStyle}"/>
-        </StackPanel>
+        </Grid>
         <Border Grid.Row="1"
                 Margin="{StaticResource UIControlsPageRightMargin}"
                 BorderBrush="{ThemeResource UIControlBorderBackground}"
                 Background="{ThemeResource UIControlBackground}"
                 Style="{StaticResource UIControlBorderStyle}">
-            <ScrollView x:Name="LogScrollView" VerticalScrollBarVisibility="Auto">
-                <ItemsRepeater ItemsSource="{Binding Path=ViewModel.LoggedActions, ElementName=PageLog}">
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Style="{StaticResource UIControlLogPageTextStyle}">
-                                <Run Text="{Binding}"
-                                     FontSize="{Binding Path=ViewModel.FontOptions.TitleTextSize, ElementName=PageLog}"/>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-            </ScrollView>
+            <ListView x:Name="LogListView"
+                      ItemsSource="{Binding Path=ViewModel.LoggedActions, ElementName=PageLog}"
+                      SelectionMode="None"
+                      ContextRequested="LogListView_ContextRequested">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Style="{StaticResource UIControlLogPageTextStyle}">
+                            <Run Text="{Binding}" FontSize="{Binding Path=ViewModel.FontOptions.TitleTextSize, ElementName=PageLog}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Border>
     </Grid>
 </Page>
