@@ -67,7 +67,7 @@
 
 ***
 
-<a href="https://github.com/Sophia-Community/SophiApp/releases/latest"><img src="https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/dev-winappsdk/img/get-it-on-github.svg" width="50%" height="50%"></a>
+<a href="https://github.com/Sophia-Community/SophiApp/releases/latest"><img src="https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/dev-SophiApp2/img/get-it-on-github.svg" width="50%" height="50%"></a>
 
 ***
 
@@ -99,7 +99,7 @@
 > [!CAUTION]  
 > **Please avoid using Sophia 1.0.97**
 >
-> Sophia 1.0.97 is deprecated. Please avoid using it until `SophiApp 2.0 | Daria` will be release (2025 H2). Follow the development in a test branch [here](https://github.com/Sophia-Community/SophiApp/commits/dev-winappsdk). [Details](https://t.me/SophiaNews/3897).
+> Sophia 1.0.97 is deprecated. Please avoid using it until `SophiApp 2.0 | Daria` will be release (2025 H2). Follow the development in a test branch [here](https://github.com/Sophia-Community/SophiApp/commits/dev-SophiApp2). [Details](https://t.me/SophiaNews/3897).
 
 ## About SophiApp
 
