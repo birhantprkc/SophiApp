@@ -86,13 +86,13 @@
     <PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.4.6" />
     <PackageReference Include="Microsoft.PowerShell.Commands.Utility" Version="7.4.6" />
     <PackageReference Include="Microsoft.PowerShell.ConsoleHost" Version="7.4.6" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="Microsoft.WSMan.Management" Version="7.4.6" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Serilog" Version="4.2.0" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.9.0.115408">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.10.0.116381">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

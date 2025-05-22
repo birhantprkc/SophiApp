@@ -1,4 +1,10 @@
-﻿[*.cs]
+﻿[*.{cs}]
+guidelines = 120
+
+[*]
+guidelines = -1
+
+[*.cs]
 
 # S1144: Unused private types or members should be removed
 dotnet_diagnostic.S1144.severity = warning
@@ -107,7 +113,6 @@ dotnet_diagnostic.SA1005.severity = error
 
 # S125: Sections of code should not be commented out
 dotnet_diagnostic.S125.severity = error
-
 
 # SA1617: Void return value should not be documented
 dotnet_diagnostic.SA1617.severity = error

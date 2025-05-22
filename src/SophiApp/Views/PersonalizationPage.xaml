@@ -29,7 +29,8 @@
             </StackPanel>
             <Grid x:Name="ItemsContainerGrid"
                   Margin="{StaticResource PageBottomMargin}">
-                <ItemsRepeater ItemsSource="{x:Bind Models, Mode=OneWay}">
+                <ItemsRepeater ItemsSource="{x:Bind Models, Mode=OneWay}"
+                               VerticalCacheLength="{x:Bind Models.Count, Mode=OneWay}">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="10"/>
                     </ItemsRepeater.Layout>

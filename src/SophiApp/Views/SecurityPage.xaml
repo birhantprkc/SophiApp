@@ -8,8 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:SophiApp.Helpers"
     xmlns:vm="using:SophiApp.ViewModels"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:interaction="using:Microsoft.Xaml.Interactions.Core"
     d:DataContext="{d:DesignInstance Type=vm:SecurityViewModel}"
     mc:Ignorable="d">
 
@@ -27,6 +25,7 @@
             </StackPanel>
             <Grid x:Name="ItemsContainerGrid">
                 <ItemsRepeater ItemsSource="{x:Bind Models, Mode=OneWay}"
+                               VerticalCacheLength="{x:Bind Models.Count, Mode=OneWay}"
                                Margin="{StaticResource PageBottomMargin}">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="10"/>

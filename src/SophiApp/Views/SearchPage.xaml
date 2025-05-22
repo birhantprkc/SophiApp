@@ -11,7 +11,6 @@
     xmlns:vm="using:SophiApp.ViewModels"
     xmlns:helpers="using:SophiApp.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:interaction="using:Microsoft.Xaml.Interactivity"
     d:DataContext="{d:DesignInstance Type=vm:SearchViewModel}"
     mc:Ignorable="d">
 
@@ -34,6 +33,7 @@
                 <Grid x:Name="ItemsContainerGrid">
                     <ItemsRepeater x:Name="SearchItemsRepeater"
                                    ItemsSource="{x:Bind ViewModel.FoundModels, Mode=OneWay}"
+                                   VerticalCacheLength="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}"
                                    Margin="{StaticResource PageBottomMargin}">
                         <ItemsRepeater.Layout>
                             <StackLayout Spacing="10"/>
@@ -55,14 +55,14 @@
             </StackPanel>
         </Grid>
         <i:Interaction.Behaviors>
-            <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}" ComparisonCondition="Equal" Value="0">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundPanel}" PropertyName="Visibility" Value="Visible"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=SearchItemsRepeater}" PropertyName="Visibility" Value="Collapsed"/>
-            </interaction:DataTriggerBehavior>
-            <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundPanel}" PropertyName="Visibility" Value="Collapsed"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=SearchItemsRepeater}" PropertyName="Visibility" Value="Visible"/>
-            </interaction:DataTriggerBehavior>
+            <i:DataTriggerBehavior Binding="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}" ComparisonCondition="Equal" Value="0">
+                <i:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundPanel}" PropertyName="Visibility" Value="Visible"/>
+                <i:ChangePropertyAction TargetObject="{Binding ElementName=SearchItemsRepeater}" PropertyName="Visibility" Value="Collapsed"/>
+            </i:DataTriggerBehavior>
+            <i:DataTriggerBehavior Binding="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
+                <i:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                <i:ChangePropertyAction TargetObject="{Binding ElementName=SearchItemsRepeater}" PropertyName="Visibility" Value="Visible"/>
+            </i:DataTriggerBehavior>
         </i:Interaction.Behaviors>
     </ScrollView>
 </Page>

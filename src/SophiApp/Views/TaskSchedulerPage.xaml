@@ -7,8 +7,6 @@
     xmlns:controls="using:SophiApp.ControlTemplates"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:SophiApp.ViewModels"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:interaction="using:Microsoft.Xaml.Interactions.Core"
     d:DataContext="{d:DesignInstance Type=vm:TaskSchedulerViewModel}"
     mc:Ignorable="d">
 
@@ -30,6 +28,7 @@
                          FontSize="{Binding Path=ViewModel.FontOptions.DescriptionTextSize, ElementName=PageTaskScheduler}"/>
                 </TextBlock>
                 <ItemsRepeater ItemsSource="{x:Bind Models, Mode=OneWay}"
+                               VerticalCacheLength="{x:Bind Models.Count, Mode=OneWay}"
                                Grid.Row="1">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="10"/>

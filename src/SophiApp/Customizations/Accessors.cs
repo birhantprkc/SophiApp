@@ -1197,7 +1197,7 @@ else
         /// </summary>
         public static bool EditWithPaintContext()
         {
-            var appxPaint = "Microsoft.MSPaint";
+            var appxPaint = "Microsoft.Paint";
 
             if (AppxPackagesService.PackageExist(appxPaint))
             {

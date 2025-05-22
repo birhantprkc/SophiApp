@@ -75,6 +75,7 @@
                                      FontSize="{Binding Path=ViewModel.FontOptions.DescriptionTextSize, ElementName=PageUwp}"/>
                             </TextBlock>
                             <ItemsRepeater ItemsSource="{x:Bind ViewModel.UwpAppsModels, Mode=OneWay}"
+                                           VerticalCacheLength="{x:Bind ViewModel.UwpAppsModels.Count, Mode=OneWay}"
                                            Grid.Row="1"
                                            HorizontalAlignment="Left">
                                 <ItemsRepeater.ItemTemplate>
@@ -97,7 +98,9 @@
                     </ScrollView>
                 </StackPanel>
             </Border>
-            <ItemsRepeater ItemsSource="{Binding ElementName=PageUwp, Path=UWPModels}" Margin="0, 0, 0, 20">
+            <ItemsRepeater ItemsSource="{Binding ElementName=PageUwp, Path=UWPModels}"
+                           VerticalCacheLength="{Binding ElementName=PageUwp, Path=UWPModels.Count}"
+                           Margin="0, 0, 0, 20">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="10"/>
                 </ItemsRepeater.Layout>
@@ -109,6 +112,7 @@
                 <TextBlock x:Uid="Page_UWP_Gaming" Style="{StaticResource PageTitleTextStyle}"/>
             </StackPanel>
             <ItemsRepeater ItemsSource="{Binding ElementName=PageUwp, Path=GamingModels}"
+                           VerticalCacheLength="{Binding ElementName=PageUwp, Path=GamingModels.Count}"
                            Margin="{StaticResource PageBottomMargin}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="10"/>
