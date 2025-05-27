@@ -129,6 +129,21 @@ namespace SophiApp.Services
         {
             servicesStatus = servicesName.TrueForAll(service =>
             {
+                if (service.Equals("wdFilter"))
+                {
+                    var wdFilterExist = osService.Exist(service);
+
+                    if (wdFilterExist)
+                    {
+                        App.Logger.LogDefenderServiceStatus(service, wdFilterExist);
+                        return true;
+                    }
+
+                    App.Logger.LogDefenderServiceBroken(service);
+                    commonDataService.DefenderServiceBroken = service;
+                    return false;
+                }
+
                 var isExist = osService.Exist(service);
                 var isRunning = osService.GetStatus(service)?.Equals(ServiceControllerStatus.Running) ?? false;
                 App.Logger.LogDefenderServiceStatus(service, isExist, isRunning);
@@ -138,7 +153,7 @@ namespace SophiApp.Services
                     return true;
                 }
 
-                App.Logger.LogDefenderServiceBroken(service);
+                App.Logger.LogDefenderServiceNotRunning(service);
                 commonDataService.DefenderServiceBroken = service;
                 return false;
             });

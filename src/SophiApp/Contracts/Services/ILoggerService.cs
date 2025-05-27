@@ -180,6 +180,13 @@ namespace SophiApp.Contracts.Services
         void LogDefenderServiceStatus(string service, bool isExist, bool isRunning);
 
         /// <summary>
+        /// Write Microsoft Defender services status.
+        /// </summary>
+        /// <param name="service">Microsoft Defender service name.</param>
+        /// <param name="isExist">A service is exist.</param>
+        void LogDefenderServiceStatus(string service, bool isExist);
+
+        /// <summary>
         /// Write information about state a "For all users" checkbox in the UWP page.
         /// </summary>
         /// <param name="state">A "For all users" checkbox state.</param>
@@ -304,6 +311,12 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
         void LogDefenderServiceBroken(string service);
+
+        /// <summary>
+        /// Handles occur during the Microsoft Defender services not found or not running.
+        /// </summary>
+        /// <param name="service">Microsoft Defender service name.</param>
+        void LogDefenderServiceNotRunning(string service);
 
         /// <summary>
         /// Handles an exception when accessing to get UI model state.

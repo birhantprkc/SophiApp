@@ -446,14 +446,17 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SearchHighlightsWindows11()
         {
+            var bingSearchEnabled = "BingSearchEnabled";
+            var disableSearchBox = "DisableSearchBoxSuggestions";
             var searchPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Search";
             var suggestionPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            var searchEnabled = Registry.CurrentUser.OpenSubKey(searchPath)?.GetValue("BingSearchEnabled") as int? ?? -1;
-            var searchSuggestions = Registry.CurrentUser.OpenSubKey(suggestionPath)?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
+            var searchEnabled = Registry.CurrentUser.OpenSubKey(searchPath)?.GetValue(bingSearchEnabled) as int? ?? -1;
+            var searchSuggestions = Registry.CurrentUser.OpenSubKey(suggestionPath)?.GetValue(disableSearchBox) as int? ?? -1;
 
             if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
-                throw new InvalidOperationException("The value of the BingSearchEnabled and DisableSearchBoxSuggestions parameters is 1");
+                var blockedKey = searchEnabled.Equals(1) ? bingSearchEnabled : disableSearchBox;
+                throw new InvalidOperationException($"SearchHighlights is already blocked within {blockedKey} registry keys. No need to block searchhighlights again.");
             }
 
             var settingsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings";

@@ -76,6 +76,7 @@ namespace SophiApp.Services
             try
             {
                 using var service = new ServiceController(name);
+                _ = service.Status;
                 return true;
             }
             catch

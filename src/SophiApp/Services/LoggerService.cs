@@ -230,8 +230,15 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogDefenderServiceStatus(string service, bool isExist, bool isRunning)
         {
-            Log.Information("A service {Service:l} is exist: {IsExist:l} and has running status: {IsRunning:l}", service, isExist, isRunning);
-            shellViewModel.LoggedActions.Add($"[INF] A service {service} is exist: {isExist} and has running status: {isRunning}");
+            Log.Information("A service {Service:l} is exist: {IsExist:l} and running: {IsRunning:l}", service, isExist, isRunning);
+            shellViewModel.LoggedActions.Add($"[INF] A service {service} is exist: {isExist} and running: {isRunning}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderServiceStatus(string service, bool isExist)
+        {
+            Log.Information("A service {Service:l} is exist: {IsExist:l}", service, isExist);
+            shellViewModel.LoggedActions.Add($"[INF] A service {service} is exist: {isExist}");
         }
 
         /// <inheritdoc/>
@@ -372,6 +379,13 @@ namespace SophiApp.Services
 
         /// <inheritdoc/>
         public void LogDefenderServiceBroken(string service)
+        {
+            Log.Error("Microsoft Defender service broken: {Service:l}", service);
+            shellViewModel.LoggedActions.Add($"[ERR] Microsoft Defender service broken: {service}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderServiceNotRunning(string service)
         {
             Log.Error("Microsoft Defender service broken or not running: {Service:l}", service);
             shellViewModel.LoggedActions.Add($"[ERR] Microsoft Defender service broken or not running: {service}");
