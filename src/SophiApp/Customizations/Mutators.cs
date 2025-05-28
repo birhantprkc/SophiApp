@@ -4,6 +4,7 @@
 
 namespace SophiApp.Customizations
 {
+    using CSharpFunctionalExtensions;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -14,6 +15,8 @@ namespace SophiApp.Customizations
     using System.Collections.Generic;
     using System.ServiceProcess;
     using System.Text;
+    using System.Xml.Linq;
+    using Windows.Foundation;
 
     /// <summary>
     /// Set the OS settings.
@@ -943,21 +946,17 @@ namespace SophiApp.Customizations
         {
             GroupPolicyService.ClearStartRecommendedSectionCache();
             var explorerPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            var educationPath = "Software\\Microsoft\\PolicyManager\\Current\\Device\\Education";
             var startPath = "Software\\Microsoft\\PolicyManager\\Current\\Device\\Start";
-            var sectionValue = "HideRecommendedSection";
-            var environmentValue = "IsEducationEnvironment";
+            var hideRecommended = "HideRecommendedSection";
 
             if (isEnabled)
             {
-                Registry.CurrentUser.OpenSubKey(explorerPath, true)?.DeleteValue(sectionValue, false);
-                Registry.LocalMachine.OpenSubKey(educationPath, true)?.DeleteValue(environmentValue, false);
-                Registry.LocalMachine.OpenSubKey(startPath, true)?.DeleteValue(sectionValue, false);
+                Registry.CurrentUser.OpenSubKey(explorerPath, true)?.DeleteValue(hideRecommended, false);
+                Registry.LocalMachine.OpenSubKey(startPath, true)?.DeleteValue(hideRecommended, false);
                 return;
             }
 
-            Registry.CurrentUser.OpenOrCreateSubKey(explorerPath).SetValue(sectionValue, 1, RegistryValueKind.DWord);
-            Registry.LocalMachine.OpenOrCreateSubKey(educationPath).SetValue(environmentValue, 1, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenOrCreateSubKey(explorerPath).SetValue(hideRecommended, 1, RegistryValueKind.DWord);
         }
 
         /// <summary>

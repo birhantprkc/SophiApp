@@ -1049,4 +1049,7 @@
   <data name="ContextMenu_CopyAll.Label" xml:space="preserve">
     <value>Copy all</value>
   </data>
+  <data name="OsRequirements_Malware_Defendnot" xml:space="preserve">
+    <value>Defendnot</value>
+  </data>
 </root>

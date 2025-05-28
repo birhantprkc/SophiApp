@@ -120,7 +120,7 @@ namespace SophiApp.Services
                         {
                             return Directory.GetFileSystemEntries(path: $"{systemDrive}\\BRU", searchPattern: "Bloatware-Removal*.log").Length > 0;
                         }
-                        catch (Exception)
+                        catch
                         {
                             return false;
                         }
@@ -139,7 +139,7 @@ namespace SophiApp.Services
                         {
                             return Directory.GetFileSystemEntries(path: $"{systemRoot}", searchPattern: "WinterOS*").Length > 0;
                         }
-                        catch (Exception)
+                        catch
                         {
                             return false;
                         }
@@ -172,6 +172,7 @@ namespace SophiApp.Services
                 { "OsRequirements_Malware_ChlorideOS", () => diskService.GetVolumeLabels().Any(label => label.Equals("ChlorideOS")) },
                 { "OsRequirements_Malware_KernelOS", () => instrumentationService.GetPowerPlanNames().Any(name => name.Contains("KernelOS")) },
                 { "OsRequirements_Malware_WinUtil", () => instrumentationService.GetPowerPlanNames().Any(name => name.Contains("ChrisTitus")) },
+                { "OsRequirements_Malware_Defendnot", () => Directory.Exists($"{system32Folder}\\Tasks\\defendnot") },
             };
 
             return malwares.Any(malware =>

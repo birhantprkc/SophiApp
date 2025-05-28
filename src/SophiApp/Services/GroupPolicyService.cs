@@ -6,6 +6,10 @@ namespace SophiApp.Services
 {
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
+    using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+    using static System.Formats.Asn1.AsnWriter;
+    using System.Collections.Generic;
+    using System.Xml.Linq;
 
     /// <inheritdoc/>
     public class GroupPolicyService : IGroupPolicyService
@@ -87,8 +91,10 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void ClearStartRecommendedSectionCache()
         {
-            var sectionPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            Registry.LocalMachine.OpenSubKey(sectionPath, true)?.DeleteValue("HideRecommendedSection", false);
+            var explorerPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
+            var educationPath = "Software\\Microsoft\\PolicyManager\\current\\device\\Education";
+            Registry.LocalMachine.OpenSubKey(explorerPath, true)?.DeleteValue("HideRecommendedSection", false);
+            Registry.LocalMachine.OpenSubKey(educationPath, true)?.DeleteValue("IsEducationEnvironment", false);
         }
 
         /// <inheritdoc/>
