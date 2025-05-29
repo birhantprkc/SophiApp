@@ -22,6 +22,12 @@ namespace SophiApp.ControlTemplates
             DependencyProperty.Register("Command", typeof(IRelayCommand), typeof(ExpandingRadioGroup), new PropertyMetadata(default));
 
         /// <summary>
+        /// <see cref="UserControlActualWidth"/>.
+        /// </summary>
+        public static readonly DependencyProperty UserControlActualWidthProperty =
+            DependencyProperty.Register("UserControlActualWidth", typeof(double), typeof(ExpandingRadioGroup), new PropertyMetadata(default));
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ExpandingRadioGroup"/> class.
         /// </summary>
         public ExpandingRadioGroup()
@@ -44,6 +50,15 @@ namespace SophiApp.ControlTemplates
             set => SetValue(CommandProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets user uontrol actual width"/>.
+        /// </summary>
+        public double UserControlActualWidth
+        {
+            get => (double)GetValue(UserControlActualWidthProperty);
+            set => SetValue(UserControlActualWidthProperty, value);
+        }
+
         private void TextCommandsFlyoutCopyDescription_Click(object sender, RoutedEventArgs e)
             => ContextMenuHelper.CopyToClipboard(DescriptionTextBlock.Text);
 
@@ -52,5 +67,7 @@ namespace SophiApp.ControlTemplates
 
         private void ExpandingRadioGroup_ContextRequested(UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs args)
             => ContextMenuHelper.ShowContextMenu(sender, TextCommandsFlyout, args);
+
+        private void Border_SizeChanged(object sender, SizeChangedEventArgs e) => UserControlActualWidth = e.NewSize.Width;
     }
 }

@@ -32,10 +32,10 @@
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
         <DataTemplate x:Key="ExpanderItemTemplate">
-            <Grid>
+            <Grid Width="{Binding ElementName=ExpandingRadioGroupControl, Path=UserControlActualWidth, UpdateSourceTrigger=PropertyChanged}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
                            Style="{StaticResource UIControlTitleTextStyle}"
@@ -45,6 +45,7 @@
                 </TextBlock>
                 <RadioButton Grid.Column="1"
                              VerticalAlignment="Center"
+                             Margin="0, 0, -64, 0"
                              GroupName="{Binding GroupName}"
                              IsChecked="{Binding IsChecked, Mode=TwoWay}"
                              Command="{Binding Path=Command, ElementName=ExpandingRadioGroupControl}"
@@ -63,7 +64,8 @@
     </UserControl.Resources>
 
     <Border Style="{StaticResource UIControlBorderStyle}"
-            BorderBrush="{StaticResource UIControlBorderBackground}">
+            BorderBrush="{StaticResource UIControlBorderBackground}"
+            SizeChanged="Border_SizeChanged">
         <Expander Style="{StaticResource UIControlExpanderStyle}"
                   Background="{ThemeResource UIControlBackground}"
                   ContextRequested="ExpandingRadioGroup_ContextRequested">

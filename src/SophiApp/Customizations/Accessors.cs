@@ -12,6 +12,7 @@ namespace SophiApp.Customizations
     using SophiApp.Models;
     using System.ServiceProcess;
     using System.Text;
+    using System.Xml.Linq;
 
     /// <summary>
     /// Get the OS settings.
@@ -528,7 +529,7 @@ namespace SophiApp.Customizations
         {
             var workspacePath = "Software\\Microsoft\\Windows\\CurrentVersion\\PenWorkspace";
             var workspaceValue = Registry.CurrentUser.OpenSubKey(workspacePath)?.GetValue("PenWorkspaceButtonDesiredVisibility") as int? ?? -1;
-            return !workspaceValue.Equals(0);
+            return workspaceValue.Equals(1);
         }
 
         /// <summary>
@@ -743,7 +744,7 @@ namespace SophiApp.Customizations
         public static int StartLayout()
         {
             var layoutPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var layoutValue = Registry.CurrentUser.OpenSubKey(layoutPath)?.GetValue("Start_Layout") as int? ?? -1;
+            var layoutValue = Registry.CurrentUser.OpenSubKey(layoutPath)?.GetValue("Start_Layout") as int? ?? 0;
             return layoutValue + 1;
         }
 

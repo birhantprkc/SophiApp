@@ -86,7 +86,7 @@
     <PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.4.6" />
     <PackageReference Include="Microsoft.PowerShell.Commands.Utility" Version="7.4.6" />
     <PackageReference Include="Microsoft.PowerShell.ConsoleHost" Version="7.4.6" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
     <PackageReference Include="Microsoft.WSMan.Management" Version="7.4.6" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

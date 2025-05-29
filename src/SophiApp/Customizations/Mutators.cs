@@ -4,7 +4,6 @@
 
 namespace SophiApp.Customizations
 {
-    using CSharpFunctionalExtensions;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -15,8 +14,6 @@ namespace SophiApp.Customizations
     using System.Collections.Generic;
     using System.ServiceProcess;
     using System.Text;
-    using System.Xml.Linq;
-    using Windows.Foundation;
 
     /// <summary>
     /// Set the OS settings.
