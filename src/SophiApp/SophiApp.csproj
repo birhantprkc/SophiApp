@@ -52,6 +52,7 @@
     <None Remove="ControlTemplates\ContentBlock.xaml" />
     <None Remove="ControlTemplates\MadeForWindows.xaml" />
     <None Remove="Styles\ToggleButton.xaml" />
+    <None Remove="Views\FatalErrorPage.xaml" />
     <None Remove="Views\LogPage.xaml" />
     <None Remove="Views\RequirementsFailurePage.xaml" />
     <None Remove="Views\SearchPage.xaml" />
@@ -177,6 +178,9 @@
     <None Update="Assets\LinkedIn.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\FatalErrorPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\LogPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

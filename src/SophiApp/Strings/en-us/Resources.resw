@@ -1052,4 +1052,7 @@
   <data name="OsRequirements_Malware_Defendnot" xml:space="preserve">
     <value>Defendnot</value>
   </data>
+  <data name="AppFatalError.Text" xml:space="preserve">
+    <value>Perhaps the root cause of the exception is due to the use a Defender tampering utility like "Defender Killer".</value>
+  </data>
 </root>

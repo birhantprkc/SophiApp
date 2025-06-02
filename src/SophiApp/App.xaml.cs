@@ -65,6 +65,7 @@ public partial class App : Application
                 _ = services.AddScoped<StartupViewModel>();
                 _ = services.AddSingleton<ShellViewModel>();
                 _ = services.AddTransient<ContextMenuViewModel>();
+                _ = services.AddTransient<FatalErrorViewModel>();
                 _ = services.AddTransient<LogViewModel>();
                 _ = services.AddTransient<PersonalizationViewModel>();
                 _ = services.AddTransient<PrivacyViewModel>();
@@ -77,8 +78,9 @@ public partial class App : Application
                 _ = services.AddTransient<UwpViewModel>();
 
                 // Views
-                _ = services.AddTransient<LogPage>();
                 _ = services.AddTransient<ContextMenuPage>();
+                _ = services.AddTransient<FatalErrorPage>();
+                _ = services.AddTransient<LogPage>();
                 _ = services.AddTransient<PersonalizationPage>();
                 _ = services.AddTransient<PrivacyPage>();
                 _ = services.AddTransient<ProVersionPage>();
@@ -153,13 +155,18 @@ public partial class App : Application
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
-        GetService<IAppNotificationService>().RegisterAsToastSender("SophiApp");
-        await GetService<IInitializeService>().InitializeAsync(args);
-        await GetService<ShellViewModel>().ExecuteAsync();
+        GetService<IAppNotificationService>()
+            .RegisterAsToastSender("SophiApp");
+        await GetService<IInitializeService>()
+            .InitializeAsync(args);
+        await GetService<ShellViewModel>()
+            .ExecuteAsync();
     }
 
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         Logger.LogUnhandledException(e.Exception);
+        GetService<ShellViewModel>()
+            .FatalErrorHandling();
     }
 }

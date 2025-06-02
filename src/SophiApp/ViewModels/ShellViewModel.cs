@@ -16,6 +16,7 @@ using SophiApp.Models;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Threading;
+using Windows.ApplicationModel.Core;
 
 /// <summary>
 /// Implements the <see cref="ShellViewModel"/> class.
@@ -297,6 +298,15 @@ public partial class ShellViewModel : ObservableRecipient
                     App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(typeof(RequirementsFailureViewModel).FullName!));
                 });
         });
+    }
+
+    /// <summary>
+    /// Show a page with a message about a fatal error.
+    /// </summary>
+    public void FatalErrorHandling()
+    {
+        NavigationViewHitTestVisible = false;
+        _ = NavigationService.NavigateTo(typeof(FatalErrorViewModel).FullName!);
     }
 
     private void ExpandingRadioButtonClicked(UIRadioGroupItemModel? item)

@@ -20,6 +20,7 @@ public class PageService : IPageService
     public PageService()
     {
         Configure<ContextMenuViewModel, ContextMenuPage>();
+        Configure<FatalErrorViewModel, FatalErrorPage>();
         Configure<LogViewModel, LogPage>();
         Configure<PersonalizationViewModel, PersonalizationPage>();
         Configure<PrivacyViewModel, PrivacyPage>();
