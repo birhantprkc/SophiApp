@@ -7,6 +7,7 @@ namespace SophiApp.Services
     using System.Collections.Generic;
     using NetFwTypeLib;
     using SophiApp.Contracts.Services;
+    using SophiApp.Extensions;
 
     /// <inheritdoc/>
     public class FirewallService : IFirewallService
@@ -23,10 +24,23 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public IEnumerable<INetFwRule> GetGroupRules(string groupName)
+        public IEnumerable<INetFwRule> GetGroupRules(string name)
         {
-            var rules = firewallPolicy.Rules.OfType<INetFwRule>().Where(rule => rule.Grouping == groupName);
-            return rules.Any() ? rules : throw new ArgumentNullException(groupName, "No firewall rules were found for the group name");
+            var rules = firewallPolicy.Rules.OfType<INetFwRule>().Where(rule => rule.Grouping == name);
+            return rules.Any() ? rules : throw new ArgumentNullException(name, "No firewall rules were found for the group name");
+        }
+
+        /// <inheritdoc/>
+        public List<INetFwRule> GetGroupRules(params string[] names)
+        {
+            List<INetFwRule> rules = [];
+
+            foreach (var name in names)
+            {
+                rules.AddRange(GetGroupRules(name));
+            }
+
+            return rules;
         }
     }
 }

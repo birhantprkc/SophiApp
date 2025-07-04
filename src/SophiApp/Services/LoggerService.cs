@@ -122,65 +122,65 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogAllModelsBuilt(int count)
         {
-            Log.Information("Service {Service:l} built {Count} UI models", nameof(IModelService), count);
-            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} built {count} UI models");
+            Log.Information("Service {Service:l} built {Count} models", nameof(IModelService), count);
+            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} built {count} models");
         }
 
         /// <inheritdoc/>
         public void LogStartModelsGetState()
         {
-            Log.Warning("Service {Service:l} has started initialization of UI models", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started initialization of UI models");
+            Log.Warning("Service {Service:l} has started initialization of models", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started initialization of models");
         }
 
         /// <inheritdoc/>
         public void LogStartApplicableModelsSetState()
         {
-            Log.Warning("Service {Service:l} has started set UI models state in the applicable models collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started set UI models state in the applicable models collection");
+            Log.Warning("Service {Service:l} has started set models state in the applicable models collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started set models state in the applicable models collection");
         }
 
         /// <inheritdoc/>
         public void LogAllModelsGetState(Stopwatch timer, int count)
         {
-            Log.Warning("Service {Service:l} took time to get {Count} UI models state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} took time to get {count} UI models state: {timer.Elapsed}");
+            Log.Warning("Service {Service:l} took time to get {Count} models state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} took time to get {count} models state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
         public void LogAllModelsSetState(Stopwatch timer, int count)
         {
-            Log.Warning("Service {Service:l} took time to set {Count} UI model(s) state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} took time to set {count} UI model(s) state: {timer.Elapsed}");
+            Log.Warning("Service {Service:l} took time to set {Count} model(s) state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} took time to set {count} model(s) state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
         public void LogAllModelsSetStateCanceled()
         {
-            Log.Warning("Service {Service:l} has cancel set UI model(s) state in the applicable models collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has cancel set UI model(s) state in the applicable models collection");
+            Log.Warning("Service {Service:l} has cancel set model(s) state in the applicable models collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has cancel set model(s) state in the applicable models collection");
         }
 
         /// <inheritdoc/>
         public void LogModelGetState(string name, Stopwatch timer)
         {
-            Log.Information("UI model {Name:l} took time to get state: {TimeSpent}", name, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[INF] UI model {name} took time to get state: {timer.Elapsed}");
+            Log.Information("Model {Name:l} took time to get state: {TimeSpent}", name, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] Model {name} took time to get state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
         public void LogModelSetState(string name, Stopwatch timer)
         {
-            Log.Information("UI model {Name:l} took time to set state: {TimeSpent}", name, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[INF] UI model {name} took time to set state: {timer.Elapsed}");
+            Log.Information("Model {Name:l} took time to set state: {TimeSpent}", name, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] Model {name} took time to set state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
         public void LogModelState<T>(string name, T state)
             where T : struct
         {
-            Log.Information("UI model {Name:l} has state: {State}", name, state);
-            shellViewModel.LoggedActions.Add($"[INF] UI model {name} has state: {state}");
+            Log.Information("Model {Name:l} has state: {State}", name, state);
+            shellViewModel.LoggedActions.Add($"[INF] Model {name} has state: {state}");
         }
 
         /// <inheritdoc/>
@@ -201,30 +201,30 @@ namespace SophiApp.Services
         public void LogApplicableModelChanged<T>(string name, T previous, T current)
             where T : struct
         {
-            Log.Information("The value of the UI model {Name:l} parameter has been changed from {Previous} to {Current} in applicable models collection", name, previous, current);
-            shellViewModel.LoggedActions.Add($"[INF] The value of the UI model {name} parameter has been changed from {previous} to {current} in applicable models collection");
+            Log.Information("The value of the model {Name:l} parameter has been changed from {Previous} to {Current} in applicable models collection", name, previous, current);
+            shellViewModel.LoggedActions.Add($"[INF] The value of the model {name} parameter has been changed from {previous} to {current} in applicable models collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelRemoved(string name)
         {
-            Log.Information("UI model {Name:l} has been removed from applicable models collection", name);
-            shellViewModel.LoggedActions.Add($"[INF] UI model {name} has been removed from applicable models collection");
+            Log.Information("Model {Name:l} has been removed from applicable models collection", name);
+            shellViewModel.LoggedActions.Add($"[INF] Model {name} has been removed from applicable models collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded(string name)
         {
-            Log.Information("UI model {Name:l} has been added to applicable models collection", name);
-            shellViewModel.LoggedActions.Add($"[INF] UI model {name} has been added to applicable models collection");
+            Log.Information("Model {Name:l} has been added to applicable models collection", name);
+            shellViewModel.LoggedActions.Add($"[INF] Model {name} has been added to applicable models collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded<T>(string name, T parameter)
             where T : struct
         {
-            Log.Information("UI model {Name:l} with parameter {Parameter} has been added to applicable models collection", name, parameter);
-            shellViewModel.LoggedActions.Add($"[INF] UI model {name} with parameter {parameter} has been added to applicable models collection");
+            Log.Information("Model {Name:l} with parameter {Parameter} has been added to applicable models collection", name, parameter);
+            shellViewModel.LoggedActions.Add($"[INF] Model {name} with parameter {parameter} has been added to applicable models collection");
         }
 
         /// <inheritdoc/>
@@ -279,8 +279,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogStopTextSearch(Stopwatch timer, int count)
         {
-            Log.Information("The text search took {Seconds} second(s) and return {Count} UI model(s)", timer.Elapsed.TotalSeconds, count);
-            shellViewModel.LoggedActions.Add($"[INF] The text search took {timer.Elapsed.TotalSeconds} second(s) and return {count} UI model(s)");
+            Log.Information("The text search took {Seconds} second(s) and return {Count} model(s)", timer.Elapsed.TotalSeconds, count);
+            shellViewModel.LoggedActions.Add($"[INF] The text search took {timer.Elapsed.TotalSeconds} second(s) and return {count} model(s)");
         }
 
         /// <inheritdoc/>
@@ -394,16 +394,16 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogModelGetStateException(string name, Exception exception)
         {
-            Log.Error("An error occurred while get state in the UI model {Model:l}: {Message}", name, exception.Message);
-            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while get state in the UI model {name}: {exception.Message}");
+            Log.Error("An error occurred while get state in the model {Model:l}: {Message}", name, exception.Message);
+            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while get state in the model {name}: {exception.Message}");
         }
 
         /// <inheritdoc/>
         public void LogModelSetStateException<T>(Exception exception, string name, T parameter)
             where T : struct
         {
-            Log.Error("An error occurred while set state in the UI model {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
-            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while set state in the UI model {name} with parameter {parameter}: {exception.Message}");
+            Log.Error("An error occurred while set state in the model {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
+            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while set state in the model {name} with parameter {parameter}: {exception.Message}");
         }
     }
 }

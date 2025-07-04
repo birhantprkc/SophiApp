@@ -326,7 +326,7 @@
     "ViewId": 222,
     "Windows10Support": "True",
     "Windows11Support": "False"
-  },  
+  },
   {
     "Name": "MeetNow",
     "Type": "CheckBox",
@@ -517,6 +517,260 @@
     "Tag": "Personalization",
     "ViewId": 245,
     "Windows10Support": "False",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "OneDrive",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 300,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "StorageSense",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 301,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "Hibernation",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 302,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "Win32LongPathLimit",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 303,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "BSoDStopError",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 304,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "AdminApprovalMode",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 305,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "DeliveryOptimization",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 306,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "WindowsManageDefaultPrinter",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 307,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "UpdateMicrosoftProducts",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 308,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "RestartNotification",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 309,
+    "Windows10Support": "True",
+    "Windows11Support": "True",
+    "NumberOfItems": 2
+  },
+  {
+    "Name": "RestartDeviceAfterUpdate",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 310,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "ActiveHours",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 311,
+    "Windows10Support": "True",
+    "Windows11Support": "True",
+    "NumberOfItems": 2
+  },
+  {
+    "Name": "WindowsLatestUpdate",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 312,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "NetworkAdaptersSavePower",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 313,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "InputMethod",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 314,
+    "Windows10Support": "True",
+    "Windows11Support": "True",
+    "NumberOfItems": 2
+  },
+  {
+    "Name": "LatestInstalledNET",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 315,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "WinPrtScrFolder",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 316,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "RecommendedTroubleshooting",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 317,
+    "Windows10Support": "True",
+    "Windows11Support": "True",
+    "NumberOfItems": 2
+  },
+  {
+    "Name": "FoldersLaunchSeparateProcess",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 318,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "ReservedStorage",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 319,
+    "Windows10Support": "True",
+    "Windows11Support": "True",
+    "NumberOfItems": 2
+  },
+  {
+    "Name": "F1HelpPage",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 320,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "NumLock",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 321,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "CapsLock",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 322,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "StickyShift",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 323,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "Autoplay",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 324,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "ThumbnailCacheRemoval",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 325,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "SaveRestartableApps",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 326,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "NetworkDiscovery",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 327,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "PowerPlan",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 328,
+    "Windows10Support": "True",
+    "Windows11Support": "True",
+    "NumberOfItems": 2
+  },
+  {
+    "Name": "RKNBypass",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 329,
+    "Windows10Support": "True",
+    "Windows11Support": "False"
+  },
+  {
+    "Name": "RegistryBackup",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 330,
+    "Windows10Support": "True",
     "Windows11Support": "True"
   },
   {

@@ -26,13 +26,29 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public bool AllowedOtherProductsUpdate()
+        {
+            var serviceManager = GetServiceManager() !;
+
+            for (int i = 0; i < serviceManager.Services.Count; i++)
+            {
+                if (serviceManager.Services[i].ServiceID == "7971f918-a847-4430-9279-4a52d1efe18d")
+                {
+                    return serviceManager.Services[i].IsDefaultAUService;
+                }
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc/>
         public void RunOsUpdate()
         {
             try
             {
-                GetUpdatesForOtherMsProducts();
-                GetUpdatesForUwpApps();
-                GetOsUpdates();
+                RunMicrosoftProductsUpdate();
+                RunUwpAppsUpdate();
+                RunOsUpdates();
             }
             catch (Exception ex)
             {
@@ -40,7 +56,13 @@ namespace SophiApp.Services
             }
         }
 
-        private void GetUpdatesForOtherMsProducts()
+        private dynamic? GetServiceManager()
+        {
+            Type type = Type.GetTypeFromProgID("Microsoft.Update.ServiceManager") !;
+            return Activator.CreateInstance(type);
+        }
+
+        private void RunMicrosoftProductsUpdate()
         {
             if (commonDataService.IsWindows11)
             {
@@ -49,17 +71,16 @@ namespace SophiApp.Services
                 return;
             }
 
-            Type type = Type.GetTypeFromProgID("Microsoft.Update.ServiceManager") !;
-            dynamic? service = Activator.CreateInstance(type);
+            dynamic? service = GetServiceManager();
             _ = service?.AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, string.Empty);
         }
 
-        private void GetUpdatesForUwpApps()
+        private void RunUwpAppsUpdate()
         {
             _ = instrumentationService.GetUwpAppsManagementOrDefault()?.InvokeMethod("UpdateScanMethod", Array.Empty<object>());
         }
 
-        private void GetOsUpdates()
+        private void RunOsUpdates()
         {
             _ = Process.Start(
                     new ProcessStartInfo()

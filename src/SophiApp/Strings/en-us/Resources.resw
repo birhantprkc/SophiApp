@@ -1055,4 +1055,133 @@
   <data name="AppFatalError.Text" xml:space="preserve">
     <value>Perhaps the root cause of the exception is due to the use a Defender tampering utility like "Defender Killer".</value>
   </data>
+  <data name="UIModel_ActiveHours_Title" xml:space="preserve">
+    <value>ActiveHours title here</value>
+  </data>
+  <data name="UIModel_ActiveHours_Title_1" xml:space="preserve">
+    <value>Automatically</value>
+  </data>
+  <data name="UIModel_ActiveHours_Title_2" xml:space="preserve">
+    <value>Manually</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Title" xml:space="preserve">
+    <value>AdminApprovalMode title here</value>
+  </data>
+  <data name="UIModel_Autoplay_Title" xml:space="preserve">
+    <value>Autoplay title here</value>
+  </data>
+  <data name="UIModel_BSoDStopError_Title" xml:space="preserve">
+    <value>BSoDStopError title here</value>
+  </data>
+  <data name="UIModel_CapsLock_Title" xml:space="preserve">
+    <value>CapsLock title here</value>
+  </data>
+  <data name="UIModel_DeliveryOptimization_Title" xml:space="preserve">
+    <value>DeliveryOptimization title here</value>
+  </data>
+  <data name="UIModel_F1HelpPage_Title" xml:space="preserve">
+    <value>F1HelpPage title here</value>
+  </data>
+  <data name="UIModel_FoldersLaunchSeparateProcess_Title" xml:space="preserve">
+    <value>FoldersLaunchSeparateProcess title here</value>
+  </data>
+  <data name="UIModel_Hibernation_Title" xml:space="preserve">
+    <value>Hibernation title here</value>
+  </data>
+  <data name="UIModel_InputMethod_Title" xml:space="preserve">
+    <value>InputMethod title here</value>
+  </data>
+  <data name="UIModel_InputMethod_Title_1" xml:space="preserve">
+    <value>English (USA)</value>
+  </data>
+  <data name="UIModel_InputMethod_Title_2" xml:space="preserve">
+    <value>Use language list</value>
+  </data>
+  <data name="UIModel_LatestInstalledNET_Title" xml:space="preserve">
+    <value>LatestInstalledNET title here</value>
+  </data>
+  <data name="UIModel_NetworkAdaptersSavePower_Title" xml:space="preserve">
+    <value>NetworkAdaptersSavePower title here</value>
+  </data>
+  <data name="UIModel_NetworkDiscovery_Title" xml:space="preserve">
+    <value>NetworkDiscovery title here</value>
+  </data>
+  <data name="UIModel_NumLock_Title" xml:space="preserve">
+    <value>NumLock title here</value>
+  </data>
+  <data name="UIModel_OneDrive_Title" xml:space="preserve">
+    <value>OneDrive title here</value>
+  </data>
+  <data name="UIModel_PowerPlan_Title" xml:space="preserve">
+    <value>PowerPlan title here</value>
+  </data>
+  <data name="UIModel_PowerPlan_Title_1" xml:space="preserve">
+    <value>High Performance</value>
+  </data>
+  <data name="UIModel_PowerPlan_Title_2" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Title" xml:space="preserve">
+    <value>RecommendedTroubleshooting title here</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Title_1" xml:space="preserve">
+    <value>Automatically</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Title_2" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="UIModel_RegistryBackup_Title" xml:space="preserve">
+    <value>RegistryBackup title here</value>
+  </data>
+  <data name="UIModel_ReservedStorage_Title" xml:space="preserve">
+    <value>ReservedStorage title here</value>
+  </data>
+  <data name="UIModel_ReservedStorage_Title_1" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="UIModel_ReservedStorage_Title_2" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="UIModel_RestartDeviceAfterUpdate_Title" xml:space="preserve">
+    <value>RestartDeviceAfterUpdate title here</value>
+  </data>
+  <data name="UIModel_RestartNotification_Title" xml:space="preserve">
+    <value>RestartNotification title here</value>
+  </data>
+  <data name="UIModel_RKNBypass_Title" xml:space="preserve">
+    <value>RKNBypass_title here</value>
+  </data>
+  <data name="UIModel_SaveRestartableApps_Title" xml:space="preserve">
+    <value>SaveRestartableApps title here</value>
+  </data>
+  <data name="UIModel_StickyShift_Title" xml:space="preserve">
+    <value>StickyShift title here</value>
+  </data>
+  <data name="UIModel_StorageSense_Title" xml:space="preserve">
+    <value>StorageSense title here</value>
+  </data>
+  <data name="UIModel_ThumbnailCacheRemoval_Title" xml:space="preserve">
+    <value>ThumbnailCacheRemoval title here</value>
+  </data>
+  <data name="UIModel_UpdateMicrosoftProducts_Title" xml:space="preserve">
+    <value>UpdateMicrosoftProducts title here</value>
+  </data>
+  <data name="UIModel_Win32LongPathLimit_Title" xml:space="preserve">
+    <value>Win32LongPathLimit title here</value>
+  </data>
+  <data name="UIModel_WindowsLatestUpdate_Title" xml:space="preserve">
+    <value>WindowsLatestUpdate title here</value>
+  </data>
+  <data name="UIModel_WindowsManageDefaultPrinter_Title" xml:space="preserve">
+    <value>WindowsManageDefaultPrinter title here</value>
+  </data>
+  <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
+    <value>WinPrtScrFolder title here</value>
+  </data>
+  <data name="UIModel_RestartNotification_Title_1" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="UIModel_RestartNotification_Title_2" xml:space="preserve">
+    <value>Hide</value>
+  </data>
 </root>

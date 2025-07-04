@@ -12,7 +12,6 @@ namespace SophiApp.Customizations
     using SophiApp.Models;
     using System.ServiceProcess;
     using System.Text;
-    using System.Xml.Linq;
 
     /// <summary>
     /// Get the OS settings.
@@ -28,6 +27,7 @@ namespace SophiApp.Customizations
         private static readonly IPowerShellService PowerShellService = App.GetService<IPowerShellService>();
         private static readonly IProcessService ProcessService = App.GetService<IProcessService>();
         private static readonly IScheduledTaskService ScheduledTaskService = App.GetService<IScheduledTaskService>();
+        private static readonly IUpdateService UpdateService = App.GetService<IUpdateService>();
         private static readonly IXmlService XmlService = App.GetService<IXmlService>();
 
         /// <summary>
@@ -763,6 +763,318 @@ namespace SophiApp.Customizations
             var sectionValue = Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("HideRecommendedSection") as int? ?? -1;
             var environmentValue = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\PolicyManager\\Current\\Device\\Education")?.GetValue("IsEducationEnvironment") as int? ?? -1;
             return !sectionValue.Equals(1) && !environmentValue.Equals(1);
+        }
+
+        /// <summary>
+        /// Get One Drive state.
+        /// </summary>
+        public static bool OneDrive()
+        {
+            var command = @"$UninstallString = Get-Package -Name ""Microsoft OneDrive"" -ProviderName Programs -Force; if ($UninstallString){ $true } else { $false }";
+            return PowerShellService.Invoke<bool>(command);
+        }
+
+        /// <summary>
+        /// Get storage sense state.
+        /// </summary>
+        public static bool StorageSense()
+        {
+            var storagePolicyPath = "Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy";
+            var storagePolicy01 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("01") as int? ?? -1;
+            var storagePolicy04 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("04") as int? ?? -1;
+            var storagePolicy2048 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("2048") as int? ?? -1;
+            return storagePolicy01.Equals(1) && storagePolicy04.Equals(1) && storagePolicy2048.Equals(1);
+        }
+
+        /// <summary>
+        /// Get hibernation state.
+        /// </summary>
+        public static bool Hibernation()
+        {
+            var powerPath = "System\\CurrentControlSet\\Control\\Power";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(powerPath)?.GetValue("HibernateEnabled") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get long path limit state.
+        /// </summary>
+        public static bool Win32LongPathLimit()
+        {
+            var filePath = "System\\CurrentControlSet\\Control\\FileSystem";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(filePath)?.GetValue("LongPathsEnabled") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get BSOD error state.
+        /// </summary>
+        public static bool BSoDStopError()
+        {
+            var crashPath = "System\\CurrentControlSet\\Control\\CrashControl";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(crashPath)?.GetValue("DisplayParameters") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get administrator approval mode state.
+        /// </summary>
+        public static bool AdminApprovalMode()
+        {
+            var promptPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(promptPath)?.GetValue("ConsentPromptBehaviorAdmin") as int? ?? -1;
+            return isEnabled.Equals(0);
+        }
+
+        /// <summary>
+        /// Get delivery optimization state.
+        /// </summary>
+        public static bool DeliveryOptimization()
+        {
+            var downloadPath = "S-1-5-20\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Settings";
+            var isEnabled = Registry.Users.OpenSubKey(downloadPath)?.GetValue("DownloadMode") as int? ?? -1;
+            return !isEnabled.Equals(0);
+        }
+
+        /// <summary>
+        /// Get Windows manage default printer state.
+        /// </summary>
+        public static bool WindowsManageDefaultPrinter()
+        {
+            var printerPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(printerPath)?.GetValue("LegacyDefaultPrinterMode") as int? ?? -1;
+            return !isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get update Microsoft products state.
+        /// </summary>
+        public static bool UpdateMicrosoftProducts()
+        {
+            if (CommonDataService.IsWindows11)
+            {
+                var updatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
+                var isEnabled = Registry.LocalMachine.OpenSubKey(updatePath)?.GetValue("AllowMUUpdateService") as int? ?? -1;
+                return isEnabled.Equals(1);
+            }
+
+            return UpdateService.AllowedOtherProductsUpdate();
+        }
+
+        /// <summary>
+        /// Get restart notification state.
+        /// </summary>
+        public static int RestartNotification()
+        {
+            var notificationPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(notificationPath)?.GetValue("RestartNotificationsAllowed2") as int? ?? -1;
+            return isEnabled.Equals(1) ? 1 : 2;
+        }
+
+        /// <summary>
+        /// Get device restart after update state.
+        /// </summary>
+        public static bool RestartDeviceAfterUpdate()
+        {
+            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(settingsPath)?.GetValue("IsExpedited") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get active hours restart state.
+        /// </summary>
+        public static int ActiveHours()
+        {
+            var hoursPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(hoursPath)?.GetValue("SmartActiveHoursState") as int? ?? -1;
+            return isEnabled.Equals(1) ? 1 : 2;
+        }
+
+        /// <summary>
+        /// Get Windows latest update state.
+        /// </summary>
+        public static bool WindowsLatestUpdate()
+        {
+            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(settingsPath)?.GetValue("IsContinuousInnovationOptedIn") as int? ?? -1;
+            return !isEnabled.Equals(0);
+        }
+
+        /// <summary>
+        /// Get network adapters power state.
+        /// </summary>
+        public static bool NetworkAdaptersSavePower()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Get input method state.
+        /// </summary>
+        public static int InputMethod()
+        {
+            var inputPath = "Control Panel\\International\\User Profile";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(inputPath)?.GetValue("InputMethodOverride") as string ?? string.Empty;
+            return isEnabled.Equals("0409:00000409") ? 1 : 2;
+        }
+
+        /// <summary>
+        /// Get installed .NET state.
+        /// </summary>
+        public static bool LatestInstalledNET()
+        {
+            var clrPath = "Software\\Microsoft\\.NETFramework";
+            var clrWowPath = "Software\\Wow6432Node\\Microsoft\\.NETFramework";
+            var useLatestClr = "OnlyUseLatestCLR";
+            var latesClr = Registry.LocalMachine.OpenSubKey(clrPath)?.GetValue(useLatestClr) as int? ?? -1;
+            var latesWowClr = Registry.LocalMachine.OpenSubKey(clrWowPath)?.GetValue(useLatestClr) as int? ?? -1;
+            return latesClr.Equals(1) && latesWowClr.Equals(1);
+        }
+
+        // TODO: Set description
+        public static bool WinPrtScrFolder()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Get recommended troubleshooting state.
+        /// </summary>
+        public static int RecommendedTroubleshooting()
+        {
+            var preferencePath = "Software\\Microsoft\\WindowsMitigation";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(preferencePath)?.GetValue("UserPreference") as int? ?? -1;
+            return isEnabled.Equals(3) ? 1 : 2;
+        }
+
+        /// <summary>
+        /// Get folders launch separate process state.
+        /// </summary>
+        public static bool FoldersLaunchSeparateProcess()
+        {
+            var processPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(processPath)?.GetValue("SeparateProcess") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get reserved storage state.
+        /// </summary>
+        public static int ReservedStorage()
+        {
+            var reservePath = "Software\\Microsoft\\Windows\\CurrentVersion\\ReserveManager";
+            var miscPolicy = Registry.LocalMachine.OpenSubKey(reservePath)?.GetValue("MiscPolicyInfo") as int? ?? -1;
+            var passedPolicy = Registry.LocalMachine.OpenSubKey(reservePath)?.GetValue("PassedPolicy") as int? ?? -1;
+            var shippedReserves = Registry.LocalMachine.OpenSubKey(reservePath)?.GetValue("ShippedWithReserves") as int? ?? -1;
+            return miscPolicy.Equals(2) && passedPolicy.Equals(0) && shippedReserves.Equals(1) ? 1 : 2;
+        }
+
+        /// <summary>
+        /// Get help page state.
+        /// </summary>
+        public static bool F1HelpPage()
+        {
+            var helpPath = "Software\\Classes\\Typelib\\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\\1.0\\0\\win64";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(helpPath)?.GetValue(string.Empty) as string;
+            return isEnabled is null;
+        }
+
+        /// <summary>
+        /// Get Num Lock state.
+        /// </summary>
+        public static bool NumLock()
+        {
+            var keyboardPath = ".DEFAULT\\Control Panel\\Keyboard";
+            var isEnabled = Registry.Users.OpenSubKey(keyboardPath)?.GetValue("InitialKeyboardIndicators") as string ?? string.Empty;
+            return isEnabled.Equals("2147483650");
+        }
+
+        /// <summary>
+        /// Get Caps Lock state.
+        /// </summary>
+        public static bool CapsLock()
+        {
+            var scancodeMap = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 58, 0, 0, 0, 0, 0 };
+            var keyboardPath = "System\\CurrentControlSet\\Control\\Keyboard Layout";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(keyboardPath)?.GetValue("Scancode Map1") as byte[] ?? [];
+            return !isEnabled.SequenceEqual(scancodeMap);
+        }
+
+        /// <summary>
+        /// Get sticky shift state.
+        /// </summary>
+        public static bool StickyShift()
+        {
+            var keysPath = "Control Panel\\Accessibility\\StickyKeys";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(keysPath)?.GetValue("Flags") as string ?? string.Empty;
+            return !isEnabled.Equals("506");
+        }
+
+        /// <summary>
+        /// Get autoplay state.
+        /// </summary>
+        public static bool Autoplay()
+        {
+            var handlersPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoplayHandlers";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(handlersPath)?.GetValue("DisableAutoplay") as int? ?? -1;
+            return !isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get thumbnail cache state.
+        /// </summary>
+        public static bool ThumbnailCacheRemoval()
+        {
+            var autorun = "Autorun";
+            var cachePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache";
+            var cacheWowPath = "Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(cachePath)?.GetValue(autorun) as int? ?? -1;
+            var isEnabledWow = Registry.LocalMachine.OpenSubKey(cacheWowPath)?.GetValue(autorun) as int? ?? -1;
+            return !(isEnabled.Equals(0) && isEnabledWow.Equals(0));
+        }
+
+        /// <summary>
+        /// Get save restartable apps state.
+        /// </summary>
+        public static bool SaveRestartableApps()
+        {
+            var logonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(logonPath)?.GetValue("RestartApps") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get network discovery state.
+        /// </summary>
+        public static bool NetworkDiscovery()
+        {
+            var discoveryRules = FirewallService.GetGroupRules("@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502");
+            return discoveryRules.Any(rule => rule.Enabled);
+        }
+
+        /// <summary>
+        /// Get power plan state.
+        /// </summary>
+        public static int PowerPlan()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Get RKN bypass state.
+        /// </summary>
+        public static bool RKNBypass()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Get registry backup state.
+        /// </summary>
+        public static bool RegistryBackup()
+        {
+            return true;
         }
 
         /// <summary>

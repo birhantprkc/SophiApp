@@ -10,7 +10,12 @@ namespace SophiApp.Contracts.Services
     public interface IUpdateService
     {
         /// <summary>
-        /// Start receiving os updates.
+        /// Determines whether the Windows Update API is used to obtain updates for other Microsoft products.
+        /// </summary>
+        bool AllowedOtherProductsUpdate();
+
+        /// <summary>
+        /// Start receiving OS updates.
         /// </summary>
         void RunOsUpdate();
     }

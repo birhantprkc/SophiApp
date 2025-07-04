@@ -4,10 +4,10 @@
 
 namespace SophiApp.Services
 {
+    using SophiApp.Contracts.Services;
     using System;
     using System.Management.Automation;
     using System.Management.Automation.Runspaces;
-    using SophiApp.Contracts.Services;
 
     /// <inheritdoc/>
     public class PowerShellService : IPowerShellService

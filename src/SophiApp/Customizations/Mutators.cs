@@ -37,13 +37,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set DiagTrack service state.
         /// </summary>
-        /// <param name="isEnabled">DiagTrack service state.</param>
-        public static void DiagTrackService(bool isEnabled)
+        /// <param name="enabled">DiagTrack service state.</param>
+        public static void DiagTrackService(bool enabled)
         {
             var diagTrackService = new ServiceController("DiagTrack");
             var firewallRule = FirewallService.GetGroupRules("DiagTrack").First();
 
-            if (isEnabled)
+            if (enabled)
             {
                 OsService.SetServiceStartMode(diagTrackService, ServiceStartMode.Automatic);
                 diagTrackService.TryStart();
@@ -88,16 +88,16 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows feature "Error reporting" state.
         /// </summary>
-        /// <param name="isEnabled">Feature state.</param>
-        public static void ErrorReporting(bool isEnabled)
+        /// <param name="enabled">Feature state.</param>
+        public static void ErrorReporting(bool enabled)
         {
             var errorPath = "Software\\Microsoft\\Windows\\Windows Error Reporting";
             var taskPath = "Microsoft\\Windows\\Windows Error Reporting\\QueueReporting";
             var service = new ServiceController("WerSvc");
             GroupPolicyService.ClearErrorReportingCache();
-            ScheduledTaskService.SetEnabled(ScheduledTaskService.GetTaskOrDefault(taskPath), isEnabled);
+            ScheduledTaskService.SetEnabled(ScheduledTaskService.GetTaskOrDefault(taskPath), enabled);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(errorPath, true)?.DeleteValue("Disabled", false);
                 OsService.SetServiceStartMode(service, ServiceStartMode.Manual);
@@ -131,8 +131,8 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set telemetry scheduled tasks state.
         /// </summary>
-        /// <param name="isEnabled">Scheduled tasks state.</param>
-        public static void ScheduledTasks(bool isEnabled)
+        /// <param name="enabled">Scheduled tasks state.</param>
+        public static void ScheduledTasks(bool enabled)
         {
             new List<Task?>()
              {
@@ -151,21 +151,21 @@ namespace SophiApp.Customizations
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\XblGameSave\\XblGameSaveTask"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\XblGameSave\\XblGameSaveTask1"),
              }
-            .ForEach(task => ScheduledTaskService.SetEnabled(task, isEnabled));
+            .ForEach(task => ScheduledTaskService.SetEnabled(task, enabled));
         }
 
         /// <summary>
         /// Set Windows feature "Sign-in info" state.
         /// </summary>
-        /// <param name="isEnabled">Sign-in info state.</param>
-        public static void SigninInfo(bool isEnabled)
+        /// <param name="enabled">Sign-in info state.</param>
+        public static void SigninInfo(bool enabled)
         {
             var sid = InstrumentationService.GetUserSid(Environment.UserName);
             var userArsoPath = $"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\UserARSO\\{sid}";
             var optOut = "OptOut";
             GroupPolicyService.ClearSigninInfoCache();
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.LocalMachine.OpenSubKey(userArsoPath, true)?.DeleteValue(optOut, false);
                 return;
@@ -177,13 +177,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set language list access state.
         /// </summary>
-        /// <param name="isEnabled">Language list state.</param>
-        public static void LanguageListAccess(bool isEnabled)
+        /// <param name="enabled">Language list state.</param>
+        public static void LanguageListAccess(bool enabled)
         {
             var userProfilePath = "Control Panel\\International\\User Profile";
             var httpOptOut = "HttpAcceptLanguageOptOut";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(userProfilePath, true)?.DeleteValue(httpOptOut, false);
                 return;
@@ -195,88 +195,88 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set the permission for apps to use advertising ID state.
         /// </summary>
-        /// <param name="isEnabled">Advertising ID state.</param>
-        public static void AdvertisingID(bool isEnabled)
+        /// <param name="enabled">Advertising ID state.</param>
+        public static void AdvertisingID(bool enabled)
         {
             var infoPath = "Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo";
             GroupPolicyService.ClearAdvertisingIdCache();
-            Registry.CurrentUser.OpenOrCreateSubKey(infoPath).SetValue("Enabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenOrCreateSubKey(infoPath).SetValue("Enabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set the Windows welcome experiences state.
         /// </summary>
-        /// <param name="isEnabled">Windows welcome experiences state.</param>
-        public static void WindowsWelcomeExperience(bool isEnabled)
+        /// <param name="enabled">Windows welcome experiences state.</param>
+        public static void WindowsWelcomeExperience(bool enabled)
         {
             Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", true)
-                ?.SetValue("SubscribedContent-310093Enabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+                ?.SetValue("SubscribedContent-310093Enabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Windows tips state.
         /// </summary>
-        /// <param name="isEnabled">Windows tips state.</param>
-        public static void WindowsTips(bool isEnabled)
+        /// <param name="enabled">Windows tips state.</param>
+        public static void WindowsTips(bool enabled)
         {
             var contentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager";
             GroupPolicyService.ClearWindowsTipsCache();
-            Registry.CurrentUser.OpenSubKey(contentPath, true)?.SetValue("SubscribedContent-338389Enabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(contentPath, true)?.SetValue("SubscribedContent-338389Enabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set the suggested content in the Settings app state.
         /// </summary>
-        /// <param name="isEnabled">Suggested content state.</param>
-        public static void SettingsSuggestedContent(bool isEnabled)
+        /// <param name="enabled">Suggested content state.</param>
+        public static void SettingsSuggestedContent(bool enabled)
         {
             new List<string> { "SubscribedContent-353694Enabled", "SubscribedContent-353696Enabled", "SubscribedContent-338393Enabled" }
             .ForEach(content => Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", true)
-                ?.SetValue(content, isEnabled ? 1 : 0, RegistryValueKind.DWord));
+                ?.SetValue(content, enabled ? 1 : 0, RegistryValueKind.DWord));
         }
 
         /// <summary>
         /// Set the automatic installing suggested apps state.
         /// </summary>
-        /// <param name="isEnabled">Suggested apps state.</param>
-        public static void AppsSilentInstalling(bool isEnabled)
+        /// <param name="enabled">Suggested apps state.</param>
+        public static void AppsSilentInstalling(bool enabled)
         {
             GroupPolicyService.ClearAppsInstallingCache();
             var contentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager";
-            Registry.CurrentUser.OpenSubKey(contentPath, true)?.SetValue("SilentInstalledAppsEnabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(contentPath, true)?.SetValue("SilentInstalledAppsEnabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set the Windows feature "Whats New" state.
         /// </summary>
-        /// <param name="isEnabled">Whats New state.</param>
-        public static void WhatsNewInWindows(bool isEnabled)
+        /// <param name="enabled">Whats New state.</param>
+        public static void WhatsNewInWindows(bool enabled)
         {
             var profilePath = "Software\\Microsoft\\Windows\\CurrentVersion\\UserProfileEngagement";
-            Registry.CurrentUser.OpenOrCreateSubKey(profilePath).SetValue("ScoobeSystemSettingEnabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenOrCreateSubKey(profilePath).SetValue("ScoobeSystemSettingEnabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Windows feature "Tailored experiences" state.
         /// </summary>
-        /// <param name="isEnabled">Tailored experiences state.</param>
-        public static void TailoredExperiences(bool isEnabled)
+        /// <param name="enabled">Tailored experiences state.</param>
+        public static void TailoredExperiences(bool enabled)
         {
             var privacyPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Privacy";
             GroupPolicyService.ClearTailoredExperiencesCache();
-            Registry.CurrentUser.OpenSubKey(privacyPath, true)?.SetValue("TailoredExperiencesWithDiagnosticDataEnabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(privacyPath, true)?.SetValue("TailoredExperiencesWithDiagnosticDataEnabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Windows feature "Bing search" state.
         /// </summary>
-        /// <param name="isEnabled">Bing search state.</param>
-        public static void BingSearch(bool isEnabled)
+        /// <param name="enabled">Bing search state.</param>
+        public static void BingSearch(bool enabled)
         {
             var explorerPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
             var disableSuggestions = "DisableSearchBoxSuggestions";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(explorerPath, true)?.DeleteValue(disableSuggestions, false);
                 return;
@@ -288,13 +288,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Start menu recommendations state.
         /// </summary>
-        /// <param name="isEnabled">Start menu recommendations state.</param>
-        public static void StartRecommendationsTips(bool isEnabled)
+        /// <param name="enabled">Start menu recommendations state.</param>
+        public static void StartRecommendationsTips(bool enabled)
         {
             var irisPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
             var startIris = "Start_IrisRecommendations";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(irisPath, true)?.DeleteValue(irisPath, false);
                 return;
@@ -306,13 +306,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Start Menu notifications state.
         /// </summary>
-        /// <param name="isEnabled">Start Menu notifications state.</param>
-        public static void StartAccountNotifications(bool isEnabled)
+        /// <param name="enabled">Start Menu notifications state.</param>
+        public static void StartAccountNotifications(bool enabled)
         {
             var notificationsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
             var startNotifications = "Start_AccountNotifications";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(notificationsPath, true)?.DeleteValue(startNotifications, false);
                 return;
@@ -324,13 +324,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set the "This PC" icon on Desktop state.
         /// </summary>
-        /// <param name="isEnabled">"This PC" icon state.</param>
-        public static void ThisPC(bool isEnabled)
+        /// <param name="enabled">"This PC" icon state.</param>
+        public static void ThisPC(bool enabled)
         {
             var pcPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel";
             var pcGuid = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenOrCreateSubKey(pcPath).SetValue(pcGuid, 0, RegistryValueKind.DWord);
                 return;
@@ -342,41 +342,41 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set item check boxes state.
         /// </summary>
-        /// <param name="isEnabled">Item check boxes state.</param>
-        public static void CheckBoxes(bool isEnabled)
+        /// <param name="enabled">Item check boxes state.</param>
+        public static void CheckBoxes(bool enabled)
         {
             var boxesPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(boxesPath, true)?.SetValue("AutoCheckSelect", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(boxesPath, true)?.SetValue("AutoCheckSelect", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set hidden files, folders, and drives state.
         /// </summary>
-        /// <param name="isEnabled">Hidden items state.</param>
-        public static void HiddenItems(bool isEnabled)
+        /// <param name="enabled">Hidden items state.</param>
+        public static void HiddenItems(bool enabled)
         {
             var itemsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(itemsPath, true)?.SetValue("Hidden", isEnabled ? 1 : 2, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(itemsPath, true)?.SetValue("Hidden", enabled ? 1 : 2, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set file name extensions visibility state.
         /// </summary>
-        /// <param name="isEnabled">File extensions visibility state.</param>
-        public static void FileExtensions(bool isEnabled)
+        /// <param name="enabled">File extensions visibility state.</param>
+        public static void FileExtensions(bool enabled)
         {
             var extensionsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(extensionsPath, true)?.SetValue("HideFileExt", isEnabled ? 0 : 1, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(extensionsPath, true)?.SetValue("HideFileExt", enabled ? 0 : 1, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set folder merge conflicts state.
         /// </summary>
-        /// <param name="isEnabled">Folder merge conflicts state.</param>
-        public static void MergeConflicts(bool isEnabled)
+        /// <param name="enabled">Folder merge conflicts state.</param>
+        public static void MergeConflicts(bool enabled)
         {
             var mergePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(mergePath, true)?.SetValue("HideMergeConflicts", isEnabled ? 0 : 1, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(mergePath, true)?.SetValue("HideMergeConflicts", enabled ? 0 : 1, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -403,33 +403,33 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set File Explorer compact mode state.
         /// </summary>
-        /// <param name="isEnabled">File Explorer compact mode state.</param>
-        public static void FileExplorerCompactMode(bool isEnabled)
+        /// <param name="enabled">File Explorer compact mode state.</param>
+        public static void FileExplorerCompactMode(bool enabled)
         {
             var compactPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(compactPath, true)?.SetValue("UseCompactMode", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(compactPath, true)?.SetValue("UseCompactMode", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set File Explorer provider notification visibility state.
         /// </summary>
-        /// <param name="isEnabled">File Explorer provider notification visibility state.</param>
-        public static void OneDriveFileExplorerAd(bool isEnabled)
+        /// <param name="enabled">File Explorer provider notification visibility state.</param>
+        public static void OneDriveFileExplorerAd(bool enabled)
         {
             var drivePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(drivePath, true)?.SetValue("ShowSyncProviderNotifications", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(drivePath, true)?.SetValue("ShowSyncProviderNotifications", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set snap a window state.
         /// </summary>
-        /// <param name="isEnabled">Snap Assist state.</param>
-        public static void SnapAssist(bool isEnabled)
+        /// <param name="enabled">Snap Assist state.</param>
+        public static void SnapAssist(bool enabled)
         {
             var desktopPath = "Control Panel\\Desktop";
             var snapPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
             Registry.CurrentUser.OpenSubKey(desktopPath, true)?.SetValue("WindowArrangementActive", "1", RegistryValueKind.String);
-            Registry.CurrentUser.OpenSubKey(snapPath, true)?.SetValue("SnapAssist", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(snapPath, true)?.SetValue("SnapAssist", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -445,36 +445,36 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set recycle bin confirmation dialog state.
         /// </summary>
-        /// <param name="isEnabled">Recycle bin dialog state.</param>
-        public static void RecycleBinDeleteConfirmation(bool isEnabled)
+        /// <param name="enabled">Recycle bin dialog state.</param>
+        public static void RecycleBinDeleteConfirmation(bool enabled)
         {
             GroupPolicyService.ClearRecycleBinDeleteConfirmationCache();
             var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
             var shellState = "ShellState";
             var shellValue = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue(shellState) as byte[] ?? new byte[5];
-            shellValue[4] = isEnabled ? (byte)51 : (byte)55;
+            shellValue[4] = enabled ? (byte)51 : (byte)55;
             Registry.CurrentUser.OpenSubKey(shellPath, true)?.SetValue(shellState, shellValue, RegistryValueKind.Binary);
         }
 
         /// <summary>
         /// Set recently used Quick access files state.
         /// </summary>
-        /// <param name="isEnabled">Quick access files state.</param>
-        public static void QuickAccessRecentFiles(bool isEnabled)
+        /// <param name="enabled">Quick access files state.</param>
+        public static void QuickAccessRecentFiles(bool enabled)
         {
             GroupPolicyService.ClearQuickAccessRecentFilesCache();
             var recentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            Registry.CurrentUser.OpenSubKey(recentPath, true)?.SetValue("ShowRecent", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(recentPath, true)?.SetValue("ShowRecent", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set frequently used Quick access folders state.
         /// </summary>
-        /// <param name="isEnabled">Quick access folders state.</param>
-        public static void QuickAccessFrequentFolders(bool isEnabled)
+        /// <param name="enabled">Quick access folders state.</param>
+        public static void QuickAccessFrequentFolders(bool enabled)
         {
             var frequentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            Registry.CurrentUser.OpenSubKey(frequentPath, true)?.SetValue("ShowFrequent", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(frequentPath, true)?.SetValue("ShowFrequent", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -490,12 +490,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set taskbar widgets icon state.
         /// </summary>
-        /// <param name="isEnabled">Taskbar widgets icon state.</param>
-        public static void TaskbarWidgets(bool isEnabled)
+        /// <param name="enabled">Taskbar widgets icon state.</param>
+        public static void TaskbarWidgets(bool enabled)
         {
             GroupPolicyService.ClearTaskbarWidgetsCache();
             var advancedPath = "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var command = $"-Command \"& {{New-ItemProperty -Path {advancedPath} -Name TaskbarDa -PropertyType DWord -Value {(isEnabled ? 1 : 0)} -Force}}\"";
+            var command = $"-Command \"& {{New-ItemProperty -Path {advancedPath} -Name TaskbarDa -PropertyType DWord -Value {(enabled ? 1 : 0)} -Force}}\"";
             PowerShellService.InvokeCommandBypassUCPD(command);
         }
 
@@ -531,26 +531,26 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set search highlights state.
         /// </summary>
-        /// <param name="isEnabled">Search highlights state.</param>
-        public static void SearchHighlightsWindows10(bool isEnabled)
+        /// <param name="enabled">Search highlights state.</param>
+        public static void SearchHighlightsWindows10(bool enabled)
         {
             GroupPolicyService.ClearSearchHighlightsCache();
             var feedsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Feeds\\DSB";
             var searchPath = "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings";
-            Registry.CurrentUser.OpenSubKey(feedsPath, true)?.SetValue("ShowDynamicContent", isEnabled ? 1 : 0, RegistryValueKind.DWord);
-            Registry.CurrentUser.OpenSubKey(searchPath, true)?.SetValue("IsDynamicSearchBoxEnabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(feedsPath, true)?.SetValue("ShowDynamicContent", enabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(searchPath, true)?.SetValue("IsDynamicSearchBoxEnabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set search highlights state.
         /// </summary>
-        /// <param name="isEnabled">Search highlights state.</param>
-        public static void SearchHighlightsWindows11(bool isEnabled)
+        /// <param name="enabled">Search highlights state.</param>
+        public static void SearchHighlightsWindows11(bool enabled)
         {
             GroupPolicyService.ClearSearchHighlightsCache();
             var settingsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings";
 
-            if (isEnabled)
+            if (enabled)
             {
                 var searchPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Search";
                 var policiesPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
@@ -558,25 +558,25 @@ namespace SophiApp.Customizations
                 Registry.CurrentUser.OpenSubKey(policiesPath, true)?.DeleteValue("DisableSearchBoxSuggestions", false);
             }
 
-            Registry.CurrentUser.OpenSubKey(settingsPath, true)?.SetValue("IsDynamicSearchBoxEnabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(settingsPath, true)?.SetValue("IsDynamicSearchBoxEnabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Cortana button taskbar state.
         /// </summary>
-        /// <param name="isEnabled">Cortana button state.</param>
-        public static void CortanaButton(bool isEnabled)
+        /// <param name="enabled">Cortana button state.</param>
+        public static void CortanaButton(bool enabled)
         {
             GroupPolicyService.ClearCortanaButtonCache();
             var advancedPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(advancedPath, true)?.SetValue("ShowCortanaButton", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(advancedPath, true)?.SetValue("ShowCortanaButton", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set taskbar task view button state.
         /// </summary>
-        /// <param name="isEnabled">Taskbar task view button state.</param>
-        public static void TaskViewButton(bool isEnabled)
+        /// <param name="enabled">Taskbar task view button state.</param>
+        public static void TaskViewButton(bool enabled)
         {
             if (CommonDataService.IsWindows11)
             {
@@ -584,18 +584,18 @@ namespace SophiApp.Customizations
             }
 
             var taskPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(taskPath, true)?.SetValue("ShowTaskViewButton", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(taskPath, true)?.SetValue("ShowTaskViewButton", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set News and Interests state.
         /// </summary>
-        /// <param name="isEnabled">News and Interests state.</param>
-        public static void NewsInterests(bool isEnabled)
+        /// <param name="enabled">News and Interests state.</param>
+        public static void NewsInterests(bool enabled)
         {
             GroupPolicyService.ClearNewsInterestsCache();
-            var hashData = OsService.GetNewsInterestsHashData(isEnabled);
-            var feedsCommand = $"-Command \"& {{New-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value {(isEnabled ? 0 : 2)} -Force}}\"";
+            var hashData = OsService.GetNewsInterestsHashData(enabled);
+            var feedsCommand = $"-Command \"& {{New-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Feeds -Name ShellFeedsTaskbarViewMode -PropertyType DWord -Value {(enabled ? 0 : 2)} -Force}}\"";
             var hashCommand = $"-Command \"& {{New-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Feeds -Name EnShellFeedsTaskbarViewMode -PropertyType DWord -Value {hashData} -Force}}\"";
             PowerShellService.InvokeCommandBypassUCPD(feedsCommand);
             PowerShellService.InvokeCommandBypassUCPD(hashCommand);
@@ -604,58 +604,58 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set taskbar people icon state.
         /// </summary>
-        /// <param name="isEnabled">Taskbar people icon state.</param>
-        public static void PeopleTaskbar(bool isEnabled)
+        /// <param name="enabled">Taskbar people icon state.</param>
+        public static void PeopleTaskbar(bool enabled)
         {
             GroupPolicyService.ClearPeopleTaskbarCache();
             var peoplePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People";
-            Registry.CurrentUser.OpenOrCreateSubKey(peoplePath)?.SetValue("PeopleBand", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenOrCreateSubKey(peoplePath)?.SetValue("PeopleBand", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Meet Now icon state.
         /// </summary>
-        /// <param name="isEnabled">Meet Now icon state.</param>
-        public static void MeetNow(bool isEnabled)
+        /// <param name="enabled">Meet Now icon state.</param>
+        public static void MeetNow(bool enabled)
         {
             GroupPolicyService.ClearMeetNowCache();
             var stuckValue = "Settings";
             var stuckPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3";
             var settings = Registry.CurrentUser.OpenSubKey(stuckPath)?.GetValue(stuckValue) as byte[] ?? new byte[10];
-            settings[9] = isEnabled ? (byte)0 : (byte)128;
+            settings[9] = enabled ? (byte)0 : (byte)128;
             Registry.CurrentUser.OpenSubKey(stuckPath, true)?.SetValue(stuckValue, settings, RegistryValueKind.Binary);
         }
 
         /// <summary>
         /// Set Windows Ink Workspace button state.
         /// </summary>
-        /// <param name="isEnabled">Windows Ink Workspace button state.</param>
-        public static void WindowsInkWorkspace(bool isEnabled)
+        /// <param name="enabled">Windows Ink Workspace button state.</param>
+        public static void WindowsInkWorkspace(bool enabled)
         {
             GroupPolicyService.ClearWindowsInkWorkspaceCache();
             var workspacePath = "Software\\Microsoft\\Windows\\CurrentVersion\\PenWorkspace";
-            Registry.CurrentUser.OpenSubKey(workspacePath, true)?.SetValue("PenWorkspaceButtonDesiredVisibility", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(workspacePath, true)?.SetValue("PenWorkspaceButtonDesiredVisibility", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set notification area icons state.
         /// </summary>
-        /// <param name="isEnabled">Notification area icons state.</param>
-        public static void NotificationAreaIcons(bool isEnabled)
+        /// <param name="enabled">Notification area icons state.</param>
+        public static void NotificationAreaIcons(bool enabled)
         {
             GroupPolicyService.ClearNotificationAreaIconsCache();
             var trayPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            Registry.CurrentUser.OpenSubKey(trayPath, true)?.SetValue("EnableAutoTray", isEnabled ? 0 : 1, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(trayPath, true)?.SetValue("EnableAutoTray", enabled ? 0 : 1, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set seconds on the taskbar clock state.
         /// </summary>
-        /// <param name="isEnabled">Seconds on the taskbar clock state.</param>
-        public static void SecondsInSystemClock(bool isEnabled)
+        /// <param name="enabled">Seconds on the taskbar clock state.</param>
+        public static void SecondsInSystemClock(bool enabled)
         {
             var clockPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(clockPath, true)?.SetValue("ShowSecondsInSystemClock", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(clockPath, true)?.SetValue("ShowSecondsInSystemClock", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -672,13 +672,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set end task in taskbar by click state.
         /// </summary>
-        /// <param name="isEnabled">Taskbar end task state.</param>
-        public static void TaskbarEndTask(bool isEnabled)
+        /// <param name="enabled">Taskbar end task state.</param>
+        public static void TaskbarEndTask(bool enabled)
         {
             var taskbarPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings";
             var taskbarTask = "TaskbarEndTask";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenOrCreateSubKey(taskbarPath).SetValue(taskbarTask, 1, RegistryValueKind.DWord);
                 return;
@@ -738,13 +738,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "New App Installed" indicator state.
         /// </summary>
-        /// <param name="isEnabled">New App Installed" indicator state.</param>
-        public static void NewAppInstalledNotification(bool isEnabled)
+        /// <param name="enabled">New App Installed" indicator state.</param>
+        public static void NewAppInstalledNotification(bool enabled)
         {
             var alertPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
             var appAlert = "NoNewAppAlert";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.LocalMachine.OpenSubKey(alertPath, true)?.DeleteValue(appAlert, false);
                 return;
@@ -756,12 +756,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set first sign-in animation state.
         /// </summary>
-        /// <param name="isEnabled">First sign-in animation state.</param>
-        public static void FirstLogonAnimation(bool isEnabled)
+        /// <param name="enabled">First sign-in animation state.</param>
+        public static void FirstLogonAnimation(bool enabled)
         {
             GroupPolicyService.ClearFirstLogonAnimationCache();
             var logonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
-            Registry.LocalMachine.OpenSubKey(logonPath, true)?.SetValue("EnableFirstLogonAnimation", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenSubKey(logonPath, true)?.SetValue("EnableFirstLogonAnimation", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -785,15 +785,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "- Shortcut" suffix state.
         /// </summary>
-        /// <param name="isEnabled">"- Shortcut" suffix state.</param>
-        public static void ShortcutsSuffix(bool isEnabled)
+        /// <param name="enabled">"- Shortcut" suffix state.</param>
+        public static void ShortcutsSuffix(bool enabled)
         {
             var linkPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
             var templatesPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\NamingTemplates";
             var shortcutTemplate = "ShortcutNameTemplate";
             Registry.CurrentUser.OpenSubKey(linkPath, true)?.DeleteValue("link", false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(templatesPath, true)?.DeleteValue(shortcutTemplate, false);
                 return;
@@ -805,32 +805,32 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Print screen button state.
         /// </summary>
-        /// <param name="isEnabled">Print screen button state.</param>
-        public static void PrtScnSnippingTool(bool isEnabled)
+        /// <param name="enabled">Print screen button state.</param>
+        public static void PrtScnSnippingTool(bool enabled)
         {
             var keyboardPath = "Control Panel\\Keyboard";
-            Registry.CurrentUser.OpenSubKey(keyboardPath, true)?.SetValue("PrintScreenKeyForSnippingEnabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(keyboardPath, true)?.SetValue("PrintScreenKeyForSnippingEnabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set input method for app window state.
         /// </summary>
-        /// <param name="isEnabled">Input method for app window state.</param>
-        public static void AppsLanguageSwitch(bool isEnabled)
+        /// <param name="enabled">Input method for app window state.</param>
+        public static void AppsLanguageSwitch(bool enabled)
         {
-            var command = isEnabled ? "Set-WinLanguageBarOption -UseLegacySwitchMode" : "Set-WinLanguageBarOption";
+            var command = enabled ? "Set-WinLanguageBarOption -UseLegacySwitchMode" : "Set-WinLanguageBarOption";
             _ = PowerShellService.Invoke(command);
         }
 
         /// <summary>
         /// Set Aero Shake state.
         /// </summary>
-        /// <param name="isEnabled">Aero Shake state.</param>
-        public static void AeroShaking(bool isEnabled)
+        /// <param name="enabled">Aero Shake state.</param>
+        public static void AeroShaking(bool enabled)
         {
             GroupPolicyService.ClearAeroShakingCache();
             var explorerPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(explorerPath, true)?.SetValue("DisallowShaking", isEnabled ? 0 : 1, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(explorerPath, true)?.SetValue("DisallowShaking", enabled ? 0 : 1, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -888,24 +888,24 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set navigation pane expand state.
         /// </summary>
-        /// <param name="isEnabled">Navigation pane expand state.</param>
-        public static void NavigationPaneExpand(bool isEnabled)
+        /// <param name="enabled">Navigation pane expand state.</param>
+        public static void NavigationPaneExpand(bool enabled)
         {
             var panePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            Registry.CurrentUser.OpenSubKey(panePath, true)?.SetValue("NavPaneExpandToCurrentFolder", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(panePath, true)?.SetValue("NavPaneExpandToCurrentFolder", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Start menu recently added apps state.
         /// </summary>
-        /// <param name="isEnabled">Start menu recently added apps state.</param>
-        public static void RecentlyAddedApps(bool isEnabled)
+        /// <param name="enabled">Start menu recently added apps state.</param>
+        public static void RecentlyAddedApps(bool enabled)
         {
             GroupPolicyService.ClearRecentlyAddedAppsCache();
             var appsPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
             var appsValue = "HideRecentlyAddedApps";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(appsPath, true)?.DeleteValue(appsValue, false);
                 return;
@@ -917,12 +917,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Start menu app suggestions state.
         /// </summary>
-        /// <param name="isEnabled">Start menu app suggestions state.</param>
-        public static void AppSuggestions(bool isEnabled)
+        /// <param name="enabled">Start menu app suggestions state.</param>
+        public static void AppSuggestions(bool enabled)
         {
             GroupPolicyService.ClearAppSuggestionsCache();
             var contentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager";
-            Registry.CurrentUser.OpenSubKey(contentPath, true)?.SetValue("SubscribedContent-338388Enabled", isEnabled ? 1 : 0, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey(contentPath, true)?.SetValue("SubscribedContent-338388Enabled", enabled ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -938,15 +938,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set recommended section state.
         /// </summary>
-        /// <param name="isEnabled">Recommended section state.</param>
-        public static void StartRecommendedSection(bool isEnabled)
+        /// <param name="enabled">Recommended section state.</param>
+        public static void StartRecommendedSection(bool enabled)
         {
             GroupPolicyService.ClearStartRecommendedSectionCache();
             var explorerPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
             var startPath = "Software\\Microsoft\\PolicyManager\\Current\\Device\\Start";
             var hideRecommended = "HideRecommendedSection";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(explorerPath, true)?.DeleteValue(hideRecommended, false);
                 Registry.LocalMachine.OpenSubKey(startPath, true)?.DeleteValue(hideRecommended, false);
@@ -957,12 +957,288 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Set One Drive state.
+        /// </summary>
+        /// <param name="enabled">One Drive state.</param>
+        public static void OneDrive(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set storage sense state.
+        /// </summary>
+        /// <param name="enabled">Storage sense state.</param>
+        public static void StorageSense(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set hibernation state.
+        /// </summary>
+        /// <param name="enabled">Hibernation state.</param>
+        public static void Hibernation(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set long path limit state.
+        /// </summary>
+        /// <param name="enabled">Long path limit state.</param>
+        public static void Win32LongPathLimit(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set BSOD error state.
+        /// </summary>
+        /// <param name="enabled">BSOD error state.</param>
+        public static void BSoDStopError(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set administrator approval mode state.
+        /// </summary>
+        /// <param name="enabled">Administrator approval mode state.</param>
+        public static void AdminApprovalMode(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set delivery optimization state.
+        /// </summary>
+        /// <param name="enabled">Delivery optimization state.</param>
+        public static void DeliveryOptimization(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set Windows manage default printer state.
+        /// </summary>
+        /// <param name="enabled">Default printer manage state.</param>
+        public static void WindowsManageDefaultPrinter(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set update Microsoft products state.
+        /// </summary>
+        /// <param name="enabled">Update Microsoft products state.</param>
+        public static void UpdateMicrosoftProducts(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set restart notification state.
+        /// </summary>
+        /// <param name="state">Restart notification state.</param>
+        public static void RestartNotification(int state)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set restart device after update state.
+        /// </summary>
+        /// <param name="enabled">Restart device after update state.</param>
+        public static void RestartDeviceAfterUpdate(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set active hours restart state.
+        /// </summary>
+        /// <param name="state">Active hours restart state.</param>
+        public static void ActiveHours(int state)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set Windows latest update state.
+        /// </summary>
+        /// <param name="enabled">Latest update state.</param>
+        public static void WindowsLatestUpdate(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set network adapters power state.
+        /// </summary>
+        /// <param name="enabled">Network adapters power state.</param>
+        public static void NetworkAdaptersSavePower(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set input method state.
+        /// </summary>
+        /// <param name="state">Input method state.</param>
+        public static void InputMethod(int state)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set installed .NET state.
+        /// </summary>
+        /// <param name="enabled">Installed .NET state.</param>
+        public static void LatestInstalledNET(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        // TODO: Set description
+        public static void WinPrtScrFolder(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set recommended troubleshooting state.
+        /// </summary>
+        /// <param name="state">Recommended troubleshooting state.</param>
+        public static void RecommendedTroubleshooting(int state)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set folders launch separate process state.
+        /// </summary>
+        /// <param name="enabled">Folders launch separate process state.</param>
+        public static void FoldersLaunchSeparateProcess(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set reserved storage state.
+        /// </summary>
+        /// <param name="state">Reserved storage state.</param>
+        public static void ReservedStorage(int state)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set help page state.
+        /// </summary>
+        /// <param name="enabled">Help page state.</param>
+        public static void F1HelpPage(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set Num Lock state.
+        /// </summary>
+        /// <param name="enabled">Num Lock state.</param>
+        public static void NumLock(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set Caps Lock state.
+        /// </summary>
+        /// <param name="enabled">Caps Lock state.</param>
+        public static void CapsLock(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set sticky shift state.
+        /// </summary>
+        /// <param name="enabled">Sticky shift state.</param>
+        public static void StickyShift(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set autoplay state.
+        /// </summary>
+        /// <param name="enabled">Autoplay state.</param>
+        public static void Autoplay(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set thumbnail cache state.
+        /// </summary>
+        /// <param name="enabled">Thumbnail cache state.</param>
+        public static void ThumbnailCacheRemoval(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set save restartable apps state.
+        /// </summary>
+        /// <param name="enabled">Restartable apps state.</param>
+        public static void SaveRestartableApps(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set network discovery state.
+        /// </summary>
+        /// <param name="enabled">Network discovery state.</param>
+        public static void NetworkDiscovery(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set power plan state.
+        /// </summary>
+        /// <param name="state">Power plan state.</param>
+        public static void PowerPlan(int state)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set RKN bypass state.
+        /// </summary>
+        /// <param name="enabled">RKN bypass state.</param>
+        public static void RKNBypass(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
+        /// Set registry backup state.
+        /// </summary>
+        /// <param name="enabled">Registry backup state.</param>
+        public static void RegistryBackup(bool enabled)
+        {
+            // Method intentionally left empty.
+        }
+
+        /// <summary>
         /// Set HEVC state.
         /// </summary>
-        /// <param name="isEnabled">HEVC state.</param>
-        public static void HEVC(bool isEnabled)
+        /// <param name="enabled">HEVC state.</param>
+        public static void HEVC(bool enabled)
         {
-            if (isEnabled)
+            if (enabled)
             {
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string ?? Environment.GetEnvironmentVariable("TEMP");
                 var appxFile = $"{downloadFolder}\\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx";
@@ -978,20 +1254,20 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Cortana auto start state.
         /// </summary>
-        /// <param name="isEnabled">Cortana auto start state.</param>
-        public static void CortanaAutostart(bool isEnabled)
+        /// <param name="enabled">Cortana auto start state.</param>
+        public static void CortanaAutostart(bool enabled)
         {
             var startupIdPath = "Local Settings\\Software\\Microsoft\\Windows\\CurrentVersion\\AppModel\\SystemAppData\\Microsoft.549981C3F5F10_8wekyb3d8bbwe\\CortanaStartupId";
-            Registry.ClassesRoot.OpenSubKey(startupIdPath, true)?.SetValue("State", isEnabled ? 2 : 1, RegistryValueKind.DWord);
+            Registry.ClassesRoot.OpenSubKey(startupIdPath, true)?.SetValue("State", enabled ? 2 : 1, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set Xbox game bar state.
         /// </summary>
-        /// <param name="isEnabled">Xbox game bar state.</param>
-        public static void XboxGameBar(bool isEnabled)
+        /// <param name="enabled">Xbox game bar state.</param>
+        public static void XboxGameBar(bool enabled)
         {
-            var barValue = isEnabled ? 1 : 0;
+            var barValue = enabled ? 1 : 0;
             Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR", true)?.SetValue("AppCaptureEnabled", barValue, RegistryValueKind.DWord);
             Registry.CurrentUser.OpenSubKey("System\\GameConfigStore", true)?.SetValue("GameDVR_Enabled", barValue, RegistryValueKind.DWord);
         }
@@ -999,33 +1275,33 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Xbox game tips state.
         /// </summary>
-        /// <param name="isEnabled">Xbox game tips state.</param>
-        public static void XboxGameTips(bool isEnabled)
+        /// <param name="enabled">Xbox game tips state.</param>
+        public static void XboxGameTips(bool enabled)
         {
-            var barValue = isEnabled ? 1 : 0;
+            var barValue = enabled ? 1 : 0;
             Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\GameBar", true)?.SetValue("ShowStartupPanel", barValue, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set GPU scheduling state.
         /// </summary>
-        /// <param name="isEnabled">GPU scheduling state.</param>
-        public static void GPUScheduling(bool isEnabled)
+        /// <param name="enabled">GPU scheduling state.</param>
+        public static void GPUScheduling(bool enabled)
         {
-            var hwSchValue = isEnabled ? 2 : 1;
+            var hwSchValue = enabled ? 2 : 1;
             Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers")?.SetValue("HwSchMode", hwSchValue, RegistryValueKind.DWord);
         }
 
         /// <summary>
         /// Set "Windows Cleanup" scheduled task state.
         /// </summary>
-        /// <param name="isEnabled">Task state.</param>
-        public static void CleanupTask(bool isEnabled)
+        /// <param name="enabled">Task state.</param>
+        public static void CleanupTask(bool enabled)
         {
             ScheduledTaskService.DeleteTaskFolders(["Sophia Script", "SophiApp"]);
             RegistryService.RemoveVolumeCachesStateFlags();
 
-            if (isEnabled)
+            if (enabled)
             {
                 AppNotificationService.EnableToastNotification();
                 RegistryService.SetVolumeCachesStateFlags();
@@ -1045,12 +1321,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set scheduled task "SoftwareDistribution" state.
         /// </summary>
-        /// <param name="isEnabled">Task state.</param>
-        public static void SoftwareDistributionTask(bool isEnabled)
+        /// <param name="enabled">Task state.</param>
+        public static void SoftwareDistributionTask(bool enabled)
         {
             ScheduledTaskService.DeleteTaskFolders(["Sophia Script", "SophiApp"]);
 
-            if (isEnabled)
+            if (enabled)
             {
                 AppNotificationService.EnableToastNotification();
                 AppNotificationService.RegisterAsToastSender("SophiApp");
@@ -1065,12 +1341,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set scheduled task "Temp" state.
         /// </summary>
-        /// <param name="isEnabled">Task state.</param>
-        public static void TempTask(bool isEnabled)
+        /// <param name="enabled">Task state.</param>
+        public static void TempTask(bool enabled)
         {
             ScheduledTaskService.DeleteTaskFolders(["Sophia Script", "SophiApp"]);
 
-            if (isEnabled)
+            if (enabled)
             {
                 AppNotificationService.EnableToastNotification();
                 AppNotificationService.RegisterAsToastSender("SophiApp");
@@ -1085,38 +1361,38 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows network protection state.
         /// </summary>
-        /// <param name="isEnabled">Network protection state.</param>
-        public static void NetworkProtection(bool isEnabled)
+        /// <param name="enabled">Network protection state.</param>
+        public static void NetworkProtection(bool enabled)
         {
-            var protectionScript = $"Set-MpPreference -EnableNetworkProtection {(isEnabled ? "Enabled" : "Disabled")}";
+            var protectionScript = $"Set-MpPreference -EnableNetworkProtection {(enabled ? "Enabled" : "Disabled")}";
             _ = PowerShellService.Invoke(protectionScript);
         }
 
         /// <summary>
         /// Set Windows PUApps detection state.
         /// </summary>
-        /// <param name="isEnabled">PUApps detection state.</param>
-        public static void PUAppsDetection(bool isEnabled)
+        /// <param name="enabled">PUApps detection state.</param>
+        public static void PUAppsDetection(bool enabled)
         {
-            var detectionScript = $"Set-MpPreference -PUAProtection {(isEnabled ? "Enabled" : "Disabled")}";
+            var detectionScript = $"Set-MpPreference -PUAProtection {(enabled ? "Enabled" : "Disabled")}";
             _ = PowerShellService.Invoke(detectionScript);
         }
 
         /// <summary>
         /// Set Microsoft Defender sandbox state.
         /// </summary>
-        /// <param name="isEnabled">Microsoft Defender sandbox state.</param>
-        public static void DefenderSandbox(bool isEnabled)
+        /// <param name="enabled">Microsoft Defender sandbox state.</param>
+        public static void DefenderSandbox(bool enabled)
         {
-            var sandboxScript = $"setx /M MP_FORCE_USE_SANDBOX {(isEnabled ? "1" : "0")}";
+            var sandboxScript = $"setx /M MP_FORCE_USE_SANDBOX {(enabled ? "1" : "0")}";
             _ = PowerShellService.Invoke(sandboxScript);
         }
 
         /// <summary>
         /// Set Windows Event Viewer custom view state.
         /// </summary>
-        /// <param name="isEnabled">Event Viewer custom view state.</param>
-        public static void EventViewerCustomView(bool isEnabled)
+        /// <param name="enabled">Event Viewer custom view state.</param>
+        public static void EventViewerCustomView(bool enabled)
         {
             var auditValueName = "ProcessCreationIncludeCmdLine_Enabled";
             var viewerXmlPath = $"{Environment.GetEnvironmentVariable("ALLUSERSPROFILE")}\\Microsoft\\Event Viewer\\Views\\ProcessCreation.xml";
@@ -1139,7 +1415,7 @@ namespace SophiApp.Customizations
   </QueryConfig>
 </ViewerConfig>";
 
-            if (isEnabled)
+            if (enabled)
             {
                 _ = PowerShellService.Invoke($"auditpol /set /subcategory:\"{viewerGuid}\" /success:enable /failure:enable");
                 Registry.LocalMachine.OpenSubKey(viewerAuditPath, true)?.SetValue(auditValueName, 1, RegistryValueKind.DWord);
@@ -1159,14 +1435,14 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows PowerShell modules logging state.
         /// </summary>
-        /// <param name="isEnabled">PowerShell modules logging state.</param>
-        public static void PowerShellModulesLogging(bool isEnabled)
+        /// <param name="enabled">PowerShell modules logging state.</param>
+        public static void PowerShellModulesLogging(bool enabled)
         {
             var moduleLoggingPath = "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging";
             var moduleNamesPath = $"{moduleLoggingPath}\\ModuleNames";
             var moduleLoggingValueName = "EnableModuleLogging";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.LocalMachine.OpenOrCreateSubKey(moduleNamesPath).SetValue("*", "*");
                 Registry.LocalMachine.OpenSubKey(moduleLoggingPath, true)?.SetValue(moduleLoggingValueName, 1, RegistryValueKind.DWord);
@@ -1180,13 +1456,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows PowerShell scripts logging state.
         /// </summary>
-        /// <param name="isEnabled">PowerShell scripts logging state.</param>
-        public static void PowerShellScriptsLogging(bool isEnabled)
+        /// <param name="enabled">PowerShell scripts logging state.</param>
+        public static void PowerShellScriptsLogging(bool enabled)
         {
             var scriptLoggingPath = "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging";
             var scriptLoggingValueName = "EnableScriptBlockLogging";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.LocalMachine.OpenOrCreateSubKey(scriptLoggingPath).SetValue(scriptLoggingValueName, 1, RegistryValueKind.DWord);
                 return;
@@ -1198,24 +1474,24 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows SmartScreen state.
         /// </summary>
-        /// <param name="isEnabled">Windows SmartScreen state.</param>
-        public static void AppsSmartScreen(bool isEnabled)
+        /// <param name="enabled">Windows SmartScreen state.</param>
+        public static void AppsSmartScreen(bool enabled)
         {
             Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true)
-                ?.SetValue("SmartScreenEnabled", $"{(isEnabled ? "Warn" : "Off")}", RegistryValueKind.String);
+                ?.SetValue("SmartScreenEnabled", $"{(enabled ? "Warn" : "Off")}", RegistryValueKind.String);
         }
 
         /// <summary>
         /// Set Windows save zone state.
         /// </summary>
-        /// <param name="isEnabled">Windows save zone state.</param>
-        public static void SaveZoneInformation(bool isEnabled)
+        /// <param name="enabled">Windows save zone state.</param>
+        public static void SaveZoneInformation(bool enabled)
         {
             GroupPolicyService.ClearSaveZoneInformationCache();
             var safeZonePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Attachments";
             var safeZoneValueName = "SaveZoneInformation";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(safeZonePath, true)?.DeleteValue(safeZoneValueName, false);
                 return;
@@ -1227,13 +1503,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows script host state.
         /// </summary>
-        /// <param name="isEnabled">Windows script host state.</param>
-        public static void WindowsScriptHost(bool isEnabled)
+        /// <param name="enabled">Windows script host state.</param>
+        public static void WindowsScriptHost(bool enabled)
         {
             var scriptHostPath = "Software\\Microsoft\\Windows Script Host\\Settings";
             var scriptHostValueName = "Enabled";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(scriptHostPath, true)?.DeleteValue(scriptHostValueName, false);
                 return;
@@ -1245,26 +1521,26 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Windows Sandbox state.
         /// </summary>
-        /// <param name="isEnabled">Windows Sandbox state.</param>
-        public static void WindowsSandbox(bool isEnabled)
+        /// <param name="enabled">Windows Sandbox state.</param>
+        public static void WindowsSandbox(bool enabled)
         {
             var enableSandboxScript = "Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart";
             var disableSandboxScript = "Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart";
-            _ = PowerShellService.Invoke($"{(isEnabled ? enableSandboxScript : disableSandboxScript)}");
+            _ = PowerShellService.Invoke($"{(enabled ? enableSandboxScript : disableSandboxScript)}");
         }
 
         /// <summary>
         /// Set Local Security Authority state.
         /// </summary>
-        /// <param name="isEnabled">ocal Security Authority state.</param>
-        public static void LocalSecurityAuthority(bool isEnabled)
+        /// <param name="enabled">ocal Security Authority state.</param>
+        public static void LocalSecurityAuthority(bool enabled)
         {
             GroupPolicyService.ClearLocalSecurityAuthorityCache();
             var lsaPath = "System\\CurrentControlSet\\Control\\Lsa";
             var runAsPPL = "RunAsPPL";
             var runAsPPLBoot = "RunAsPPLBoot";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.LocalMachine.OpenSubKey(lsaPath, true)?.SetValue(runAsPPL, 2, RegistryValueKind.DWord);
                 Registry.LocalMachine.OpenSubKey(lsaPath, true)?.SetValue(runAsPPLBoot, 2, RegistryValueKind.DWord);
@@ -1278,12 +1554,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Extract all" item in the Windows Installer (.msi) context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Extract all" item state.</param>
-        public static void MSIExtractContext(bool isEnabled)
+        /// <param name="enabled">"Extract all" item state.</param>
+        public static void MSIExtractContext(bool enabled)
         {
             var msiExtractPath = "Msi.Package\\shell\\Extract";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenOrCreateSubKey($"{msiExtractPath}\\Command").SetValue(string.Empty, "msiexec.exe /a \"%1\" /qb TARGETDIR=\"%1 extracted\"", RegistryValueKind.String);
 
@@ -1300,12 +1576,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Install" item in the Cabinet archives (.cab) context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Install" item state.</param>
-        public static void CABInstallContext(bool isEnabled)
+        /// <param name="enabled">"Install" item state.</param>
+        public static void CABInstallContext(bool enabled)
         {
             var runAsPath = "CABFolder\\Shell\\runas";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenOrCreateSubKey($"{runAsPath}\\Command")
                     .SetValue(string.Empty, "cmd /c DISM.exe /Online /Add-Package /PackagePath:\"%1\" /NoRestart & pause", RegistryValueKind.String);
@@ -1325,15 +1601,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Cast to Device" item in the media files and folders context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Cast to Device" item state.</param>
-        public static void CastToDeviceContext(bool isEnabled)
+        /// <param name="enabled">"Cast to Device" item state.</param>
+        public static void CastToDeviceContext(bool enabled)
         {
             var shellBlockedPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
             var castToDeviceGuid = "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}";
 
             Registry.LocalMachine.OpenSubKey(shellBlockedPath, true)?.DeleteValue(castToDeviceGuid, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(shellBlockedPath, true)?.DeleteValue(castToDeviceGuid, false);
                 return;
@@ -1345,15 +1621,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Share" context menu item state.
         /// </summary>
-        /// <param name="isEnabled">"Share" item state.</param>
-        public static void ShareContext(bool isEnabled)
+        /// <param name="enabled">"Share" item state.</param>
+        public static void ShareContext(bool enabled)
         {
             var shellBlockedPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
             var shareContextGuid = "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}";
 
             Registry.LocalMachine.OpenSubKey(shellBlockedPath, true)?.DeleteValue(shareContextGuid, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(shellBlockedPath, true)?.DeleteValue(shareContextGuid, false);
                 return;
@@ -1365,15 +1641,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Edit With Clipchamp" item in the media files context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Edit With Clipchamp" item state.</param>
-        public static void EditWithClipchampContext(bool isEnabled)
+        /// <param name="enabled">"Edit With Clipchamp" item state.</param>
+        public static void EditWithClipchampContext(bool enabled)
         {
             var clipChampPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
             var clipChampGuid = "{8AB635F8-9A67-4698-AB99-784AD929F3B4}";
 
             Registry.LocalMachine.OpenSubKey(clipChampPath, true)?.DeleteValue(clipChampGuid, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(clipChampPath, true)?.DeleteValue(clipChampGuid, false);
                 return;
@@ -1385,15 +1661,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Edit With Photos" item in the media files context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Edit With Photos" item state.</param>
-        public static void EditWithPhotosContext(bool isEnabled)
+        /// <param name="enabled">"Edit With Photos" item state.</param>
+        public static void EditWithPhotosContext(bool enabled)
         {
             var photosPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
             var photosGuid = "{BFE0E2A4-C70C-4AD7-AC3D-10D1ECEBB5B4}";
 
             Registry.LocalMachine.OpenSubKey(photosPath, true)?.DeleteValue(photosGuid, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(photosPath, true)?.DeleteValue(photosPath, false);
                 return;
@@ -1405,15 +1681,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Edit With Paint Context" item in the media files context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Edit With Paint Context" item state.</param>
-        public static void EditWithPaintContext(bool isEnabled)
+        /// <param name="enabled">"Edit With Paint Context" item state.</param>
+        public static void EditWithPaintContext(bool enabled)
         {
             var paintPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
             var paintGuid = "{2430F218-B743-4FD6-97BF-5C76541B4AE9}";
 
             Registry.LocalMachine.OpenSubKey(paintPath, true)?.DeleteValue(paintGuid, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(paintPath, true)?.DeleteValue(paintGuid, false);
                 return;
@@ -1425,8 +1701,8 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Edit with Paint 3D" item in the media files context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Edit with Paint 3D" item state.</param>
-        public static void EditWithPaint3DContext(bool isEnabled)
+        /// <param name="enabled">"Edit with Paint 3D" item state.</param>
+        public static void EditWithPaint3DContext(bool enabled)
         {
             var paintContextValue = "ProgrammaticAccessOnly";
             new List<string>()
@@ -1437,7 +1713,7 @@ namespace SophiApp.Customizations
             {
                 var fileTypePath = $"SystemFileAssociations\\{fileType}\\Shell\\3D Edit";
 
-                if (isEnabled)
+                if (enabled)
                 {
                     Registry.ClassesRoot.OpenSubKey(fileTypePath, true)?.DeleteValue(paintContextValue, false);
                     return;
@@ -1450,14 +1726,14 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Print" item in the .bat and .cmd files context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Print" item state.</param>
-        public static void PrintCMDContext(bool isEnabled)
+        /// <param name="enabled">"Print" item state.</param>
+        public static void PrintCMDContext(bool enabled)
         {
             var batPrintPath = "batfile\\shell\\print";
             var cmdPrintPath = "cmdfile\\shell\\print";
             var printContextValue = "ProgrammaticAccessOnly";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenSubKey(batPrintPath, true)?.DeleteValue(printContextValue, false);
                 Registry.ClassesRoot.OpenSubKey(cmdPrintPath, true)?.DeleteValue(printContextValue, false);
@@ -1471,38 +1747,38 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Include in Library" item in the folders and drives context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Include in Library" item state.</param>
-        public static void IncludeInLibraryContext(bool isEnabled)
+        /// <param name="enabled">"Include in Library" item state.</param>
+        public static void IncludeInLibraryContext(bool enabled)
         {
             var libraryContextPath = "Folder\\ShellEx\\ContextMenuHandlers\\Library Location";
             var enableValue = "{3dad6c5d-2167-4cae-9914-f99e41c12cfa}";
             var disableValue = "-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}";
-            var contextValue = isEnabled ? enableValue : disableValue;
+            var contextValue = enabled ? enableValue : disableValue;
             Registry.ClassesRoot.OpenSubKey(libraryContextPath, true)?.SetValue(string.Empty, contextValue, RegistryValueKind.String);
         }
 
         /// <summary>
         /// Set "Send to" item in the folders context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Send to" item state.</param>
-        public static void SendToContext(bool isEnabled)
+        /// <param name="enabled">"Send to" item state.</param>
+        public static void SendToContext(bool enabled)
         {
             var sendToPath = "AllFilesystemObjects\\shellex\\ContextMenuHandlers\\SendTo";
             var enableValue = "{7BA4C740-9E81-11CF-99D3-00AA004AE837}";
             var disableValue = "-{7BA4C740-9E81-11CF-99D3-00AA004AE837}";
-            var contextValue = isEnabled ? enableValue : disableValue;
+            var contextValue = enabled ? enableValue : disableValue;
             Registry.ClassesRoot.OpenSubKey(sendToPath, true)?.SetValue(string.Empty, contextValue, RegistryValueKind.String);
         }
 
         /// <summary>
         /// Set "Bitmap image" item in the "New" context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Bitmap image" item state.</param>
-        public static void BitmapImageNewContext(bool isEnabled)
+        /// <param name="enabled">"Bitmap image" item state.</param>
+        public static void BitmapImageNewContext(bool enabled)
         {
             var bmpShellPath = ".bmp\\ShellNew";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenOrCreateSubKey(bmpShellPath).SetValue("ItemName", "@%SystemRoot%\\System32\\mspaint.exe,-59414", RegistryValueKind.ExpandString);
                 Registry.ClassesRoot.OpenSubKey(bmpShellPath, true)?.SetValue("NullFile", string.Empty, RegistryValueKind.String);
@@ -1515,12 +1791,12 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Rich Text Document" item in the "New" context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Rich Text Document" item state.</param>
-        public static void RichTextDocumentNewContext(bool isEnabled)
+        /// <param name="enabled">"Rich Text Document" item state.</param>
+        public static void RichTextDocumentNewContext(bool enabled)
         {
             var rtfShellPath = ".rtf\\ShellNew";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenOrCreateSubKey(rtfShellPath).SetValue("Data", @"{\rtf1}", RegistryValueKind.String);
                 Registry.ClassesRoot.OpenSubKey(rtfShellPath, true)?.SetValue("ItemName", "@%ProgramFiles%\\Windows NT\\Accessories\\WORDPAD.EXE,-213", RegistryValueKind.ExpandString);
@@ -1533,13 +1809,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Compressed (zipped) Folder" item in the "New" context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Compressed (zipped) Folder" item state.</param>
-        public static void CompressedFolderNewContext(bool isEnabled)
+        /// <param name="enabled">"Compressed (zipped) Folder" item state.</param>
+        public static void CompressedFolderNewContext(bool enabled)
         {
             var zipShellPath = ".zip\\CompressedFolder\\ShellNew";
             var zipContextValue = new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenOrCreateSubKey(zipShellPath).SetValue("Data", zipContextValue, RegistryValueKind.Binary);
                 Registry.ClassesRoot.OpenSubKey(zipShellPath, true)?.SetValue("ItemName", "@%SystemRoot%\\System32\\zipfldr.dll,-10194", RegistryValueKind.ExpandString);
@@ -1552,13 +1828,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Open", "Print", and "Edit" context menu items available when selecting more than 15 files state.
         /// </summary>
-        /// <param name="isEnabled">"Open", "Print", and "Edit" context menu items state.</param>
-        public static void MultipleInvokeContext(bool isEnabled)
+        /// <param name="enabled">"Open", "Print", and "Edit" context menu items state.</param>
+        public static void MultipleInvokeContext(bool enabled)
         {
             var multipleContextPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
             var multipleContextValue = "MultipleInvokePromptMinimum";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(multipleContextPath, true)?.SetValue(multipleContextValue, 300, RegistryValueKind.DWord);
                 return;
@@ -1570,15 +1846,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Look for an app in the Microsoft Store" items in the "Open with" dialog state.
         /// </summary>
-        /// <param name="isEnabled">"Look for an app in the Microsoft Store" items state.</param>
-        public static void UseStoreOpenWith(bool isEnabled)
+        /// <param name="enabled">"Look for an app in the Microsoft Store" items state.</param>
+        public static void UseStoreOpenWith(bool enabled)
         {
             var storeContextPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
             var storeContextValue = "NoUseStoreOpenWith";
 
             Registry.LocalMachine.OpenSubKey(storeContextPath, true)?.DeleteValue(storeContextValue, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(storeContextPath, true)?.DeleteValue(storeContextValue, false);
                 return;
@@ -1590,15 +1866,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set "Open in Windows Terminal" item in the folders context menu state.
         /// </summary>
-        /// <param name="isEnabled">"Open in Windows Terminal" item state.</param>
-        public static void OpenWindowsTerminalContext(bool isEnabled)
+        /// <param name="enabled">"Open in Windows Terminal" item state.</param>
+        public static void OpenWindowsTerminalContext(bool enabled)
         {
             var extensionsBlockPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
             var terminalGuid = "{9F156763-7844-4DC4-B2B1-901F640F5155}";
 
             Registry.LocalMachine.OpenSubKey(extensionsBlockPath, true)?.DeleteValue(terminalGuid, false);
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.CurrentUser.OpenSubKey(extensionsBlockPath, true)?.DeleteValue(terminalGuid, false);
                 return;
@@ -1610,8 +1886,8 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Open Windows Terminal from context menu as administrator by default state.
         /// </summary>
-        /// <param name="isEnabled">"Open in Windows Terminal as Administrator" item state.</param>
-        public static void OpenWindowsTerminalAdminContext(bool isEnabled)
+        /// <param name="enabled">"Open in Windows Terminal as Administrator" item state.</param>
+        public static void OpenWindowsTerminalAdminContext(bool enabled)
         {
             try
             {
@@ -1626,7 +1902,7 @@ namespace SophiApp.Customizations
                     elevateSetting = deserializedSettings!.SelectToken("profiles.defaults.elevate");
                 }
 
-                elevateSetting!.Replace(isEnabled);
+                elevateSetting!.Replace(enabled);
                 File.WriteAllText(terminalSettings, deserializedSettings!.ToString(), Encoding.UTF8);
             }
             catch (Exception ex)
@@ -1638,13 +1914,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set images edit from context menu state.
         /// </summary>
-        /// <param name="isEnabled">Images edit from context menu state.</param>
-        public static void ImagesEditContext(bool isEnabled)
+        /// <param name="enabled">Images edit from context menu state.</param>
+        public static void ImagesEditContext(bool enabled)
         {
             var accessPath = "SystemFileAssociations\\image\\shell\\edit";
             var accessName = "ProgrammaticAccessOnly";
 
-            if (isEnabled)
+            if (enabled)
             {
                 Registry.ClassesRoot.OpenSubKey(accessPath, true)?.DeleteValue(accessName, false);
                 return;

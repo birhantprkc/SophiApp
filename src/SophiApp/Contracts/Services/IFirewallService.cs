@@ -14,7 +14,13 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Gets firewall group rules using the group name.
         /// </summary>
-        /// <param name="groupName">The name of group to search rules.</param>
-        IEnumerable<INetFwRule> GetGroupRules(string groupName);
+        /// <param name="name">The name of group to search rules.</param>
+        IEnumerable<INetFwRule> GetGroupRules(string name);
+
+        /// <summary>
+        /// Gets firewall group rules using the group name.
+        /// </summary>
+        /// <param name="names">The name of groups to search rules.</param>
+        List<INetFwRule> GetGroupRules(params string[] names);
     }
 }

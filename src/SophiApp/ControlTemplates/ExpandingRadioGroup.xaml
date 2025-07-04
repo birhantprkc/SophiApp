@@ -87,7 +87,8 @@
             </Expander.Header>
             <Expander.Content>
                 <ItemsRepeater ItemsSource="{Binding Items}"
-                               ItemTemplate="{StaticResource ExpanderItemTemplate}"/>
+                               ItemTemplate="{StaticResource ExpanderItemTemplate}"
+                               VerticalCacheLength="{Binding Items.Count}"/>
             </Expander.Content>
             <interactivity:Interaction.Behaviors>
                 <interaction:DataTriggerBehavior Binding="{Binding Visibility, ElementName=DescriptionTextBlock}" ComparisonCondition="Equal" Value="Collapsed">
