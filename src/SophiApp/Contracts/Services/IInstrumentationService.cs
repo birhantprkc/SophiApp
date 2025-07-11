@@ -45,6 +45,11 @@ namespace SophiApp.Contracts.Services
         List<ManagementObject> GetAntivirusProductsOrDefault();
 
         /// <summary>
+        /// Get data from the PowerPlan class.
+        /// </summary>
+        List<ManagementObject> GetPowerPlans();
+
+        /// <summary>
         /// Get power plan names.
         /// </summary>
         List<string> GetPowerPlanNames();

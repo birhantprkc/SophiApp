@@ -549,7 +549,7 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         }
 
         /// <inheritdoc/>
-        public void SetEnabled(Task? task, bool enabled)
+        public void SetState(Task? task, bool enabled)
         {
             if (task is not null)
             {

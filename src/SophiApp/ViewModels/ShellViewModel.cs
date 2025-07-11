@@ -16,7 +16,6 @@ using SophiApp.Models;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Threading;
-using Windows.ApplicationModel.Core;
 
 /// <summary>
 /// Implements the <see cref="ShellViewModel"/> class.

@@ -7,7 +7,6 @@ namespace SophiApp.Services
     using System.Collections.Generic;
     using NetFwTypeLib;
     using SophiApp.Contracts.Services;
-    using SophiApp.Extensions;
 
     /// <inheritdoc/>
     public class FirewallService : IFirewallService

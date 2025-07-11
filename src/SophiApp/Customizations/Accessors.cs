@@ -10,6 +10,7 @@ namespace SophiApp.Customizations
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
     using SophiApp.Models;
+    using System.Globalization;
     using System.ServiceProcess;
     using System.Text;
 
@@ -783,7 +784,7 @@ namespace SophiApp.Customizations
             var storagePolicy01 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("01") as int? ?? -1;
             var storagePolicy04 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("04") as int? ?? -1;
             var storagePolicy2048 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("2048") as int? ?? -1;
-            return storagePolicy01.Equals(1) && storagePolicy04.Equals(1) && storagePolicy2048.Equals(1);
+            return storagePolicy01.Equals(1) && storagePolicy04.Equals(1) && storagePolicy2048.Equals(30);
         }
 
         /// <summary>
@@ -803,7 +804,7 @@ namespace SophiApp.Customizations
         {
             var filePath = "System\\CurrentControlSet\\Control\\FileSystem";
             var isEnabled = Registry.LocalMachine.OpenSubKey(filePath)?.GetValue("LongPathsEnabled") as int? ?? -1;
-            return isEnabled.Equals(1);
+            return isEnabled.Equals(0);
         }
 
         /// <summary>
@@ -831,8 +832,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool DeliveryOptimization()
         {
-            var downloadPath = "S-1-5-20\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Settings";
-            var isEnabled = Registry.Users.OpenSubKey(downloadPath)?.GetValue("DownloadMode") as int? ?? -1;
+            var settingsPath = "S-1-5-20\\Software\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Settings";
+            var isEnabled = Registry.Users.OpenSubKey(settingsPath)?.GetValue("DownloadMode") as int? ?? -1;
             return !isEnabled.Equals(0);
         }
 
@@ -851,14 +852,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool UpdateMicrosoftProducts()
         {
-            if (CommonDataService.IsWindows11)
-            {
-                var updatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
-                var isEnabled = Registry.LocalMachine.OpenSubKey(updatePath)?.GetValue("AllowMUUpdateService") as int? ?? -1;
-                return isEnabled.Equals(1);
-            }
-
-            return UpdateService.AllowedOtherProductsUpdate();
+            return UpdateService.HasMicrosoftProductsUpdate();
         }
 
         /// <summary>
@@ -1058,7 +1052,12 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int PowerPlan()
         {
-            return 1;
+            var performancePlanGuid = "{8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c}";
+            var activePlan = InstrumentationService.GetPowerPlans()
+                .Select(plan => (IsActive: (bool)plan.GetPropertyValue("IsActive"), InstanceID: (string)plan.GetPropertyValue("InstanceID")))
+                .First(plan => plan.IsActive);
+
+            return activePlan.InstanceID.Contains(performancePlanGuid) ? 1 : 2;
         }
 
         /// <summary>
@@ -1066,7 +1065,15 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RKNBypass()
         {
-            return true;
+            if (RegionInfo.CurrentRegion.GeoId.Equals(203))
+            {
+                var bypassUrl = "https://p.thenewone.lol:8443/proxy.pac";
+                var settingsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+                var isEnabled = Registry.CurrentUser.OpenSubKey(settingsPath)?.GetValue("AutoConfigURL") as string ?? string.Empty;
+                return isEnabled.Equals(bypassUrl);
+            }
+
+            throw new InvalidOperationException("Unsupported GEO ID");
         }
 
         /// <summary>
@@ -1074,7 +1081,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RegistryBackup()
         {
-            return true;
+            var configurationPath = "System\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager";
+            var isEnabled = Registry.LocalMachine.OpenSubKey(configurationPath)?.GetValue("EnablePeriodicBackup") as int? ?? -1;
+            return isEnabled.Equals(1);
         }
 
         /// <summary>

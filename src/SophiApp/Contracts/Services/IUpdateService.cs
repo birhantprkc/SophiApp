@@ -12,11 +12,21 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Determines whether the Windows Update API is used to obtain updates for other Microsoft products.
         /// </summary>
-        bool AllowedOtherProductsUpdate();
+        bool HasMicrosoftProductsUpdate();
 
         /// <summary>
         /// Start receiving OS updates.
         /// </summary>
         void RunOsUpdate();
+
+        /// <summary>
+        /// Run receiving updates for other Microsoft products.
+        /// </summary>
+        void RunMicrosoftProductsUpdate();
+
+        /// <summary>
+        /// Stop receiving updates for other Microsoft products.
+        /// </summary>
+        void StopMicrosoftProductsUpdate();
     }
 }

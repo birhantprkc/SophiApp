@@ -50,7 +50,7 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="task">The <see cref="Task"/> instance.</param>
         /// <param name="enabled">A value that indicates the task state.</param>
-        void SetEnabled(Task? task, bool enabled);
+        void SetState(Task? task, bool enabled);
 
         /// <summary>
         /// Unregisters the "Windows Cleanup Notification" task in the Task Scheduler and remove task files.

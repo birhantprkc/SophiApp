@@ -48,13 +48,18 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public List<ManagementObject> GetPowerPlans()
+        {
+            return [.. new ManagementObjectSearcher(scope: "root/CIMV2/power", queryString: "SELECT * FROM Win32_PowerPlan")
+                .Get()
+                .Cast<ManagementObject>()];
+        }
+
+        /// <inheritdoc/>
         public List<string> GetPowerPlanNames()
         {
-            return new ManagementObjectSearcher(scope: "root/CIMV2/power", queryString: "SELECT ElementName FROM Win32_PowerPlan")
-                .Get()
-                .Cast<ManagementObject>()
-                .Select(obj => obj.GetPropertyValue("ElementName") as string ?? string.Empty)
-                .ToList();
+            return [.. GetPowerPlans()
+                .Select(plan => plan.GetPropertyValue("ElementName") as string ?? string.Empty)];
         }
 
         /// <inheritdoc/>

@@ -15,7 +15,7 @@ namespace SophiApp.Contracts.Services
         /// Get the hash for the change of state "News and Interests" widget on the taskbar.
         /// </summary>
         /// <param name="enable">Enable or disable widget.</param>
-        uint GetNewsInterestsHashData(bool enable);
+        uint GetNewsAndInterestsHash(bool enable);
 
         /// <summary>
         /// Gets the status of the service.

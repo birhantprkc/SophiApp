@@ -15,7 +15,7 @@ namespace SophiApp.Services
     public class OsService : IOsService
     {
         /// <inheritdoc/>
-        public uint GetNewsInterestsHashData(bool enable)
+        public uint GetNewsAndInterestsHash(bool enable)
         {
             var clientPath = "Software\\Microsoft\\SQMClient";
             var machineId = Registry.LocalMachine.OpenSubKey(clientPath)?.GetValue("MachineId") as string ?? string.Empty;

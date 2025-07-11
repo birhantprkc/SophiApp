@@ -4,9 +4,9 @@
 
 namespace SophiApp.Services
 {
-    using System.Diagnostics;
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
+    using System.Diagnostics;
 
     /// <inheritdoc/>
     public class UpdateService : IUpdateService
@@ -26,8 +26,15 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool AllowedOtherProductsUpdate()
+        public bool HasMicrosoftProductsUpdate()
         {
+            if (commonDataService.IsWindows11)
+            {
+                var updatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
+                var isEnabled = Registry.LocalMachine.OpenSubKey(updatePath)?.GetValue("AllowMUUpdateService") as int? ?? -1;
+                return isEnabled.Equals(1);
+            }
+
             var serviceManager = GetServiceManager() !;
 
             for (int i = 0; i < serviceManager.Services.Count; i++)
@@ -56,13 +63,8 @@ namespace SophiApp.Services
             }
         }
 
-        private dynamic? GetServiceManager()
-        {
-            Type type = Type.GetTypeFromProgID("Microsoft.Update.ServiceManager") !;
-            return Activator.CreateInstance(type);
-        }
-
-        private void RunMicrosoftProductsUpdate()
+        /// <inheritdoc/>
+        public void RunMicrosoftProductsUpdate()
         {
             if (commonDataService.IsWindows11)
             {
@@ -71,8 +73,36 @@ namespace SophiApp.Services
                 return;
             }
 
-            dynamic? service = GetServiceManager();
-            _ = service?.AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, string.Empty);
+            var serviceManager = GetServiceManager() !;
+            serviceManager.AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, string.Empty);
+        }
+
+        /// <inheritdoc/>
+        public void StopMicrosoftProductsUpdate()
+        {
+            if (commonDataService.IsWindows11)
+            {
+                var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
+                Registry.LocalMachine.OpenSubKey(settingsPath)?.DeleteValue("AllowMUUpdateService", false);
+                return;
+            }
+
+            var serviceManager = GetServiceManager() !;
+            var productsServiceId = "7971f918-a847-4430-9279-4a52d1efe18d";
+
+            for (int i = 0; i < serviceManager.Services.Count; i++)
+            {
+                if (serviceManager.Services[i].ServiceID == productsServiceId && serviceManager.Services[i].IsDefaultAUService)
+                {
+                    serviceManager.RemoveService(productsServiceId);
+                }
+            }
+        }
+
+        private dynamic? GetServiceManager()
+        {
+            Type type = Type.GetTypeFromProgID("Microsoft.Update.ServiceManager") !;
+            return Activator.CreateInstance(type);
         }
 
         private void RunUwpAppsUpdate()
