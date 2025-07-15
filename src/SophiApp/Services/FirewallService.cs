@@ -41,5 +41,15 @@ namespace SophiApp.Services
 
             return rules;
         }
+
+        /// <inheritdoc/>
+        public void SetGroupRules(string name, bool enable, int profileID)
+        {
+            foreach (var rule in GetGroupRules(name))
+            {
+                rule.Enabled = enable;
+                rule.Profiles = profileID;
+            }
+        }
     }
 }

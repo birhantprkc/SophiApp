@@ -5,6 +5,7 @@
 namespace SophiApp.Services;
 using Microsoft.UI.Xaml.Controls;
 using SophiApp.Contracts.Services;
+using SophiApp.Helpers;
 using SophiApp.ViewModels;
 using SophiApp.Views;
 using System.Threading.Tasks;
@@ -83,6 +84,7 @@ public class InitializeService : IInitializeService
             App.MainWindow.CenterOnScreen();
         }
 
+        TitleBarHelper.ApplySystemThemeToCaptionButtons();
         App.MainWindow.Activate();
     }
 }

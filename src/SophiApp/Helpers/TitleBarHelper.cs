@@ -3,15 +3,17 @@
 // </copyright>
 
 namespace SophiApp.Helpers;
-using System.Runtime.InteropServices;
 using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using System.Runtime.InteropServices;
 using Windows.UI;
 using Windows.UI.ViewManagement;
+using WinRT.Interop;
 
 /// <summary>
-/// Implements the <see cref="TitleBarHelper"/> class.
+/// A helper for work with window titlebar.
 /// </summary>
 internal static class TitleBarHelper
 {
@@ -19,6 +21,39 @@ internal static class TitleBarHelper
     private const int WAACTIVE = 0x01;
     private const int WMACTIVATE = 0x0006;
 
+    /// <summary>
+    /// Apply app theme to window titlebar.
+    /// </summary>
+    public static void ApplySystemThemeToCaptionButtons()
+    {
+        var res = Application.Current.Resources;
+        var frame = App.AppTitlebar as FrameworkElement;
+
+        if (frame != null)
+        {
+            var handler = WindowNative.GetWindowHandle(App.MainWindow);
+            var windowId = Win32Interop.GetWindowIdFromWindow(handler);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+
+            if (frame.ActualTheme == ElementTheme.Dark)
+            {
+                res["WindowCaptionForeground"] = Colors.White;
+                appWindow.TitleBar.ButtonForegroundColor = Colors.White;
+            }
+            else
+            {
+                res["WindowCaptionForeground"] = Colors.Black;
+                appWindow.TitleBar.ButtonForegroundColor = Colors.Black;
+            }
+
+            UpdateTitleBar(frame.ActualTheme);
+        }
+    }
+
+    /// <summary>
+    /// Update window titlebar to app theme.
+    /// </summary>
+    /// <param name="theme">Specifies app UI theme.</param>
     public static void UpdateTitleBar(ElementTheme theme)
     {
         if (App.MainWindow.ExtendsContentIntoTitleBar)
@@ -27,7 +62,6 @@ internal static class TitleBarHelper
             {
                 var uiSettings = new UISettings();
                 var background = uiSettings.GetColorValue(UIColorType.Background);
-
                 theme = background == Colors.White ? ElementTheme.Light : ElementTheme.Dark;
             }
 
@@ -92,25 +126,6 @@ internal static class TitleBarHelper
                 SendMessage(hwnd, WMACTIVATE, WAACTIVE, IntPtr.Zero);
                 SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);
             }
-        }
-    }
-
-    public static void ApplySystemThemeToCaptionButtons()
-    {
-        var res = Application.Current.Resources;
-        var frame = App.AppTitlebar as FrameworkElement;
-        if (frame != null)
-        {
-            if (frame.ActualTheme == ElementTheme.Dark)
-            {
-                res["WindowCaptionForeground"] = Colors.White;
-            }
-            else
-            {
-                res["WindowCaptionForeground"] = Colors.Black;
-            }
-
-            UpdateTitleBar(frame.ActualTheme);
         }
     }
 

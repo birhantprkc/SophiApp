@@ -68,7 +68,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0"
+                            <TextBlock x:Name="AboutAppIconTextBlock"
+                                       Grid.Row="0"
                                        Style="{StaticResource UwpPageDescriptionTextStyle}"
                                        Foreground="{ThemeResource WindowAccent}">
                                 <Run x:Uid="UwpPage_AboutAppIcon"
@@ -137,9 +138,11 @@
             </interaction:DataTriggerBehavior>
             <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="1100">
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsContainerLayoutGrid}" PropertyName="MaximumRowsOrColumns" Value="2"/>
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=AboutAppIconTextBlock}" PropertyName="HorizontalAlignment" Value="Left"/>
             </interaction:DataTriggerBehavior>
             <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="1100">
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsContainerLayoutGrid}" PropertyName="MaximumRowsOrColumns" Value="3"/>
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=AboutAppIconTextBlock}" PropertyName="HorizontalAlignment" Value="Center"/>
             </interaction:DataTriggerBehavior>
         </interactivity:Interaction.Behaviors>
     </ScrollView>

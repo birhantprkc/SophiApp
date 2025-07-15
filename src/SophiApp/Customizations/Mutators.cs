@@ -96,21 +96,21 @@ namespace SophiApp.Customizations
             var policyReportingPath = "Software\\Policies\\Microsoft\\Windows\\Windows Error Reporting";
             var errorReportingPath = "Software\\Microsoft\\Windows\\Windows Error Reporting";
             var reportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting");
-            using var service = new ServiceController("WerSvc");
+            using var werService = new ServiceController("WerSvc");
             GroupPolicyService.ClearPolicyCache(policyReportingPath, "Disabled", Registry.LocalMachine, Registry.CurrentUser);
             ScheduledTaskService.SetState(reportingTask, enable);
 
             if (enable)
             {
                 Registry.CurrentUser.OpenSubKey(errorReportingPath, true)?.DeleteValue("Disabled", false);
-                OsService.SetServiceStartMode(service, ServiceStartMode.Manual);
-                service.TryStart();
+                OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
+                werService.TryStart();
                 return;
             }
 
             Registry.CurrentUser.OpenSubKey(errorReportingPath, true)?.SetValue("Disabled", 1, RegistryValueKind.DWord);
-            OsService.SetServiceStartMode(service, ServiceStartMode.Disabled);
-            service.TryStop();
+            OsService.SetServiceStartMode(werService, ServiceStartMode.Disabled);
+            werService.TryStop();
         }
 
         /// <summary>
@@ -1164,7 +1164,10 @@ namespace SophiApp.Customizations
         /// <param name="enable">Latest update state.</param>
         public static void WindowsLatestUpdate(bool enable)
         {
-            // Method intentionally left empty.
+            var policyUpdatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate";
+            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
+            GroupPolicyService.ClearPolicyCache(Registry.LocalMachine, policyUpdatePath, "AllowOptionalContent", "SetAllowOptionalContent");
+            Registry.LocalMachine.OpenSubKey(settingsPath, true)?.SetValue("IsContinuousInnovationOptedIn", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1182,7 +1185,14 @@ namespace SophiApp.Customizations
         /// <param name="state">Input method state.</param>
         public static void InputMethod(int state)
         {
-            // Method intentionally left empty.
+            if (state.Equals(1))
+            {
+                _ = PowerShellService.Invoke("Set-WinDefaultInputMethodOverride -InputTip \"0409:00000409\"");
+                return;
+            }
+
+            var profilePath = "Control Panel\\International\\User Profile";
+            Registry.CurrentUser.OpenSubKey(profilePath, true)?.DeleteValue("InputMethodOverride", false);
         }
 
         /// <summary>
@@ -1191,7 +1201,19 @@ namespace SophiApp.Customizations
         /// <param name="enable">Installed .NET state.</param>
         public static void LatestInstalledNET(bool enable)
         {
-            // Method intentionally left empty.
+            var useLatestClr = "OnlyUseLatestCLR";
+            var clrPath = "Software\\Microsoft\\.NETFramework";
+            var clrWowPath = "Software\\Wow6432Node\\Microsoft\\.NETFramework";
+
+            if (enable)
+            {
+                Registry.LocalMachine.OpenSubKey(clrPath, true)?.SetValue(useLatestClr, 1, RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey(clrWowPath, true)?.SetValue(useLatestClr, 1, RegistryValueKind.DWord);
+                return;
+            }
+
+            Registry.LocalMachine.OpenSubKey(clrPath, true)?.DeleteValue(useLatestClr, false);
+            Registry.LocalMachine.OpenSubKey(clrWowPath, true)?.DeleteValue(useLatestClr, false);
         }
 
         // TODO: Set description
@@ -1206,7 +1228,21 @@ namespace SophiApp.Customizations
         /// <param name="state">Recommended troubleshooting state.</param>
         public static void RecommendedTroubleshooting(int state)
         {
-            // Method intentionally left empty.
+            var policyDataPath = "Software\\Policies\\Microsoft\\Windows\\DataCollection";
+            var dataCollectionPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection";
+            var diagTrackPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack";
+            var errorReportingPath = "Software\\Microsoft\\Windows\\Windows Error Reporting";
+            var windowsMitigationPath = "Software\\Microsoft\\WindowsMitigation";
+            Registry.LocalMachine.OpenSubKey(policyDataPath, true)?.DeleteValue("AllowTelemetry", false);
+            Registry.LocalMachine.OpenSubKey(dataCollectionPath, true)?.DeleteValue("MaxTelemetryAllowed", false);
+            Registry.CurrentUser.OpenSubKey(diagTrackPath, true)?.DeleteValue("ShowedToastAtLevel", false);
+            using var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting");
+            ScheduledTaskService.SetState(queueReportingTask, true);
+            Registry.CurrentUser.OpenSubKey(errorReportingPath, true)?.DeleteValue("Disabled", false);
+            using var werService = new ServiceController("WerSvc");
+            OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
+            werService.TryStart();
+            Registry.LocalMachine.OpenOrCreateSubKey(windowsMitigationPath).SetValue("UserPreference", state.Equals(1) ? 3 : 2, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1215,7 +1251,8 @@ namespace SophiApp.Customizations
         /// <param name="enable">Folders launch separate process state.</param>
         public static void FoldersLaunchSeparateProcess(bool enable)
         {
-            // Method intentionally left empty.
+            var explorerAdvancedPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
+            Registry.CurrentUser.OpenSubKey(explorerAdvancedPath, true)?.SetValue("SeparateProcess", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1224,7 +1261,7 @@ namespace SophiApp.Customizations
         /// <param name="state">Reserved storage state.</param>
         public static void ReservedStorage(int state)
         {
-            // Method intentionally left empty.
+            _ = PowerShellService.Invoke($"Set-WindowsReservedStorageState -State {(state.Equals(1) ? "Disabled" : "Enabled")}");
         }
 
         /// <summary>
@@ -1233,7 +1270,15 @@ namespace SophiApp.Customizations
         /// <param name="enable">Help page state.</param>
         public static void F1HelpPage(bool enable)
         {
-            // Method intentionally left empty.
+            if (enable)
+            {
+                var helpPagePath = "Software\\Classes\\Typelib\\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}";
+                Registry.CurrentUser.DeleteSubKeyTree(helpPagePath, false);
+                return;
+            }
+
+            var helpPage64Path = "Software\\Classes\\Typelib\\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\\1.0\\0\\win64";
+            Registry.CurrentUser.OpenOrCreateSubKey(helpPage64Path).SetValue(string.Empty, string.Empty, RegistryValueKind.String);
         }
 
         /// <summary>
@@ -1242,7 +1287,8 @@ namespace SophiApp.Customizations
         /// <param name="enable">Num Lock state.</param>
         public static void NumLock(bool enable)
         {
-            // Method intentionally left empty.
+            var keyboardIndicatorsPath = ".DEFAULT\\Control Panel\\Keyboard";
+            Registry.Users.OpenSubKey(keyboardIndicatorsPath, true)?.SetValue("InitialKeyboardIndicators", $"{(enable ? "2147483650" : "2147483648")}", RegistryValueKind.String);
         }
 
         /// <summary>
@@ -1251,7 +1297,17 @@ namespace SophiApp.Customizations
         /// <param name="enable">Caps Lock state.</param>
         public static void CapsLock(bool enable)
         {
-            // Method intentionally left empty.
+            Registry.CurrentUser.OpenSubKey("Keyboard Layout", true)?.DeleteValue("Attributes", false);
+            var keyboardPath = "System\\CurrentControlSet\\Control\\Keyboard Layout";
+            var scancodeValue = "Scancode Map";
+
+            if (enable)
+            {
+                Registry.LocalMachine.OpenSubKey(keyboardPath, true)?.DeleteValue(scancodeValue, false);
+                return;
+            }
+
+            Registry.LocalMachine.OpenSubKey(keyboardPath, true)?.SetValue(scancodeValue, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 58, 0, 0, 0, 0, 0 }, RegistryValueKind.Binary);
         }
 
         /// <summary>
@@ -1260,7 +1316,8 @@ namespace SophiApp.Customizations
         /// <param name="enable">Sticky shift state.</param>
         public static void StickyShift(bool enable)
         {
-            // Method intentionally left empty.
+            var stickyKeysPath = "Control Panel\\Accessibility\\StickyKeys";
+            Registry.CurrentUser.OpenSubKey(stickyKeysPath, true)?.SetValue("Flags", $"{(enable ? "510" : "506")}", RegistryValueKind.String);
         }
 
         /// <summary>
@@ -1269,7 +1326,10 @@ namespace SophiApp.Customizations
         /// <param name="enable">Autoplay state.</param>
         public static void Autoplay(bool enable)
         {
-            // Method intentionally left empty.
+            var policyExplorerPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
+            var autoplayHandlersPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoplayHandlers";
+            GroupPolicyService.ClearPolicyCache(policyExplorerPath, "NoDriveTypeAutoRun", Registry.LocalMachine, Registry.CurrentUser);
+            Registry.CurrentUser.OpenSubKey(autoplayHandlersPath, true)?.SetValue("DisableAutoplay", enable ? 0 : 1, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1278,7 +1338,11 @@ namespace SophiApp.Customizations
         /// <param name="enable">Thumbnail cache state.</param>
         public static void ThumbnailCacheRemoval(bool enable)
         {
-            // Method intentionally left empty.
+            var autorun = "Autorun";
+            var thumbnailCachePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache";
+            var thumbnailWowCachePath = "Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache";
+            Registry.LocalMachine.OpenSubKey(thumbnailCachePath, true)?.SetValue(autorun, enable ? 3 : 0, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenSubKey(thumbnailWowCachePath, true)?.SetValue(autorun, enable ? 3 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1287,7 +1351,8 @@ namespace SophiApp.Customizations
         /// <param name="enable">Restartable apps state.</param>
         public static void SaveRestartableApps(bool enable)
         {
-            // Method intentionally left empty.
+            var logonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
+            Registry.CurrentUser.OpenSubKey(logonPath, true)?.SetValue("RestartApps", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1296,7 +1361,16 @@ namespace SophiApp.Customizations
         /// <param name="enable">Network discovery state.</param>
         public static void NetworkDiscovery(bool enable)
         {
-            // Method intentionally left empty.
+            if (enable)
+            {
+                FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-32752", enable: true, profileID: 2);
+                FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-28502", enable: true, profileID: 2);
+                _ = PowerShellService.Invoke("Set-NetConnectionProfile -NetworkCategory Private");
+                return;
+            }
+
+            FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-32752", enable: false, profileID: 2);
+            FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-28502", enable: false, profileID: 2);
         }
 
         /// <summary>
@@ -1305,7 +1379,10 @@ namespace SophiApp.Customizations
         /// <param name="state">Power plan state.</param>
         public static void PowerPlan(int state)
         {
-            // Method intentionally left empty.
+            var policyPowerPath = "Software\\Policies\\Microsoft\\Power\\PowerSettings";
+            var args = $"/SETACTIVE {(state.Equals(1) ? "SCHEME_MIN" : "SCHEME_BALANCED")}";
+            GroupPolicyService.ClearPolicyCache(Registry.LocalMachine, policyPowerPath, "ActivePowerScheme");
+            _ = ProcessService.WaitForExit("POWERCFG.EXE", args);
         }
 
         /// <summary>
@@ -1314,7 +1391,16 @@ namespace SophiApp.Customizations
         /// <param name="enable">RKN bypass state.</param>
         public static void RKNBypass(bool enable)
         {
-            // Method intentionally left empty.
+            var settingsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+            var autoConfigUrl = "AutoConfigURL";
+
+            if (enable)
+            {
+                Registry.CurrentUser.OpenSubKey(settingsPath, true)?.SetValue(autoConfigUrl, "https://p.thenewone.lol:8443/proxy.pac", RegistryValueKind.String);
+                return;
+            }
+
+            Registry.CurrentUser.OpenSubKey(settingsPath, true)?.DeleteValue(autoConfigUrl, false);
         }
 
         /// <summary>
@@ -1323,7 +1409,16 @@ namespace SophiApp.Customizations
         /// <param name="enable">Registry backup state.</param>
         public static void RegistryBackup(bool enable)
         {
-            // Method intentionally left empty.
+            var configurationPath = "System\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager";
+            var enablePeriodicBackup = "EnablePeriodicBackup";
+
+            if (enable)
+            {
+                Registry.LocalMachine.OpenSubKey(configurationPath, true)?.SetValue(enablePeriodicBackup, 1, RegistryValueKind.DWord);
+                return;
+            }
+
+            Registry.LocalMachine.OpenSubKey(configurationPath, true)?.DeleteValue(enablePeriodicBackup, false);
         }
 
         /// <summary>

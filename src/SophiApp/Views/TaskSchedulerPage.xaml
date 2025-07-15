@@ -5,10 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="using:SophiApp.ControlTemplates"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:interaction="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:SophiApp.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:TaskSchedulerViewModel}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    SizeChanged="PageTaskScheduler_SizeChanged">
 
     <ScrollView x:Name="TaskSchedulerScrollView">
         <StackPanel IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}"
@@ -21,7 +24,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Style="{StaticResource TaskSchedulerDescriptionTextStyle}"
+                <TextBlock x:Name="TaskSchedulerDescriptionTextBlock"
+                           Style="{StaticResource TaskSchedulerDescriptionTextStyle}"
                            Foreground="{ThemeResource WindowAccent}"
                            Grid.Row="0">
                     <Run x:Uid="TaskSchedulerPage_AboutTasks"
@@ -47,5 +51,13 @@
                     HorizontalAlignment="Center"
                     Command="{x:Bind ViewModel.OpenTaskScheduler_Command, Mode=OneWay}"/>
         </StackPanel>
+        <interactivity:Interaction.Behaviors>
+            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageTaskScheduler, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="1100">
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=TaskSchedulerDescriptionTextBlock}" PropertyName="HorizontalAlignment" Value="Left"/>
+            </interaction:DataTriggerBehavior>
+            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageTaskScheduler, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="1100">
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=TaskSchedulerDescriptionTextBlock}" PropertyName="HorizontalAlignment" Value="Center"/>
+            </interaction:DataTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
     </ScrollView>
 </Page>

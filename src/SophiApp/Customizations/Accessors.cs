@@ -63,9 +63,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool ErrorReporting()
         {
-            var queueTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException($"Failed to find a QueueReporting scheduled task");
-            var disabledValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting")?.GetValue("Disabled") as int? ?? -1;
-            return !(queueTask.State == TaskState.Disabled && disabledValue.Equals(1) && new ServiceController("WerSvc").StartType == ServiceStartMode.Disabled);
+            var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException($"Failed to find a QueueReporting scheduled task");
+            var disableErrorReporting = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting")?.GetValue("Disabled") as int? ?? -1;
+            return !(queueReportingTask.State == TaskState.Disabled && disableErrorReporting.Equals(1) && new ServiceController("WerSvc").StartType == ServiceStartMode.Disabled);
         }
 
         /// <summary>
@@ -908,8 +908,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int InputMethod()
         {
-            var inputPath = "Control Panel\\International\\User Profile";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(inputPath)?.GetValue("InputMethodOverride") as string ?? string.Empty;
+            var profilePath = "Control Panel\\International\\User Profile";
+            var isEnabled = Registry.CurrentUser.OpenSubKey(profilePath)?.GetValue("InputMethodOverride") as string ?? string.Empty;
             return isEnabled.Equals("0409:00000409") ? 1 : 2;
         }
 
@@ -991,7 +991,7 @@ namespace SophiApp.Customizations
         {
             var scancodeMap = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 58, 0, 0, 0, 0, 0 };
             var keyboardPath = "System\\CurrentControlSet\\Control\\Keyboard Layout";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(keyboardPath)?.GetValue("Scancode Map1") as byte[] ?? [];
+            var isEnabled = Registry.LocalMachine.OpenSubKey(keyboardPath)?.GetValue("Scancode Map") as byte[] ?? [];
             return !isEnabled.SequenceEqual(scancodeMap);
         }
 
@@ -1043,8 +1043,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NetworkDiscovery()
         {
-            var discoveryRules = FirewallService.GetGroupRules("@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502");
-            return discoveryRules.Any(rule => rule.Enabled);
+            var discoveryGroupRules = FirewallService.GetGroupRules("@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502");
+            return discoveryGroupRules.Any(rule => rule.Enabled);
         }
 
         /// <summary>

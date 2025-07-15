@@ -4,6 +4,7 @@
 
 namespace SophiApp.Services;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
 
@@ -43,6 +44,7 @@ public class ThemesService : IThemesService
         {
             rootElement.RequestedTheme = Theme;
             TitleBarHelper.UpdateTitleBar(Theme);
+            TitleBarHelper.ApplySystemThemeToCaptionButtons();
         }
 
         await Task.CompletedTask;
