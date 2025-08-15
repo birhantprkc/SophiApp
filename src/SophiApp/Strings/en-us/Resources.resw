@@ -489,7 +489,7 @@
     <value>Cancel</value>
   </data>
   <data name="Panel_SetupCustomizations_Applying" xml:space="preserve">
-    <value>Applying customization(s)</value>
+    <value>Applying customizations</value>
   </data>
   <data name="OsRequirementsFailure_EventLogStopped" xml:space="preserve">
     <value>The Event Viewer broken or removed from Windows.</value>
@@ -1183,5 +1183,8 @@
   </data>
   <data name="UIModel_RestartNotification_Title_2" xml:space="preserve">
     <value>Hide</value>
+  </data>
+  <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
+    <value>Applying customization</value>
   </data>
 </root>

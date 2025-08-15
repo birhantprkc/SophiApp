@@ -561,7 +561,7 @@
   },
   {
     "Name": "AdminApprovalMode",
-    "Type": "ExpandingRadioGroup",
+    "Type": "CheckBox",
     "Tag": "System",
     "ViewId": 305,
     "Windows10Support": "True",

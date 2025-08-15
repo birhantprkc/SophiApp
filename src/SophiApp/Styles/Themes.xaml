@@ -45,11 +45,11 @@
             <SolidColorBrush x:Key="SetUpCustomizationsPanelForeground" Color="#404040" />
             <SolidColorBrush x:Key="UIControlBackground" Color="#FFFFFF" Opacity="0.70" />
             <SolidColorBrush x:Key="UIControlBorderBackground" Color="#000000" Opacity="0.06" />
-            <SolidColorBrush x:Key="UIControlDescriptionForeground" Color="#222222" />
+            <SolidColorBrush x:Key="UIControlDescriptionForeground" Color="#4B4B4B" />
             <SolidColorBrush x:Key="WindowAccent" Color="#0078D4" />
             <SolidColorBrush x:Key="WindowAccentHight" Color="#E20036" />
-            <SolidColorBrush x:Key="WindowBackground" Color="#FCFCFC" Opacity="0.55" />
-            <SolidColorBrush x:Key="WindowForeground" Color="#222222" />
+            <SolidColorBrush x:Key="WindowBackground" Color="#FCFCFC" Opacity="0.40" />
+            <SolidColorBrush x:Key="WindowForeground" Color="#4B4B4B" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

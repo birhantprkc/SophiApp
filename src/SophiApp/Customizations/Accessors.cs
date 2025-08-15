@@ -24,6 +24,7 @@ namespace SophiApp.Customizations
         private static readonly IFirewallService FirewallService = App.GetService<IFirewallService>();
         private static readonly IHttpService HttpService = App.GetService<IHttpService>();
         private static readonly IInstrumentationService InstrumentationService = App.GetService<IInstrumentationService>();
+        private static readonly IOneDriveService OneDriveService = App.GetService<IOneDriveService>();
         private static readonly IOsService OsService = App.GetService<IOsService>();
         private static readonly IPowerShellService PowerShellService = App.GetService<IPowerShellService>();
         private static readonly IProcessService ProcessService = App.GetService<IProcessService>();
@@ -771,8 +772,24 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool OneDrive()
         {
-            var command = @"$UninstallString = Get-Package -Name ""Microsoft OneDrive"" -ProviderName Programs -Force; if ($UninstallString){ $true } else { $false }";
-            return PowerShellService.Invoke<bool>(command);
+            var setupFileExist = OneDriveService.SetupFileExist();
+
+            if (OneDriveService.IsInstalled())
+            {
+                if (Path.Exists(OneDriveService.GetUserDataFolderOrDefault()))
+                {
+                    if (OneDriveService.UserIsLogged())
+                    {
+                        throw new InvalidOperationException("User already logged into OneDrive");
+                    }
+
+                    return true;
+                }
+
+                throw new InvalidOperationException("A user data folder not exist");
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -1286,7 +1303,7 @@ namespace SophiApp.Customizations
 
             if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
             {
-                return ProcessService.ProcessExist("MsMpEngCP");
+                return ProcessService.IsExist("MsMpEngCP");
             }
 
             throw new InvalidOperationException("Microsoft Defender antispyware protection is disabled");

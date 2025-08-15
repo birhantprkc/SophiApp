@@ -15,14 +15,27 @@ namespace SophiApp.Contracts.Services
         /// Determines whether the specified process exists.
         /// </summary>
         /// <param name="name">Process name.</param>
-        bool ProcessExist(string name);
+        bool IsExist(string name);
 
         /// <summary>
-        /// Immediately stops the all associated process.
+        /// Immediately stops the process.
         /// </summary>
         /// <param name="name">Process name.</param>
         /// <param name="timeout">Time, in milliseconds, to wait for the process to complete.</param>
-        void KillAllProcesses(string name, int timeout = 1000);
+        void KillProcessByName(string name, int timeout = 1000);
+
+        /// <summary>
+        /// Immediately stops the processes.
+        /// </summary>
+        /// <param name="timeout">Time, in milliseconds, to wait for the process to complete.</param>
+        /// <param name="processes">Processes name.</param>
+        void KillProcessByName(int timeout, params string[] processes);
+
+        /// <summary>
+        /// Set File Explorer process automatically restart property.
+        /// </summary>
+        /// <param name="allow">Allow or deny automatically restart.</param>
+        void SetAutoRestartShell(bool allow);
 
         /// <summary>
         /// Start associated process indefinitely.
@@ -30,7 +43,7 @@ namespace SophiApp.Contracts.Services
         /// <param name="name">A application or document to start.</param>
         /// <param name="arguments">A arguments to use when starting the application or document.</param>
         /// <param name="style">Specified how a new window should appear when the system starts a process.</param>
-        Process? Start(string name, string arguments = "", ProcessWindowStyle style = ProcessWindowStyle.Normal);
+        Process? StartProcessByName(string name, string arguments = "", ProcessWindowStyle style = ProcessWindowStyle.Normal);
 
         /// <summary>
         /// Start and wait the associated process to exit.

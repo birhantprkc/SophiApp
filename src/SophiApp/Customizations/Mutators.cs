@@ -29,6 +29,7 @@ namespace SophiApp.Customizations
         private static readonly IGroupPolicyService GroupPolicyService = App.GetService<IGroupPolicyService>();
         private static readonly IHttpService HttpService = App.GetService<IHttpService>();
         private static readonly IInstrumentationService InstrumentationService = App.GetService<IInstrumentationService>();
+        private static readonly IOneDriveService OneDriveService = App.GetService<IOneDriveService>();
         private static readonly IOsService OsService = App.GetService<IOsService>();
         private static readonly IPowerShellService PowerShellService = App.GetService<IPowerShellService>();
         private static readonly IProcessService ProcessService = App.GetService<IProcessService>();
@@ -1001,7 +1002,15 @@ namespace SophiApp.Customizations
         /// <param name="enable">One Drive state.</param>
         public static void OneDrive(bool enable)
         {
-            // Method intentionally left empty.
+            var oneDrivePath = "Policies\\Microsoft\\Windows\\OneDrive";
+            GroupPolicyService.ClearPolicyCache(Registry.LocalMachine, oneDrivePath, "DisableFileSyncNGSC");
+
+            if (enable)
+            {
+                return;
+            }
+
+            OneDriveService.Uninstall();
         }
 
         /// <summary>

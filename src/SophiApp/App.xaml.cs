@@ -50,6 +50,7 @@ public partial class App : Application
                 _ = services.AddTransient<IGroupPolicyService, GroupPolicyService>();
                 _ = services.AddTransient<IHttpService, HttpService>();
                 _ = services.AddTransient<INavigationViewService, NavigationViewService>();
+                _ = services.AddTransient<IOneDriveService, OneDriveService>();
                 _ = services.AddTransient<IOsService, OsService>();
                 _ = services.AddTransient<IPowerShellService, PowerShellService>();
                 _ = services.AddTransient<IProcessService, ProcessService>();

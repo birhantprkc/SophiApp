@@ -357,9 +357,9 @@ public partial class ShellViewModel : ObservableRecipient
     {
         NavigationViewHitTestVisible = false;
         ProgressBarValue = 0;
-        SetUpCustomizationsPanelText = "Panel_SetupCustomizations_Applying".GetLocalized();
-        SetUpCustomizationsPanelCancelButtonIsVisible = true;
+        SetUpCustomizationsPanelText = ApplicableModels.Count == 1 ? "Panel_SetupCustomization_Applying".GetLocalized() : "Panel_SetupCustomizations_Applying".GetLocalized();
         SetUpCustomizationsPanelIsVisible = true;
+        SetUpCustomizationsPanelCancelButtonIsVisible = true;
         cancellationTokenSource = new CancellationTokenSource();
         var callback = new Action(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => ProgressBarValue = ProgressBarValue.Increase(ApplicableModels.Count)));
         await modelService.SetStateAsync(ApplicableModels, callback, cancellationTokenSource.Token);
@@ -372,8 +372,8 @@ public partial class ShellViewModel : ObservableRecipient
         App.Logger.LogApplicableModelsClear();
         EnvironmentHelper.RefreshUserDesktop();
         EnvironmentHelper.ForcedRefresh();
-        processService.KillAllProcesses("StartMenuExperienceHost");
-        processService.KillAllProcesses("explorer");
+        processService.KillProcessByName("StartMenuExperienceHost");
+        processService.KillProcessByName("explorer");
         appNotificationService.EnableToastNotification();
         defenderService.EnableControlledFolder();
         SetUpCustomizationsPanelIsVisible = false;
@@ -384,6 +384,7 @@ public partial class ShellViewModel : ObservableRecipient
     {
         SetUpCustomizationsPanelCancelButtonIsVisible = false;
         cancellationTokenSource?.Cancel();
+        App.Logger.LogApplicableModelsCanceled();
     }
 
     private async Task ApplicableModelsClearAsync()
@@ -392,8 +393,8 @@ public partial class ShellViewModel : ObservableRecipient
         App.Logger.LogApplicableModelsCanceled();
         ProgressBarValue = 0;
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
-        SetUpCustomizationsPanelCancelButtonIsVisible = false;
         SetUpCustomizationsPanelIsVisible = true;
+        SetUpCustomizationsPanelCancelButtonIsVisible = false;
         var callback = new Action(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => ProgressBarValue = ProgressBarValue.Increase(ApplicableModels.Count)));
         await modelService.GetStateAsync(ApplicableModels, callback);
         ApplicableModels.Clear();
@@ -416,7 +417,7 @@ public partial class ShellViewModel : ObservableRecipient
 
     private async Task OpenTaskSchedulerAsync()
     {
-        await Task.Run(() => processService.Start(name: "control.exe", arguments: "schedtasks"));
+        await Task.Run(() => processService.StartProcessByName(name: "control.exe", arguments: "schedtasks"));
     }
 
     private void UIModelClicked(UIModel model)

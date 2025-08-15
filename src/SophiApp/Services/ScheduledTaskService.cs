@@ -7,6 +7,7 @@ namespace SophiApp.Services
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
+    using System.Text.RegularExpressions;
     using Microsoft.Win32.TaskScheduler;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
@@ -494,6 +495,14 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
             notificationPsFile.Delete();
             notificationVbsFile.Delete();
             UnregisterTask("Sophia\\Windows Cleanup Notification");
+        }
+
+        /// <inheritdoc/>
+        public void UnregisterOneDriveTasks()
+        {
+            taskScheduler.FindAllTasks(task => task.Name.Contains("OneDrive"))
+                .ToList()
+                .ForEach(t => UnregisterTask(t.Path));
         }
 
         /// <inheritdoc/>

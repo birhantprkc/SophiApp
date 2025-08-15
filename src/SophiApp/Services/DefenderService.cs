@@ -193,7 +193,7 @@ namespace SophiApp.Services
             if (commonDataService.DefenderControlledFolderAccess)
             {
                 _ = powerShellService.Invoke("Set-MpPreference -EnableControlledFolderAccess Disabled");
-                _ = processService.Start("explorer.exe", "windowsdefender://RansomwareProtection");
+                _ = processService.StartProcessByName("explorer.exe", "windowsdefender://RansomwareProtection");
             }
         }
     }

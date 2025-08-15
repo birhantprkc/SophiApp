@@ -58,6 +58,11 @@ namespace SophiApp.Contracts.Services
         void UnregisterCleanupNotificationTask();
 
         /// <summary>
+        /// Unregisters OneDrive tasks in the Task Scheduler and remove task files.
+        /// </summary>
+        void UnregisterOneDriveTasks();
+
+        /// <summary>
         /// Registers the "Software Distribution" task in the Task Scheduler.
         /// </summary>
         void RegisterSoftwareDistributionTask();

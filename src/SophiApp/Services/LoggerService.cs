@@ -186,8 +186,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogApplicableModelsCanceled()
         {
-            Log.Warning("The applying of customizations has been canceled");
-            shellViewModel.LoggedActions.Add($"[WRN] The applying of customizations has been canceled");
+            Log.Warning("The applying of customizations has been canceled by user");
+            shellViewModel.LoggedActions.Add($"[WRN] The applying of customizations has been canceled by user");
         }
 
         /// <inheritdoc/>

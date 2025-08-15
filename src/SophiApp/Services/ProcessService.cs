@@ -4,6 +4,7 @@
 
 namespace SophiApp.Services
 {
+    using Microsoft.Win32;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
     using System.Diagnostics;
@@ -12,13 +13,22 @@ namespace SophiApp.Services
     public class ProcessService : IProcessService
     {
         /// <inheritdoc/>
-        public bool ProcessExist(string name)
+        public bool IsExist(string name)
         {
             return Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
         }
 
         /// <inheritdoc/>
-        public void KillAllProcesses(string name, int timeout = 1000)
+        public void KillProcessByName(int timeout, params string[] processes)
+        {
+            foreach (var process in processes)
+            {
+                KillProcessByName(process, timeout);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void KillProcessByName(string name, int timeout = 1000)
         {
             Process.GetProcessesByName(name)
                 .ForEach(process =>
@@ -45,7 +55,14 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public Process? Start(string name, string arguments = "", ProcessWindowStyle style = ProcessWindowStyle.Normal)
+        public void SetAutoRestartShell(bool allow)
+        {
+            var winlogonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
+            Registry.LocalMachine.OpenSubKey(winlogonPath, true)?.SetValue("AutoRestartShell", allow ? 1 : 0, RegistryValueKind.DWord);
+        }
+
+        /// <inheritdoc/>
+        public Process? StartProcessByName(string name, string arguments = "", ProcessWindowStyle style = ProcessWindowStyle.Normal)
         {
             return Process.Start(new ProcessStartInfo()
             {
