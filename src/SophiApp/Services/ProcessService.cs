@@ -55,6 +55,24 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void WaitForExit(string name)
+        {
+            var process = new Process();
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.FileName = name;
+            _ = process.Start();
+            var processName = Path.GetFileNameWithoutExtension(name);
+
+            while (!Process.GetProcessesByName(processName).All(p => p.HasExited))
+            {
+                Thread.Sleep(1000);
+            }
+        }
+
+        /// <inheritdoc/>
         public void SetAutoRestartShell(bool allow)
         {
             var winlogonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";

@@ -5,6 +5,7 @@
 namespace SophiApp.Services
 {
     using System.Text.RegularExpressions;
+    using System.Xml;
     using SophiApp.Contracts.Services;
 
     /// <inheritdoc/>
@@ -26,6 +27,25 @@ namespace SophiApp.Services
             using var urlStream = client.GetStreamAsync(url).Result;
             using var fileStream = new FileStream(saveTo, FileMode.Create);
             urlStream.CopyTo(fileStream);
+        }
+
+        /// <inheritdoc/>
+        public void DownloadOneDrive(string saveTo)
+        {
+            using var client = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2");
+            using var response = client.SendAsync(request).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+            var url = xml?.DocumentElement?.SelectSingleNode("update/amd64binary")?.Attributes?.GetNamedItem("url")?.InnerText ?? string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                using var urlStream = client.GetStreamAsync(url).Result;
+                using var fileStream = new FileStream(saveTo, FileMode.Create);
+                urlStream.CopyTo(fileStream);
+            }
         }
 
         /// <inheritdoc/>
@@ -58,6 +78,22 @@ namespace SophiApp.Services
             catch (Exception)
             {
                 throw new HttpRequestException($"Url {url} is unavailable");
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool UrlIsAvailable(string url)
+        {
+            try
+            {
+                using var client = new HttpClient();
+                using var request = new HttpRequestMessage(HttpMethod.Head, url);
+                using var response = client.Send(request);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

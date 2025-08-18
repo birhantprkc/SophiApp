@@ -17,6 +17,12 @@ namespace SophiApp.Contracts.Services
         void DownloadFile(string url, string saveTo);
 
         /// <summary>
+        /// Download OneDrive.
+        /// </summary>
+        /// <param name="saveTo">Full path to save the file.</param>
+        void DownloadOneDrive(string saveTo);
+
+        /// <summary>
         /// Downloads HEVC appx.
         /// </summary>
         /// <param name="fileName">Full path to save the file.</param>
@@ -27,5 +33,11 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="url">Url to check availability.</param>
         void ThrowIfOffline(string url = "https://google.com");
+
+        /// <summary>
+        /// Determines whether the specified URL is available.
+        /// </summary>
+        /// <param name="url">Url to check.</param>
+        bool UrlIsAvailable(string url);
     }
 }

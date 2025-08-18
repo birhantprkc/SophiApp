@@ -772,8 +772,6 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool OneDrive()
         {
-            var setupFileExist = OneDriveService.SetupFileExist();
-
             if (OneDriveService.IsInstalled())
             {
                 if (Path.Exists(OneDriveService.GetUserDataFolderOrDefault()))
@@ -788,8 +786,15 @@ namespace SophiApp.Customizations
 
                 throw new InvalidOperationException("A user data folder not exist");
             }
+            else
+            {
+                if (OneDriveService.SetupFileExist() || HttpService.UrlIsAvailable("https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"))
+                {
+                    return false;
+                }
 
-            return false;
+                throw new InvalidOperationException("The file OneDriveSetup.exe was not found and there is no Internet access to download OneDrive installer");
+            }
         }
 
         /// <summary>

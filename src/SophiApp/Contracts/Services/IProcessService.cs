@@ -51,5 +51,11 @@ namespace SophiApp.Contracts.Services
         /// <param name="name">A application or document to start.</param>
         /// <param name="arguments">A arguments to use when starting the application or document.</param>
         Process WaitForExit(string name, string arguments);
+
+        /// <summary>
+        /// Start and wait the associated process to exit.
+        /// </summary>
+        /// <param name="name">A application or document to start.</param>
+        void WaitForExit(string name);
     }
 }

@@ -13,6 +13,7 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class OneDriveService : IOneDriveService
     {
+        private readonly IHttpService httpService;
         private readonly IPowerShellService powerShellService;
         private readonly IProcessService processService;
         private readonly IScheduledTaskService scheduledTaskService;
@@ -23,18 +24,23 @@ namespace SophiApp.Services
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
         /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
         /// <param name="scheduledTaskService">A service for working with Scheduled Task API.</param>
-        public OneDriveService(IPowerShellService powerShellService, IProcessService processService, IScheduledTaskService scheduledTaskService)
+        /// <param name="httpService">A service for working with HTTP API.</param>
+        public OneDriveService(IPowerShellService powerShellService, IProcessService processService, IScheduledTaskService scheduledTaskService, IHttpService httpService)
         {
             this.powerShellService = powerShellService;
             this.processService = processService;
             this.scheduledTaskService = scheduledTaskService;
+            this.httpService = httpService;
         }
 
         /// <inheritdoc/>
-        public string GetUninstallString()
+        public string GetUninstallStringOrDefault()
         {
-            var command = @"Get-Package -Name ""Microsoft OneDrive"" -ProviderName Programs -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes[""UninstallString""]}";
-            return powerShellService.Invoke(command).FirstOrDefault()?.BaseObject?.ToString()?.Replace("\"", null) ?? string.Empty;
+            var uninstallPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\OneDriveSetup.exe";
+            var uninstallString = "UninstallString";
+            var uninstallValue = Registry.CurrentUser.OpenSubKey(uninstallPath)?.GetValue(uninstallString) as string
+                ?? Registry.LocalMachine.OpenSubKey(uninstallPath)?.GetValue(uninstallString) as string;
+            return uninstallValue?.Replace("\"", null) ?? string.Empty;
         }
 
         /// <inheritdoc/>
@@ -44,9 +50,31 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void Install()
+        {
+            if (SetupFileExist())
+            {
+                var uninstallString = GetUninstallStringOrDefault();
+                var process = uninstallString.Substring(0, uninstallString.IndexOf(".exe") + 4);
+                var arguments = uninstallString.Substring(uninstallString.IndexOf("/"));
+                _ = processService.WaitForExit(process, arguments);
+            }
+            else
+            {
+                var downloadPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+                var downloadFolder = Registry.CurrentUser.OpenSubKey(downloadPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string ?? string.Empty;
+                var downloadFile = Path.Combine(downloadFolder, "OneDriveSetup.exe");
+                httpService.DownloadOneDrive(downloadFile);
+                processService.WaitForExit(name: downloadFile);
+                Thread.Sleep(3000);
+                File.Delete(downloadFile);
+            }
+        }
+
+        /// <inheritdoc/>
         public bool SetupFileExist()
         {
-            var uninstallString = GetUninstallString();
+            var uninstallString = GetUninstallStringOrDefault();
 
             if (string.IsNullOrWhiteSpace(uninstallString))
             {
@@ -67,17 +95,21 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void Uninstall()
         {
-            var uninstallString = GetUninstallString();
+            var uninstallString = GetUninstallStringOrDefault();
             var setupFolder = GetSetupFolder();
             var processPath = uninstallString.Substring(0, uninstallString.IndexOf(".exe") + 4);
             var processArguments = uninstallString.Substring(uninstallString.IndexOf("/"));
             var userDataFolder = GetUserDataFolderOrDefault();
+
+            // PowerShell is used to avoid going through all the files and folders, of which there may be many, to filter user and system files.
             var userFilesCount = powerShellService.Invoke<int>("(Get-ChildItem -Path $env:OneDrive -ErrorAction Ignore | Measure-Object).Count");
             processService.KillProcessByName(timeout: 1000, "OneDrive", "OneDriveSetup", "FileCoAuth");
             _ = processService.WaitForExit(processPath, processArguments);
 
             if (userFilesCount.Equals(0))
             {
+                // Uses PowerShell to avoid the "Access Denied" error, not to go through all the files and folders, of which there may be many, to set the Normal attribute.
+                // See https://stackoverflow.com/questions/1701457/directory-delete-doesnt-work-access-denied-error-but-under-windows-explorer-it
                 _ = powerShellService.Invoke("Remove-Item -Path $env:OneDrive -Recurse -Force -ErrorAction Ignore");
                 processService.SetAutoRestartShell(allow: false);
                 processService.KillProcessByName("explorer");
@@ -85,6 +117,9 @@ namespace SophiApp.Services
                 processService.SetAutoRestartShell(allow: true);
                 processService.KillProcessByName("UserOOBEBroker");
                 UnregisterFileSyncShell(setupFolder);
+
+                // Uses PowerShell to avoid the "Access Denied" error, not to go through all the files and folders, of which there may be many, to set the Normal attribute.
+                // See https://stackoverflow.com/questions/1701457/directory-delete-doesnt-work-access-denied-error-but-under-windows-explorer-it
                 _ = powerShellService.Invoke($"Remove-Item -Path \"{setupFolder}\" -Force -Recurse -ErrorAction Ignore");
                 _ = processService.StartProcessByName("explorer");
                 Thread.Sleep(3000);
@@ -139,7 +174,7 @@ namespace SophiApp.Services
 
         private string GetSetupFolder()
         {
-            var uninstallString = GetUninstallString();
+            var uninstallString = GetUninstallStringOrDefault();
             return uninstallString[..uninstallString.LastIndexOf('\\')];
         }
 

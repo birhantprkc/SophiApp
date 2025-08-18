@@ -12,12 +12,17 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Get OneDrive uninstall string.
         /// </summary>
-        string GetUninstallString();
+        string GetUninstallStringOrDefault();
 
         /// <summary>
         /// Get OneDrive user data folder path.
         /// </summary>
         string GetUserDataFolderOrDefault();
+
+        /// <summary>
+        /// Install OneDrive.
+        /// </summary>
+        void Install();
 
         /// <summary>
         /// Determines whether OneDrive is installed.

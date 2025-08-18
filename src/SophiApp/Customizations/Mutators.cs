@@ -1007,6 +1007,7 @@ namespace SophiApp.Customizations
 
             if (enable)
             {
+                OneDriveService.Install();
                 return;
             }
 
