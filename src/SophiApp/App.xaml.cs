@@ -58,7 +58,6 @@ public partial class App : Application
                 _ = services.AddTransient<IRequirementsService, RequirementsService>();
                 _ = services.AddTransient<IScheduledTaskService, ScheduledTaskService>();
                 _ = services.AddTransient<IUpdateService, UpdateService>();
-                _ = services.AddTransient<IUriService, UriService>();
                 _ = services.AddTransient<IXmlService, XmlService>();
 
                 // ViewModels

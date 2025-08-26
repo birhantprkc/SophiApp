@@ -212,9 +212,6 @@
   <data name="Button_Apply.Content" xml:space="preserve">
     <value>Apply</value>
   </data>
-  <data name="SettingsPage_SetDefaultSettings.Title" xml:space="preserve">
-    <value>Reset all settings to default</value>
-  </data>
   <data name="SettingsPage_Links.Title" xml:space="preserve">
     <value>Links</value>
   </data>
@@ -480,7 +477,7 @@
     <value>Open Task Scheduler</value>
   </data>
   <data name="OsRequirementsFailure_DefenderServiceBroken" xml:space="preserve">
-    <value>Windows service "{0}" broken or not running on you PC.</value>
+    <value>Microsoft Defender service "{0}" is broken.</value>
   </data>
   <data name="Panel_ApplyCustomizations_Apply.Text" xml:space="preserve">
     <value>Apply changes?</value>

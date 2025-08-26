@@ -4,9 +4,10 @@
 
 namespace SophiApp.Services
 {
+    using SophiApp.Contracts.Services;
+    using System.Diagnostics;
     using System.Text.RegularExpressions;
     using System.Xml;
-    using SophiApp.Contracts.Services;
 
     /// <inheritdoc/>
     public class HttpService : IHttpService
@@ -64,6 +65,19 @@ namespace SophiApp.Services
             using var stream = await client.GetStreamAsync(appxLink);
             using var file = File.Create(fileName);
             await stream.CopyToAsync(file);
+        }
+
+        /// <inheritdoc/>
+        public async Task OpenUrlAsync(string? url)
+        {
+            await Task.Run(() =>
+            {
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    Process.Start("explorer.exe", url);
+                    App.Logger.LogOpenedUrl(url);
+                }
+            });
         }
 
         /// <inheritdoc/>

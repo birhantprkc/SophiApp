@@ -26,6 +26,7 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly IAppxPackagesService packagesService;
     private readonly ICommonDataService commonDataService;
     private readonly IDefenderService defenderService;
+    private readonly IGroupPolicyService groupPolicyService;
     private readonly IModelService modelService;
     private readonly IProcessService processService;
     private readonly IRequirementsService requirementsService;
@@ -78,6 +79,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// <param name="requirementsService">Service for working with OS requirements.</param>
     /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
     /// <param name="startupViewModel">Implements the <see cref="StartupViewModel"/> class.</param>
+    /// <param name="groupPolicyService">A service for working with group policy API.</param>
     public ShellViewModel(
         IAppNotificationService appNotificationService,
         IAppxPackagesService packagesService,
@@ -89,7 +91,8 @@ public partial class ShellViewModel : ObservableRecipient
         IProcessService processService,
         IRequirementsService requirementsService,
         RequirementsFailureViewModel requirementsFailureViewModel,
-        StartupViewModel startupViewModel)
+        StartupViewModel startupViewModel,
+        IGroupPolicyService groupPolicyService)
     {
         this.appNotificationService = appNotificationService;
         this.commonDataService = commonDataService;
@@ -98,6 +101,7 @@ public partial class ShellViewModel : ObservableRecipient
         this.packagesService = packagesService;
         this.processService = processService;
         this.requirementsService = requirementsService;
+        this.groupPolicyService = groupPolicyService;
         startupModel = startupViewModel;
         NavigationViewService = navigationViewService;
         NavigationService = navigationService;
@@ -370,6 +374,7 @@ public partial class ShellViewModel : ObservableRecipient
         await modelService.GetStateAsync(ApplicableModels, callback);
         ApplicableModels.Clear();
         App.Logger.LogApplicableModelsClear();
+        groupPolicyService.UpdateLocalPolicy();
         EnvironmentHelper.RefreshUserDesktop();
         EnvironmentHelper.ForcedRefresh();
         processService.KillProcessByName("StartMenuExperienceHost");

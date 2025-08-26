@@ -176,14 +176,6 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
         /// <param name="isExist">A service is exist.</param>
-        /// <param name="isRunning">A service is running.</param>
-        void LogDefenderServiceStatus(string service, bool isExist, bool isRunning);
-
-        /// <summary>
-        /// Write Microsoft Defender services status.
-        /// </summary>
-        /// <param name="service">Microsoft Defender service name.</param>
-        /// <param name="isExist">A service is exist.</param>
         void LogDefenderServiceStatus(string service, bool isExist);
 
         /// <summary>
@@ -311,12 +303,6 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
         void LogDefenderServiceBroken(string service);
-
-        /// <summary>
-        /// Handles occur during the Microsoft Defender services not found or not running.
-        /// </summary>
-        /// <param name="service">Microsoft Defender service name.</param>
-        void LogDefenderServiceNotRunning(string service);
 
         /// <summary>
         /// Handles an exception when accessing to get UI model state.

@@ -18,12 +18,6 @@ namespace SophiApp.Contracts.Services
         uint GetNewsAndInterestsHash(bool enable);
 
         /// <summary>
-        /// Gets the status of the service.
-        /// </summary>
-        /// <param name="name">Service name.</param>
-        ServiceControllerStatus? GetStatus(string name);
-
-        /// <summary>
         /// Sets the startup mode of the Windows service.
         /// </summary>
         /// <param name="service">Represents a Windows service and allows you to connect to a running or stopped.</param>

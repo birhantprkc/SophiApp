@@ -23,6 +23,7 @@ namespace SophiApp.Services
         private readonly IDiskService diskService;
         private readonly IInstrumentationService instrumentationService;
         private readonly IProcessService processService;
+        private readonly IHttpService httpService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequirementsService"/> class.
@@ -33,13 +34,15 @@ namespace SophiApp.Services
         /// <param name="diskService">A service for working with disk API.</param>
         /// <param name="instrumentationService">A service for working with WMI API.</param>
         /// <param name="processService">A service for working with Windows process API.</param>
+        /// <param name="httpService">A service for working with HTTP API.</param>
         public RequirementsService(
             IAppNotificationService appNotificationService,
             IAppxPackagesService appxPackagesService,
             ICommonDataService commonDataService,
             IDiskService diskService,
             IInstrumentationService instrumentationService,
-            IProcessService processService)
+            IProcessService processService,
+            IHttpService httpService)
         {
             this.appNotificationService = appNotificationService;
             this.appxPackagesService = appxPackagesService;
@@ -47,6 +50,7 @@ namespace SophiApp.Services
             this.diskService = diskService;
             this.instrumentationService = instrumentationService;
             this.processService = processService;
+            this.httpService = httpService;
         }
 
         /// <inheritdoc/>
@@ -232,22 +236,25 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result AppUpdateDetection()
         {
-            try
+            if (httpService.UrlIsAvailable(commonDataService.AppVersionUrl))
             {
-                using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
-                var json = client.GetFromJsonAsync<AppVersionWrapper>(commonDataService.AppVersionUrl).Result;
-                var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
-                App.Logger.LogAppUpdate(jsonVersion);
-
-                if (jsonVersion > commonDataService.AppVersion)
+                try
                 {
-                    var payload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), commonDataService.AppReleaseUrl);
-                    appNotificationService.Show(payload);
+                    using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
+                    var json = client.GetFromJsonAsync<AppVersionWrapper>(commonDataService.AppVersionUrl).Result;
+                    var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
+                    App.Logger.LogAppUpdate(jsonVersion);
+
+                    if (jsonVersion > commonDataService.AppVersion)
+                    {
+                        var payload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), commonDataService.AppReleaseUrl);
+                        appNotificationService.Show(payload);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                App.Logger.LogAppUpdateException(ex);
+                catch (Exception ex)
+                {
+                    App.Logger.LogAppUpdateException(ex);
+                }
             }
 
             return Result.Success();
