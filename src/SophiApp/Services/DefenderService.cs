@@ -8,7 +8,6 @@ namespace SophiApp.Services
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
     using SophiApp.Helpers;
-    using System.ServiceProcess;
 
     /// <inheritdoc/>
     public class DefenderService : IDefenderService
@@ -19,7 +18,7 @@ namespace SophiApp.Services
         private readonly IPowerShellService powerShellService;
         private readonly IProcessService processService;
 
-        private readonly List<string> servicesName = ["Windefend", "SecurityHealthService", "wscsvc", "wdFilter"];
+        private readonly List<string> servicesName = ["Windefend", "SecurityHealthService", "wscsvc"];
         private bool servicesStatus = false;
 
         /// <summary>
@@ -88,9 +87,10 @@ namespace SophiApp.Services
 
         private Result GetSettingsPageVisibility()
         {
-            var policiesPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
-            var pageVisibility = Registry.LocalMachine.OpenSubKey(policiesPath)?.GetValue("SettingsPageVisibility") as string ?? string.Empty;
-            return pageVisibility.Contains("hide:windowsdefender")
+            var settingsPagePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
+            var settingsPageVisibility = Registry.LocalMachine.OpenSubKey(settingsPagePath)
+                    ?.GetValue("SettingsPageVisibility") as string ?? string.Empty;
+            return settingsPageVisibility.Contains("hide:windowsdefender")
                 ? Result.Failure(nameof(RequirementsFailure.DefenderSettingsPageHidden))
                 : Result.Success();
         }
@@ -105,7 +105,8 @@ namespace SophiApp.Services
         {
             var productState = instrumentationService.GetAntivirusProductsOrDefault()
                 .Find(product => product.GetPropertyValue("instanceGuid")
-                    .Equals("{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"))?.GetPropertyValue("productState");
+                .Equals("{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"))
+                ?.GetPropertyValue("productState");
             var defenderState = productState is null ? "00" : string.Format("0x{0:x}", productState).Substring(3, 2);
             var isDefaultAntivirus = !(defenderState.Equals("00") || defenderState.Equals("01"));
             return isDefaultAntivirus;
@@ -129,31 +130,13 @@ namespace SophiApp.Services
         {
             servicesStatus = servicesName.TrueForAll(service =>
             {
-                if (service.Equals("wdFilter"))
+                if (osService.Exist(service))
                 {
-                    var wdFilterExist = osService.Exist(service);
-
-                    if (wdFilterExist)
-                    {
-                        App.Logger.LogDefenderServiceStatus(service, wdFilterExist);
-                        return true;
-                    }
-
-                    App.Logger.LogDefenderServiceBroken(service);
-                    commonDataService.DefenderServiceBroken = service;
-                    return false;
-                }
-
-                var isExist = osService.Exist(service);
-                var isRunning = osService.GetStatus(service)?.Equals(ServiceControllerStatus.Running) ?? false;
-                App.Logger.LogDefenderServiceStatus(service, isExist, isRunning);
-
-                if (isExist && isRunning)
-                {
+                    App.Logger.LogDefenderServiceStatus(service, true);
                     return true;
                 }
 
-                App.Logger.LogDefenderServiceNotRunning(service);
+                App.Logger.LogDefenderServiceBroken(service);
                 commonDataService.DefenderServiceBroken = service;
                 return false;
             });

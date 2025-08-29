@@ -5,7 +5,7 @@
 namespace SophiApp.Helpers
 {
     /// <summary>
-    /// UI category tags.
+    /// The UI category tags.
     /// </summary>
     public enum UICategoryTag
     {

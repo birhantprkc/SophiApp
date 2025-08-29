@@ -54,7 +54,6 @@
         <Setter Property="FontSize" Value="{StaticResource MediumFontSize}" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="TextAlignment" Value="Center" />
-        <Setter Property="Margin" Value="5, 20, 5, 20" />
     </Style>
 
     <Style x:Key="SquareCheckBoxTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">

@@ -29,6 +29,12 @@ namespace SophiApp.Contracts.Services
         Task DownloadHEVCAppxAsync(string fileName);
 
         /// <summary>
+        /// Opens a resource using an url.
+        /// </summary>
+        /// <param name="url">Discoverable url.</param>
+        Task OpenUrlAsync(string? url);
+
+        /// <summary>
         /// Throws exception if url unavailable.
         /// </summary>
         /// <param name="url">Url to check availability.</param>

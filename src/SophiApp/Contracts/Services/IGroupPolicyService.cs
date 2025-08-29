@@ -5,6 +5,7 @@
 namespace SophiApp.Contracts.Services
 {
     using Microsoft.Win32;
+    using SophiApp.Helpers;
 
     /// <summary>
     /// A service for working with group policy API.
@@ -17,7 +18,7 @@ namespace SophiApp.Contracts.Services
         /// <param name="registryKey">Represents a key-level node in the Windows registry.</param>
         /// <param name="subKey">Registry subkey path to open.</param>
         /// <param name="value">The name of the value to delete.</param>
-        public void ClearPolicyCache(RegistryKey registryKey, string subKey, string value);
+        void ClearRegistryCache(RegistryKey registryKey, string subKey, string value);
 
         /// <summary>
         /// Clear the registry value cache to make changes visible in UI.
@@ -25,7 +26,7 @@ namespace SophiApp.Contracts.Services
         /// <param name="registryKey">Represents a key-level node in the Windows registry.</param>
         /// <param name="subKey">Registry subkey path to open.</param>
         /// <param name="values">The name of the values to delete.</param>
-        public void ClearPolicyCache(RegistryKey registryKey, string subKey, params string[] values);
+        void ClearRegistryCache(RegistryKey registryKey, string subKey, params string[] values);
 
         /// <summary>
         /// Clear the registry value cache to make changes visible in UI.
@@ -33,7 +34,7 @@ namespace SophiApp.Contracts.Services
         /// <param name="subKey">Registry subkey path to open.</param>
         /// <param name="value">The name of the values to delete.</param>
         /// <param name="registryKeys">Represents a key-level nodes in the Windows registry.</param>
-        public void ClearPolicyCache(string subKey, string value, params RegistryKey[] registryKeys);
+        void ClearRegistryCache(string subKey, string value, params RegistryKey[] registryKeys);
 
         /// <summary>
         /// Set registry value to clear policy cache and make changes visible in UI.
@@ -44,7 +45,38 @@ namespace SophiApp.Contracts.Services
         /// <param name="name">The name of the value to be stored.</param>
         /// <param name="value">The data to be stored.</param>
         /// <param name="kind">Specifies the data types to use when storing values in the registry.</param>
-        public void SetPolicyValue<T>(RegistryKey registryKey, string subKey, string name, T value, RegistryValueKind kind)
+        public void ClearRegistryCache<T>(RegistryKey registryKey, string subKey, string name, T value, RegistryValueKind kind)
             where T : struct;
+
+        /// <summary>
+        /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
+        /// </summary>
+        /// <param name="scope">Policy scope.</param>
+        /// <param name="path">Policy path.</param>
+        /// <param name="name">Policy value name.</param>
+        /// <param name="type">Policy value type.</param>
+        /// <param name="value">Policy value.</param>
+        void ClearLocalCache(LGPOScope scope, string path, string name, string type = "", string value = "");
+
+        /// <summary>
+        /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
+        /// </summary>
+        /// <param name="scope">Policy scope.</param>
+        /// <param name="path">Policy path.</param>
+        /// <param name="names">Policy value names.</param>
+        void ClearLocalCache(LGPOScope scope, string path, params string[] names);
+
+        /// <summary>
+        /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
+        /// </summary>
+        /// <param name="path">Policy path.</param>
+        /// <param name="name">Policy value name.</param>
+        /// <param name="scopes">Policy scopes.</param>
+        void ClearLocalCache(string path, string name, params LGPOScope[] scopes);
+
+        /// <summary>
+        /// Update local policy cache using by LGPO.txt file.
+        /// </summary>
+        void UpdateLocalPolicy();
     }
 }

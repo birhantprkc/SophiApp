@@ -226,6 +226,10 @@ dotnet_diagnostic.MVVMTK0034.severity = error
 dotnet_diagnostic.SA1010.severity = silent
 dotnet_diagnostic.S2325.severity = suggestion
 dotnet_diagnostic.S1075.severity = none
+csharp_indent_labels = one_less_than_current
+csharp_style_prefer_implicitly_typed_lambda_expression = true:suggestion
+csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
+dotnet_diagnostic.MVVMTK0045.severity = none
 
 [*.vb]
 #### Naming Styles ####

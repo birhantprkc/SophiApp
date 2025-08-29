@@ -81,8 +81,10 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.2.250402" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.2.250402" />
+    <PackageReference Include="CommunityToolkit.WinUI.Lottie" Version="8.1.240821" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.4" />
     <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.4.6" />
     <PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.4.6" />
     <PackageReference Include="Microsoft.PowerShell.Commands.Utility" Version="7.4.6" />
@@ -176,6 +178,9 @@
 
   <ItemGroup>
     <None Update="Assets\LinkedIn.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Binaries\LGPO.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Page Update="Views\FatalErrorPage.xaml">

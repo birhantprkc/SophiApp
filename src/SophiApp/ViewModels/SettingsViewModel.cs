@@ -46,9 +46,9 @@ public partial class SettingsViewModel : ObservableRecipient
     /// </summary>
     /// <param name="themesService">A service for working with app themes.</param>
     /// <param name="commonDataService">A service for transferring app data between layers of DI.</param>
-    /// <param name="uriService">A service for working with URI.</param>
+    /// <param name="httpService">A service for working with HTTP.</param>
     /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
-    public SettingsViewModel(IThemesService themesService, ICommonDataService commonDataService, IUriService uriService, ShellViewModel shellViewModel)
+    public SettingsViewModel(IThemesService themesService, ICommonDataService commonDataService, IHttpService httpService, ShellViewModel shellViewModel)
     {
         build = commonDataService.GetBuildName();
         delimiter = commonDataService.GetDelimiter();
@@ -56,7 +56,7 @@ public partial class SettingsViewModel : ObservableRecipient
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
         LogPageVisible = shellViewModel.LogPageVisible;
         LogPageVisibleCommand = shellViewModel.SetLogPageVisibility_Command;
-        OpenLinkCommand = new AsyncRelayCommand<string>(url => uriService.OpenUrlAsync(url!));
+        OpenLinkCommand = new AsyncRelayCommand<string>(url => httpService.OpenUrlAsync(url));
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
         version = commonDataService.GetFullName();
