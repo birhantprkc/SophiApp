@@ -11,6 +11,7 @@ namespace SophiApp.Customizations
     using SophiApp.Extensions;
     using SophiApp.Models;
     using System.Globalization;
+    using System.Management.Automation.Runspaces;
     using System.ServiceProcess;
     using System.Text;
 
@@ -922,7 +923,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NetworkAdaptersSavePower()
         {
-            return true;
+            return PowerShellService.TurnOffDeviceNetworkAdapterExist()
+                ?? throw new InvalidOperationException("There are no network adapter that supports the \"AllowComputerToTurnOffDevice\" property");
         }
 
         /// <summary>
@@ -948,10 +950,25 @@ namespace SophiApp.Customizations
             return latesClr.Equals(1) && latesWowClr.Equals(1);
         }
 
-        // TODO: Set description
+        /// <summary>
+        /// Get Print Screen folder state.
+        /// </summary>
         public static bool WinPrtScrFolder()
         {
-            return true;
+            if (OneDriveService.UserIsLogged())
+            {
+                throw new InvalidOperationException("User already logged into OneDrive");
+            }
+
+            if (OneDriveService.IsInstalled())
+            {
+                throw new InvalidOperationException("First you need to remove OneDrive");
+            }
+
+            var shellFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+            var printScreenPath = Registry.CurrentUser.OpenSubKey(shellFolderPath)?.GetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}") as string ?? string.Empty;
+            var desktopPath = Registry.CurrentUser.OpenSubKey(shellFolderPath)?.GetValue("Desktop") as string;
+            return printScreenPath.Equals(desktopPath);
         }
 
         /// <summary>

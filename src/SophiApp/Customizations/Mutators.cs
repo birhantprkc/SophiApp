@@ -1366,7 +1366,7 @@ namespace SophiApp.Customizations
         /// <param name="enable">Network adapters power state.</param>
         public static void NetworkAdaptersSavePower(bool enable)
         {
-            // Method intentionally left empty.
+            PowerShellService.SetTurnOffDeviceNetworkAdapterState(enable);
         }
 
         /// <summary>
@@ -1411,10 +1411,16 @@ namespace SophiApp.Customizations
                 ?.DeleteValue(latestClr, false);
         }
 
-        // TODO: Set description
+        /// <summary>
+        /// Set Print Screen folder state.
+        /// </summary>
+        /// <param name="enable">Print Screen state.</param>
         public static void WinPrtScrFolder(bool enable)
         {
-            // Method intentionally left empty.
+            var shellFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+            var desktopPath = Registry.CurrentUser.OpenSubKey(shellFolderPath)?.GetValue("Desktop") as string;
+            Registry.CurrentUser.OpenSubKey(shellFolderPath, true)
+                ?.SetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}", enable ? desktopPath! : string.Empty, RegistryValueKind.ExpandString);
         }
 
         /// <summary>

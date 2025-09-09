@@ -17,6 +17,19 @@ namespace SophiApp.Contracts.Services
         void ClearCommonDialogViews();
 
         /// <summary>
+        /// Checks if there are any connected network adapters with the managed property "AllowComputerToTurnOffDevice".
+        /// </summary>
+        bool? TurnOffDeviceNetworkAdapterExist();
+
+        /// <summary>
+        /// Return script execute or default result using version 5.1 of PowerShell.
+        /// </summary>
+        /// <typeparam name="T">Object type.</typeparam>
+        /// <param name="script">Script to execute.</param>
+        T? InvokeOrDefault<T>(string script)
+            where T : struct;
+
+        /// <summary>
         /// Execute the script using version 5.1 of PowerShell.
         /// </summary>
         /// <typeparam name="T">Return object type.</typeparam>
@@ -35,5 +48,11 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="command">The command to be execute, must begin with "-Command".</param>
         void InvokeCommandBypassUCPD(string command);
+
+        /// <summary>
+        /// Set network adapters managed property "AllowComputerToTurnOffDevice" state.
+        /// </summary>
+        /// <param name="enable">Network adapters "AllowComputerToTurnOffDevice" property state.</param>
+        void SetTurnOffDeviceNetworkAdapterState(bool enable);
     }
 }
