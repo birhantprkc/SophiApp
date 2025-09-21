@@ -70,15 +70,88 @@ namespace SophiApp.Services
                 var packages = appxPackagesService.GetPackages(forAllUsers);
                 var excludedAppx = new List<string>()
             {
-                "Microsoft.DesktopAppInstaller", "Microsoft.StorePurchaseApp", "Microsoft.WindowsNotepad", "Microsoft.WindowsStore", "Microsoft.WindowsTerminal",
-                "Microsoft.WindowsTerminalPreview", "Microsoft.WebMediaExtensions", "Microsoft.AV1VideoExtension", "Microsoft.HEVCVideoExtension",
-                "Microsoft.RawImageExtension", "Microsoft.HEIFImageExtension", "windows.immersivecontrolpanel", "AdvancedMicroDevicesInc-2.AMDRadeonSoftware",
-                "AppUp.IntelGraphicsControlPanel", "ELANMicroelectronicsCorpo.ELANTouchpadforThinkpad", "ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
-                "AppUp.IntelGraphicsExperience", "Microsoft.ApplicationCompatibilityEnhancements", "Microsoft.AVCEncoderVideoExtension", "Microsoft.DesktopAppInstaller",
-                "Microsoft.StorePurchaseApp", "MicrosoftWindows.CrossDevice", "Microsoft.WindowsNotepad", "Microsoft.WindowsStore", "Microsoft.WindowsTerminal",
-                "Microsoft.WindowsTerminalPreview", "Microsoft.WebMediaExtensions", "Microsoft.AV1VideoExtension", "MicrosoftCorporationII.WindowsSubsystemForLinux",
-                "Microsoft.HEVCVideoExtensions", "Microsoft.RawImageExtension", "Microsoft.HEIFImageExtension", "Microsoft.MPEG2VideoExtension", "Microsoft.VP9VideoExtensions",
-                "Microsoft.WebpImageExtension", "Microsoft.PowerShell", "NVIDIACorp.NVIDIAControlPanel", "RealtekSemiconductorCorp.RealtekAudioControl", "SynapticsIncorporated.SynapticsUtilities",
+                // Dolby Access
+                "DolbyLaboratories.DolbyAccess",
+                "DolbyLaboratories.DolbyDigitalPlusDecoderOEM",
+
+                // AMD Radeon Software
+                "AdvancedMicroDevicesInc-2.AMDRadeonSoftware",
+
+                // Intel Graphics Control Center
+                "AppUp.IntelGraphicsControlPanel",
+                "AppUp.IntelGraphicsExperience",
+
+                // ELAN Touchpad
+                "ELANMicroelectronicsCorpo.ELANTouchpadforThinkpad",
+                "ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
+
+                // Microsoft Application Compatibility Enhancements
+                "Microsoft.ApplicationCompatibilityEnhancements",
+
+                // AVC Encoder Video Extension
+                "Microsoft.AVCEncoderVideoExtension",
+
+                // Microsoft Desktop App Installer
+                "Microsoft.DesktopAppInstaller",
+
+                // Store Experience Host
+                "Microsoft.StorePurchaseApp",
+
+                // Cross Device Experience Host
+                "MicrosoftWindows.CrossDevice",
+
+                // Notepad
+                "Microsoft.WindowsNotepad",
+
+                // Microsoft Store
+                "Microsoft.WindowsStore",
+
+                // Windows Terminal
+                "Microsoft.WindowsTerminal",
+                "Microsoft.WindowsTerminalPreview",
+
+                // Web Media Extensions
+                "Microsoft.WebMediaExtensions",
+
+                // AV1 Video Extension
+                "Microsoft.AV1VideoExtension",
+
+                // Windows Subsystem for Linux
+                "MicrosoftCorporationII.WindowsSubsystemForLinux",
+
+                // HEVC Video Extensions from Device Manufacturer
+                "Microsoft.HEVCVideoExtension",
+                "Microsoft.HEVCVideoExtensions",
+
+                // Raw Image Extension
+                "Microsoft.RawImageExtension",
+
+                // HEIF Image Extensions
+                "Microsoft.HEIFImageExtension",
+
+                // MPEG-2 Video Extension
+                "Microsoft.MPEG2VideoExtension",
+
+                // VP9 Video Extensions
+                "Microsoft.VP9VideoExtensions",
+
+                // Webp Image Extensions
+                "Microsoft.WebpImageExtension",
+
+                // PowerShell
+                "Microsoft.PowerShell",
+
+                // NVIDIA Control Panel
+                "NVIDIACorp.NVIDIAControlPanel",
+
+                // Realtek Audio Console
+                "RealtekSemiconductorCorp.RealtekAudioControl",
+
+                // Synaptics
+                "SynapticsIncorporated.SynapticsControlPanel",
+                "SynapticsIncorporated.241916F58D6E7",
+                "ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
+                "ELANMicroelectronicsCorpo.TrackPoint"
             };
 
                 for (int i = 0; i < packages.Count; i++)

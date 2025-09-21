@@ -827,7 +827,7 @@ namespace SophiApp.Customizations
         {
             var filePath = "System\\CurrentControlSet\\Control\\FileSystem";
             var isEnabled = Registry.LocalMachine.OpenSubKey(filePath)?.GetValue("LongPathsEnabled") as int? ?? -1;
-            return isEnabled.Equals(0);
+            return isEnabled.Equals(1);
         }
 
         /// <summary>
@@ -1214,7 +1214,7 @@ namespace SophiApp.Customizations
                 return hwSchMode == 2;
             }
 
-            throw new InvalidOperationException($"DAC type is external: {isExternalDACType}, is VM: {isVirtualMachine}, WDDM version (minimal {WDDMMinimalVersion}): {wddmVersion}");
+            throw new InvalidOperationException($"DAC type is external: {isExternalDACType}. PC is a VM: {isVirtualMachine}. WDDM version (minimal {WDDMMinimalVersion}): {wddmVersion}");
         }
 
         /// <summary>
@@ -1416,7 +1416,7 @@ else
             var blockingTasksExist = ScheduledTaskService.FindTaskOrDefault(blockingTasks).Any(task => task?.State == TaskState.Ready);
             var scriptHostPath = "Software\\Microsoft\\Windows Script Host\\Settings";
             var scriptHostIsEnabled = Registry.CurrentUser.OpenSubKey(scriptHostPath)?.GetValue("Enabled") as int? ?? -1;
-            return blockingTasksExist ? throw new InvalidOperationException("One of the blocking tasks is in Ready state.") : !scriptHostIsEnabled.Equals(0);
+            return blockingTasksExist ? throw new InvalidOperationException("One of the blocking tasks is in Ready state. Please check 'Sophia' folder in the Task Scheduler") : !scriptHostIsEnabled.Equals(0);
         }
 
         /// <summary>

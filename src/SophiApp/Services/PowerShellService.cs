@@ -102,7 +102,7 @@ if (Get-NetAdapter -Physical | Where-Object -FilterScript {{($_.Status -eq ""Up"
     }}
 
 # All network adapters are turned into ""Disconnected"" for few seconds, so we need to wait a bit to let them up
-# Otherwise functions below will indicate that there is no the Internet connection
+# Otherwise functions below will indicate that there is no Internet connection
 if ($PhysicalAdaptersStatusUp)
 {{
 	# If Wi-Fi network was used
