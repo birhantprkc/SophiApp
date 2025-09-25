@@ -230,6 +230,7 @@ csharp_indent_labels = one_less_than_current
 csharp_style_prefer_implicitly_typed_lambda_expression = true:suggestion
 csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
 dotnet_diagnostic.MVVMTK0045.severity = none
+dotnet_diagnostic.SA0001.severity = suggestion
 
 [*.vb]
 #### Naming Styles ####

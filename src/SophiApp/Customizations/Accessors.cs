@@ -11,7 +11,6 @@ namespace SophiApp.Customizations
     using SophiApp.Extensions;
     using SophiApp.Models;
     using System.Globalization;
-    using System.Management.Automation.Runspaces;
     using System.ServiceProcess;
     using System.Text;
 
@@ -924,7 +923,7 @@ namespace SophiApp.Customizations
         public static bool NetworkAdaptersSavePower()
         {
             return PowerShellService.TurnOffDeviceNetworkAdapterExist()
-                ?? throw new InvalidOperationException("There are no network adapter that supports the \"AllowComputerToTurnOffDevice\" property");
+                ?? throw new InvalidOperationException("There are no network adapter that supports the AllowComputerToTurnOffDevice property");
         }
 
         /// <summary>

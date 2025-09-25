@@ -1053,7 +1053,7 @@
     <value>Perhaps the root cause of the exception is due to the use a Defender tampering utility like "Defender Killer".</value>
   </data>
   <data name="UIModel_ActiveHours_Title" xml:space="preserve">
-    <value>ActiveHours title here</value>
+    <value>Enable Active hours for Windows updating</value>
   </data>
   <data name="UIModel_ActiveHours_Title_1" xml:space="preserve">
     <value>Automatically</value>
@@ -1062,55 +1062,55 @@
     <value>Manually</value>
   </data>
   <data name="UIModel_AdminApprovalMode_Title" xml:space="preserve">
-    <value>AdminApprovalMode title here</value>
+    <value>Configure UAC behavior</value>
   </data>
   <data name="UIModel_Autoplay_Title" xml:space="preserve">
-    <value>Autoplay title here</value>
+    <value>Use AutoPlay for all media and devices</value>
   </data>
   <data name="UIModel_BSoDStopError_Title" xml:space="preserve">
-    <value>BSoDStopError title here</value>
+    <value>Display Stop error code when BSoD occurs</value>
   </data>
   <data name="UIModel_CapsLock_Title" xml:space="preserve">
-    <value>CapsLock title here</value>
+    <value>Enable Caps Lock at startup</value>
   </data>
   <data name="UIModel_DeliveryOptimization_Title" xml:space="preserve">
-    <value>DeliveryOptimization title here</value>
+    <value>Enable Windows update delivery optimization</value>
   </data>
   <data name="UIModel_F1HelpPage_Title" xml:space="preserve">
-    <value>F1HelpPage title here</value>
+    <value>Enable help look up via F1</value>
   </data>
   <data name="UIModel_FoldersLaunchSeparateProcess_Title" xml:space="preserve">
-    <value>FoldersLaunchSeparateProcess title here</value>
+    <value>Launch folder windows in a separate process</value>
   </data>
   <data name="UIModel_Hibernation_Title" xml:space="preserve">
-    <value>Hibernation title here</value>
+    <value>Enable hibernation</value>
   </data>
   <data name="UIModel_InputMethod_Title" xml:space="preserve">
-    <value>InputMethod title here</value>
+    <value>Set default input method</value>
   </data>
   <data name="UIModel_InputMethod_Title_1" xml:space="preserve">
-    <value>English (USA)</value>
+    <value>English</value>
   </data>
   <data name="UIModel_InputMethod_Title_2" xml:space="preserve">
     <value>Use language list</value>
   </data>
   <data name="UIModel_LatestInstalledNET_Title" xml:space="preserve">
-    <value>LatestInstalledNET title here</value>
+    <value>Forcibly use .NET Framework 4.8.1 for old apps</value>
   </data>
   <data name="UIModel_NetworkAdaptersSavePower_Title" xml:space="preserve">
-    <value>NetworkAdaptersSavePower title here</value>
+    <value>Keep network adapter awake</value>
   </data>
   <data name="UIModel_NetworkDiscovery_Title" xml:space="preserve">
-    <value>NetworkDiscovery title here</value>
+    <value>Enable network discovery and file sharing</value>
   </data>
   <data name="UIModel_NumLock_Title" xml:space="preserve">
-    <value>NumLock title here</value>
+    <value>Enable Num Lock at startup</value>
   </data>
   <data name="UIModel_OneDrive_Title" xml:space="preserve">
-    <value>OneDrive title here</value>
+    <value>OneDrive</value>
   </data>
   <data name="UIModel_PowerPlan_Title" xml:space="preserve">
-    <value>PowerPlan title here</value>
+    <value>Choose a power plan</value>
   </data>
   <data name="UIModel_PowerPlan_Title_1" xml:space="preserve">
     <value>High Performance</value>
@@ -1119,19 +1119,19 @@
     <value>Balanced</value>
   </data>
   <data name="UIModel_RecommendedTroubleshooting_Title" xml:space="preserve">
-    <value>RecommendedTroubleshooting title here</value>
+    <value>Recommended troubleshooting</value>
   </data>
   <data name="UIModel_RecommendedTroubleshooting_Title_1" xml:space="preserve">
-    <value>Automatically</value>
+    <value>Run troubleshooters automatically, then notify</value>
   </data>
   <data name="UIModel_RecommendedTroubleshooting_Title_2" xml:space="preserve">
-    <value>Default</value>
+    <value>Ask me before running troubleshooter</value>
   </data>
   <data name="UIModel_RegistryBackup_Title" xml:space="preserve">
-    <value>RegistryBackup title here</value>
+    <value>Enable automatic backup of the Windows registry</value>
   </data>
   <data name="UIModel_ReservedStorage_Title" xml:space="preserve">
-    <value>ReservedStorage title here</value>
+    <value>Enable Reserved Storage</value>
   </data>
   <data name="UIModel_ReservedStorage_Title_1" xml:space="preserve">
     <value>Disabled</value>
@@ -1140,40 +1140,40 @@
     <value>Enabled</value>
   </data>
   <data name="UIModel_RestartDeviceAfterUpdate_Title" xml:space="preserve">
-    <value>RestartDeviceAfterUpdate title here</value>
+    <value>Restart as soon as possible to finish updating</value>
   </data>
   <data name="UIModel_RestartNotification_Title" xml:space="preserve">
-    <value>RestartNotification title here</value>
+    <value>Notify me when a restart is required to finish updating</value>
   </data>
   <data name="UIModel_RKNBypass_Title" xml:space="preserve">
-    <value>RKNBypass_title here</value>
+    <value>Enable proxy by ProstoVPN.AntiZapret</value>
   </data>
   <data name="UIModel_SaveRestartableApps_Title" xml:space="preserve">
-    <value>SaveRestartableApps title here</value>
+    <value>Automatically save my restartable apps and restart them when I sign back in</value>
   </data>
   <data name="UIModel_StickyShift_Title" xml:space="preserve">
-    <value>StickyShift title here</value>
+    <value>Enable Sticky Shift key</value>
   </data>
   <data name="UIModel_StorageSense_Title" xml:space="preserve">
-    <value>StorageSense title here</value>
+    <value>Enable Storage Sense</value>
   </data>
   <data name="UIModel_ThumbnailCacheRemoval_Title" xml:space="preserve">
-    <value>ThumbnailCacheRemoval title here</value>
+    <value>Enable thumbnail cache removal</value>
   </data>
   <data name="UIModel_UpdateMicrosoftProducts_Title" xml:space="preserve">
-    <value>UpdateMicrosoftProducts title here</value>
+    <value>Receive updates for other Microsoft products</value>
   </data>
   <data name="UIModel_Win32LongPathLimit_Title" xml:space="preserve">
-    <value>Win32LongPathLimit title here</value>
+    <value>Enable Windows long paths support</value>
   </data>
   <data name="UIModel_WindowsLatestUpdate_Title" xml:space="preserve">
-    <value>WindowsLatestUpdate title here</value>
+    <value>Get the latest Windows updates as soon as they're available</value>
   </data>
   <data name="UIModel_WindowsManageDefaultPrinter_Title" xml:space="preserve">
-    <value>WindowsManageDefaultPrinter title here</value>
+    <value>Let Windows manage my default printer</value>
   </data>
   <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
-    <value>WinPrtScrFolder title here</value>
+    <value>Select folder to save screenshots when pressing Win+PrtScn or using Windows+Shift+S</value>
   </data>
   <data name="UIModel_RestartNotification_Title_1" xml:space="preserve">
     <value>Show</value>
@@ -1183,5 +1183,119 @@
   </data>
   <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
     <value>Applying customization</value>
+  </data>
+  <data name="UIModel_ActiveHours_Description" xml:space="preserve">
+    <value>You can set active hours to let Windows know when you're usually using your PC to prevent automatic reboots after a Windows Update. The default active hours is 8:00 AM for Start time and 5:00 PM End time.</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Description" xml:space="preserve">
+    <value>When User Account Control (UAC) is enabled, Windows prompts for consent or prompts for credentials of a valid local administrator account before starting a program or task that requires a full administrator access token. This prompt ensures that no malicious software can be silently installed or run.</value>
+  </data>
+  <data name="UIModel_Autoplay_Description" xml:space="preserve">
+    <value>When you insert a removable device such as a USB flash stick or memory card into your PC, you'll often see an annoying "AutoPlay" popup.</value>
+  </data>
+  <data name="UIModel_BSoDStopError_Description" xml:space="preserve">
+    <value>By default, Windows does not display a Stop error code when a BSoD occurs, which helps to identify the causes of a BSoD.</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Description" xml:space="preserve">
+    <value>The terminal application that launches when a command-line application is run without an existing session, like from the Start Menu or Run dialog.</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Title" xml:space="preserve">
+    <value>Set Windows Terminal as default terminal app</value>
+  </data>
+  <data name="UIModel_DeliveryOptimization_Description" xml:space="preserve">
+    <value>Windows Update Delivery Optimization works by letting you get Windows updates and Microsoft Store apps from sources in addition to Microsoft, like other PCs on your local network, or PCs on the Internet that are downloading the same files. Delivery Optimization also sends updates and apps from your PC to other PCs on your local network or PCs on the Internet, based on your settings. Sharing this data between PCs helps reduce the Internet bandwidth that's needed to keep more than one device up to date or can make downloads more successful if you have a limited or unreliable Internet connection.</value>
+  </data>
+  <data name="UIModel_F1HelpPage_Description" xml:space="preserve">
+    <value>By default, pressing F1 in Windows opens a help page in a default web browser, which may result in accidental opening web browser.</value>
+  </data>
+  <data name="UIModel_FoldersLaunchSeparateProcess_Description" xml:space="preserve">
+    <value>By default, all File Explorer windows, including the desktop shell, run in a single explorer.exe process. If one File Explorer window hangs or crashes, it will cause the whole graphical shell to freeze until the process restarts. When enabled, each explorer.exe process will have its own process ID (PID) to improve stability of the explorer shell.</value>
+  </data>
+  <data name="UIModel_Hibernation_Description" xml:space="preserve">
+    <value>Hibernate is a power-saving state used primarily for laptops. Unlike sleep, hibernation puts your open documents and programs on the system drive to the C:\hiberfil.sys file, and turns off your computer. By default, the size of the hidden system protected file C:\hiberfil.sys is 40% of the total amount of RAM installed. Disabling hibernation will also disable fast startup, and hibernate will no longer show in the Power menu. Not recommended to turn off for laptops.</value>
+  </data>
+  <data name="UIModel_InputMethod_Description" xml:space="preserve">
+    <value>Your default keyboard layout is the one that’s automatically used at sign in screen.</value>
+  </data>
+  <data name="UIModel_LatestInstalledNET_Description" xml:space="preserve">
+    <value>This function will force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1. If you do not use old applications, there's no need to enable this function.</value>
+  </data>
+  <data name="UIModel_NetworkAdaptersSavePower_Description" xml:space="preserve">
+    <value>Allow the computer to turn off the network adapter to save power and prevent them from going to sleep. Only currently used network adapter will be configured, even if your motherboard has an additional Wi-Fi alongside with an Ethernet one.</value>
+  </data>
+  <data name="UIModel_NetworkDiscovery_Description" xml:space="preserve">
+    <value>Network Discovery makes PC discoverable in the same network, and other devices can see your PC, and vice versa.</value>
+  </data>
+  <data name="UIModel_OneDrive_Description" xml:space="preserve">
+    <value>OneDrive user folder won't be removed if any file found there. Internet connection required.</value>
+  </data>
+  <data name="UIModel_PowerPlan_Description" xml:space="preserve">
+    <value>"High performance" is not recommended to turn on for laptops. You need to know that enabling "High performance" power plan doesn't effect on your FPS conunt is video games. It only manages how your PC uses power.</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Description" xml:space="preserve">
+    <value>Microsoft can recommend and run troubleshooters to fix issues. How much do you want Microsoft to help when there are issues on your device that troubleshooters might be able to fix?</value>
+  </data>
+  <data name="UIModel_ReservedStorage_Description" xml:space="preserve">
+    <value>Windows reseres some storage (~7GB) to facilitate proper performance and successful updates of device. Disabling reserved storage will free up space reserved by reserved storage (~7GB). After disabling the reserved storage will be deleted after the next update installation.</value>
+  </data>
+  <data name="UIModel_RestartDeviceAfterUpdate_Description" xml:space="preserve">
+    <value>Restart as soon as possible (even during active hours) to finish updating, and notify 15 minutes before restarting.</value>
+  </data>
+  <data name="UIModel_RestartNotification_Description" xml:space="preserve">
+    <value>Show notification when your device requires a restart to finish updating.</value>
+  </data>
+  <data name="UIModel_RestorePreviousFolders_Description" xml:space="preserve">
+    <value>Restore all the extra tabs which you previously had open in each File Explorer window.</value>
+  </data>
+  <data name="UIModel_RestorePreviousFolders_Title" xml:space="preserve">
+    <value>Restore previous folder windows at logon</value>
+  </data>
+  <data name="UIModel_SaveRestartableApps_Description" xml:space="preserve">
+    <value>If the program was run as administrator in the previous session, it will be restarted with non-admin permissions.</value>
+  </data>
+  <data name="UIModel_StickyShift_Description" xml:space="preserve">
+    <value>Pressing Shift key 5 times in a row results in a popup appear which may interrupt your work.</value>
+  </data>
+  <data name="UIModel_StorageSense_Description" xml:space="preserve">
+    <value>Automatically free up space and delete temporary files. Storage Sense runs when disk space is low. We clean enough space to help your system runs its best.</value>
+  </data>
+  <data name="UIModel_ThumbnailCacheRemoval_Description" xml:space="preserve">
+    <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable the thumbnail cache preset to stop the thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. The thumbnail cache is stored as .db files located in the hidden %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
+  </data>
+  <data name="UIModel_UninstallPCHealthCheck_Description" xml:space="preserve">
+    <value>Uninstall "PC Health Check" app and prevent it from installing in the future. This application is installed with the KB5005463 update to сheck whether PC meets the system requirements of Windows 11.</value>
+  </data>
+  <data name="UIModel_UninstallPCHealthCheck_Title" xml:space="preserve">
+    <value>Uninstall "PC Health Check" app</value>
+  </data>
+  <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
+    <value>Get other Microsoft products updates, like Office, and automatically download and install the latest drivers alongside with Windows Updates.</value>
+  </data>
+  <data name="UIModel_Win32LongPathLimit_Description" xml:space="preserve">
+    <value>By default, the maximum path length limit in Windows is 260 characters. Enabling Win32 long paths removes restrictions when attempting to create, save, copy, or move folders/files with paths exceeding the limit. You won't encounter with an error "Path too long".</value>
+  </data>
+  <data name="UIModel_WindowsLatestUpdate_Description" xml:space="preserve">
+    <value>Get the latest non-security Windows updates, fixes, and improvements as they roll out.</value>
+  </data>
+  <data name="UIModel_WindowsManageDefaultPrinter_Description" xml:space="preserve">
+    <value>By default, Windows makes the last used printer as the default one.</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Title_1" xml:space="preserve">
+    <value>Notify me only when apps try to make changes to my computer</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Title_2" xml:space="preserve">
+    <value>Never notify</value>
+  </data>
+  <data name="UIModel_RegistryBackup_Description" xml:space="preserve">
+    <value>Starting from Windows 10 version 1803, Windows no longer automatically backs up the system registry to %SystemRoot%\System32\config\RegBack folder. Enabling registry backups may help you restore Windows in extreme cases.</value>
+  </data>
+  <data name="UIModel_RKNBypass_Description" xml:space="preserve">
+    <value>Enable proxying only blocked sites from Roskomnadzor's unified domains registry. The function is applicable for Russia only. https://antizapret.prostovpn.org</value>
+  </data>
+  <data name="UIModel_WinPrtScrFolder_Title_1" xml:space="preserve">
+    <value>Desktop</value>
+  </data>
+  <data name="UIModel_WinPrtScrFolder_Title_2" xml:space="preserve">
+    <value>Pictures</value>
   </data>
 </root>

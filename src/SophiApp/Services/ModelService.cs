@@ -151,7 +151,7 @@ namespace SophiApp.Services
                 "SynapticsIncorporated.SynapticsControlPanel",
                 "SynapticsIncorporated.241916F58D6E7",
                 "ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
-                "ELANMicroelectronicsCorpo.TrackPoint"
+                "ELANMicroelectronicsCorpo.TrackPoint",
             };
 
                 for (int i = 0; i < packages.Count; i++)
