@@ -47,6 +47,13 @@ namespace SophiApp.Contracts.Services
         void LogOpenedUrl(string url);
 
         /// <summary>
+        /// Write the number of user files remaining after uninstall OneDrive in the log.
+        /// </summary>
+        /// <param name="path">OneDrive user folder path.</param>
+        /// <param name="count">Number of files remaining after uninstall OneDrive.</param>
+        void LogOneDriveUserFilesExist(string path, int count);
+
+        /// <summary>
         /// Write the bitness of the os in the log.
         /// </summary>
         /// <param name="is64BitOs">Indicates whether the os is 64 bit.</param>

@@ -814,8 +814,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool Hibernation()
         {
-            var powerPath = "System\\CurrentControlSet\\Control\\Power";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(powerPath)?.GetValue("HibernateEnabled") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Power")
+                ?.GetValue("HibernateEnabled") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 

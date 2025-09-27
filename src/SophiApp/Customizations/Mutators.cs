@@ -1186,7 +1186,8 @@ namespace SophiApp.Customizations
         /// <param name="enable">Hibernation state.</param>
         public static void Hibernation(bool enable)
         {
-            _ = ProcessService.WaitForExit(name: "POWERCFG.EXE", arguments: $"/HIBERNATE {(enable ? "ON" : "OFF")}");
+            var powerConfig = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "powercfg.exe");
+            _ = ProcessService.WaitForExit(name: powerConfig, arguments: $"/HIBERNATE {(enable ? "ON" : "OFF")}");
         }
 
         /// <summary>
@@ -1598,10 +1599,11 @@ namespace SophiApp.Customizations
         {
             var activeScheme = "ActivePowerScheme";
             var arguments = $"/SETACTIVE {(state.Equals(1) ? "SCHEME_MIN" : "SCHEME_BALANCED")}";
+            var powerConfig = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "powercfg.exe");
             var settingsPath = "Software\\Policies\\Microsoft\\Power\\PowerSettings";
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, settingsPath, activeScheme);
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, settingsPath, activeScheme);
-            _ = ProcessService.WaitForExit("POWERCFG.EXE", arguments);
+            _ = ProcessService.WaitForExit(powerConfig, arguments);
         }
 
         /// <summary>

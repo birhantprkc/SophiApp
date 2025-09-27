@@ -109,7 +109,7 @@ namespace SophiApp.Services
             var programData = Environment.ExpandEnvironmentVariables("%ProgramData%");
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             var programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            var system32Folder = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            var system32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
             var systemDrive = Environment.ExpandEnvironmentVariables("%SystemDrive%");
             var systemRoot = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
             var temp = Environment.ExpandEnvironmentVariables("%TEMP%");
@@ -130,7 +130,7 @@ namespace SophiApp.Services
                         }
                     }
                 },
-                { "OsRequirements_Malware_GhostToolbox", () => File.Exists($"{system32Folder}\\migwiz\\dlmanifests\\run.ghost.cmd") },
+                { "OsRequirements_Malware_GhostToolbox", () => File.Exists($"{system32}\\migwiz\\dlmanifests\\run.ghost.cmd") },
                 { "OsRequirements_Malware_Win10Tweaker", () => Registry.CurrentUser.OpenSubKey("Software\\Win 10 Tweaker") is not null },
                 { "OsRequirements_Malware_BoosterX", () => File.Exists($"{programFiles}\\GameModeX\\GameModeX.exe") },
                 { "OsRequirements_Malware_DefenderControl", () => Directory.Exists($"{appData}\\Defender Control") },
@@ -176,7 +176,7 @@ namespace SophiApp.Services
                 { "OsRequirements_Malware_ChlorideOS", () => diskService.GetVolumeLabels().Any(label => label.Equals("ChlorideOS")) },
                 { "OsRequirements_Malware_KernelOS", () => instrumentationService.GetPowerPlanNames().Any(name => name.Contains("KernelOS")) },
                 { "OsRequirements_Malware_WinUtil", () => instrumentationService.GetPowerPlanNames().Any(name => name.Contains("ChrisTitus")) },
-                { "OsRequirements_Malware_Defendnot", () => Directory.Exists($"{system32Folder}\\Tasks\\defendnot") },
+                { "OsRequirements_Malware_Defendnot", () => Directory.Exists($"{system32}\\Tasks\\defendnot") },
             };
 
             return malwares.Any(malware =>

@@ -4,15 +4,16 @@
 
 namespace SophiApp.Services
 {
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.ServiceProcess;
     using Microsoft.UI.Xaml;
     using Serilog;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
     using SophiApp.Helpers;
     using SophiApp.ViewModels;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Security.Policy;
+    using System.ServiceProcess;
 
     /// <inheritdoc/>
     public class LoggerService : ILoggerService
@@ -90,6 +91,13 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void LogOneDriveUserFilesExist(string path, int count)
+        {
+            Log.Information("After uninstall OneDrive, there were {Count:l} file(s) left in the {Path} folder", count, path);
+            shellViewModel.LoggedActions.Add($"[INF] After uninstall OneDrive, there were {count} file(s) left in the \"{path}\" folder");
+        }
+
+        /// <inheritdoc/>
         public void LogOsBitness(bool is64BitOs)
         {
             Log.Information("Is x64: {Is64BitOs}", is64BitOs);
@@ -136,8 +144,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogStartApplicableModelsSetState()
         {
-            Log.Warning("Service {Service:l} has started set models state in the applicable models collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started set models state in the applicable models collection");
+            Log.Warning("Service {Service:l} has started set customizations state in the applicable customizations collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started set customizations state in the applicable customizations collection");
         }
 
         /// <inheritdoc/>
@@ -157,30 +165,30 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogAllModelsSetStateCanceled()
         {
-            Log.Warning("Service {Service:l} has cancel set model(s) state in the applicable models collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has cancel set model(s) state in the applicable models collection");
+            Log.Warning("Service {Service:l} has cancel set customization(s) state in the applicable customizations collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has cancel set customization(s) state in the applicable customizations collection");
         }
 
         /// <inheritdoc/>
         public void LogModelGetState(string name, Stopwatch timer)
         {
-            Log.Information("Model {Name:l} took time to get state: {TimeSpent}", name, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[INF] Model {name} took time to get state: {timer.Elapsed}");
+            Log.Information("{Name:l} took time to get state: {TimeSpent}", name, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] {name} took time to get state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
         public void LogModelSetState(string name, Stopwatch timer)
         {
-            Log.Information("Model {Name:l} took time to set state: {TimeSpent}", name, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[INF] Model {name} took time to set state: {timer.Elapsed}");
+            Log.Information("{Name:l} took time to set state: {TimeSpent}", name, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] {name} took time to set state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
         public void LogModelState<T>(string name, T state)
             where T : struct
         {
-            Log.Information("Model {Name:l} has state: {State}", name, state);
-            shellViewModel.LoggedActions.Add($"[INF] Model {name} has state: {state}");
+            Log.Information("{Name:l} has state: {State}", name, state);
+            shellViewModel.LoggedActions.Add($"[INF] {name} has state: {state}");
         }
 
         /// <inheritdoc/>
@@ -193,38 +201,38 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogApplicableModelsClear()
         {
-            Log.Warning("Applicable models collection has been cleaned up");
-            shellViewModel.LoggedActions.Add($"[WRN] Applicable models collection has been cleaned up");
+            Log.Warning("Applicable customizations collection has been cleaned up");
+            shellViewModel.LoggedActions.Add($"[WRN] Applicable customizations collection has been cleaned up");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelChanged<T>(string name, T previous, T current)
             where T : struct
         {
-            Log.Information("The value of the model {Name:l} parameter has been changed from {Previous} to {Current} in applicable models collection", name, previous, current);
-            shellViewModel.LoggedActions.Add($"[INF] The value of the model {name} parameter has been changed from {previous} to {current} in applicable models collection");
+            Log.Information("The value of the customization {Name:l} parameter has been changed from {Previous} to {Current} in applicable customizations collection", name, previous, current);
+            shellViewModel.LoggedActions.Add($"[INF] The value of the customization {name} parameter has been changed from {previous} to {current} in applicable customizations collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelRemoved(string name)
         {
-            Log.Information("Model {Name:l} has been removed from applicable models collection", name);
-            shellViewModel.LoggedActions.Add($"[INF] Model {name} has been removed from applicable models collection");
+            Log.Information("{Name:l} has been removed from applicable customizations collection", name);
+            shellViewModel.LoggedActions.Add($"[INF] {name} has been removed from applicable customizations collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded(string name)
         {
-            Log.Information("Model {Name:l} has been added to applicable models collection", name);
-            shellViewModel.LoggedActions.Add($"[INF] Model {name} has been added to applicable models collection");
+            Log.Information("{Name:l} has been added to applicable customizations collection", name);
+            shellViewModel.LoggedActions.Add($"[INF] {name} has been added to applicable customizations collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded<T>(string name, T parameter)
             where T : struct
         {
-            Log.Information("Model {Name:l} with parameter {Parameter} has been added to applicable models collection", name, parameter);
-            shellViewModel.LoggedActions.Add($"[INF] Model {name} with parameter {parameter} has been added to applicable models collection");
+            Log.Information("{Name:l} with parameter {Parameter} has been added to applicable customizations collection", name, parameter);
+            shellViewModel.LoggedActions.Add($"[INF] {name} with parameter {parameter} has been added to applicable customizations collection");
         }
 
         /// <inheritdoc/>
@@ -272,8 +280,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogStopTextSearch(Stopwatch timer, int count)
         {
-            Log.Information("The text search took {Seconds} second(s) and return {Count} model(s)", timer.Elapsed.TotalSeconds, count);
-            shellViewModel.LoggedActions.Add($"[INF] The text search took {timer.Elapsed.TotalSeconds} second(s) and return {count} model(s)");
+            Log.Information("The text search took {Seconds} second(s) and return {Count} customization(s)", timer.Elapsed.TotalSeconds, count);
+            shellViewModel.LoggedActions.Add($"[INF] The text search took {timer.Elapsed.TotalSeconds} second(s) and return {count} customization(s)");
         }
 
         /// <inheritdoc/>
@@ -380,16 +388,16 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogModelGetStateException(string name, Exception exception)
         {
-            Log.Error("An error occurred while get state in the model {Model:l}: {Message}", name, exception.Message);
-            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while get state in the model {name}: {exception.Message}");
+            Log.Error("An error occurred while get state in the customization {Model:l}: {Message}", name, exception.Message);
+            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while get state in the customization {name}: {exception.Message}");
         }
 
         /// <inheritdoc/>
         public void LogModelSetStateException<T>(Exception exception, string name, T parameter)
             where T : struct
         {
-            Log.Error("An error occurred while set state in the model {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
-            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while set state in the model {name} with parameter {parameter}: {exception.Message}");
+            Log.Error("An error occurred while set state in the customization {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
+            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while set state in the customization {name} with parameter {parameter}: {exception.Message}");
         }
     }
 }

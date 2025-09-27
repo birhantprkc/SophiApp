@@ -130,6 +130,7 @@ namespace SophiApp.Services
             }
             else
             {
+                App.Logger.LogOneDriveUserFilesExist(userDataFolder, userFilesCount);
                 processService.StartProcessByName("explorer.exe", userDataFolder);
             }
         }
