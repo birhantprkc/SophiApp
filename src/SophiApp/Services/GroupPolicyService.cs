@@ -59,7 +59,7 @@ namespace SophiApp.Services
         public void ClearRegistryCache<T>(RegistryKey registryKey, string subKey, string name, T value, RegistryValueKind kind)
             where T : struct
         {
-            registryKey.OpenSubKey(subKey)?.SetValue(name, value, kind);
+            registryKey.OpenSubKey(subKey, true)?.SetValue(name, value, kind);
             registryKey.Dispose();
         }
 
@@ -68,7 +68,9 @@ namespace SophiApp.Services
         {
             if (gpeditExist)
             {
-                var settingValues = string.IsNullOrWhiteSpace(type) && string.IsNullOrWhiteSpace(value) ? [scope.ToString(), path, name, "DELETE", string.Empty] : new string[5] { scope.ToString(), path, name, $"{type}:{value}", string.Empty };
+                var settingValues = string.IsNullOrWhiteSpace(type) && string.IsNullOrWhiteSpace(value)
+                    ? [scope.ToString(), path, name, "DELETE", string.Empty]
+                    : new string[5] { scope.ToString(), path, name, $"{type}:{value}", string.Empty };
                 File.AppendAllLines(lgpoSettings, settingValues, System.Text.Encoding.UTF8);
             }
         }

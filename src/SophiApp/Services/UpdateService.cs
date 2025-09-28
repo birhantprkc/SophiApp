@@ -30,8 +30,8 @@ namespace SophiApp.Services
         {
             if (commonDataService.IsWindows11)
             {
-                var updatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
-                var isEnabled = Registry.LocalMachine.OpenSubKey(updatePath)?.GetValue("AllowMUUpdateService") as int? ?? -1;
+                var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                    ?.GetValue("AllowMUUpdateService") as int? ?? -1;
                 return isEnabled.Equals(1);
             }
 
@@ -68,8 +68,8 @@ namespace SophiApp.Services
         {
             if (commonDataService.IsWindows11)
             {
-                var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
-                Registry.LocalMachine.OpenSubKey(settingsPath)?.SetValue("AllowMUUpdateService", 1, RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                    ?.SetValue("AllowMUUpdateService", 1, RegistryValueKind.DWord);
                 return;
             }
 
@@ -82,8 +82,8 @@ namespace SophiApp.Services
         {
             if (commonDataService.IsWindows11)
             {
-                var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
-                Registry.LocalMachine.OpenSubKey(settingsPath)?.DeleteValue("AllowMUUpdateService", false);
+                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                    ?.DeleteValue("AllowMUUpdateService", false);
                 return;
             }
 

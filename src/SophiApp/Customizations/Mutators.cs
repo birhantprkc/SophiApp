@@ -1194,11 +1194,13 @@ namespace SophiApp.Customizations
         /// Set long path limit state.
         /// </summary>
         /// <param name="enable">Long path limit state.</param>
-        public static void Win32LongPathLimit(bool enable)
+        public static void Win32LongPathsSupport(bool enable)
         {
-            var systemPath = "System\\CurrentControlSet\\Control\\FileSystem";
-            Registry.LocalMachine.OpenSubKey(systemPath, true)
-                ?.SetValue("LongPathsEnabled", enable ? 0 : 1, RegistryValueKind.DWord);
+            var supportPath = "System\\CurrentControlSet\\Control\\FileSystem";
+            var longPathEnabled = "LongPathsEnabled";
+            Registry.LocalMachine.OpenSubKey(supportPath, true)
+                ?.SetValue(longPathEnabled, enable ? 1 : 0, RegistryValueKind.DWord);
+            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, supportPath, longPathEnabled, enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1215,8 +1217,8 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set administrator approval mode state.
         /// </summary>
-        /// <param name="enable">Administrator approval mode state.</param>
-        public static void AdminApprovalMode(bool enable)
+        /// <param name="state">Administrator approval mode state.</param>
+        public static void AdminApprovalMode(int state)
         {
             var systemPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System";
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "ConsentPromptBehaviorUser", 3, RegistryValueKind.DWord);
@@ -1237,7 +1239,7 @@ namespace SophiApp.Customizations
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableVirtualization");
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableUIADesktopToggle");
             Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", true)
-                ?.SetValue("ConsentPromptBehaviorAdmin", enable ? 0 : 5, RegistryValueKind.DWord);
+                ?.SetValue("ConsentPromptBehaviorAdmin", state.Equals(1) ? 5 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>

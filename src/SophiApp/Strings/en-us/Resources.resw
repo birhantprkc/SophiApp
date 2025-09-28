@@ -1163,7 +1163,7 @@
   <data name="UIModel_UpdateMicrosoftProducts_Title" xml:space="preserve">
     <value>Receive updates for other Microsoft products</value>
   </data>
-  <data name="UIModel_Win32LongPathLimit_Title" xml:space="preserve">
+  <data name="UIModel_Win32LongPathsSupport_Title" xml:space="preserve">
     <value>Enable Windows long paths support</value>
   </data>
   <data name="UIModel_WindowsLatestUpdate_Title" xml:space="preserve">
@@ -1271,7 +1271,7 @@
   <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
     <value>Get other Microsoft products updates, like Office, and automatically download and install the latest drivers alongside with Windows Updates.</value>
   </data>
-  <data name="UIModel_Win32LongPathLimit_Description" xml:space="preserve">
+  <data name="UIModel_Win32LongPathsSupport_Description" xml:space="preserve">
     <value>By default, the maximum path length limit in Windows is 260 characters. Enabling Win32 long paths removes restrictions when attempting to create, save, copy, or move folders/files with paths exceeding the limit. You won't encounter with an error "Path too long".</value>
   </data>
   <data name="UIModel_WindowsLatestUpdate_Description" xml:space="preserve">

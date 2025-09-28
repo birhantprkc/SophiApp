@@ -802,10 +802,10 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StorageSense()
         {
-            var storagePolicyPath = "Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy";
-            var storagePolicy01 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("01") as int? ?? -1;
-            var storagePolicy04 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("04") as int? ?? -1;
-            var storagePolicy2048 = Registry.CurrentUser.OpenSubKey(storagePolicyPath)?.GetValue("2048") as int? ?? -1;
+            var policyPath = "Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy";
+            var storagePolicy01 = Registry.CurrentUser.OpenSubKey(policyPath)?.GetValue("01") as int? ?? -1;
+            var storagePolicy04 = Registry.CurrentUser.OpenSubKey(policyPath)?.GetValue("04") as int? ?? -1;
+            var storagePolicy2048 = Registry.CurrentUser.OpenSubKey(policyPath)?.GetValue("2048") as int? ?? -1;
             return storagePolicy01.Equals(1) && storagePolicy04.Equals(1) && storagePolicy2048.Equals(30);
         }
 
@@ -822,10 +822,10 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get long path limit state.
         /// </summary>
-        public static bool Win32LongPathLimit()
+        public static bool Win32LongPathsSupport()
         {
-            var filePath = "System\\CurrentControlSet\\Control\\FileSystem";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(filePath)?.GetValue("LongPathsEnabled") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\FileSystem")
+                ?.GetValue("LongPathsEnabled") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -842,11 +842,11 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get administrator approval mode state.
         /// </summary>
-        public static bool AdminApprovalMode()
+        public static int AdminApprovalMode()
         {
-            var promptPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(promptPath)?.GetValue("ConsentPromptBehaviorAdmin") as int? ?? -1;
-            return isEnabled.Equals(0);
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System")
+                ?.GetValue("ConsentPromptBehaviorAdmin") as int? ?? -1;
+            return isEnabled.Equals(0) ? 2 : 1;
         }
 
         /// <summary>
