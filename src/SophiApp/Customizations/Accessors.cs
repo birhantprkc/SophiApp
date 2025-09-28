@@ -387,7 +387,7 @@ namespace SophiApp.Customizations
                 return !taskbarValue.Equals(0);
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxWebExperience}");
+            throw new InvalidOperationException($"AppX package {appxWebExperience} is not installed");
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace SophiApp.Customizations
 
             if (smallIconsValue.Equals(1))
             {
-                throw new InvalidOperationException($"The small taskbar icons mode is enabled");
+                throw new InvalidOperationException($"Small taskbar icons mode is enabled");
             }
 
             return searchModeValue + 1;
@@ -420,7 +420,7 @@ namespace SophiApp.Customizations
 
             if (smallIconsValue.Equals(1))
             {
-                throw new InvalidOperationException($"The small taskbar icons mode is enabled");
+                throw new InvalidOperationException($"Small taskbar icons mode is enabled");
             }
 
             return searchModeValue switch
@@ -481,7 +481,7 @@ namespace SophiApp.Customizations
                 return !buttonValue.Equals(0);
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxCortana}");
+            throw new InvalidOperationException($"AppX package {appxCortana} is not installed");
         }
 
         /// <summary>
@@ -793,7 +793,7 @@ namespace SophiApp.Customizations
                     return false;
                 }
 
-                throw new InvalidOperationException("The file OneDriveSetup.exe was not found and there is no Internet access to download OneDrive installer");
+                throw new InvalidOperationException("OneDriveSetup.exe was not found and there is no Internet access to download OneDrive installer");
             }
         }
 
@@ -923,7 +923,7 @@ namespace SophiApp.Customizations
         public static bool NetworkAdaptersSavePower()
         {
             return PowerShellService.TurnOffDeviceNetworkAdapterExist()
-                ?? throw new InvalidOperationException("There are no network adapter that supports the AllowComputerToTurnOffDevice property");
+                ?? throw new InvalidOperationException("There are no network adapter that supports AllowComputerToTurnOffDevice property");
         }
 
         /// <summary>
@@ -1140,7 +1140,7 @@ namespace SophiApp.Customizations
             }
             else if (!appxPhotosIsExist)
             {
-                throw new InvalidOperationException($"Necessary appx package are not installed: {photos}");
+                throw new InvalidOperationException($"AppX package {photos} is not installed");
             }
             else
             {
@@ -1160,7 +1160,7 @@ namespace SophiApp.Customizations
                 return stateCortana != 1;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: Cortana");
+            throw new InvalidOperationException($"AppX package Cortana is not installed");
         }
 
         /// <summary>
@@ -1192,7 +1192,7 @@ namespace SophiApp.Customizations
                 return startupPanelIsEnabled == 1;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appGaming}");
+            throw new InvalidOperationException($"AppX package {appGaming} is not installed");
         }
 
         /// <summary>
@@ -1223,7 +1223,7 @@ namespace SophiApp.Customizations
         {
             if (CommonDataService.IsWindows11 && !OsService.VBSIsInstalled())
             {
-                throw new InvalidOperationException("The VBSCRIPT component is not installed");
+                throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
 
             var cleanupTask = ScheduledTaskService.GetTaskOrDefault("Sophia\\Windows Cleanup");
@@ -1243,7 +1243,7 @@ namespace SophiApp.Customizations
         {
             if (CommonDataService.IsWindows11 && !OsService.VBSIsInstalled())
             {
-                throw new InvalidOperationException("The VBSCRIPT component is not installed");
+                throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
 
             var distributionTask = ScheduledTaskService.GetTaskOrDefault("Sophia\\SoftwareDistribution");
@@ -1263,7 +1263,7 @@ namespace SophiApp.Customizations
         {
             if (CommonDataService.IsWindows11 && !OsService.VBSIsInstalled())
             {
-                throw new InvalidOperationException("The VBSCRIPT component is not installed");
+                throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
 
             var tempTask = ScheduledTaskService.GetTaskOrDefault("Sophia\\Temp");
@@ -1533,7 +1533,7 @@ else
                 return userClipchamp is null && machineClipchamp is null;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {clipChampAppx}");
+            throw new InvalidOperationException($"AppX package {clipChampAppx} is not installed");
         }
 
         /// <summary>
@@ -1552,7 +1552,7 @@ else
                 return userPhotosContext is null && machinePhotosContext is null;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxPhotos}");
+            throw new InvalidOperationException($"AppX package {appxPhotos} is not installed");
         }
 
         /// <summary>
@@ -1570,7 +1570,7 @@ else
                 return paintContext is null;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxPaint}");
+            throw new InvalidOperationException($"AppX package {appxPaint} is not installed");
         }
 
         /// <summary>
@@ -1597,7 +1597,7 @@ else
                 return !accessValues.TrueForAll(value => value is not null);
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxPaint}");
+            throw new InvalidOperationException($"AppX package {appxPaint} is not installed");
         }
 
         /// <summary>
@@ -1708,7 +1708,7 @@ else
                 return userBlockedGuid is null && machineBlockedGuid is null;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxTerminal}");
+            throw new InvalidOperationException($"AppX package {appxTerminal} is not installed");
         }
 
         /// <summary>
@@ -1737,14 +1737,14 @@ else
                     }
                     catch (ArgumentException)
                     {
-                        throw new InvalidOperationException($"The {appxTerminal} configuration file is not valid");
+                        throw new InvalidOperationException($"{appxTerminal} configuration file is not valid");
                     }
                 }
 
                 return true;
             }
 
-            throw new InvalidOperationException($"Necessary appx package are not installed: {appxTerminal}");
+            throw new InvalidOperationException($"AppX package {appxTerminal} is not installed");
         }
 
         /// <summary>

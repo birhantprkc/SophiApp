@@ -31,7 +31,7 @@ namespace SophiApp.Contracts.Services
         bool Exist(string name);
 
         /// <summary>
-        /// Determines that the VBSCRIPT component is installed.
+        /// Determines that VBSCRIPT component is installed.
         /// </summary>
         bool VBSIsInstalled();
     }
