@@ -329,7 +329,7 @@ namespace SophiApp.Customizations
             if (enable)
             {
                 Registry.CurrentUser.OpenSubKey(advancedPath, true)
-                    ?.DeleteValue(advancedPath, false);
+                    ?.DeleteValue(startRecommendations, false);
                 return;
             }
 
@@ -1296,16 +1296,15 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set restart notification state.
         /// </summary>
-        /// <param name="state">Restart notification state.</param>
-        public static void RestartNotification(int state)
+        /// <param name="enable">Restart notification state.</param>
+        public static void RestartNotification(bool enable)
         {
             var setDisable = "SetAutoRestartNotificationDisable";
-            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
             var updatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate";
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, updatePath, setDisable);
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, updatePath, setDisable);
-            Registry.LocalMachine.OpenSubKey(settingsPath, true)
-                ?.SetValue("RestartNotificationsAllowed2", state.Equals(1) ? 1 : 0, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings", true)
+                ?.SetValue("RestartNotificationsAllowed2", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1334,17 +1333,16 @@ namespace SophiApp.Customizations
             var activeEnd = "ActiveHoursEnd";
             var activeStart = "ActiveHoursStart";
             var alwaysAuto = "AlwaysAutoRebootAtScheduledTime";
-            var autoUpdatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
+            var autoPath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
             var noAuto = "NoAutoRebootWithLoggedOnUsers";
             var setHours = "SetActiveHours";
-            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
             var windowsUpdatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate";
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, autoUpdatePath, noAuto, alwaysAuto);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, autoUpdatePath, noAuto, alwaysAuto);
+            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, autoPath, noAuto, alwaysAuto);
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, autoPath, noAuto, alwaysAuto);
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, windowsUpdatePath, activeStart, activeEnd, setHours);
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, windowsUpdatePath, activeStart, activeEnd, setHours);
-            Registry.LocalMachine.OpenSubKey(settingsPath, true)
-                ?.SetValue("SmartActiveHoursState", state.Equals(1) ? 1 : 2, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings", true)
+                ?.SetValue("SmartActiveHoursState", state.Equals(1) ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1355,11 +1353,10 @@ namespace SophiApp.Customizations
         {
             var allowContent = "AllowOptionalContent";
             var setContent = "SetAllowOptionalContent";
-            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
             var updatePath = "Software\\Policies\\Microsoft\\Windows\\WindowsUpdate";
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, updatePath, allowContent, setContent);
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, updatePath, allowContent, setContent);
-            Registry.LocalMachine.OpenSubKey(settingsPath, true)
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings", true)
                 ?.SetValue("IsContinuousInnovationOptedIn", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 

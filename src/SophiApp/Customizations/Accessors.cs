@@ -880,11 +880,11 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get restart notification state.
         /// </summary>
-        public static int RestartNotification()
+        public static bool RestartNotification()
         {
             var notificationPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
             var isEnabled = Registry.LocalMachine.OpenSubKey(notificationPath)?.GetValue("RestartNotificationsAllowed2") as int? ?? -1;
-            return isEnabled.Equals(1) ? 1 : 2;
+            return isEnabled.Equals(1);
         }
 
         /// <summary>
@@ -902,9 +902,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int ActiveHours()
         {
-            var hoursPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(hoursPath)?.GetValue("SmartActiveHoursState") as int? ?? -1;
-            return isEnabled.Equals(1) ? 1 : 2;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                ?.GetValue("SmartActiveHoursState") as int? ?? -1;
+            return isEnabled.Equals(0) ? 2 : 1;
         }
 
         /// <summary>
@@ -912,9 +912,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool WindowsLatestUpdate()
         {
-            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(settingsPath)?.GetValue("IsContinuousInnovationOptedIn") as int? ?? -1;
-            return !isEnabled.Equals(0);
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                ?.GetValue("IsContinuousInnovationOptedIn") as int? ?? -1;
+            return isEnabled.Equals(1);
         }
 
         /// <summary>
@@ -985,8 +985,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool FoldersLaunchSeparateProcess()
         {
-            var processPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(processPath)?.GetValue("SeparateProcess") as int? ?? -1;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
+                ?.GetValue("SeparateProcess") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 

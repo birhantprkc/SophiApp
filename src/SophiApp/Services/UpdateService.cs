@@ -68,7 +68,7 @@ namespace SophiApp.Services
         {
             if (commonDataService.IsWindows11)
             {
-                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings", true)
                     ?.SetValue("AllowMUUpdateService", 1, RegistryValueKind.DWord);
                 return;
             }
@@ -82,7 +82,7 @@ namespace SophiApp.Services
         {
             if (commonDataService.IsWindows11)
             {
-                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
+                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings", true)
                     ?.DeleteValue("AllowMUUpdateService", false);
                 return;
             }
@@ -107,7 +107,8 @@ namespace SophiApp.Services
 
         private void RunUwpAppsUpdate()
         {
-            _ = instrumentationService.GetUwpAppsManagementOrDefault()?.InvokeMethod("UpdateScanMethod", Array.Empty<object>());
+            _ = instrumentationService.GetUwpAppsManagementOrDefault()
+                    ?.InvokeMethod("UpdateScanMethod", []);
         }
 
         private void RunOsUpdates()

@@ -594,12 +594,11 @@
   },
   {
     "Name": "RestartNotification",
-    "Type": "ExpandingRadioGroup",
+    "Type": "CheckBox",
     "Tag": "System",
     "ViewId": 309,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "RestartDeviceAfterUpdate",
@@ -674,7 +673,7 @@
     "Tag": "System",
     "ViewId": 318,
     "Windows10Support": "True",
-    "Windows11Support": "True"
+    "Windows11Support": "False"
   },
   {
     "Name": "ReservedStorage",

@@ -1175,12 +1175,6 @@
   <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
     <value>Select folder to save screenshots when pressing Win+PrtScn or using Windows+Shift+S</value>
   </data>
-  <data name="UIModel_RestartNotification_Title_1" xml:space="preserve">
-    <value>Show</value>
-  </data>
-  <data name="UIModel_RestartNotification_Title_2" xml:space="preserve">
-    <value>Hide</value>
-  </data>
   <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
     <value>Applying customization</value>
   </data>
