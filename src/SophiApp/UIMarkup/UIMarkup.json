@@ -774,6 +774,14 @@
     "Windows11Support": "True"
   },
   {
+    "Name": "RestorePreviousFolders",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 331,
+    "Windows10Support": "False",
+    "Windows11Support": "True"
+  },
+  {
     "Name": "HEVC",
     "Type": "CheckBox",
     "Tag": "UWP",

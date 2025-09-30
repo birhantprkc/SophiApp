@@ -1082,7 +1082,7 @@ namespace SophiApp.Customizations
         public static bool NetworkDiscovery()
         {
             var discoveryGroupRules = FirewallService.GetGroupRules("@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502");
-            return discoveryGroupRules.Any(rule => rule.Enabled);
+            return discoveryGroupRules.TrueForAll(rule => rule.Enabled);
         }
 
         /// <summary>
@@ -1119,8 +1119,18 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RegistryBackup()
         {
-            var configurationPath = "System\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(configurationPath)?.GetValue("EnablePeriodicBackup") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager")
+                ?.GetValue("EnablePeriodicBackup") as int? ?? -1;
+            return isEnabled.Equals(1);
+        }
+
+        /// <summary>
+        /// Get restore previous folders state.
+        /// </summary>
+        public static bool RestorePreviousFolders()
+        {
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
+                ?.GetValue("PersistBrowsers") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 

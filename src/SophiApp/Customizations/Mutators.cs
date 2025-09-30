@@ -1646,6 +1646,16 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Set restore previous folders state.
+        /// </summary>
+        /// <param name="enable">Previous folders state.</param>
+        public static void RestorePreviousFolders(bool enable)
+        {
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", true)
+                ?.SetValue("PersistBrowsers", enable ? 1 : 0, RegistryValueKind.DWord);
+        }
+
+        /// <summary>
         /// Set HEVC state.
         /// </summary>
         /// <param name="enable">HEVC state.</param>
