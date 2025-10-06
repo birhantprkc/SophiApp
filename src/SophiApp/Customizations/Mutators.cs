@@ -2028,20 +2028,20 @@ namespace SophiApp.Customizations
         /// <param name="enable">"Install" item state.</param>
         public static void CABInstallContext(bool enable)
         {
-            var runPath = "CABFolder\\Shell\\runas";
+            var runasPath = "CABFolder\\Shell\\runas";
 
             if (enable)
             {
-                Registry.ClassesRoot.OpenOrCreateSubKey($"{runPath}\\Command")
+                Registry.ClassesRoot.OpenOrCreateSubKey($"{runasPath}\\Command")
                     .SetValue(string.Empty, "cmd /c DISM.exe /Online /Add-Package /PackagePath:\"%1\" /NoRestart & pause", RegistryValueKind.String);
-                Registry.ClassesRoot.OpenSubKey(runPath, true)
+                Registry.ClassesRoot.OpenSubKey(runasPath, true)
                     ?.SetValue("MUIVerb", "@shell32.dll,-10210", RegistryValueKind.String);
-                Registry.ClassesRoot.OpenSubKey(runPath, true)
+                Registry.ClassesRoot.OpenSubKey(runasPath, true)
                     ?.SetValue("HasLUAShield", string.Empty, RegistryValueKind.String);
                 return;
             }
 
-            Registry.ClassesRoot.DeleteSubKeyTree(runPath, false);
+            Registry.ClassesRoot.DeleteSubKeyTree(runasPath, false);
         }
 
         /// <summary>

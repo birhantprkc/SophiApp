@@ -100,12 +100,12 @@ namespace SophiApp.Services
         {
             try
             {
-                using var client = new HttpClient();
+                using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
                 using var request = new HttpRequestMessage(HttpMethod.Head, url);
                 using var response = client.Send(request);
                 return response.IsSuccessStatusCode;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

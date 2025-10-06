@@ -236,25 +236,22 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result AppUpdateDetection()
         {
-            if (httpService.UrlIsAvailable(commonDataService.AppVersionUrl))
+            try
             {
-                try
-                {
-                    using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
-                    var json = client.GetFromJsonAsync<AppVersionWrapper>(commonDataService.AppVersionUrl).Result;
-                    var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
-                    App.Logger.LogAppUpdate(jsonVersion);
+                using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
+                var json = client.GetFromJsonAsync<AppVersionWrapper>(commonDataService.AppVersionUrl).Result;
+                var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
+                App.Logger.LogAppUpdate(jsonVersion);
 
-                    if (jsonVersion > commonDataService.AppVersion)
-                    {
-                        var payload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), commonDataService.AppReleaseUrl);
-                        appNotificationService.Show(payload);
-                    }
-                }
-                catch (Exception ex)
+                if (jsonVersion > commonDataService.AppVersion)
                 {
-                    App.Logger.LogAppUpdateException(ex);
+                    var toastPayload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), commonDataService.AppReleaseUrl);
+                    appNotificationService.Show(toastPayload);
                 }
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogAppUpdateException(ex);
             }
 
             return Result.Success();

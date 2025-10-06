@@ -1497,8 +1497,16 @@ else
         /// </summary>
         public static bool CABInstallContext()
         {
-            var muiVerb = Registry.ClassesRoot.OpenSubKey("CABFolder\\Shell\\runas")?.GetValue("MUIVerb") as string;
-            return muiVerb?.Equals("@shell32.dll,-10210") ?? false;
+            var isDefault = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.cab\\UserChoice")
+                ?.GetValue("ProgId") ?? string.Empty;
+
+            if (isDefault.Equals("CABFolder"))
+            {
+                var muiVerb = Registry.ClassesRoot.OpenSubKey("CABFolder\\Shell\\runas")?.GetValue("MUIVerb") as string;
+                return muiVerb?.Equals("@shell32.dll,-10210") ?? false;
+            }
+
+            throw new InvalidOperationException("A third-party archiver is set as the default archiver");
         }
 
         /// <summary>
