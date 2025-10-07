@@ -652,11 +652,12 @@
   },
   {
     "Name": "WinPrtScrFolder",
-    "Type": "CheckBox",
+    "Type": "ExpandingRadioGroup",
     "Tag": "System",
     "ViewId": 316,
     "Windows10Support": "True",
-    "Windows11Support": "True"
+    "Windows11Support": "True",
+    "NumberOfItems": 2
   },
   {
     "Name": "RecommendedTroubleshooting",

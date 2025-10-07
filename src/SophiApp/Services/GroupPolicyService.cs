@@ -12,8 +12,9 @@ namespace SophiApp.Services
     public class GroupPolicyService : IGroupPolicyService
     {
         private readonly IProcessService processService;
-        private readonly bool gpeditExist = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "gpedit.msc"));
-        private readonly string lgpoSettings = Environment.ExpandEnvironmentVariables("%TEMP%\\LGPO.txt");
+        private readonly bool gpeditIsExist = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "gpedit.msc"));
+        private readonly string lgpoSettingsFile = Environment.ExpandEnvironmentVariables("%TEMP%\\LGPO.txt");
+        private readonly string lgpoExeFile = Path.Combine(AppContext.BaseDirectory, "Binaries", "LGPO.exe");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupPolicyService"/> class.
@@ -66,19 +67,19 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void ClearLocalCache(LGPOScope scope, string path, string name, string type = "", string value = "")
         {
-            if (gpeditExist)
+            if (gpeditIsExist)
             {
                 var settingValues = string.IsNullOrWhiteSpace(type) && string.IsNullOrWhiteSpace(value)
                     ? [scope.ToString(), path, name, "DELETE", string.Empty]
                     : new string[5] { scope.ToString(), path, name, $"{type}:{value}", string.Empty };
-                File.AppendAllLines(lgpoSettings, settingValues, System.Text.Encoding.UTF8);
+                File.AppendAllLines(lgpoSettingsFile, settingValues, System.Text.Encoding.UTF8);
             }
         }
 
         /// <inheritdoc/>
         public void ClearLocalCache(LGPOScope scope, string path, params string[] names)
         {
-            if (gpeditExist)
+            if (gpeditIsExist)
             {
                 var nameValues = new List<string>();
 
@@ -87,14 +88,14 @@ namespace SophiApp.Services
                     nameValues.AddRange([scope.ToString(), path, name, "DELETE", string.Empty]);
                 }
 
-                File.AppendAllLines(lgpoSettings, nameValues, System.Text.Encoding.UTF8);
+                File.AppendAllLines(lgpoSettingsFile, nameValues, System.Text.Encoding.UTF8);
             }
         }
 
         /// <inheritdoc/>
         public void ClearLocalCache(string path, string name, params LGPOScope[] scopes)
         {
-            if (gpeditExist)
+            if (gpeditIsExist)
             {
                 var scopeValues = new List<string>();
 
@@ -103,19 +104,18 @@ namespace SophiApp.Services
                     scopeValues.AddRange([scope.ToString(), path, name, "DELETE", string.Empty]);
                 }
 
-                File.AppendAllLines(lgpoSettings, scopeValues, System.Text.Encoding.UTF8);
+                File.AppendAllLines(lgpoSettingsFile, scopeValues, System.Text.Encoding.UTF8);
             }
         }
 
         /// <inheritdoc/>
         public void UpdateLocalPolicy()
         {
-            if (File.Exists(lgpoSettings))
+            if (File.Exists(lgpoSettingsFile) && File.Exists(lgpoExeFile))
             {
-                var lgpo = Path.Combine(AppContext.BaseDirectory, "Binaries", "LGPO.exe");
-                _ = processService.WaitForExit(name: lgpo, arguments: $"/t \"{lgpoSettings}\"");
+                _ = processService.WaitForExit(name: lgpoExeFile, arguments: $"/t {lgpoSettingsFile}");
                 _ = processService.WaitForExit(name: "gpupdate.exe", arguments: "/force");
-                File.Delete(lgpoSettings);
+                File.Delete(lgpoSettingsFile);
             }
         }
     }

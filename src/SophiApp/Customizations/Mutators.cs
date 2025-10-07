@@ -4,6 +4,7 @@
 
 namespace SophiApp.Customizations
 {
+    using Markdig.Extensions.Tables;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -1414,13 +1415,23 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set Print Screen folder state.
         /// </summary>
-        /// <param name="enable">Print Screen state.</param>
-        public static void WinPrtScrFolder(bool enable)
+        /// <param name="state">Print Screen folder state.</param>
+        public static void WinPrtScrFolder(int state)
         {
-            var shellFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
-            var desktopPath = Registry.CurrentUser.OpenSubKey(shellFolderPath)?.GetValue("Desktop") as string;
-            Registry.CurrentUser.OpenSubKey(shellFolderPath, true)
-                ?.SetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}", enable ? desktopPath! : string.Empty, RegistryValueKind.ExpandString);
+            var userShellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+            var prtScrGuid = "{B7BEDE81-DF94-4682-A7D8-57A52620B86F}";
+
+            if (state.Equals(1))
+            {
+                var desktopPath = Registry.CurrentUser.OpenSubKey(userShellPath)
+                    ?.GetValue("Desktop") as string;
+                Registry.CurrentUser.OpenSubKey(userShellPath, true)
+                ?.SetValue(prtScrGuid, desktopPath!, RegistryValueKind.ExpandString);
+                return;
+            }
+
+            Registry.CurrentUser.OpenSubKey(userShellPath, true)
+                ?.DeleteValue(prtScrGuid, false);
         }
 
         /// <summary>

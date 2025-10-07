@@ -12,7 +12,6 @@ namespace SophiApp.Services
     using SophiApp.ViewModels;
     using System.Diagnostics;
     using System.Globalization;
-    using System.Security.Policy;
     using System.ServiceProcess;
 
     /// <inheritdoc/>
@@ -388,16 +387,16 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogModelGetStateException(string name, Exception exception)
         {
-            Log.Error("An error occurred while get state in the customization {Model:l}: {Message}", name, exception.Message);
-            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while get state in the customization {name}: {exception.Message}");
+            Log.Error("An error occurred while get state in {Model:l}: {Message}", name, exception.Message);
+            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while get state in {name}: {exception.Message}");
         }
 
         /// <inheritdoc/>
         public void LogModelSetStateException<T>(Exception exception, string name, T parameter)
             where T : struct
         {
-            Log.Error("An error occurred while set state in the customization {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
-            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while set state in the customization {name} with parameter {parameter}: {exception.Message}");
+            Log.Error("An error occurred while set state in {Model:l} with parameter {Parameter}: {Message}", name, parameter, exception.Message);
+            shellViewModel.LoggedActions.Add($"[ERR] An error occurred while set state in {name} with parameter {parameter}: {exception.Message}");
         }
     }
 }

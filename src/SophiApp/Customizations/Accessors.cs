@@ -952,22 +952,22 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get Print Screen folder state.
         /// </summary>
-        public static bool WinPrtScrFolder()
+        public static int WinPrtScrFolder()
         {
-            if (OneDriveService.UserIsLogged())
+            var isLogged = OneDriveService.UserIsLogged();
+            var isInstalled = OneDriveService.IsInstalled();
+
+            if (isLogged || isInstalled)
             {
-                throw new InvalidOperationException("User already logged into OneDrive");
+                throw new InvalidOperationException(isLogged ? "User already logged into OneDrive" : "First you need to remove OneDrive");
             }
 
-            if (OneDriveService.IsInstalled())
-            {
-                throw new InvalidOperationException("First you need to remove OneDrive");
-            }
-
-            var shellFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
-            var printScreenPath = Registry.CurrentUser.OpenSubKey(shellFolderPath)?.GetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}") as string ?? string.Empty;
-            var desktopPath = Registry.CurrentUser.OpenSubKey(shellFolderPath)?.GetValue("Desktop") as string;
-            return printScreenPath.Equals(desktopPath);
+            var userShellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+            var prtScrPath = Registry.CurrentUser.OpenSubKey(userShellPath)
+                ?.GetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}") as string ?? string.Empty;
+            var desktopPath = Registry.CurrentUser.OpenSubKey(userShellPath)
+                ?.GetValue("Desktop") as string;
+            return prtScrPath.Equals(desktopPath) ? 1 : 2;
         }
 
         /// <summary>
