@@ -6,7 +6,6 @@ namespace SophiApp.Models
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using SophiApp.ViewModels;
 
     /// <summary>
     /// The <see cref="UIRadioGroupItemModel"/> child item model.

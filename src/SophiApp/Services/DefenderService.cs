@@ -18,7 +18,7 @@ namespace SophiApp.Services
         private readonly IPowerShellService powerShellService;
         private readonly IProcessService processService;
 
-        private readonly List<string> servicesName = ["Windefend", "SecurityHealthService", "wscsvc"];
+        private readonly List<string> defenderServices = ["Windefend", "SecurityHealthService", "wscsvc", "wdFilter"];
         private bool servicesStatus = false;
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace SophiApp.Services
 
         private Result GetServiceState()
         {
-            servicesStatus = servicesName.TrueForAll(service =>
+            servicesStatus = defenderServices.TrueForAll(service =>
             {
                 if (osService.Exist(service))
                 {
