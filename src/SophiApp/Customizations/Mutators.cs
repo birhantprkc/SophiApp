@@ -4,7 +4,6 @@
 
 namespace SophiApp.Customizations
 {
-    using Markdig.Extensions.Tables;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -1664,6 +1663,15 @@ namespace SophiApp.Customizations
         {
             Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", true)
                 ?.SetValue("PersistBrowsers", enable ? 1 : 0, RegistryValueKind.DWord);
+        }
+
+        /// <summary>
+        /// Set Windows Terminal default app state.
+        /// </summary>
+        /// <param name="state">Windows Terminal state.</param>
+        public static void DefaultTerminalApp(int state)
+        {
+            // 
         }
 
         /// <summary>

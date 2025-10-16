@@ -1256,12 +1256,6 @@
   <data name="UIModel_ThumbnailCacheRemoval_Description" xml:space="preserve">
     <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable the thumbnail cache preset to stop the thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. The thumbnail cache is stored as .db files located in the hidden %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
   </data>
-  <data name="UIModel_UninstallPCHealthCheck_Description" xml:space="preserve">
-    <value>Uninstall "PC Health Check" app and prevent it from installing in the future. This application is installed with the KB5005463 update to сheck whether PC meets the system requirements of Windows 11.</value>
-  </data>
-  <data name="UIModel_UninstallPCHealthCheck_Title" xml:space="preserve">
-    <value>Uninstall "PC Health Check" app</value>
-  </data>
   <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
     <value>Get other Microsoft products updates, like Office, and automatically download and install the latest drivers alongside with Windows Updates.</value>
   </data>
@@ -1291,5 +1285,11 @@
   </data>
   <data name="UIModel_WinPrtScrFolder_Title_2" xml:space="preserve">
     <value>Pictures</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Title_1" xml:space="preserve">
+    <value>Windows Terminal</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Title_2" xml:space="preserve">
+    <value>Console Host</value>
   </data>
 </root>

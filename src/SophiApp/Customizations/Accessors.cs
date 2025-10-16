@@ -1135,6 +1135,21 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Get Windows Terminal default app state.
+        /// </summary>
+        public static int DefaultTerminalApp()
+        {
+            var packageName = "Microsoft.WindowsTerminal";
+
+            if (AppxPackagesService.PackageExist(packageName))
+            {
+                var package = AppxPackagesService.GetPackage(packageName);
+            }
+
+            throw new InvalidOperationException($"AppX package Windows Terminal is not installed");
+        }
+
+        /// <summary>
         /// Gets HEVC state.
         /// </summary>
         public static bool HEVC()
@@ -1178,8 +1193,10 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool XboxGameBar()
         {
-            var appCaptureIsEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR")?.GetValue("AppCaptureEnabled") as int? ?? -1;
-            var dvrIsEnabled = Registry.CurrentUser.OpenSubKey("System\\GameConfigStore")?.GetValue("GameDVR_Enabled") as int? ?? -1;
+            var appCaptureIsEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR")
+                ?.GetValue("AppCaptureEnabled") as int? ?? -1;
+            var dvrIsEnabled = Registry.CurrentUser.OpenSubKey("System\\GameConfigStore")
+                ?.GetValue("GameDVR_Enabled") as int? ?? -1;
 
             if (appCaptureIsEnabled == 0 && dvrIsEnabled == 0)
             {

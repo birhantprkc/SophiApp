@@ -38,6 +38,9 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public Package GetPackage(string name) => packageManager.FindPackageForUser(string.Empty, name);
+
+        /// <inheritdoc/>
         public List<Package> GetPackages(bool forAllUsers = false)
         {
             var appxPackages = new List<Package>();

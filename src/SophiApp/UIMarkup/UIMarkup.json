@@ -783,6 +783,14 @@
     "Windows11Support": "True"
   },
   {
+    "Name": "DefaultTerminalApp",
+    "Type": "ExpandingRadioGroup",
+    "Tag": "System",
+    "ViewId": 332,
+    "Windows10Support": "False",
+    "Windows11Support": "True"
+  },
+  {
     "Name": "HEVC",
     "Type": "CheckBox",
     "Tag": "UWP",
