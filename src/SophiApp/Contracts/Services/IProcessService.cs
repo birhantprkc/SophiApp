@@ -15,7 +15,7 @@ namespace SophiApp.Contracts.Services
         /// Determines whether the specified process exists.
         /// </summary>
         /// <param name="name">Process name.</param>
-        bool IsExist(string name);
+        bool Exists(string name);
 
         /// <summary>
         /// Immediately stops the process.

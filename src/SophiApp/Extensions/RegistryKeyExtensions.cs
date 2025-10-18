@@ -22,7 +22,7 @@ namespace SophiApp.Extensions
         }
 
         /// <summary>
-        /// Determines whether the given key value exist at specified registry path.
+        /// Determines whether the given key value exists at specified registry path.
         /// </summary>
         /// <param name="key">Represents a key-level node in the Windows registry.</param>
         /// <param name="value">Key value.</param>

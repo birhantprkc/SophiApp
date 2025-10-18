@@ -1221,7 +1221,7 @@
     <value>Network Discovery makes PC discoverable in the same network, and other devices can see your PC, and vice versa.</value>
   </data>
   <data name="UIModel_OneDrive_Description" xml:space="preserve">
-    <value>OneDrive user folder won't be removed if any file found there. Internet connection required.</value>
+    <value>OneDrive user folder won't be removed if any file found there. Internet connection required to download OneDrive installer from Microsoft resource.</value>
   </data>
   <data name="UIModel_PowerPlan_Description" xml:space="preserve">
     <value>"High performance" is not recommended to turn on for laptops. You need to know that enabling "High performance" power plan doesn't effect on your FPS conunt is video games. It only manages how your PC uses power.</value>

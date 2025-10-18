@@ -786,7 +786,7 @@ namespace SophiApp.Customizations
                     return true;
                 }
 
-                throw new InvalidOperationException("A user data folder not exist");
+                throw new InvalidOperationException("A user data folder does not exist");
             }
             else
             {
@@ -1188,14 +1188,14 @@ namespace SophiApp.Customizations
         {
             var video = "Microsoft.HEVCVideoExtension";
             var photos = "Microsoft.Windows.Photos";
-            var appxVideoIsExist = AppxPackagesService.PackageExist(video);
-            var appxPhotosIsExist = AppxPackagesService.PackageExist(photos);
+            var appxVideoExists = AppxPackagesService.PackageExist(video);
+            var appxPhotosExists = AppxPackagesService.PackageExist(photos);
 
-            if (appxVideoIsExist && appxPhotosIsExist)
+            if (appxVideoExists && appxPhotosExists)
             {
                 return true;
             }
-            else if (!appxPhotosIsExist)
+            else if (!appxPhotosExists)
             {
                 throw new InvalidOperationException($"AppX package {photos} is not installed");
             }
@@ -1383,7 +1383,7 @@ namespace SophiApp.Customizations
 
             if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
             {
-                return ProcessService.IsExist("MsMpEngCP");
+                return ProcessService.Exists("MsMpEngCP");
             }
 
             throw new InvalidOperationException("Microsoft Defender antispyware protection is disabled");
@@ -1712,7 +1712,7 @@ else
                 return !(bmpShellNew is null);
             }
 
-            throw new InvalidOperationException($"File {paintPath} not exist");
+            throw new InvalidOperationException($"File {paintPath} does not exist");
         }
 
         /// <summary>
@@ -1728,7 +1728,7 @@ else
                 return !(rtfShellNew is null);
             }
 
-            throw new InvalidOperationException($"File {wordpadPath} not exist");
+            throw new InvalidOperationException($"File {wordpadPath} does not exist");
         }
 
         /// <summary>
@@ -1828,7 +1828,7 @@ else
                 return accessValue is null;
             }
 
-            throw new InvalidOperationException($"File {paintPath} not exist");
+            throw new InvalidOperationException($"File {paintPath} does not exist");
         }
     }
 }

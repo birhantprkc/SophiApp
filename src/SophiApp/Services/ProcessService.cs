@@ -13,7 +13,7 @@ namespace SophiApp.Services
     public class ProcessService : IProcessService
     {
         /// <inheritdoc/>
-        public bool IsExist(string name)
+        public bool Exists(string name)
         {
             return Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
         }
