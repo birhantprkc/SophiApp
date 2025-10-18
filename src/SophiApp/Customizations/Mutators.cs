@@ -4,6 +4,7 @@
 
 namespace SophiApp.Customizations
 {
+    using CSharpFunctionalExtensions;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -15,6 +16,8 @@ namespace SophiApp.Customizations
     using System.Collections.Generic;
     using System.ServiceProcess;
     using System.Text;
+    using System.Xml.Linq;
+    using Windows.Foundation;
 
     /// <summary>
     /// Set the OS settings.
@@ -1671,7 +1674,33 @@ namespace SophiApp.Customizations
         /// <param name="state">Windows Terminal state.</param>
         public static void DefaultTerminalApp(int state)
         {
-            // 
+            var consolePath = "Console\\%%Startup";
+            var consoleGuid = "{B23D10C0-E52E-411E-9D5B-C09FDF709C7D}";
+
+            if (state.Equals(1))
+            {
+                var appxPackage = AppxPackagesService.GetPackages().First(package => package.Id.Name.Equals("Microsoft.WindowsTerminal"));
+                var appxPath = $"Software\\Classes\\PackagedCom\\Package\\{appxPackage.Id.FullName}\\Class";
+                Registry.LocalMachine.OpenSubKey(appxPath)?.GetSubKeyNames()
+                    .ForEach(key =>
+                    {
+                        switch (Registry.LocalMachine.OpenSubKey(Path.Combine(appxPath, key))?.GetValue("ServerId") ?? -1)
+                        {
+                            case 0:
+                                Registry.CurrentUser.OpenOrCreateSubKey(consolePath).SetValue("DelegationConsole", key, RegistryValueKind.String);
+                                break;
+                            case 1:
+                                Registry.CurrentUser.OpenOrCreateSubKey(consolePath).SetValue("DelegationTerminal", key, RegistryValueKind.String);
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                return;
+            }
+
+            Registry.CurrentUser.OpenOrCreateSubKey(consolePath).SetValue("DelegationConsole", consoleGuid, RegistryValueKind.String);
+            Registry.CurrentUser.OpenSubKey(consolePath, true)?.SetValue("DelegationTerminal", consoleGuid, RegistryValueKind.String);
         }
 
         /// <summary>

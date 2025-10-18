@@ -10,9 +10,11 @@ namespace SophiApp.Customizations
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
     using SophiApp.Models;
+    using System;
     using System.Globalization;
     using System.ServiceProcess;
     using System.Text;
+    using Windows.ApplicationModel;
 
     /// <summary>
     /// Get the OS settings.
@@ -1139,14 +1141,44 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int DefaultTerminalApp()
         {
-            var packageName = "Microsoft.WindowsTerminal";
+            var appxPackage = AppxPackagesService.GetPackages()
+                .FirstOrDefault(package => package.Id.Name.Equals("Microsoft.WindowsTerminal"));
 
-            if (AppxPackagesService.PackageExist(packageName))
+            if (appxPackage is not null)
             {
-                var package = AppxPackagesService.GetPackage(packageName);
+                var requiredVersion = new PackageVersion(1, 11, 0, 0);
+
+                if (appxPackage.Id.Version.Major >= requiredVersion.Major
+                    && appxPackage.Id.Version.Minor >= requiredVersion.Minor)
+                {
+                    var appxPath = $"Software\\Classes\\PackagedCom\\Package\\{appxPackage.Id.FullName}\\Class";
+                    var consoleId = string.Empty;
+                    var consolePath = "Console\\%%Startup";
+                    var terminalId = string.Empty;
+                    Registry.LocalMachine.OpenSubKey(appxPath)?.GetSubKeyNames()
+                        .ForEach(key =>
+                        {
+                            switch (Registry.LocalMachine.OpenSubKey(Path.Combine(appxPath, key))?.GetValue("ServerId") ?? -1)
+                            {
+                                case 0:
+                                    consoleId = key;
+                                    break;
+                                case 1:
+                                    terminalId = key;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        });
+                    var delegationConsole = Registry.CurrentUser.OpenSubKey(consolePath)?.GetValue("DelegationConsole") as string ?? string.Empty;
+                    var delegationTerminal = Registry.CurrentUser.OpenSubKey(consolePath)?.GetValue("DelegationTerminal") as string ?? string.Empty;
+                    return delegationConsole.Equals(consoleId) && delegationTerminal.Equals(terminalId) ? 1 : 2;
+                }
+
+                throw new InvalidOperationException($"Unsupported Windows Terminal version: {appxPackage.Id.Version.Major}.{appxPackage.Id.Version.Minor} required version {requiredVersion.Major}.{requiredVersion.Minor} or above");
             }
 
-            throw new InvalidOperationException($"AppX package Windows Terminal is not installed");
+            throw new InvalidOperationException("AppX package Windows Terminal is not installed");
         }
 
         /// <summary>

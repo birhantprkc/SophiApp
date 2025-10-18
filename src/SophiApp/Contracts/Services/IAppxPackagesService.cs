@@ -20,12 +20,6 @@ namespace SophiApp.Contracts.Services
         bool PackageExist(string packageIdName, bool forAllUser = false);
 
         /// <summary>
-        /// Retrieves information about a appx package.
-        /// </summary>
-        /// <param name="name">Appx package name.</param>
-        Package GetPackage(string name);
-
-        /// <summary>
         /// Retrieves information about a appx packages.
         /// </summary>
         /// <param name="forAllUsers">Get collection of UWP <see cref="UIModel"/> for all users, otherwise only for the current user.</param>

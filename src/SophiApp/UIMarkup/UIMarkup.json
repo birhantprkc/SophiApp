@@ -788,7 +788,8 @@
     "Tag": "System",
     "ViewId": 332,
     "Windows10Support": "False",
-    "Windows11Support": "True"
+    "Windows11Support": "True",
+    "NumberOfItems": 2
   },
   {
     "Name": "HEVC",
