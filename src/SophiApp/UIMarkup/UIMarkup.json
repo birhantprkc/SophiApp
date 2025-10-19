@@ -792,6 +792,14 @@
     "NumberOfItems": 2
   },
   {
+    "Name": "ShowClockInNotificationCenter",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 333,
+    "Windows10Support": "False",
+    "Windows11Support": "True"
+  },
+  {
     "Name": "HEVC",
     "Type": "CheckBox",
     "Tag": "UWP",

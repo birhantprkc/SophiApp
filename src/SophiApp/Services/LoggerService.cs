@@ -235,10 +235,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderServiceStatus(string service, bool Exists)
+        public void LogDefenderServiceStatus(string service, bool exists)
         {
-            Log.Information("Service {Service:l} exists: {Exists:l}", service, Exists);
-            shellViewModel.LoggedActions.Add($"[INF] Service {service} exists: {Exists}");
+            Log.Information("Service {Service:l} exists: {Exists:l}", service, exists);
+            shellViewModel.LoggedActions.Add($"[INF] Service {service} exists: {exists}");
         }
 
         /// <inheritdoc/>

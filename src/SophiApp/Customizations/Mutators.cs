@@ -4,7 +4,6 @@
 
 namespace SophiApp.Customizations
 {
-    using CSharpFunctionalExtensions;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -16,8 +15,6 @@ namespace SophiApp.Customizations
     using System.Collections.Generic;
     using System.ServiceProcess;
     using System.Text;
-    using System.Xml.Linq;
-    using Windows.Foundation;
 
     /// <summary>
     /// Set the OS settings.
@@ -1701,6 +1698,16 @@ namespace SophiApp.Customizations
 
             Registry.CurrentUser.OpenOrCreateSubKey(consolePath).SetValue("DelegationConsole", consoleGuid, RegistryValueKind.String);
             Registry.CurrentUser.OpenSubKey(consolePath, true)?.SetValue("DelegationTerminal", consoleGuid, RegistryValueKind.String);
+        }
+
+        /// <summary>
+        /// Set clock in notification center state.
+        /// </summary>
+        /// <param name="enable">Clock state.</param>
+        public static void ShowClockInNotificationCenter(bool enable)
+        {
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", true)
+                ?.SetValue("ShowClockInNotificationCenter", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>

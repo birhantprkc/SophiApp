@@ -1182,6 +1182,16 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Get clock in notification center state.
+        /// </summary>
+        public static bool ShowClockInNotificationCenter()
+        {
+            var showClock = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
+                ?.GetValue("ShowClockInNotificationCenter", false) as int? ?? -1;
+            return showClock.Equals(1);
+        }
+
+        /// <summary>
         /// Gets HEVC state.
         /// </summary>
         public static bool HEVC()

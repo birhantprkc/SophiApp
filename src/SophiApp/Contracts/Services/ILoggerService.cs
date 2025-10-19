@@ -182,8 +182,8 @@ namespace SophiApp.Contracts.Services
         /// Write Microsoft Defender services status.
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
-        /// <param name="Exists">Service exists.</param>
-        void LogDefenderServiceStatus(string service, bool Exists);
+        /// <param name="exists">Service exists.</param>
+        void LogDefenderServiceStatus(string service, bool exists);
 
         /// <summary>
         /// Write information about state a "For all users" checkbox in the UWP page.
