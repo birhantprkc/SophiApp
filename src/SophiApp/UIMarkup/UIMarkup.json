@@ -800,6 +800,22 @@
     "Windows11Support": "True"
   },
   {
+    "Name": "InstallDotNetRuntime_8",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 334,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "InstallDotNetRuntime_9",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 335,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
     "Name": "HEVC",
     "Type": "CheckBox",
     "Tag": "UWP",

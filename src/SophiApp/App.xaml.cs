@@ -47,6 +47,7 @@ public partial class App : Application
                 _ = services.AddTransient<IDefenderService, DefenderService>();
                 _ = services.AddTransient<IDiskService, DiskService>();
                 _ = services.AddTransient<IDisplayService, DisplayService>();
+                _ = services.AddTransient<IDotNetService, DotNetService>();
                 _ = services.AddTransient<IGroupPolicyService, GroupPolicyService>();
                 _ = services.AddTransient<IHttpService, HttpService>();
                 _ = services.AddTransient<INavigationViewService, NavigationViewService>();

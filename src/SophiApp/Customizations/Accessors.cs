@@ -9,7 +9,7 @@ namespace SophiApp.Customizations
     using NetFwTypeLib;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
-    using SophiApp.Models;
+    using SophiApp.Helpers;
     using System;
     using System.Globalization;
     using System.ServiceProcess;
@@ -23,6 +23,7 @@ namespace SophiApp.Customizations
     {
         private static readonly IAppxPackagesService AppxPackagesService = App.GetService<IAppxPackagesService>();
         private static readonly ICommonDataService CommonDataService = App.GetService<ICommonDataService>();
+        private static readonly IDotNetService DotNetService = App.GetService<IDotNetService>();
         private static readonly IFirewallService FirewallService = App.GetService<IFirewallService>();
         private static readonly IHttpService HttpService = App.GetService<IHttpService>();
         private static readonly IInstrumentationService InstrumentationService = App.GetService<IInstrumentationService>();
@@ -1189,6 +1190,26 @@ namespace SophiApp.Customizations
             var showClock = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
                 ?.GetValue("ShowClockInNotificationCenter", false) as int? ?? -1;
             return showClock.Equals(1);
+        }
+
+        /// <summary>
+        /// Download and install latest version .NET 8 Desktop Runtime from the Microsoft resources.
+        /// </summary>
+        public static bool InstallDotNetRuntime_8()
+        {
+            var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
+            var installedVersion = DotNetService.GetInstallerVersionOrDefault($"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe");
+            return installedVersion >= releaseInfo.Version;
+        }
+
+        /// <summary>
+        /// Download and install latest version .NET 9 Desktop Runtime from the Microsoft resources.
+        /// </summary>
+        public static bool InstallDotNetRuntime_9()
+        {
+            var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
+            var installedVersion = DotNetService.GetInstallerVersionOrDefault($"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe");
+            return installedVersion >= releaseInfo.Version;
         }
 
         /// <summary>

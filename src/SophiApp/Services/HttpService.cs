@@ -68,6 +68,16 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public string ReadAsJson(string url)
+        {
+            using var client = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            using var response = client.SendAsync(request).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
+            return result;
+        }
+
+        /// <inheritdoc/>
         public async Task OpenUrlAsync(string? url)
         {
             await Task.Run(() =>
@@ -105,7 +115,7 @@ namespace SophiApp.Services
                 using var response = client.Send(request);
                 return response.IsSuccessStatusCode;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

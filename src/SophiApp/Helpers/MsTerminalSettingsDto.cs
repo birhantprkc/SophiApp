@@ -2,11 +2,9 @@
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
-namespace SophiApp.Models
+namespace SophiApp.Helpers
 {
     using Newtonsoft.Json;
-
-    #pragma warning disable SA1402 // File may only contain a single type
 
     /// <summary>
     /// Data transfer object for Windows Terminal settings.
@@ -19,6 +17,8 @@ namespace SophiApp.Models
         [JsonProperty("profiles")]
         public Profiles? Profiles { get; set; }
     }
+
+    #pragma warning disable SA1402 // File may only contain a single type
 
     /// <summary>
     /// Data transfer object for Windows Terminal profile settings.

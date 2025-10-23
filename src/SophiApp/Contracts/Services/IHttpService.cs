@@ -29,6 +29,12 @@ namespace SophiApp.Contracts.Services
         Task DownloadHEVCAppxAsync(string fileName);
 
         /// <summary>
+        /// Read <paramref name="url"/> as json.
+        /// </summary>
+        /// <param name="url">Json url.</param>
+        string ReadAsJson(string url);
+
+        /// <summary>
         /// Opens a resource using an url.
         /// </summary>
         /// <param name="url">Discoverable url.</param>

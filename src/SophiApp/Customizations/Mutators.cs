@@ -25,6 +25,7 @@ namespace SophiApp.Customizations
         private static readonly IAppxPackagesService AppxPackagesService = App.GetService<IAppxPackagesService>();
         private static readonly ICommonDataService CommonDataService = App.GetService<ICommonDataService>();
         private static readonly ICursorsService CursorsService = App.GetService<ICursorsService>();
+        private static readonly IDotNetService DotNetService = App.GetService<IDotNetService>();
         private static readonly IFileService FileService = App.GetService<IFileService>();
         private static readonly IFirewallService FirewallService = App.GetService<IFirewallService>();
         private static readonly IGroupPolicyService GroupPolicyService = App.GetService<IGroupPolicyService>();
@@ -1708,6 +1709,48 @@ namespace SophiApp.Customizations
         {
             Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", true)
                 ?.SetValue("ShowClockInNotificationCenter", enable ? 1 : 0, RegistryValueKind.DWord);
+        }
+
+        /// <summary>
+        /// Download and install latest version .NET 8 Desktop Runtime from the Microsoft resources.
+        /// </summary>
+        /// <param name="enable">.NET Desktop install state.</param>
+        public static void InstallDotNetRuntime_8(bool enable)
+        {
+            if (enable)
+            {
+                var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
+                var releaseName = $"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe";
+                var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+                var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
+                var downloadInstaller = Path.Combine(downloadFolder!, releaseName);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{releaseInfo.Version}/{releaseName}";
+                HttpService.DownloadFile(downloadUrl, downloadInstaller);
+                ProcessService.WaitForExit(downloadInstaller, "/install /passive /norestart");
+                File.Delete(downloadInstaller);
+                DotNetService.DeleteInstallerLogs();
+            }
+        }
+
+        /// <summary>
+        /// Download and install latest version .NET 9 Desktop Runtime from the Microsoft resources.
+        /// </summary>
+        /// <param name="enable">.NET Desktop install state.</param>
+        public static void InstallDotNetRuntime_9(bool enable)
+        {
+            if (enable)
+            {
+                var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
+                var releaseName = $"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe";
+                var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+                var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
+                var downloadInstaller = Path.Combine(downloadFolder!, releaseName);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{releaseInfo.Version}/{releaseName}";
+                HttpService.DownloadFile(downloadUrl, downloadInstaller);
+                ProcessService.WaitForExit(downloadInstaller, "/install /passive /norestart");
+                File.Delete(downloadInstaller);
+                DotNetService.DeleteInstallerLogs();
+            }
         }
 
         /// <summary>
