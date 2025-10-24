@@ -390,15 +390,20 @@ Get-ChildItem -Path $env:TEMP -Recurse -Force | Where-Object -FilterScript {$_.C
 
 # Unnecessary folders to remove
 $Paths = @(
-	# Get ""C:\"" path because we need to open brackets for C: but not for 
+	# Get ""C:\$WinREAgent"" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
 	(-join (""$env:SystemDrive\"", '$WinREAgent')),
+	(-join (""$env:SystemDrive\"", '$SysReset')),
+	(-join (""$env:SystemDrive\"", '$Windows.~WS')),
+	(-join (""$env:SystemDrive\"", '$GetCurrent')),
+	""$env:SystemDrive\ESD"",
 	""$env:SystemDrive\Intel"",
-	""$env:SystemDrive\PerfLogs""
+	""$env:SystemDrive\PerfLogs"",
+	""$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp""
 )
 
 if ((Get-ChildItem -Path $env:SystemDrive\Recovery -Force | Where-Object -FilterScript {$_.Name -eq ""ReAgentOld.xml""}).FullName)
 {
-	$Paths += ""C:\Recovery""
+	$Paths += ""$env:SystemDrive\Recovery""
 }
 Remove-Item -Path $Paths -Recurse -Force
 
