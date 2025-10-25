@@ -1296,16 +1296,16 @@
     <value>Show time in Notification Center</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_8_Description" xml:space="preserve">
-    <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+    <value>.NET 8 is an LTS (long-term support) version. .NET is a successor of .NET Framework. You need to install .NET if an app was developed within this framework. The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_8_Title" xml:space="preserve">
-    <value>The latest .NET Desktop Runtime 8 x64</value>
+    <value>Latest .NET Desktop Runtime 8 x64</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_9_Description" xml:space="preserve">
-    <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+    <value>NET 9 is a rapid branch version. .NET is a successor of .NET Framework. You need to install .NET if an app was developed within this framework. The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_9_Title" xml:space="preserve">
-    <value>The latest .NET Desktop Runtime 9 x64</value>
+    <value>Latest .NET Desktop Runtime 9 x64</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
     <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
