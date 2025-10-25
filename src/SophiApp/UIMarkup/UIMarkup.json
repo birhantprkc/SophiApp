@@ -816,6 +816,22 @@
     "Windows11Support": "True"
   },
   {
+    "Name": "InstallVisualC_x86",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 336,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
+    "Name": "InstallVisualC_x64",
+    "Type": "CheckBox",
+    "Tag": "System",
+    "ViewId": 337,
+    "Windows10Support": "True",
+    "Windows11Support": "True"
+  },
+  {
     "Name": "HEVC",
     "Type": "CheckBox",
     "Tag": "UWP",

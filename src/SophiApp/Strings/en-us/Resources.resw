@@ -1307,4 +1307,16 @@
   <data name="UIModel_InstallDotNetRuntime_9_Title" xml:space="preserve">
     <value>The latest .NET Desktop Runtime 9 x64</value>
   </data>
+  <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
+    <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x64_Title" xml:space="preserve">
+    <value>The latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x86_Description" xml:space="preserve">
+    <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
+    <value>The latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86</value>
+  </data>
 </root>

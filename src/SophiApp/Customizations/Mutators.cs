@@ -25,7 +25,7 @@ namespace SophiApp.Customizations
         private static readonly IAppxPackagesService AppxPackagesService = App.GetService<IAppxPackagesService>();
         private static readonly ICommonDataService CommonDataService = App.GetService<ICommonDataService>();
         private static readonly ICursorsService CursorsService = App.GetService<ICursorsService>();
-        private static readonly IDotNetService DotNetService = App.GetService<IDotNetService>();
+        private static readonly IRedistributablePackageService RedistributablePackageService = App.GetService<IRedistributablePackageService>();
         private static readonly IFileService FileService = App.GetService<IFileService>();
         private static readonly IFirewallService FirewallService = App.GetService<IFirewallService>();
         private static readonly IGroupPolicyService GroupPolicyService = App.GetService<IGroupPolicyService>();
@@ -1712,44 +1712,80 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Download and install latest version .NET 8 Desktop Runtime from the Microsoft resources.
+        /// Download and install latest version .NET 8 desktop runtime from the Microsoft resources.
         /// </summary>
         /// <param name="enable">.NET Desktop install state.</param>
         public static void InstallDotNetRuntime_8(bool enable)
         {
             if (enable)
             {
-                var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
-                var releaseName = $"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe";
+                var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
+                var releaseName = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
                 var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
                 var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
-                var downloadInstaller = Path.Combine(downloadFolder!, releaseName);
-                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{releaseInfo.Version}/{releaseName}";
-                HttpService.DownloadFile(downloadUrl, downloadInstaller);
-                ProcessService.WaitForExit(downloadInstaller, "/install /passive /norestart");
-                File.Delete(downloadInstaller);
-                DotNetService.DeleteInstallerLogs();
+                var offlineInstaller = Path.Combine(downloadFolder!, releaseName);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseName}";
+                HttpService.DownloadFile(downloadUrl, offlineInstaller);
+                ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
+                File.Delete(offlineInstaller);
+                RedistributablePackageService.DeleteInstallerLogs("Microsoft_Windows_Desktop_Runtime*.log");
             }
         }
 
         /// <summary>
-        /// Download and install latest version .NET 9 Desktop Runtime from the Microsoft resources.
+        /// Download and install latest version .NET 9 desktop runtime from the Microsoft resources.
         /// </summary>
         /// <param name="enable">.NET Desktop install state.</param>
         public static void InstallDotNetRuntime_9(bool enable)
         {
             if (enable)
             {
-                var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
-                var releaseName = $"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe";
+                var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
+                var releaseName = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
                 var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
                 var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
-                var downloadInstaller = Path.Combine(downloadFolder!, releaseName);
-                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{releaseInfo.Version}/{releaseName}";
-                HttpService.DownloadFile(downloadUrl, downloadInstaller);
-                ProcessService.WaitForExit(downloadInstaller, "/install /passive /norestart");
-                File.Delete(downloadInstaller);
-                DotNetService.DeleteInstallerLogs();
+                var offlineInstaller = Path.Combine(downloadFolder!, releaseName);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseName}";
+                HttpService.DownloadFile(downloadUrl, offlineInstaller);
+                ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
+                File.Delete(offlineInstaller);
+                RedistributablePackageService.DeleteInstallerLogs("Microsoft_Windows_Desktop_Runtime*.log");
+            }
+        }
+
+        /// <summary>
+        /// Download and install latest version Visual C++ x86 from the Microsoft resources.
+        /// </summary>
+        /// <param name="enable">Visual C++ install state.</param>
+        public static void InstallVisualC_x86(bool enable)
+        {
+            if (enable)
+            {
+                var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+                var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
+                var offlineInstaller = Path.Combine(downloadFolder!, "VC_redist.x86.exe");
+                HttpService.DownloadFile("https://aka.ms/vs/17/release/VC_redist.x86.exe", offlineInstaller);
+                ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
+                File.Delete(offlineInstaller);
+                RedistributablePackageService.DeleteInstallerLogs("dd_vcredist_x86_*.log");
+            }
+        }
+
+        /// <summary>
+        /// Download and install latest version Visual C++ x64 from the Microsoft resources.
+        /// </summary>
+        /// <param name="enable">Visual C++ install state.</param>
+        public static void InstallVisualC_x64(bool enable)
+        {
+            if (enable)
+            {
+                var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
+                var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
+                var offlineInstaller = Path.Combine(downloadFolder!, "VC_redist.x64.exe");
+                HttpService.DownloadFile("https://aka.ms/vs/17/release/VC_redist.x64.exe", offlineInstaller);
+                ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
+                File.Delete(offlineInstaller);
+                RedistributablePackageService.DeleteInstallerLogs("dd_vcredist_amd64_*.log");
             }
         }
 

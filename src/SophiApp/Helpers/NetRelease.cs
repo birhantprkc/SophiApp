@@ -1,4 +1,4 @@
-﻿// <copyright file="DotNetReleases.cs" company="Team Sophia">
+﻿// <copyright file="NetRelease.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace SophiApp.Helpers
     /// <summary>
     /// Data transfer object for .NET release settings.
     /// </summary>
-    public class DotNetReleases
+    public class NetRelease
     {
         #pragma warning disable CS8618 // Non nullable field name is not initialized. Consider declare the field as nullable type.
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="DotNetService.cs" company="Team Sophia">
+﻿// <copyright file="RedistributablePackageService.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -6,45 +6,40 @@ namespace SophiApp.Services
 {
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
-    using SophiApp.Helpers;
     using System;
     using System.Diagnostics;
 
     /// <inheritdoc/>
-    public class DotNetService : IDotNetService
+    public class RedistributablePackageService : IRedistributablePackageService
     {
         private readonly IHttpService httpService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DotNetService"/> class.
+        /// Initializes a new instance of the <see cref="RedistributablePackageService"/> class.
         /// </summary>
         /// <param name="httpService">A service for working with HTTP API.</param>
-        public DotNetService(IHttpService httpService)
+        public RedistributablePackageService(IHttpService httpService)
         {
             this.httpService = httpService;
         }
 
         /// <inheritdoc/>
-        public void DeleteInstallerLogs()
+        public void DeleteInstallerLogs(string logPattern)
         {
-            Directory.GetFileSystemEntries(Path.GetTempPath(), "Microsoft_Windows_Desktop_Runtime*.log", SearchOption.TopDirectoryOnly)
+            Directory.GetFileSystemEntries(Path.GetTempPath(), logPattern, SearchOption.TopDirectoryOnly)
                 .ForEach(log => File.Delete(log));
         }
 
         /// <inheritdoc/>
-        public DotNetReleases GetReleasesInfo(string url)
+        public T GetPackageRelease<T>(string url)
+            where T : class
         {
-            if (httpService.UrlIsAvailable(url))
-            {
-                var releasedJson = httpService.ReadAsJson(url);
-                return JsonExtensions.ToObject<DotNetReleases>(releasedJson);
-            }
-
-            throw new InvalidOperationException($"Releases url is unavailable: {url}");
+            var releasedJson = httpService.ReadAsJson(url);
+            return JsonExtensions.ToObject<T>(releasedJson);
         }
 
         /// <inheritdoc/>
-        public Version GetInstallerVersionOrDefault(string name)
+        public Version GetInstalledPackageVersionOrDefault(string name)
         {
             var packageCache = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Package Cache");
             var installer = Directory.GetFileSystemEntries(packageCache, name, SearchOption.AllDirectories).FirstOrDefault();

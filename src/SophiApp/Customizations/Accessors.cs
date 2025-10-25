@@ -23,7 +23,7 @@ namespace SophiApp.Customizations
     {
         private static readonly IAppxPackagesService AppxPackagesService = App.GetService<IAppxPackagesService>();
         private static readonly ICommonDataService CommonDataService = App.GetService<ICommonDataService>();
-        private static readonly IDotNetService DotNetService = App.GetService<IDotNetService>();
+        private static readonly IRedistributablePackageService RedistributablePackageService = App.GetService<IRedistributablePackageService>();
         private static readonly IFirewallService FirewallService = App.GetService<IFirewallService>();
         private static readonly IHttpService HttpService = App.GetService<IHttpService>();
         private static readonly IInstrumentationService InstrumentationService = App.GetService<IInstrumentationService>();
@@ -1193,23 +1193,43 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Download and install latest version .NET 8 Desktop Runtime from the Microsoft resources.
+        /// Get .NET 8 desktop runtime version.
         /// </summary>
         public static bool InstallDotNetRuntime_8()
         {
-            var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
-            var installedVersion = DotNetService.GetInstallerVersionOrDefault($"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe");
-            return installedVersion >= releaseInfo.Version;
+            var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe");
+            return installedVersion >= latestRelease.Version;
         }
 
         /// <summary>
-        /// Download and install latest version .NET 9 Desktop Runtime from the Microsoft resources.
+        /// Get .NET 9 desktop runtime version.
         /// </summary>
         public static bool InstallDotNetRuntime_9()
         {
-            var releaseInfo = DotNetService.GetReleasesInfo("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
-            var installedVersion = DotNetService.GetInstallerVersionOrDefault($"windowsdesktop-runtime-{releaseInfo.Version}-win-x64.exe");
-            return installedVersion >= releaseInfo.Version;
+            var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe");
+            return installedVersion >= latestRelease.Version;
+        }
+
+        /// <summary>
+        /// Get Microsoft Visual C++ x86 redistributable package version.
+        /// </summary>
+        public static bool InstallVisualC_x86()
+        {
+            var latestRelease = RedistributablePackageService.GetPackageRelease<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x86.exe");
+            return installedVersion >= latestRelease.Version;
+        }
+
+        /// <summary>
+        /// Get Microsoft Visual C++ x64 redistributable package version.
+        /// </summary>
+        public static bool InstallVisualC_x64()
+        {
+            var latestRelease = RedistributablePackageService.GetPackageRelease<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x64.exe");
+            return installedVersion >= latestRelease.Version;
         }
 
         /// <summary>

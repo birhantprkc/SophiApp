@@ -47,7 +47,7 @@ public partial class App : Application
                 _ = services.AddTransient<IDefenderService, DefenderService>();
                 _ = services.AddTransient<IDiskService, DiskService>();
                 _ = services.AddTransient<IDisplayService, DisplayService>();
-                _ = services.AddTransient<IDotNetService, DotNetService>();
+                _ = services.AddTransient<IRedistributablePackageService, RedistributablePackageService>();
                 _ = services.AddTransient<IGroupPolicyService, GroupPolicyService>();
                 _ = services.AddTransient<IHttpService, HttpService>();
                 _ = services.AddTransient<INavigationViewService, NavigationViewService>();
@@ -167,7 +167,6 @@ public partial class App : Application
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         Logger.LogUnhandledException(e.Exception);
-        GetService<ShellViewModel>()
-            .FatalErrorHandling();
+        GetService<ShellViewModel>().FatalErrorHandling();
     }
 }
