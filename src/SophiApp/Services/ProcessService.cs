@@ -15,7 +15,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool Exists(string name)
         {
-            return Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
+            return Array.Exists(System.Diagnostics.Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
         }
 
         /// <inheritdoc/>
@@ -82,7 +82,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Process? StartProcessByName(string name, string arguments = "", ProcessWindowStyle style = ProcessWindowStyle.Normal)
         {
-            return Process.Start(new ProcessStartInfo()
+            return System.Diagnostics.Process.Start(new ProcessStartInfo()
             {
                 FileName = name,
                 Arguments = arguments,

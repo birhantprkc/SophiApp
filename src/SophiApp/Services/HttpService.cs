@@ -52,6 +52,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public async Task DownloadHEVCAppxAsync(string fileName)
         {
+            #pragma warning disable S6608 // Prefer indexing instead of "Enumerable" methods on types implementing "IList"
+
             var content = new List<KeyValuePair<string, string>>
             {
                 new ("type", "url"), new ("url", "https://apps.microsoft.com/detail/9N4WGH0Z6VHQ"), new ("ring", "Retail"), new ("lang", "en-US"),
@@ -65,6 +67,8 @@ namespace SophiApp.Services
             using var stream = await client.GetStreamAsync(appxLink);
             using var file = File.Create(fileName);
             await stream.CopyToAsync(file);
+
+            #pragma warning restore S6608 // Prefer indexing instead of "Enumerable" methods on types implementing "IList"
         }
 
         /// <inheritdoc/>

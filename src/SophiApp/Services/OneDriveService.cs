@@ -7,7 +7,6 @@ namespace SophiApp.Services
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
-    using System.Diagnostics;
     using static System.Environment;
 
     /// <inheritdoc/>
@@ -22,7 +21,7 @@ namespace SophiApp.Services
         /// Initializes a new instance of the <see cref="OneDriveService"/> class.
         /// </summary>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
-        /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
+        /// <param name="processService">A service for working with Windows <see cref="System.Diagnostics.Process"/> API.</param>
         /// <param name="scheduledTaskService">A service for working with Scheduled Task API.</param>
         /// <param name="httpService">A service for working with HTTP API.</param>
         public OneDriveService(IPowerShellService powerShellService, IProcessService processService, IScheduledTaskService scheduledTaskService, IHttpService httpService)
@@ -46,7 +45,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public string GetUserDataFolderOrDefault()
         {
-            return Registry.CurrentUser.OpenSubKey("Environment")?.GetValue("OneDrive") as string ?? string.Empty;
+            return Registry.CurrentUser.OpenSubKey("Environment")
+                ?.GetValue("OneDrive") as string ?? string.Empty;
         }
 
         /// <inheritdoc/>

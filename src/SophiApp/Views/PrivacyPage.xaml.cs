@@ -9,6 +9,7 @@ using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
 using SophiApp.ViewModels;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Implements the <see cref="PrivacyPage"/> class.
@@ -22,7 +23,7 @@ public sealed partial class PrivacyPage : Page
     {
         InitializeComponent();
         ViewModel = App.GetService<ShellViewModel>();
-        Models = ViewModel.JsonModels.FilterByTag(UICategoryTag.Privacy);
+        Models = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.Privacy));
     }
 
     /// <summary>
@@ -33,5 +34,5 @@ public sealed partial class PrivacyPage : Page
     /// <summary>
     /// Gets <see cref="UIModel"/> collection.
     /// </summary>
-    public List<UIModel> Models { get; }
+    public ObservableCollection<UIModel> Models { get; }
 }

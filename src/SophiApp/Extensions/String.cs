@@ -1,4 +1,4 @@
-﻿// <copyright file="StringExtensions.cs" company="Team Sophia">
+﻿// <copyright file="String.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace SophiApp.Extensions
     /// <summary>
     /// Implements <see cref="string"/> extensions.
     /// </summary>
-    public static class StringExtensions
+    public static class String
     {
         /// <summary>
         /// Converts the string to enumerated object.

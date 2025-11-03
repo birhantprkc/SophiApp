@@ -35,7 +35,7 @@ namespace SophiApp.Services
             where T : class
         {
             var releasedJson = httpService.ReadAsJson(url);
-            return JsonExtensions.ToObject<T>(releasedJson);
+            return Json.ToObject<T>(releasedJson);
         }
 
         /// <inheritdoc/>

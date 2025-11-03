@@ -191,7 +191,7 @@
   <data name="Settings_Themes_Light" xml:space="preserve">
     <value>Light</value>
   </data>
-  <data name="SettingsPage_TeamMates.Title" xml:space="preserve">
+  <data name="SettingsPage_Team.Title" xml:space="preserve">
     <value>Team</value>
   </data>
   <data name="SettingsPage_Animation.WorkedOn" xml:space="preserve">
@@ -1318,5 +1318,32 @@
   </data>
   <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
     <value>The latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86</value>
+  </data>
+  <data name="App_Discord.Text" xml:space="preserve">
+    <value>Discord</value>
+  </data>
+  <data name="App_GitHub.Text" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="App_Telegram.Text" xml:space="preserve">
+    <value>Telegram</value>
+  </data>
+  <data name="SettingsPage_Animation.NickName" xml:space="preserve">
+    <value>Maxim Nechiporenko</value>
+  </data>
+  <data name="SettingsPage_AppTester.NickName" xml:space="preserve">
+    <value>Yevhenii "lowlif3" Zabronskyi</value>
+  </data>
+  <data name="SettingsPage_DevelopedBy.NickName" xml:space="preserve">
+    <value>Dmitry "Inestic" Demin</value>
+  </data>
+  <data name="SettingsPage_ProjectManager.NickName" xml:space="preserve">
+    <value>Dmitry "farag" Nefedov</value>
+  </data>
+  <data name="SettingsPage_UiDevelopment.NickName" xml:space="preserve">
+    <value>Yaroslav Posmitiukh</value>
+  </data>
+  <data name="SettingsPage_UxDevelopment.NickName" xml:space="preserve">
+    <value>Vladimir Nameless</value>
   </data>
 </root>

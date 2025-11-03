@@ -7,7 +7,6 @@ namespace SophiApp.Services
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-    using System.Text.RegularExpressions;
     using Microsoft.Win32.TaskScheduler;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;

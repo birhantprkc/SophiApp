@@ -9,6 +9,7 @@ using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
 using SophiApp.ViewModels;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -26,8 +27,8 @@ public sealed partial class UwpPage : Page, INotifyPropertyChanged
     {
         InitializeComponent();
         ViewModel = App.GetService<ShellViewModel>();
-        GamingModels = ViewModel.JsonModels.FilterByTag(UICategoryTag.Gaming);
-        UWPModels = ViewModel.JsonModels.FilterByTag(UICategoryTag.UWP);
+        GamingModels = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.Gaming));
+        UWPModels = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.UWP));
     }
 
     /// <summary>
@@ -56,12 +57,12 @@ public sealed partial class UwpPage : Page, INotifyPropertyChanged
     /// <summary>
     /// Gets a gaming <see cref="UIModel"/> collection.
     /// </summary>
-    public List<UIModel> GamingModels { get; }
+    public ObservableCollection<UIModel> GamingModels { get; }
 
     /// <summary>
     /// Gets a uwp miscellaneous <see cref="UIModel"/> collection.
     /// </summary>
-    public List<UIModel> UWPModels { get; }
+    public ObservableCollection<UIModel> UWPModels { get; }
 
     private void PageUwp_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
     {

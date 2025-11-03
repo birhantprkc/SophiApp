@@ -12,16 +12,6 @@ namespace SophiApp.Contracts.Services
     public interface ICommonDataService
     {
         /// <summary>
-        /// Gets the url with the version of the app.
-        /// </summary>
-        string AppVersionUrl { get; }
-
-        /// <summary>
-        /// Gets the url to download the new release of the app.
-        /// </summary>
-        string AppReleaseUrl { get; }
-
-        /// <summary>
         /// Gets a value indicating whether the OS is Windows 11.
         /// </summary>
         bool IsWindows11 { get; }

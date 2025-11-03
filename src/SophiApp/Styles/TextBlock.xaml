@@ -56,11 +56,6 @@
         <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="SquareCheckBoxTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-    </Style>
-
     <Style x:Key="RequirementsFailurePageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
         <Setter Property="FontSize" Value="{StaticResource LargeFontSize}" />
         <Setter Property="HorizontalAlignment" Value="Center" />

@@ -16,8 +16,8 @@ namespace SophiApp.Services
         private readonly IHttpService httpService;
         private readonly IProcessService processService;
         private readonly string jepriCursorsZip;
-        private readonly string jepriDarkUrl = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/dark.zip"; // TODO: Change repo
-        private readonly string jepriLightUrl = "https://github.com/farag2/Sophia-Script-for-Windows/raw/master/Misc/light.zip"; // TODO: Change repo
+        private readonly string jepriDarkUrl = "https://github.com/Sophia-Community/SophiApp/raw/master/misc/dark.zip";
+        private readonly string jepriLightUrl = "https://github.com/Sophia-Community/SophiApp/raw/master/misc/light.zip";
         private readonly string tarExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe");
         private readonly string jepriDarkCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Dark Free");
         private readonly string jepriLightCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Light Free");
@@ -26,7 +26,7 @@ namespace SophiApp.Services
         /// Initializes a new instance of the <see cref="CursorsService"/> class.
         /// </summary>
         /// <param name="httpService">A service for working with HTTP API.</param>
-        /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
+        /// <param name="processService">A service for working with Windows process API.</param>
         public CursorsService(IHttpService httpService, IProcessService processService)
         {
             var downloadFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";

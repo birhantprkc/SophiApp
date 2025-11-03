@@ -94,9 +94,6 @@ public partial class App : Application
                 _ = services.AddTransient<SystemPage>();
                 _ = services.AddTransient<TaskSchedulerPage>();
                 _ = services.AddTransient<UwpPage>();
-
-                // Configuration
-                _ = services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
             })
             .Build();
 

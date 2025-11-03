@@ -99,70 +99,64 @@
                     </controls:ContentBlock.Content>
                 </controls:ContentBlock>
 
-                <controls:IconHyperlink Height="60"
+                <controls:IconHyperlink x:Uid="App_GitHub"
+                                        Height="60"
                                         Margin="0, 0, 0, 10"
                                         ImageSource="/Assets/GitHub.svg"
-                                        Text="{x:Bind service:CommonDataService.GitHubText}"
                                         Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                        CommandParameter="{x:Bind service:CommonDataService.GitHubLink}"/>
+                                        CommandParameter="https://github.com/Sophia-Community/SophiApp"/>
 
-                <controls:IconHyperlink Height="60"
+                <controls:IconHyperlink x:Uid="App_Telegram"
+                                        Height="60"
                                         Margin="0, 0, 0, 10"
                                         ImageSource="/Assets/Telegram.svg"
-                                        Text="{x:Bind service:CommonDataService.TelegramText}"
                                         Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                        CommandParameter="{x:Bind service:CommonDataService.TelegramLink}"/>
+                                        CommandParameter="https://t.me/sophia_chat"/>
 
-                <controls:IconHyperlink Height="60"
+                <controls:IconHyperlink x:Uid="App_Discord"
+                                        Height="60"
                                         Margin="0, 0, 0, 15"
                                         ImageSource="/Assets/Discord.svg"
-                                        Text="{x:Bind service:CommonDataService.DiscordText}"
                                         Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                        CommandParameter="{x:Bind service:CommonDataService.DiscordLink}"/>
+                                        CommandParameter="https://discord.gg/sSryhaEv79"/>
 
-                <controls:ContentBlock x:Uid="SettingsPage_TeamMates"
+                <controls:ContentBlock x:Uid="SettingsPage_Team"
                                        Height="210"
                                        Margin="0, 0, 0, 15">
                     <controls:ContentBlock.Content>
                         <StackPanel>
                             <controls:TeamMateLink x:Uid="SettingsPage_ProjectManager"
                                                    ImageSource="/Assets/GitHub.svg"
-                                                   NickName="{x:Bind service:CommonDataService.ProjectManagerName}"
                                                    Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="{x:Bind service:CommonDataService.ProjectManagerUrl}"/>
+                                                   CommandParameter="https://github.com/farag2"/>
 
                             <controls:TeamMateLink x:Uid="SettingsPage_DevelopedBy"
                                                    ImageSource="/Assets/GitHub.svg"
-                                                   NickName="{x:Bind service:CommonDataService.DeveloperName}"
                                                    Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="{x:Bind service:CommonDataService.DeveloperUrl}"/>
+                                                   CommandParameter="https://github.com/Inestic"/>
 
                             <controls:TeamMateLink x:Uid="SettingsPage_UxDevelopment"
                                                    ImageSource="/Assets/LinkedIn.svg"
                                                    IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
-                                                   NickName="{x:Bind service:CommonDataService.UXDeveloperName}"
                                                    Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="{x:Bind service:CommonDataService.UXDeveloperUrl}"/>
+                                                   CommandParameter="https://www.linkedin.com/in/vladimir-palii-132745a1"/>
 
                             <controls:TeamMateLink x:Uid="SettingsPage_UiDevelopment"
                                                    ImageSource="/Assets/LinkedIn.svg"
                                                    IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
-                                                   NickName="{x:Bind service:CommonDataService.UIDeveloperName}"
                                                    Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="{x:Bind service:CommonDataService.UIDeveloperUrl}"/>
+                                                   CommandParameter="https://www.linkedin.com/in/artenjoyers"/>
 
                             <controls:TeamMateLink x:Uid="SettingsPage_Animation"
                                                    ImageSource="/Assets/LinkedIn.svg"
                                                    IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
-                                                   NickName="{x:Bind service:CommonDataService.AnimationDeveloperName}"
                                                    Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="{x:Bind service:CommonDataService.AnimationDeveloperUrl}"/>
+                                                   CommandParameter="https://www.linkedin.com/in/tmcrowmax"/>
 
                             <controls:TeamMateLink x:Uid="SettingsPage_AppTester"
                                                    ImageSource="/Assets/GitHub.svg"
-                                                   NickName="{x:Bind service:CommonDataService.AppTesterName}"
                                                    Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="{x:Bind service:CommonDataService.AppTesterUrl}"/>
+                                                   CommandParameter="https://github.com/lowl1f3"/>
                         </StackPanel>
                     </controls:ContentBlock.Content>
                 </controls:ContentBlock>

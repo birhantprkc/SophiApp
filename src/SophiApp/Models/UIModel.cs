@@ -23,7 +23,12 @@ namespace SophiApp.Models
         protected UIModel(UIModelDto dto, string title)
         {
             Title = title;
-            (Name, Type, Tag, ViewId, Windows10Support, Windows11Support, _) = dto;
+            Name = dto.Name;
+            Type = dto.Type;
+            Tag = dto.Tag;
+            ViewId = dto.ViewId;
+            Windows10Support = dto.Windows10Support;
+            Windows11Support = dto.Windows11Support;
         }
 
         /// <summary>

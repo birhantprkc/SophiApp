@@ -40,7 +40,7 @@ namespace SophiApp.Services
             return await Task.Run(() =>
             {
                 var json = Encoding.UTF8.GetString(Properties.Resources.UIMarkup);
-                var models = JsonExtensions.ToObject<IEnumerable<UIModelDto>>(json)
+                var models = Json.ToObject<IEnumerable<UIModelDto>>(json)
                     .Where(dto => commonDataService.IsWindows11 ? dto.Windows11Support : dto.Windows10Support)
                     .Select(dto =>
                     {
@@ -48,8 +48,6 @@ namespace SophiApp.Services
                         {
                             UIModelType.CheckBox => BuildCheckBoxModel(dto),
                             UIModelType.ExpandingRadioGroup => BuildExpandingRadioGroupModel(dto),
-                            UIModelType.ExpandingCheckBox => BuildExpandingCheckBox(dto),
-                            UIModelType.SquareCheckBox => BuildSquareCheckBox(dto),
                             _ => throw new TypeAccessException($"An invalid type is specified: {dto.Type}"),
                         };
                     })
@@ -160,7 +158,7 @@ namespace SophiApp.Services
                     {
                         if (!excludedAppx.Contains(packages[i].Id.Name) && File.Exists(packages[i].Logo.LocalPath) && packages[i].DisplayName != string.Empty)
                         {
-                            var dto = new UIModelDto(Name: packages[i].DisplayName, Type: UIModelType.UwpApp, Tag: UICategoryTag.UWP, ViewId: initialViewId + i, Windows10Support: true, Windows11Support: true, NumberOfItems: 0);
+                            var dto = new UIModelDto(name: packages[i].DisplayName, type: UIModelType.UwpApp, tag: UICategoryTag.UWP, viewId: initialViewId + i, windows10Support: true, windows11Support: true, numberOfItems: 0);
                             models.Add(new UIUwpAppModel(dto, packages[i].Id.Name, packages[i].Logo));
                         }
                     }
@@ -281,24 +279,6 @@ namespace SophiApp.Services
             return groupModel;
         }
 
-        private UIModel BuildExpandingCheckBox(UIModelDto dto)
-        {
-            var title = GetTitle(dto.Name);
-            var description = GetDescription(dto.Name);
-            var imageSource = GetImageSource(dto.Name);
-            var accessor = GetAccessor<bool>(dto.Name);
-            var mutator = GetMutator<bool>(dto.Name);
-            return new UIExpandingCheckBoxModel(dto, title, description, imageSource, accessor, mutator);
-        }
-
-        private UIModel BuildSquareCheckBox(UIModelDto dto)
-        {
-            var title = GetTitle(dto.Name);
-            var accessor = GetAccessor<bool>(dto.Name);
-            var mutator = GetMutator<bool>(dto.Name);
-            return new UISquareCheckBoxModel(dto, title, accessor, mutator);
-        }
-
         private string GetTitle(string name, int? id = null)
         {
             var title = id is null ? $"UIModel_{name}_Title" : $"UIModel_{name}_Title_{id}";
@@ -313,15 +293,6 @@ namespace SophiApp.Services
             }
 
             return string.Empty;
-        }
-
-        private string GetImageSource(string name)
-        {
-            return name switch
-            {
-                var source when source == "CleanupTask" => "/Assets/Windows.svg",
-                _ => "/Assets/Folder.svg"
-            };
         }
 
         private Func<T> GetAccessor<T>(string name)

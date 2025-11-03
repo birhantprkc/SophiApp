@@ -30,15 +30,11 @@
   <ItemGroup>
     <None Remove="Assets\AppLogo.svg" />
     <None Remove="Assets\Discord.svg" />
-    <None Remove="Assets\Folder.svg" />
     <None Remove="Assets\GitHub.svg" />
     <None Remove="Assets\Info.svg" />
     <None Remove="Assets\Telegram.svg" />
-    <None Remove="Assets\Windows.svg" />
-    <None Remove="ControlTemplates\ExpandingCheckBox.xaml" />
     <None Remove="ControlTemplates\ExpandingRadioGroup.xaml" />
     <None Remove="ControlTemplates\IconHyperlink.xaml" />
-    <None Remove="ControlTemplates\SquareCheckBox.xaml" />
     <None Remove="ControlTemplates\TeamMateLink.xaml" />
     <None Remove="ControlTemplates\TextCheckBox.xaml" />
     <None Remove="ControlTemplates\UwpAppCheckBox.xaml" />
@@ -47,12 +43,10 @@
     <None Remove="Styles\Button.xaml" />
     <None Remove="Styles\CheckBox.xaml" />
     <None Remove="Styles\Expander.xaml" />
-    <None Remove="Styles\Image.xaml" />
     <None Remove="Styles\ScrollView.xaml" />
     <None Remove="Styles\Themes.xaml" />
     <None Remove="ControlTemplates\ContentBlock.xaml" />
     <None Remove="ControlTemplates\MadeForWindows.xaml" />
-    <None Remove="Styles\ToggleButton.xaml" />
     <None Remove="Views\FatalErrorPage.xaml" />
     <None Remove="Views\LogPage.xaml" />
     <None Remove="Views\RequirementsFailurePage.xaml" />
@@ -120,12 +114,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Assets\Folder.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Assets\Windows.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="Assets\AppLogo.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -190,16 +178,7 @@
     <Page Update="Views\LogPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="ControlTemplates\SquareCheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Views\SearchPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Styles\Image.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="ControlTemplates\ExpandingCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="ControlTemplates\UwpAppCheckBox.xaml">
@@ -227,9 +206,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\StartupPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Styles\ToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Styles\Button.xaml">

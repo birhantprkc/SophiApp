@@ -9,6 +9,7 @@ using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
 using SophiApp.ViewModels;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -26,7 +27,7 @@ public sealed partial class TaskSchedulerPage : Page, INotifyPropertyChanged
     {
         InitializeComponent();
         ViewModel = App.GetService<ShellViewModel>();
-        Models = ViewModel.JsonModels.FilterByTag(UICategoryTag.TaskScheduler);
+        Models = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.TaskScheduler));
     }
 
     /// <summary>
@@ -55,7 +56,7 @@ public sealed partial class TaskSchedulerPage : Page, INotifyPropertyChanged
     /// <summary>
     /// Gets <see cref="UIModel"/> collection.
     /// </summary>
-    public List<UIModel> Models { get; }
+    public ObservableCollection<UIModel> Models { get; }
 
     private void PageTaskScheduler_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
     {

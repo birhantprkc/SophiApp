@@ -61,7 +61,7 @@ namespace SophiApp.Services
         {
             try
             {
-                var wmiService = new ServiceController("Winmgmt");
+                var wmiService = new System.ServiceProcess.ServiceController("Winmgmt");
                 using var verifyRepository = processService.WaitForExit(name: "cmd.exe", arguments: "/c winmgmt /verifyrepository");
                 var serviceIsRun = wmiService.Status == ServiceControllerStatus.Running;
                 var repoIsConsistent = verifyRepository.ExitCode.Equals(0);
@@ -199,7 +199,7 @@ namespace SophiApp.Services
         {
             try
             {
-                return new ServiceController("EventLog").Status == ServiceControllerStatus.Running ? Result.Success() : Result.Failure(nameof(RequirementsFailure.EventLogBroken));
+                return new System.ServiceProcess.ServiceController("EventLog").Status == ServiceControllerStatus.Running ? Result.Success() : Result.Failure(nameof(RequirementsFailure.EventLogBroken));
             }
             catch (Exception e)
             {
@@ -235,13 +235,15 @@ namespace SophiApp.Services
             try
             {
                 using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
-                var json = client.GetFromJsonAsync<AppVersionWrapper>(commonDataService.AppVersionUrl).Result;
+                var versionsUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/master/sophiapp_versions.json";
+                var json = client.GetFromJsonAsync<AppVersion>(versionsUrl).Result;
                 var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
                 App.Logger.LogAppUpdate(jsonVersion);
 
                 if (jsonVersion > commonDataService.AppVersion)
                 {
-                    var toastPayload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), commonDataService.AppReleaseUrl);
+                    var releasesUrl = "https://github.com/Sophia-Community/SophiApp/releases";
+                    var toastPayload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), releasesUrl);
                     appNotificationService.Show(toastPayload);
                 }
             }

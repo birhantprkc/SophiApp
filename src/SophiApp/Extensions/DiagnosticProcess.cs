@@ -1,4 +1,4 @@
-﻿// <copyright file="ProcessExtensions.cs" company="Team Sophia">
+﻿// <copyright file="DiagnosticProcess.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace SophiApp.Extensions
     /// <summary>
     /// Implements <see cref="System.Diagnostics.Process"/> extensions.
     /// </summary>
-    public static class ProcessExtensions
+    public static class DiagnosticProcess
     {
         /// <summary>
         /// Performs the specified action on each element of the process collection.

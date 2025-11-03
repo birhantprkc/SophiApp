@@ -45,7 +45,7 @@ namespace SophiApp.Customizations
         /// <param name="enable">DiagTrack service state.</param>
         public static void DiagTrackService(bool enable)
         {
-            var diagTrackService = new ServiceController("DiagTrack");
+            var diagTrackService = new System.ServiceProcess.ServiceController("DiagTrack");
             var firewallRule = FirewallService.GetGroupRules("DiagTrack").First();
 
             if (enable)
@@ -99,7 +99,7 @@ namespace SophiApp.Customizations
             var policyReportingPath = "Software\\Policies\\Microsoft\\Windows\\Windows Error Reporting";
             var errorReportingPath = "Software\\Microsoft\\Windows\\Windows Error Reporting";
             var reportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting");
-            using var werService = new ServiceController("WerSvc");
+            using var werService = new System.ServiceProcess.ServiceController("WerSvc");
             GroupPolicyService.ClearRegistryCache(policyReportingPath, "Disabled", Registry.LocalMachine, Registry.CurrentUser);
             GroupPolicyService.ClearLocalCache(policyReportingPath, "Disabled", LGPOScope.Computer, LGPOScope.User);
             ScheduledTaskService.SetState(reportingTask, enable);
@@ -1455,7 +1455,7 @@ namespace SophiApp.Customizations
             ScheduledTaskService.SetState(queueReportingTask, true);
             Registry.CurrentUser.OpenSubKey(reportingPath, true)
                 ?.DeleteValue("Disabled", false);
-            using var werService = new ServiceController("WerSvc");
+            using var werService = new System.ServiceProcess.ServiceController("WerSvc");
             OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
             werService.TryStart();
             Registry.LocalMachine.OpenOrCreateSubKey(mitigationPath)

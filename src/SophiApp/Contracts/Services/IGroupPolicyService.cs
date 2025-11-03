@@ -61,14 +61,6 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
         /// </summary>
-        /// <param name="scope">Policy scope.</param>
-        /// <param name="path">Policy path.</param>
-        /// <param name="names">Policy value names.</param>
-        void ClearLocalCache(LGPOScope scope, string path, params string[] names);
-
-        /// <summary>
-        /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
-        /// </summary>
         /// <param name="path">Policy path.</param>
         /// <param name="name">Policy value name.</param>
         /// <param name="scopes">Policy scopes.</param>

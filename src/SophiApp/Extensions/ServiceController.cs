@@ -1,4 +1,4 @@
-﻿// <copyright file="ServiceControllerExtensions.cs" company="Team Sophia">
+﻿// <copyright file="ServiceController.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -9,13 +9,13 @@ namespace SophiApp.Extensions
     /// <summary>
     /// Implements ServiceController extensions.
     /// </summary>
-    public static class ServiceControllerExtensions
+    public static class ServiceController
     {
         /// <summary>
         /// Try start the service.
         /// </summary>
         /// <param name="service">Represents a Windows service and allows you to connect to a running or stopped.</param>
-        public static void TryStart(this ServiceController service)
+        public static void TryStart(this System.ServiceProcess.ServiceController service)
         {
             if (service.Status == ServiceControllerStatus.Stopped)
             {
@@ -27,7 +27,7 @@ namespace SophiApp.Extensions
         /// Try stop the service.
         /// </summary>
         /// <param name="service">Represents a Windows service and allows you to connect to a running or stopped.</param>
-        public static void TryStop(this ServiceController service)
+        public static void TryStop(this System.ServiceProcess.ServiceController service)
         {
             if (service.Status == ServiceControllerStatus.Running)
             {

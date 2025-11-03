@@ -9,6 +9,7 @@ using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
 using SophiApp.ViewModels;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Implements the <see cref="ContextMenuPage"/> class.
@@ -22,7 +23,7 @@ public sealed partial class ContextMenuPage : Page
     {
         InitializeComponent();
         ViewModel = App.GetService<ShellViewModel>();
-        Models = ViewModel.JsonModels.FilterByTag(UICategoryTag.ContextMenu);
+        Models = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.ContextMenu));
     }
 
     /// <summary>
@@ -33,5 +34,5 @@ public sealed partial class ContextMenuPage : Page
     /// <summary>
     /// Gets <see cref="UIModel"/> collection.
     /// </summary>
-    public List<UIModel> Models { get; }
+    public ObservableCollection<UIModel> Models { get; }
 }

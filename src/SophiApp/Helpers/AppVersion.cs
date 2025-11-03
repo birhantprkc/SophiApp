@@ -1,13 +1,13 @@
-﻿// <copyright file="AppVersionWrapper.cs" company="Team Sophia">
+﻿// <copyright file="AppVersion.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
 namespace SophiApp.Helpers
 {
     /// <summary>
-    /// App version wrapper.
+    /// Data transfer object for app version.
     /// </summary>
-    public record AppVersionWrapper
+    public class AppVersion
     {
         /// <summary>
         /// Gets or sets app pre-release version.

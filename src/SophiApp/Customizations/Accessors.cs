@@ -40,7 +40,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool DiagTrackService()
         {
-            var diagTrackService = new ServiceController("DiagTrack");
+            var diagTrackService = new System.ServiceProcess.ServiceController("DiagTrack");
             var firewallRule = FirewallService.GetGroupRules("DiagTrack").First();
 
             if (diagTrackService.StartType == ServiceStartMode.Disabled && firewallRule.Enabled && firewallRule.Action == NET_FW_ACTION_.NET_FW_ACTION_BLOCK)
@@ -69,7 +69,7 @@ namespace SophiApp.Customizations
         {
             var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException($"Failed to find a QueueReporting scheduled task");
             var disableErrorReporting = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting")?.GetValue("Disabled") as int? ?? -1;
-            return !(queueReportingTask.State == TaskState.Disabled && disableErrorReporting.Equals(1) && new ServiceController("WerSvc").StartType == ServiceStartMode.Disabled);
+            return !(queueReportingTask.State == TaskState.Disabled && disableErrorReporting.Equals(1) && new System.ServiceProcess.ServiceController("WerSvc").StartType == ServiceStartMode.Disabled);
         }
 
         /// <summary>
@@ -1850,7 +1850,7 @@ else
                     {
                         var terminalSettings = $@"{Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%")}\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json";
                         var jsonSettings = File.ReadAllText(terminalSettings, Encoding.UTF8);
-                        var jsonProfile = JsonExtensions.ToObject<MsTerminalSettingsDto>(jsonSettings);
+                        var jsonProfile = Json.ToObject<MsTerminalSettingsDto>(jsonSettings);
                         return jsonProfile?.Profiles?.Defaults?.Elevate ?? false;
                     }
                     catch (ArgumentException)

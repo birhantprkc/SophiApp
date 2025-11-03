@@ -127,7 +127,7 @@ public class NavigationService : INavigationService
                 page.BackStack.Clear();
             }
 
-            if (page.GetPageViewModel() is INavigationAware navigationAware)
+            if (FrameNavigation.GetPageViewModel(page) is INavigationAware navigationAware)
             {
                 navigationAware.OnNavigatedTo(e.Parameter);
             }

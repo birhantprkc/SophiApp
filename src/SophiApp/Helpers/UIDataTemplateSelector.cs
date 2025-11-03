@@ -26,11 +26,6 @@ namespace SophiApp.Helpers
         /// </summary>
         public DataTemplate ExpandingCheckBoxGroup { get; set; } = new ();
 
-        /// <summary>
-        /// Gets or sets <see cref="ExpandingCheckBox"/> template.
-        /// </summary>
-        public DataTemplate ExpandingCheckBox { get; set; } = new (); // TODO: Its unused?
-
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -39,7 +34,6 @@ namespace SophiApp.Helpers
             {
                 var type when type == typeof(UICheckBoxModel) => TextCheckBox,
                 var type when type == typeof(UIExpandingRadioGroupModel) => ExpandingRadioGroup,
-                var type when type == typeof(UIExpandingCheckBoxModel) => ExpandingCheckBox,
                 _ => throw new TypeAccessException($"Attempt to access method '{nameof(SelectTemplateCore)}' to type '{itemType}' failed")
             };
         }

@@ -1,22 +1,20 @@
-﻿// <copyright file="RegistryKeyExtensions.cs" company="Team Sophia">
+﻿// <copyright file="RegistryKey.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
 namespace SophiApp.Extensions
 {
-    using Microsoft.Win32;
-
     /// <summary>
-    /// Implements <see cref="RegistryKey"/> extensions.
+    /// Implements <see cref="Microsoft.Win32.RegistryKey"/> extensions.
     /// </summary>
-    public static class RegistryKeyExtensions
+    public static class RegistryKey
     {
         /// <summary>
         /// Retrieves or create, if missing, a specified subkey.
         /// </summary>
         /// <param name="key">Represents a key-level node in the Windows registry.</param>
         /// <param name="subKey">Path of the subkey to open or create.</param>
-        public static RegistryKey OpenOrCreateSubKey(this RegistryKey key, string subKey)
+        public static Microsoft.Win32.RegistryKey OpenOrCreateSubKey(this Microsoft.Win32.RegistryKey key, string subKey)
         {
             return key.OpenSubKey(subKey, true) ?? key.CreateSubKey(subKey, true);
         }
@@ -26,7 +24,7 @@ namespace SophiApp.Extensions
         /// </summary>
         /// <param name="key">Represents a key-level node in the Windows registry.</param>
         /// <param name="value">Key value.</param>
-        public static bool ValueExist(this RegistryKey key, string value)
+        public static bool ValueExist(this Microsoft.Win32.RegistryKey key, string value)
         {
             return key.GetValueNames().ForEach(keyName => key.GetValue(keyName) as string ?? string.Empty)
                 .Any(keyValue => keyValue.Equals(value, StringComparison.OrdinalIgnoreCase));

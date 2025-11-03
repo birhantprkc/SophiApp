@@ -14,15 +14,15 @@ using Windows.Storage;
 /// <inheritdoc/>
 public class SettingsService : ISettingsService
 {
-    private const string AppThemeKey = "AppTheme";
-    private const string AppWindowPositionXKey = "AppWindowPositionX";
-    private const string AppWindowPositionYKey = "AppWindowPositionY";
-    private const string AppWindowHeightKey = "AppWindowHeight";
-    private const string AppWindowWidthKey = "AppWindowWidth";
-    private const string AppWindowStateKey = "AppWindowState";
+    private const string AppTheme = "AppTheme";
+    private const string AppWindowHeight = "AppWindowHeight";
+    private const string AppWindowPositionX = "AppWindowPositionX";
+    private const string AppWindowPositionY = "AppWindowPositionY";
+    private const string AppWindowState = "AppWindowState";
+    private const string AppWindowWidth = "AppWindowWidth";
     private const string SettingsFile = "Settings.json";
-    private const string TextDescriptionSizeKey = "TextDescriptionSize";
-    private const string TextTitleSizeKey = "TextTitleSize";
+    private const string TextDescriptionSize = "TextDescriptionSize";
+    private const string TextTitleSize = "TextTitleSize";
 
     private readonly IFileService fileService;
     private readonly string settingsFolder = AppContext.BaseDirectory;
@@ -61,70 +61,70 @@ public class SettingsService : ISettingsService
     /// <inheritdoc/>
     public async Task<PointInt32> ReadAppWindowPositionAsync()
     {
-        var x = await ReadSettingAsync<int>(AppWindowPositionXKey);
-        var y = await ReadSettingAsync<int>(AppWindowPositionYKey);
+        var x = await ReadSettingAsync<int>(AppWindowPositionX);
+        var y = await ReadSettingAsync<int>(AppWindowPositionY);
         return new PointInt32(x, y);
     }
 
     /// <inheritdoc/>
     public async Task<double> ReadAppWindowHeightAsync()
     {
-        var height = await ReadSettingAsync<double>(AppWindowHeightKey);
+        var height = await ReadSettingAsync<double>(AppWindowHeight);
         return height > AppWindowMinHeight ? height : AppWindowMinHeight;
     }
 
     /// <inheritdoc/>
-    public async Task<WindowState> ReadAppWindowStateAsync() => await ReadSettingAsync<WindowState>(AppWindowStateKey);
+    public async Task<WindowState> ReadAppWindowStateAsync() => await ReadSettingAsync<WindowState>(AppWindowState);
 
     /// <inheritdoc/>
     public async Task<double> ReadAppWindowWidthAsync()
     {
-        var width = await ReadSettingAsync<double>(AppWindowWidthKey);
+        var width = await ReadSettingAsync<double>(AppWindowWidth);
         return width > AppWindowMinWidth ? width : AppWindowMinWidth;
     }
 
     /// <inheritdoc/>
     public async Task<int> ReadTextDescriptionSizeAsync()
     {
-        var descriptionTextSize = await ReadSettingAsync<int>(TextDescriptionSizeKey);
+        var descriptionTextSize = await ReadSettingAsync<int>(TextDescriptionSize);
         return descriptionTextSize > DescriptionTextMinSize && descriptionTextSize <= DescriptionTextMaxSize ? descriptionTextSize : DescriptionTextMinSize;
     }
 
     /// <inheritdoc/>
     public async Task<int> ReadTextTitleSizeAsync()
     {
-        var titleTextSize = await ReadSettingAsync<int>(TextTitleSizeKey);
+        var titleTextSize = await ReadSettingAsync<int>(TextTitleSize);
         return titleTextSize > TitleTextMinSize && titleTextSize <= TitleTextMaxSize ? titleTextSize : TitleTextMinSize;
     }
 
     /// <inheritdoc/>
-    public async Task<ElementTheme> ReadThemeAsync() => await ReadSettingAsync<ElementTheme>(AppThemeKey);
+    public async Task<ElementTheme> ReadThemeAsync() => await ReadSettingAsync<ElementTheme>(AppTheme);
 
     /// <inheritdoc/>
     public async Task SaveAppWindowPositionAsync(PointInt32 point)
     {
-        await SaveSettingAsync(AppWindowPositionXKey, point.X);
-        await SaveSettingAsync(AppWindowPositionYKey, point.Y);
+        await SaveSettingAsync(AppWindowPositionX, point.X);
+        await SaveSettingAsync(AppWindowPositionY, point.Y);
     }
 
     /// <inheritdoc/>
     public async Task SaveAppWindowSizeAsync(double height, double width)
     {
-        await SaveSettingAsync(AppWindowHeightKey, height);
-        await SaveSettingAsync(AppWindowWidthKey, width);
+        await SaveSettingAsync(AppWindowHeight, height);
+        await SaveSettingAsync(AppWindowWidth, width);
     }
 
     /// <inheritdoc/>
-    public async Task SaveAppWindowStateAsync(WindowState state) => await SaveSettingAsync(AppWindowStateKey, state);
+    public async Task SaveAppWindowStateAsync(WindowState state) => await SaveSettingAsync(AppWindowState, state);
 
     /// <inheritdoc/>
-    public async Task SaveTextDescriptionSizeAsync(int size) => await SaveSettingAsync(TextDescriptionSizeKey, size);
+    public async Task SaveTextDescriptionSizeAsync(int size) => await SaveSettingAsync(TextDescriptionSize, size);
 
     /// <inheritdoc/>
-    public async Task SaveTextTitleSizeAsync(int size) => await SaveSettingAsync(TextTitleSizeKey, size);
+    public async Task SaveTextTitleSizeAsync(int size) => await SaveSettingAsync(TextTitleSize, size);
 
     /// <inheritdoc/>
-    public async Task SaveThemeAsync(ElementTheme theme) => await SaveSettingAsync(AppThemeKey, theme);
+    public async Task SaveThemeAsync(ElementTheme theme) => await SaveSettingAsync(AppTheme, theme);
 
     private async Task<T?> ReadSettingAsync<T>(string key)
     {
@@ -132,14 +132,14 @@ public class SettingsService : ISettingsService
         {
             if (ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out var obj))
             {
-                return await JsonExtensions.ToObjectAsync<T>((string)obj);
+                return await Json.ToObjectAsync<T>((string)obj);
             }
         }
         else
         {
             if (settings != null && settings.TryGetValue(key, out var obj))
             {
-                return await JsonExtensions.ToObjectAsync<T>((string)obj);
+                return await Json.ToObjectAsync<T>((string)obj);
             }
         }
 
@@ -150,11 +150,11 @@ public class SettingsService : ISettingsService
     {
         if (RuntimeHelper.IsMSIX)
         {
-            ApplicationData.Current.LocalSettings.Values[key] = await JsonExtensions.StringifyAsync(value!);
+            ApplicationData.Current.LocalSettings.Values[key] = await Json.StringifyAsync(value!);
         }
         else
         {
-            settings![key] = await JsonExtensions.StringifyAsync(value!);
+            settings![key] = await Json.StringifyAsync(value!);
             fileService.SaveToJson(settingsFolder, SettingsFile, settings);
         }
     }

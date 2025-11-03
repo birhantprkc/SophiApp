@@ -88,9 +88,7 @@ namespace SophiApp.Services
         private static extern IntPtr OpenService(IntPtr hSCManager, string lpServiceName, uint dwDesiredAccess);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
         private static extern bool ChangeServiceConfig(IntPtr hService, uint nServiceType, uint nStartType, uint nErrorControl, string? lpBinaryPathName, string? lpLoadOrderGroup, IntPtr lpdwTagId, [In] char[]? lpDependencies, string? lpServiceStartName, string? lpPassword, string? lpDisplayName);
-#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
 
         [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
         private static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);

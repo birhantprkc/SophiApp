@@ -1,4 +1,4 @@
-﻿// <copyright file="IntExtensions.cs" company="Team Sophia">
+﻿// <copyright file="Int.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace SophiApp.Extensions
     /// <summary>
     /// Implements <see cref="int"/> extensions.
     /// </summary>
-    public static class IntExtensions
+    public static class Int
     {
         /// <summary>
         /// Proportionally increases the <paramref name="value"/> from 0 to 100 using the number of <paramref name="steps"/>.

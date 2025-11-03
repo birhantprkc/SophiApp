@@ -28,7 +28,7 @@ namespace SophiApp.Services
         /// <param name="instrumentationService">A service for working with WMI API.</param>
         /// <param name="osService">A service for working with Windows services API.</param>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
-        /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
+        /// <param name="processService">A service for working with Windows process./> API.</param>
         public DefenderService(
             ICommonDataService commonDataService,
             IInstrumentationService instrumentationService,

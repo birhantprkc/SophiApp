@@ -8,6 +8,7 @@
     xmlns:windowex="using:WinUIEx"
     PersistenceId="MainWindow"
     mc:Ignorable="d"
+    Activated="MainWindow_Activated"
     PositionChanged="MainWindow_PositionChanged"
     SizeChanged="MainWindow_SizeChanged"
     WindowStateChanged="MainWindow_StateChanged">

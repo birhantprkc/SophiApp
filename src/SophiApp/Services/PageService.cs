@@ -12,7 +12,7 @@ using SophiApp.Views;
 /// <inheritdoc/>
 public class PageService : IPageService
 {
-    private readonly Dictionary<string, Type> pages = new ();
+    private readonly Dictionary<string, Type> pages = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PageService"/> class.

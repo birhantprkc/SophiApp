@@ -11,12 +11,10 @@
                 <ResourceDictionary Source="/Styles/CheckBox.xaml" />
                 <ResourceDictionary Source="/Styles/Expander.xaml" />
                 <ResourceDictionary Source="/Styles/FontSizes.xaml" />
-                <ResourceDictionary Source="/Styles/Image.xaml" />
                 <ResourceDictionary Source="/Styles/ScrollView.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                 <ResourceDictionary Source="/Styles/Themes.xaml" />
                 <ResourceDictionary Source="/Styles/Thickness.xaml" />
-                <ResourceDictionary Source="/Styles/ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

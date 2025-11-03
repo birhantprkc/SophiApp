@@ -6,8 +6,11 @@ namespace SophiApp;
 
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
+using System.Drawing.Printing;
+using System.Runtime.InteropServices;
 using Windows.Graphics;
 using Windows.UI.ViewManagement;
+using WinRT.Interop;
 
 /// <summary>
 /// Implements the <see cref="MainWindow"/> class.
@@ -31,7 +34,11 @@ public sealed partial class MainWindow : WindowEx
         settings = new UISettings();
         settings.ColorValuesChanged += Settings_ColorValuesChanged;
         settingsService = App.GetService<ISettingsService>();
+        ExtendsContentIntoTitleBar = true;
     }
+
+    [DllImport("dwmapi")]
+    private static extern IntPtr DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
 
     /// <summary>
     /// This handles updating the caption button colors correctly when windows system theme is changed while the app is open.
@@ -58,5 +65,12 @@ public sealed partial class MainWindow : WindowEx
             var width = Width;
             _ = Task.Run(async () => await settingsService.SaveAppWindowSizeAsync(height, width));
         }
+    }
+
+    private void MainWindow_Activated(object sender, Microsoft.UI.Xaml.WindowActivatedEventArgs args)
+    {
+        var handle = WindowNative.GetWindowHandle(this);
+        var margins = new MARGINS { cxLeftWidth = 0, cxRightWidth = 0, cyBottomHeight = 0, cyTopHeight = 2 };
+        DwmExtendFrameIntoClientArea(handle, ref margins);
     }
 }

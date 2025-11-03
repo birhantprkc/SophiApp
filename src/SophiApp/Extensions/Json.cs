@@ -1,4 +1,4 @@
-﻿// <copyright file="JsonExtensions.cs" company="Team Sophia">
+﻿// <copyright file="Json.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 /// <summary>
 /// Json extensions.
 /// </summary>
-public static class JsonExtensions
+public static class Json
 {
     /// <summary>
     /// Deserializes the JSON to the specified .NET type.

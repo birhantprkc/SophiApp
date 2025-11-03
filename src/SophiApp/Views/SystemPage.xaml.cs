@@ -8,6 +8,7 @@ using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
 using SophiApp.ViewModels;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Implements the <see cref="SystemPage"/> class.
@@ -21,7 +22,7 @@ public sealed partial class SystemPage : Page
     {
         InitializeComponent();
         ViewModel = App.GetService<ShellViewModel>();
-        Models = ViewModel.JsonModels.FilterByTag(UICategoryTag.System);
+        Models = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.System));
     }
 
     /// <summary>
@@ -32,5 +33,5 @@ public sealed partial class SystemPage : Page
     /// <summary>
     /// Gets <see cref="UIModel"/> collection.
     /// </summary>
-    public List<UIModel> Models { get; }
+    public ObservableCollection<UIModel> Models { get; }
 }

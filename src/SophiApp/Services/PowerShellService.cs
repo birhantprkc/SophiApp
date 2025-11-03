@@ -18,7 +18,7 @@ namespace SophiApp.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="PowerShellService"/> class.
         /// </summary>
-        /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
+        /// <param name="processService">A service for working with Windows process./> API.</param>
         public PowerShellService(IProcessService processService)
         {
             this.processService = processService;

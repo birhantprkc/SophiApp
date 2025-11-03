@@ -1,4 +1,4 @@
-﻿// <copyright file="ConcurrentBagExtensions.cs" company="Team Sophia">
+﻿// <copyright file="ConcurrentBag.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace SophiApp.Extensions
     /// <summary>
     /// Implements ConcurrentBag extensions.
     /// </summary>
-    public static class ConcurrentBagExtensions
+    public static class ConcurrentBag
     {
         /// <summary>
         /// Filter collections by <see cref="UICategoryTag"/> tag.

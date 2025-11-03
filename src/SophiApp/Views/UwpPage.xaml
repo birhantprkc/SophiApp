@@ -56,7 +56,7 @@
                 </Grid>
             </Border>
             <Border x:Name="UwpItemsBorder"
-                    Margin="0, 0, 0, 10"
+                    Margin="0, 10, 0, 10"
                     BorderThickness="1, 0, 1, 1"
                     BorderBrush="{ThemeResource UIControlBorderBackground}"
                     Background="{ThemeResource UIControlBackground}"

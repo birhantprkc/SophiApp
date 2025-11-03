@@ -19,7 +19,7 @@ namespace SophiApp.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupPolicyService"/> class.
         /// </summary>
-        /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
+        /// <param name="processService">A service for working with Windows process./> API.</param>
         public GroupPolicyService(IProcessService processService)
         {
             this.processService = processService;
@@ -73,22 +73,6 @@ namespace SophiApp.Services
                     ? [scope.ToString(), path, name, "DELETE", string.Empty]
                     : new string[5] { scope.ToString(), path, name, $"{type}:{value}", string.Empty };
                 File.AppendAllLines(lgpoSettingsFile, settingValues, System.Text.Encoding.UTF8);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ClearLocalCache(LGPOScope scope, string path, params string[] names)
-        {
-            if (gpeditExists)
-            {
-                var nameValues = new List<string>();
-
-                foreach (var name in names)
-                {
-                    nameValues.AddRange([scope.ToString(), path, name, "DELETE", string.Empty]);
-                }
-
-                File.AppendAllLines(lgpoSettingsFile, nameValues, System.Text.Encoding.UTF8);
             }
         }
 

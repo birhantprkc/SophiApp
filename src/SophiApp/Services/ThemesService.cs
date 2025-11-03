@@ -4,7 +4,6 @@
 
 namespace SophiApp.Services;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
 

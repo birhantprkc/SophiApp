@@ -23,7 +23,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private string build;
 
     [ObservableProperty]
-    private ElementTheme elementTheme;
+    private Microsoft.UI.Xaml.ElementTheme elementTheme;
 
     [ObservableProperty]
     private string delimiter;
@@ -32,14 +32,14 @@ public partial class SettingsViewModel : ObservableRecipient
     private bool navigationViewHitTestVisible;
 
     [ObservableProperty]
-    private ObservableCollection<ElementThemeWrapper> themes =
+    private ObservableCollection<Helpers.AppTheme> themes =
     [
-        new (ElementTheme.Default, "Settings_Themes_Default"), new (ElementTheme.Light, "Settings_Themes_Light"), new (ElementTheme.Dark, "Settings_Themes_Dark"),
+        new (Microsoft.UI.Xaml.ElementTheme.Default, "Settings_Themes_Default"), new (Microsoft.UI.Xaml.ElementTheme.Light, "Settings_Themes_Light"), new (Microsoft.UI.Xaml.ElementTheme.Dark, "Settings_Themes_Dark"),
     ];
 
     [ObservableProperty]
     private string version;
-    private ElementThemeWrapper selectedTheme;
+    private Helpers.AppTheme selectedTheme;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
@@ -70,7 +70,7 @@ public partial class SettingsViewModel : ObservableRecipient
     /// <summary>
     /// Gets or sets app selected theme.
     /// </summary>
-    public ElementThemeWrapper SelectedTheme
+    public Helpers.AppTheme SelectedTheme
     {
         get => selectedTheme;
         set
