@@ -92,8 +92,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogOneDriveUserFilesExist(string path, int count)
         {
-            Log.Information("After uninstall OneDrive, there were {Count:l} file(s) left in the {Path} folder", count, path);
-            shellViewModel.LoggedActions.Add($"[INF] After uninstall OneDrive, there were {count} file(s) left in the \"{path}\" folder");
+            Log.Information("After uninstalling OneDrive, {Count:l} file(s) left in the {Path} folder", count, path);
+            shellViewModel.LoggedActions.Add($"[INF] After uninstalling OneDrive, {count} file(s) left in the \"{path}\" folder");
         }
 
         /// <inheritdoc/>

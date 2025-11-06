@@ -222,13 +222,13 @@
     <value>Windows may open a pop-up window to show you what's new about the operating system.</value>
   </data>
   <data name="OsRequirements_GetWmiState" xml:space="preserve">
-    <value>Detecting WMI state</value>
+    <value>Checking WMI state</value>
   </data>
   <data name="OsRequirements_GetOsVersion" xml:space="preserve">
-    <value>Detecting Windows version</value>
+    <value>Checking Windows version</value>
   </data>
   <data name="OsRequirements_GetOsBitness" xml:space="preserve">
-    <value>Detecting Windows bitness</value>
+    <value>Checking Windows bitness</value>
   </data>
   <data name="OsRequirementsFailure_Is32BitOs" xml:space="preserve">
     <value>SophiApp supports 64-bit Windows only.</value>
@@ -327,16 +327,16 @@
     <value>The PC is waiting to be restarted.</value>
   </data>
   <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
-    <value>Detecting a pending reboot</value>
+    <value>Checking a pending reboot</value>
   </data>
   <data name="OsRequirements_UpdateDetection" xml:space="preserve">
-    <value>Detecting if current SophiApp build is the latest one</value>
+    <value>Checking if the current SophiApp build is the latest one</value>
   </data>
   <data name="OsRequirementsFailure_DefenderIsBroken" xml:space="preserve">
     <value>Microsoft Defender broken or removed from Windows.</value>
   </data>
   <data name="OsRequirements_GetMsDefenderState" xml:space="preserve">
-    <value>Detecting Microsoft Defender state</value>
+    <value>Checking Microsoft Defender state</value>
   </data>
   <data name="OsRequirements_ReadWindowsSettings" xml:space="preserve">
     <value>Reading Windows settings</value>
@@ -843,7 +843,7 @@
     <value>Quick access</value>
   </data>
   <data name="UIModel_PrtScnSnippingTool_Title" xml:space="preserve">
-    <value>Use the PrtScn button to open screen snipping</value>
+    <value>Use Print Screen button to open screen snipping</value>
   </data>
   <data name="UIModel_QuickAccessFrequentFolders_Title" xml:space="preserve">
     <value>Show frequently used folders in Quick access</value>
@@ -1173,7 +1173,7 @@
     <value>Let Windows manage my default printer</value>
   </data>
   <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
-    <value>Select folder to save screenshots when pressing Win+PrtScn or using Windows+Shift+S</value>
+    <value>Choose default screenshot folder when I press Win+PrtScn or Windows+Shift+S</value>
   </data>
   <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
     <value>Applying customization</value>
@@ -1257,13 +1257,13 @@
     <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable the thumbnail cache preset to stop the thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. The thumbnail cache is stored as .db files located in the hidden %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
   </data>
   <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
-    <value>Get other Microsoft products updates, like Office, and automatically download and install the latest drivers alongside with Windows Updates.</value>
+    <value>Get other Microsoft products updates, like Microsoft 365 (ex-Office), and automatically download and install the latest drivers alongside with Windows Updates.</value>
   </data>
   <data name="UIModel_Win32LongPathsSupport_Description" xml:space="preserve">
     <value>By default, the maximum path length limit in Windows is 260 characters. Enabling Win32 long paths removes restrictions when attempting to create, save, copy, or move folders/files with paths exceeding the limit. You won't encounter with an error "Path too long".</value>
   </data>
   <data name="UIModel_WindowsLatestUpdate_Description" xml:space="preserve">
-    <value>Get the latest non-security Windows updates, fixes, and improvements as they roll out.</value>
+    <value>Get the latest non-security Windows updates, fixes, and improvements as they roll out. Windows will start downloading them immediately after you apply the function, if they are available for installation.</value>
   </data>
   <data name="UIModel_WindowsManageDefaultPrinter_Description" xml:space="preserve">
     <value>By default, Windows makes the last used printer as the default one.</value>
@@ -1296,28 +1296,28 @@
     <value>Show time in Notification Center</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_8_Description" xml:space="preserve">
-    <value>.NET 8 is an LTS (long-term support) version. .NET is a successor of .NET Framework. You need to install .NET if an app was developed within this framework. The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+    <value>.NET is a successor to .NET Framework. You need to install .NET 8 if an app was developed within this framework, even if you already installed any other .NET versions. .NET 8 is an LTS (long-term support) version. The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_8_Title" xml:space="preserve">
-    <value>Latest .NET Desktop Runtime 8 x64</value>
+    <value>Install latest .NET Desktop Runtime 8 x64</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_9_Description" xml:space="preserve">
-    <value>NET 9 is a rapid branch version. .NET is a successor of .NET Framework. You need to install .NET if an app was developed within this framework. The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+    <value>.NET is a successor to .NET Framework. You need to install .NET 9 if an app was developed within this framework, even if you already installed any other .NET versions. NET 9 is a rapid branch version. The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_9_Title" xml:space="preserve">
-    <value>Latest .NET Desktop Runtime 9 x64</value>
+    <value>Install latest .NET Desktop Runtime 9 x64</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
-    <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+    <value>The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Title" xml:space="preserve">
-    <value>The latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64</value>
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2022 x64</value>
   </data>
   <data name="UIModel_InstallVisualC_x86_Description" xml:space="preserve">
-    <value>The installer will be downloaded from the Microsoft resource (Internet connection required) and installed silently.</value>
+    <value>The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
-    <value>The latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86</value>
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2022 x86</value>
   </data>
   <data name="App_Discord.Text" xml:space="preserve">
     <value>Discord</value>

@@ -764,7 +764,7 @@
     "Tag": "System",
     "ViewId": 329,
     "Windows10Support": "True",
-    "Windows11Support": "False"
+    "Windows11Support": "True"
   },
   {
     "Name": "RegistryBackup",

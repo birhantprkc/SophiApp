@@ -781,7 +781,7 @@ namespace SophiApp.Customizations
                 {
                     if (OneDriveService.UserIsLogged())
                     {
-                        throw new InvalidOperationException("User already logged into OneDrive");
+                        throw new InvalidOperationException("Cannot remove OneDrive. User is logged into account");
                     }
 
                     return true;
@@ -962,7 +962,7 @@ namespace SophiApp.Customizations
 
             if (isLogged || isInstalled)
             {
-                throw new InvalidOperationException(isLogged ? "User already logged into OneDrive" : "First you need to remove OneDrive");
+                throw new InvalidOperationException(isLogged ? "Cannot remove OneDrive. User is logged into account" : "Please log out from account before proceeding");
             }
 
             var userShellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
@@ -1525,7 +1525,7 @@ else
             var blockingTasksExist = ScheduledTaskService.FindTaskOrDefault(blockingTasks).Any(task => task?.State == TaskState.Ready);
             var scriptHostPath = "Software\\Microsoft\\Windows Script Host\\Settings";
             var scriptHostIsEnabled = Registry.CurrentUser.OpenSubKey(scriptHostPath)?.GetValue("Enabled") as int? ?? -1;
-            return blockingTasksExist ? throw new InvalidOperationException("One of the blocking tasks is in Ready state. Please check 'Sophia' folder in the Task Scheduler") : !scriptHostIsEnabled.Equals(0);
+            return blockingTasksExist ? throw new InvalidOperationException("One of \"SoftwareDistribution\", \"Temp\", \"Windows Cleanup\", \"Windows Cleanup Notification\" in the Task Scheduler is in Ready state. Please check 'Sophia' folder in the Task Scheduler") : !scriptHostIsEnabled.Equals(0);
         }
 
         /// <summary>

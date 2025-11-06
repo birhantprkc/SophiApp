@@ -105,7 +105,7 @@ namespace SophiApp.Services
             }
             catch (Exception)
             {
-                throw new HttpRequestException($"Url {url} is unavailable");
+                throw new HttpRequestException($"{url} is unreachable. Please check your Internet connection.");
             }
         }
 
