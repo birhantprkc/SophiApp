@@ -20,7 +20,8 @@
                                    Command="{Binding ElementName=PageSearch, Path=ViewModel.UIModelClicked_Command}"/>
         </DataTemplate>
         <DataTemplate x:Key="ExpandingRadioGroupTemplate">
-            <controls:ExpandingRadioGroup Margin="{StaticResource UIControlsPageRightMargin}"/>
+            <controls:ExpandingRadioGroup Margin="{StaticResource UIControlsPageRightMargin}"
+                                          Command="{Binding ElementName=PageSearch, Path=ViewModel.ExpandingRadioButtonClicked_Command}"/>
         </DataTemplate>
     </Page.Resources>
 

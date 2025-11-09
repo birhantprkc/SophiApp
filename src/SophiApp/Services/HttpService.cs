@@ -74,11 +74,16 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public string ReadAsJson(string url)
         {
-            using var client = new HttpClient();
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = client.SendAsync(request).Result;
-            var result = response.Content.ReadAsStringAsync().Result;
-            return result;
+            if (InternetGetConnectedState(out _, 0))
+            {
+                using var client = new HttpClient();
+                using var request = new HttpRequestMessage(HttpMethod.Get, url);
+                using var response = client.SendAsync(request).Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
+            }
+
+            throw new HttpRequestException($"{url} is unreachable. Please check your Internet connection.");
         }
 
         /// <inheritdoc/>
@@ -97,32 +102,49 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void ThrowIfOffline(string url = "https://google.com")
         {
-            try
+            var message = $"{url} is unreachable. Please check your Internet connection.";
+
+            if (InternetGetConnectedState(out _, 0))
             {
-                using var client = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Head, url);
-                using var response = client.Send(request);
+                try
+                {
+                    using var client = new HttpClient();
+                    using var request = new HttpRequestMessage(HttpMethod.Head, url);
+                    using var response = client.Send(request);
+                    return;
+                }
+                catch (Exception)
+                {
+                    throw new HttpRequestException(message);
+                }
             }
-            catch (Exception)
-            {
-                throw new HttpRequestException($"{url} is unreachable. Please check your Internet connection.");
-            }
+
+            throw new HttpRequestException(message);
         }
 
         /// <inheritdoc/>
         public bool UrlIsAvailable(string url)
         {
-            try
+            if (InternetGetConnectedState(out _, 0))
             {
-                using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
-                using var request = new HttpRequestMessage(HttpMethod.Head, url);
-                using var response = client.Send(request);
-                return response.IsSuccessStatusCode;
+                try
+                {
+                    using var client = new HttpClient();
+                    using var request = new HttpRequestMessage(HttpMethod.Head, url);
+                    using var response = client.Send(request);
+                    return response.IsSuccessStatusCode;
+                }
+                catch
+                {
+                    return false;
+                }
             }
-            catch
-            {
-                return false;
-            }
+
+            return false;
         }
+
+        [System.Runtime.InteropServices.DllImport("wininet.dll")]
+        private static extern bool InternetGetConnectedState(out int description, int reservedValue);
+
     }
 }

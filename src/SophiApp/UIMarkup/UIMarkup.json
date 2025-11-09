@@ -678,12 +678,11 @@
   },
   {
     "Name": "ReservedStorage",
-    "Type": "ExpandingRadioGroup",
+    "Type": "CheckBox",
     "Tag": "System",
     "ViewId": 319,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "F1HelpPage",

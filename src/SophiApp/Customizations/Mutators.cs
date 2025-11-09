@@ -1221,26 +1221,17 @@ namespace SophiApp.Customizations
         /// <param name="state">Administrator approval mode state.</param>
         public static void AdminApprovalMode(int state)
         {
-            var systemPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System";
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "ConsentPromptBehaviorUser", 3, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "EnableInstallerDetection", 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "ValidateAdminCodeSignatures", 0, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "EnableSecureUIAPaths", 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "EnableLUA", 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "PromptOnSecureDesktop", 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "EnableVirtualization", 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, systemPath, "EnableUIADesktopToggle", 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "FilterAdministratorToken");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "ConsentPromptBehaviorUser");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableInstallerDetection");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "ValidateAdminCodeSignatures");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableSecureUIAPaths");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableLUA");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "PromptOnSecureDesktop");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableVirtualization");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, systemPath, "EnableUIADesktopToggle");
-            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", true)
-                ?.SetValue("ConsentPromptBehaviorAdmin", state.Equals(1) ? 5 : 0, RegistryValueKind.DWord);
+            using var approvalKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", true);
+            approvalKey?.DeleteValue("FilterAdministratorToken", false);
+            approvalKey?.SetValue("ConsentPromptBehaviorUser", 3, RegistryValueKind.DWord);
+            approvalKey?.SetValue("EnableInstallerDetection", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("ValidateAdminCodeSignatures", 0, RegistryValueKind.DWord);
+            approvalKey?.SetValue("EnableSecureUIAPaths", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("EnableLUA", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("PromptOnSecureDesktop", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("EnableVirtualization", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("EnableUIADesktopToggle", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("ConsentPromptBehaviorAdmin", state.Equals(1) ? 5 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1476,10 +1467,11 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Set reserved storage state.
         /// </summary>
-        /// <param name="state">Reserved storage state.</param>
-        public static void ReservedStorage(int state)
+        /// <param name="enable">Reserved storage state.</param>
+        public static void ReservedStorage(bool enable)
         {
-            _ = PowerShellService.Invoke($"Set-WindowsReservedStorageState -State {(state.Equals(1) ? "Disabled" : "Enabled")}");
+            var command = enable ? "Set-WindowsReservedStorageState -State Enabled" : "Set-WindowsReservedStorageState -State Disabled";
+            _ = PowerShellService.Invoke(command);
         }
 
         /// <summary>

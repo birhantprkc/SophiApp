@@ -1133,12 +1133,6 @@
   <data name="UIModel_ReservedStorage_Title" xml:space="preserve">
     <value>Enable Reserved Storage</value>
   </data>
-  <data name="UIModel_ReservedStorage_Title_1" xml:space="preserve">
-    <value>Disabled</value>
-  </data>
-  <data name="UIModel_ReservedStorage_Title_2" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
   <data name="UIModel_RestartDeviceAfterUpdate_Title" xml:space="preserve">
     <value>Restart as soon as possible to finish updating</value>
   </data>

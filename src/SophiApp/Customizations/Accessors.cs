@@ -687,7 +687,6 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int Cursors()
         {
-            HttpService.ThrowIfOffline("https://github.com");
             var cursorsScheme = Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors")?.GetValue(string.Empty) as string ?? string.Empty;
 
             if (cursorsScheme.Equals("W11 Cursor Dark Free by Jepri Creations"))
@@ -957,12 +956,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int WinPrtScrFolder()
         {
-            var isLogged = OneDriveService.UserIsLogged();
-            var isInstalled = OneDriveService.IsInstalled();
-
-            if (isLogged || isInstalled)
+            if (OneDriveService.IsInstalled())
             {
-                throw new InvalidOperationException(isLogged ? "Cannot remove OneDrive. User is logged into account" : "Please log out from account before proceeding");
+                throw new InvalidOperationException("First you need to uninstall OneDrive");
             }
 
             var userShellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
@@ -996,13 +992,13 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get reserved storage state.
         /// </summary>
-        public static int ReservedStorage()
+        public static bool ReservedStorage()
         {
-            var reservePath = "Software\\Microsoft\\Windows\\CurrentVersion\\ReserveManager";
-            var miscPolicy = Registry.LocalMachine.OpenSubKey(reservePath)?.GetValue("MiscPolicyInfo") as int? ?? -1;
-            var passedPolicy = Registry.LocalMachine.OpenSubKey(reservePath)?.GetValue("PassedPolicy") as int? ?? -1;
-            var shippedReserves = Registry.LocalMachine.OpenSubKey(reservePath)?.GetValue("ShippedWithReserves") as int? ?? -1;
-            return miscPolicy.Equals(2) && passedPolicy.Equals(0) && shippedReserves.Equals(1) ? 1 : 2;
+            using var reserveKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\ReserveManager");
+            var miscPolicy = reserveKey?.GetValue("MiscPolicyInfo") as int? ?? -1;
+            var passedPolicy = reserveKey?.GetValue("PassedPolicy") as int? ?? -1;
+            var shippedReserves = reserveKey?.GetValue("ShippedWithReserves") as int? ?? -1;
+            return !(miscPolicy.Equals(2) && passedPolicy.Equals(0) && shippedReserves.Equals(1));
         }
 
         /// <summary>
