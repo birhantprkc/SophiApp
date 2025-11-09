@@ -145,6 +145,5 @@ namespace SophiApp.Services
 
         [System.Runtime.InteropServices.DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int description, int reservedValue);
-
     }
 }
