@@ -13,9 +13,15 @@
     <Page.Resources>
         <CommandBarFlyout x:Name="LogPageItemsCommandsFlyout">
             <CommandBarFlyout.SecondaryCommands>
-                <AppBarButton x:Uid="ContextMenu_CopyAll"
+                <AppBarButton x:Uid="LogPage_ContextMenu_CopyAll"
                               Icon="Copy"
-                              Click="LogPageItemsCommandsFlyout_Click"/>
+                              Click="ContextMenuCopyAll_Clicked"/>
+                <AppBarButton x:Uid="LogPage_ContextMenu_OpenLogFile"
+                              Icon="OpenFile"
+                              Click="ContextMenuOpenLogFile_Clicked"/>
+                <AppBarButton x:Uid="LogPage_ContextMenu_OpenLogFolder"
+                              Icon="Folder"
+                              Click="ContextMenuOpenLogFolder_Clicked"/>
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
     </Page.Resources>

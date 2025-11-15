@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using SophiApp.Contracts.Services;
-using SophiApp.Models;
 using SophiApp.Services;
 using SophiApp.ViewModels;
 using SophiApp.Views;

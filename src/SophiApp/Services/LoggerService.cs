@@ -17,7 +17,6 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class LoggerService : ILoggerService
     {
-        private readonly string logFile = $"{AppContext.BaseDirectory}\\Log\\SophiApp-{Environment.MachineName.ToUpper()}.log";
         private readonly ShellViewModel shellViewModel;
 
         /// <summary>
@@ -25,17 +24,25 @@ namespace SophiApp.Services
         /// </summary>
         public LoggerService()
         {
-            logFile.TryDelete();
+            LogFolder = Path.Combine(AppContext.BaseDirectory, "Log");
+            LogFile = Path.Combine(LogFolder, $"SophiApp-{Environment.MachineName.ToUpper()}.log");
+            LogFile.TryDelete();
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .WriteTo.File(
-                    logFile,
+                    LogFile,
                     rollingInterval: RollingInterval.Infinite,
                     outputTemplate: "[{Level:u3}] {Message}{NewLine}")
                 .CreateLogger();
 
             shellViewModel = App.GetService<ShellViewModel>();
         }
+
+        /// <inheritdoc/>
+        public string LogFolder { get; init; }
+
+        /// <inheritdoc/>
+        public string LogFile { get; init; }
 
         /// <inheritdoc/>
         public void LogOsProperties(OsProperties properties)
@@ -136,36 +143,22 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogStartModelsGetState()
         {
-            Log.Warning("Service {Service:l} has started initialization of models", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started initialization of models");
+            Log.Information("Service {Service:l} has started initialization of models", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} has started initialization of models");
         }
 
         /// <inheritdoc/>
         public void LogStartApplicableModelsSetState()
         {
-            Log.Warning("Service {Service:l} has started set customizations state in the applicable customizations collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has started set customizations state in the applicable customizations collection");
+            Log.Information("Service {Service:l} has started set customizations in the applicable customizations collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} has started set customizations state in the applicable customizations collection");
         }
 
         /// <inheritdoc/>
         public void LogAllModelsGetState(Stopwatch timer, int count)
         {
-            Log.Warning("Service {Service:l} took time to get {Count} models state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} took time to get {count} models state: {timer.Elapsed}");
-        }
-
-        /// <inheritdoc/>
-        public void LogAllModelsSetState(Stopwatch timer, int count)
-        {
-            Log.Warning("Service {Service:l} took time to set {Count} model(s) state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} took time to set {count} model(s) state: {timer.Elapsed}");
-        }
-
-        /// <inheritdoc/>
-        public void LogAllModelsSetStateCanceled()
-        {
-            Log.Warning("Service {Service:l} has cancel set customization(s) state in the applicable customizations collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[WRN] Service {nameof(IModelService)} has cancel set customization(s) state in the applicable customizations collection");
+            Log.Information("Service {Service:l} took time to get {Count} models state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} took time to get {count} models state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
@@ -193,15 +186,15 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogApplicableModelsCanceled()
         {
-            Log.Warning("The applying of customizations has been canceled by user");
-            shellViewModel.LoggedActions.Add($"[WRN] The applying of customizations has been canceled by user");
+            Log.Information("The applying of customizations has been canceled by user");
+            shellViewModel.LoggedActions.Add($"[INF] The applying of customizations has been canceled by user");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelsClear()
         {
-            Log.Warning("Applicable customizations collection has been cleaned up");
-            shellViewModel.LoggedActions.Add($"[WRN] Applicable customizations collection has been cleaned up");
+            Log.Information("Applicable customizations collection has been cleaned up");
+            shellViewModel.LoggedActions.Add($"[INF] Applicable customizations collection has been cleaned up");
         }
 
         /// <inheritdoc/>
@@ -270,17 +263,17 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogStartTextSearch(string text)
+        public void LogStopTextSearch(string text, Stopwatch timer, int count)
         {
-            Log.Information("A search for the text {Text} has been launched", text);
-            shellViewModel.LoggedActions.Add($"[INF] A search for the text \"{text}\" has been launched");
+            Log.Information("A search for the text {Text} took {Seconds} seconds and return {Count} customization(s)", text, timer.Elapsed.TotalSeconds, count);
+            shellViewModel.LoggedActions.Add($"[INF] A search for the text \"{text}\" took {timer.Elapsed.TotalSeconds} seconds and return {count} customization(s)");
         }
 
         /// <inheritdoc/>
-        public void LogStopTextSearch(Stopwatch timer, int count)
+        public void LogViewModelExecute(Stopwatch timer)
         {
-            Log.Information("The text search took {Seconds} second(s) and return {Count} customization(s)", timer.Elapsed.TotalSeconds, count);
-            shellViewModel.LoggedActions.Add($"[INF] The text search took {timer.Elapsed.TotalSeconds} second(s) and return {count} customization(s)");
+            Log.Information("View model took time to execute: {TimeSpent}", timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] View model took time to execute: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>

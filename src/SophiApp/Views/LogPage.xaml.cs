@@ -30,7 +30,13 @@ namespace SophiApp.Views
         private void LogListView_ContextRequested(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs args)
             => ContextMenuHelper.ShowContextMenu(sender, LogPageItemsCommandsFlyout, args);
 
-        private void LogPageItemsCommandsFlyout_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void ContextMenuCopyAll_Clicked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
             => ContextMenuHelper.CopyToClipboard(ViewModel.LoggedActions);
+
+        private void ContextMenuOpenLogFile_Clicked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+            => ContextMenuHelper.OpenInExplorer(App.Logger.LogFile);
+
+        private void ContextMenuOpenLogFolder_Clicked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+            => ContextMenuHelper.OpenInExplorer(App.Logger.LogFolder);
     }
 }

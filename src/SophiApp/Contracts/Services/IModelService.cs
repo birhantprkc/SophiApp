@@ -4,7 +4,7 @@
 
 namespace SophiApp.Contracts.Services
 {
-    using System.Collections.Concurrent;
+    using System.Collections.ObjectModel;
     using SophiApp.Models;
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Using the file "UIMarkup.json" creates a collection of <see cref="UIModel"/> types.
         /// </summary>
-        Task<List<UIModel>> BuildJsonModelsAsync();
+        Task<ObservableCollection<UIModel>> BuildJsonModelsAsync();
 
         /// <summary>
         /// Using the <see cref="IAppxPackagesService"/> creates a UWP <see cref="UIModel"/> collection.
@@ -24,31 +24,30 @@ namespace SophiApp.Contracts.Services
         Task<List<UIModel>> BuildUwpAppModelsAsync(bool forAllUsers);
 
         /// <summary>
+        /// Get <see cref="UIModel"/> state.
+        /// </summary>
+        /// <param name="models">A <see cref="UIModel"/> collection.</param>
+        void GetModelsState(ObservableCollection<UIModel> models);
+
+        /// <summary>
+        /// Get <see cref="UIModel"/> state.
+        /// </summary>
+        /// <param name="models">Models collection.</param>
+        /// <param name="callback">Action to be performed after invoke get state of each model.</param>
+        Task GetModelsStateAsync(ObservableCollection<UIModel> models, Action callback);
+
+        /// <summary>
+        /// Set <see cref="UIModel"/> state.
+        /// </summary>
+        /// <param name="models">Models collection.</param>
+        /// <param name="callback">Action to be performed after invoke set state of each model.</param>
+        Task SetModelsStateAsync(ObservableCollection<UIModel> models, Action callback);
+
+        /// <summary>
         /// Returns models in which contain the specified text.
         /// </summary>
-        /// <param name="models">A collection of <see cref="UIModel"/> to search.</param>
-        /// <param name="text">The text to seek.</param>
-        Task<List<UIModel>> GetModelsContainsAsync(ConcurrentBag<UIModel> models, string text);
-
-        /// <summary>
-        /// Using multiple threads to get the <see cref="UIModel"/> state.
-        /// </summary>
-        /// <param name="models"><see cref="UIModel"/> collection.</param>
-        Task GetStateAsync(ConcurrentBag<UIModel> models);
-
-        /// <summary>
-        /// Using multiple threads to get the models state.
-        /// </summary>
-        /// <param name="enumerable"><see cref="UIModel"/> collection.</param>
-        /// <param name="getStateCallback">Action to be performed after invoke get state of each model.</param>
-        Task GetStateAsync(IEnumerable<UIModel> enumerable, Action getStateCallback);
-
-        /// <summary>
-        /// Using multiple threads to set the models state.
-        /// </summary>
-        /// <param name="enumerable"><see cref="UIModel"/> collection.</param>
-        /// <param name="setStateCallback">Action to be performed after invoke set state of each model.</param>
-        /// <param name="token">Propagates notification that operations should be canceled.</param>
-        Task SetStateAsync(IEnumerable<UIModel> enumerable, Action setStateCallback, CancellationToken token);
+        /// <param name="models">Collection of <see cref="UIModel"/> to search.</param>
+        /// <param name="text">Text to seek.</param>
+        Task<ObservableCollection<UIModel>> GetModelsContainsTextAsync(ObservableCollection<UIModel> models, string text);
     }
 }

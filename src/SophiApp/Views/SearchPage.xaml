@@ -33,8 +33,8 @@
                 </StackPanel>
                 <Grid x:Name="ItemsContainerGrid">
                     <ItemsRepeater x:Name="SearchItemsRepeater"
-                                   ItemsSource="{x:Bind ViewModel.FoundModels, Mode=OneWay}"
-                                   VerticalCacheLength="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}"
+                                   ItemsSource="{x:Bind FoundModels, Mode=OneWay}"
+                                   VerticalCacheLength="{x:Bind FoundModels.Count, Mode=OneWay}"
                                    Margin="{StaticResource PageBottomMargin}">
                         <ItemsRepeater.Layout>
                             <StackLayout Spacing="10"/>

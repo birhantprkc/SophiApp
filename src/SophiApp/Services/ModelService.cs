@@ -5,8 +5,8 @@
 namespace SophiApp.Services
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Reflection;
     using System.Text;
@@ -35,12 +35,12 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<UIModel>> BuildJsonModelsAsync()
+        public async Task<ObservableCollection<UIModel>> BuildJsonModelsAsync()
         {
-            return await Task.Run(() =>
+            var models = await Task.Run(() =>
             {
                 var json = Encoding.UTF8.GetString(Properties.Resources.UIMarkup);
-                var models = Json.ToObject<IEnumerable<UIModelDto>>(json)
+                var jsonModels = Json.ToObject<IEnumerable<UIModelDto>>(json)
                     .Where(dto => commonDataService.IsWindows11 ? dto.Windows11Support : dto.Windows10Support)
                     .Select(dto =>
                     {
@@ -51,11 +51,11 @@ namespace SophiApp.Services
                             _ => throw new TypeAccessException($"An invalid type is specified: {dto.Type}"),
                         };
                     })
-                    .OrderByDescending(model => model.ViewId)
-                    .ToList();
-                App.Logger.LogAllModelsBuilt(models.Count);
-                return models;
+                    .OrderBy(model => model.ViewId);
+                return jsonModels;
             });
+            App.Logger.LogAllModelsBuilt(models.Count());
+            return new ObservableCollection<UIModel>(models);
         }
 
         /// <inheritdoc/>
@@ -173,30 +173,11 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<UIModel>> GetModelsContainsAsync(ConcurrentBag<UIModel> models, string text)
-        {
-            var timer = Stopwatch.StartNew();
-            var foundModels = await Task.WhenAll(
-                ContainsTextByTagAsync(models, text, UICategoryTag.Privacy),
-                ContainsTextByTagAsync(models, text, UICategoryTag.Personalization),
-                ContainsTextByTagAsync(models, text, UICategoryTag.System),
-                ContainsTextByTagAsync(models, text, UICategoryTag.UWP),
-                ContainsTextByTagAsync(models, text, UICategoryTag.Gaming),
-                ContainsTextByTagAsync(models, text, UICategoryTag.TaskScheduler),
-                ContainsTextByTagAsync(models, text, UICategoryTag.Security),
-                ContainsTextByTagAsync(models, text, UICategoryTag.ContextMenu));
-            timer.Stop();
-            var result = foundModels.SelectMany(model => model).ToList();
-            App.Logger.LogStopTextSearch(timer, result.Count);
-            return result;
-        }
-
-        /// <inheritdoc/>
-        public async Task GetStateAsync(ConcurrentBag<UIModel> models)
+        public void GetModelsState(ObservableCollection<UIModel> models)
         {
             App.Logger.LogStartModelsGetState();
             var timer = Stopwatch.StartNew();
-            await Task.WhenAll(
+            Task.WaitAll(
                 GetStateByTagAsync(models, UICategoryTag.Privacy),
                 GetStateByTagAsync(models, UICategoryTag.Personalization),
                 GetStateByTagAsync(models, UICategoryTag.System),
@@ -210,45 +191,50 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task GetStateAsync(IEnumerable<UIModel> enumerable, Action getStateCallback)
+        public async Task GetModelsStateAsync(ObservableCollection<UIModel> models, Action callback)
         {
-            var models = new ConcurrentBag<UIModel>(enumerable);
-            App.Logger.LogStartModelsGetState();
-            var timer = Stopwatch.StartNew();
-            await Task.WhenAll(
-                GetStateByTagAsync(models, UICategoryTag.Privacy, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.Personalization, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.System, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.UWP, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.Gaming, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.TaskScheduler, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.Security, getStateCallback),
-                GetStateByTagAsync(models, UICategoryTag.ContextMenu, getStateCallback));
-            timer.Stop();
-            App.Logger.LogAllModelsGetState(timer, models.Count);
+            await Task.Run(() =>
+            {
+                foreach (var model in models)
+                {
+                    var timer = Stopwatch.StartNew();
+                    model.GetState();
+                    timer.Stop();
+                    App.Logger.LogModelGetState(model.Name, timer);
+                    callback?.Invoke();
+                }
+
+                return Task.CompletedTask;
+            });
         }
 
         /// <inheritdoc/>
-        public async Task SetStateAsync(IEnumerable<UIModel> enumerable, Action setStateCallback, CancellationToken token)
+        public async Task SetModelsStateAsync(ObservableCollection<UIModel> models, Action callback)
         {
-            var models = new ConcurrentBag<UIModel>(enumerable);
-            App.Logger.LogStartApplicableModelsSetState();
-            var timer = Stopwatch.StartNew();
-            await Task.WhenAll(
-                SetStateByTagAsync(models, UICategoryTag.Privacy, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.Personalization, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.System, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.UWP, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.Gaming, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.TaskScheduler, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.Security, setStateCallback, token),
-                SetStateByTagAsync(models, UICategoryTag.ContextMenu, setStateCallback, token));
-            timer.Stop();
-
-            if (!token.IsCancellationRequested)
+            await Task.Run(() =>
             {
-                App.Logger.LogAllModelsSetState(timer, models.Count);
-            }
+                foreach (var model in models)
+                {
+                    var timer = Stopwatch.StartNew();
+                    model.SetState();
+                    timer.Stop();
+                    App.Logger.LogModelSetState(model.Name, timer);
+                    callback?.Invoke();
+                }
+
+                return Task.CompletedTask;
+            });
+        }
+
+        /// <inheritdoc/>
+        public async Task<ObservableCollection<UIModel>> GetModelsContainsTextAsync(ObservableCollection<UIModel> models, string text)
+        {
+            var timer = Stopwatch.StartNew();
+            var found = await Task.Run(() => models.Where(model => model.IsEnabled && model.ContainsText(text)));
+            var foundModels = new ObservableCollection<UIModel>(found);
+            timer.Stop();
+            App.Logger.LogStopTextSearch(text, timer, foundModels.Count);
+            return foundModels;
         }
 
         private UIModel BuildCheckBoxModel(UIModelDto dto)
@@ -268,14 +254,14 @@ namespace SophiApp.Services
             var mutator = GetMutator<int>(dto.Name);
             var groupModel = new UIExpandingRadioGroupModel(dto, title, description, accessor, mutator);
 
-            groupModel.Items = Enumerable.Range(1, dto.NumberOfItems)
+            var items = Enumerable.Range(1, dto.NumberOfItems)
                 .Select(id =>
                 {
                     var itemTitle = GetTitle(dto.Name, id);
                     return new UIRadioGroupItemModel(itemTitle, dto.Name, id, groupModel.ViewId);
-                })
-                .ToList();
+                });
 
+            groupModel.Items = new (items);
             return groupModel;
         }
 
@@ -311,42 +297,16 @@ namespace SophiApp.Services
             return (Action<T>)Delegate.CreateDelegate(typeof(Action<T>), method!);
         }
 
-        private async Task<IEnumerable<UIModel>> ContainsTextByTagAsync(ConcurrentBag<UIModel> models, string text, UICategoryTag tag)
-            => await Task.Run(() => models.Where(model => model.Tag == tag && model.ContainsText(text)));
-
-        private Task GetStateByTagAsync(ConcurrentBag<UIModel> models, UICategoryTag tag, Action? getStateCallback = null)
+        private Task GetStateByTagAsync(ObservableCollection<UIModel> models, UICategoryTag tag)
         {
-            return Task.Run(() => models.Where(model => model.Tag == tag)
-                .ToList()
-                .ForEach(model =>
+            return Task.Run(() =>
+            {
+                foreach (var model in models.Where(m => m.Tag == tag))
                 {
                     var timer = Stopwatch.StartNew();
                     model.GetState();
                     timer.Stop();
                     App.Logger.LogModelGetState(model.Name, timer);
-                    getStateCallback?.Invoke();
-                }));
-        }
-
-        private Task SetStateByTagAsync(ConcurrentBag<UIModel> models, UICategoryTag tag, Action? getStateCallback = null, CancellationToken? token = null)
-        {
-            return Task.Run(() =>
-            {
-                var taggedModels = models.Where(model => model.IsEnabled && model.Tag == tag).ToList();
-
-                foreach (var model in taggedModels)
-                {
-                    if (token?.IsCancellationRequested ?? false)
-                    {
-                        App.Logger.LogAllModelsSetStateCanceled();
-                        break;
-                    }
-
-                    var timer = Stopwatch.StartNew();
-                    model.SetState();
-                    timer.Stop();
-                    App.Logger.LogModelSetState(model.Name, timer);
-                    getStateCallback?.Invoke();
                 }
             });
         }

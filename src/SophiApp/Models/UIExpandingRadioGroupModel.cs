@@ -4,6 +4,8 @@
 
 namespace SophiApp.Models
 {
+    using System.Collections.ObjectModel;
+
     /// <inheritdoc/>
     public class UIExpandingRadioGroupModel : UIModel
     {
@@ -44,7 +46,7 @@ namespace SophiApp.Models
         /// <summary>
         /// Gets or sets <see cref="UIExpandingRadioGroupModel"/> child items.
         /// </summary>
-        public List<UIRadioGroupItemModel> Items { get; set; } = [];
+        public ObservableCollection<UIRadioGroupItemModel> Items { get; set; } = [];
 
         /// <summary>
         /// Gets or sets selected item id.
@@ -82,7 +84,6 @@ namespace SophiApp.Models
         }
 
         /// <inheritdoc/>
-        public override bool ContainsText(string text)
-            => base.ContainsText(text) || Description.Contains(text, StringComparison.CurrentCultureIgnoreCase) || Items.Exists(i => i.Title.Contains(text, StringComparison.CurrentCultureIgnoreCase));
+        public override bool ContainsText(string text) => base.ContainsText(text) || Description.Contains(text, StringComparison.CurrentCultureIgnoreCase);
     }
 }

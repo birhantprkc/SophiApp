@@ -13,9 +13,8 @@ using SophiApp.ControlTemplates;
 using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
-using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
-using System.Threading;
+using System.Diagnostics;
 
 /// <summary>
 /// Implements the <see cref="ShellViewModel"/> class.
@@ -40,12 +39,9 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty]
     private bool navigationViewHitTestVisible = false;
     [ObservableProperty]
-    private bool setUpCustomizationsPanelCancelButtonIsVisible = false;
-    [ObservableProperty]
     private bool setUpCustomizationsPanelIsVisible = false;
     [ObservableProperty]
     private bool uwpForAllUsersState = true;
-    private CancellationTokenSource? cancellationTokenSource;
     [ObservableProperty]
     private int progressBarValue = 0;
     [ObservableProperty]
@@ -56,8 +52,6 @@ public partial class ShellViewModel : ObservableRecipient
     private object? selectedNavigationViewItem;
     [ObservableProperty]
     private ObservableCollection<UIModel> applicableModels = [];
-    [ObservableProperty]
-    private ObservableCollection<UIModel> foundModels = [];
     [ObservableProperty]
     private ObservableCollection<UIModel> uwpAppsModels = [];
     [ObservableProperty]
@@ -110,7 +104,6 @@ public partial class ShellViewModel : ObservableRecipient
         delimiter = this.commonDataService.GetDelimiter();
 
         ApplicableModelsApply_Command = new AsyncRelayCommand(ApplicableModelsApplyAsync);
-        ApplicableModelsCancel_Command = new RelayCommand(ApplicableModelsCancel);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
         ExpandingRadioButtonClicked_Command = new RelayCommand<UIRadioGroupItemModel>(ExpandingRadioButtonClicked);
         SetLogPageVisibility_Command = new RelayCommand<bool>(SetLogPageVisibility);
@@ -125,11 +118,6 @@ public partial class ShellViewModel : ObservableRecipient
     /// Gets <see cref="IAsyncRelayCommand"/> to click an "Apply" button in the Apply Customizations Panel.
     /// </summary>
     public IAsyncRelayCommand ApplicableModelsApply_Command { get; }
-
-    /// <summary>
-    /// Gets <see cref="IRelayCommand"/> to click an "Cancel" button in the Setup Customizations Panel.
-    /// </summary>
-    public IRelayCommand ApplicableModelsCancel_Command { get; }
 
     /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click an "Cancel" button in the Apply Customizations Panel.
@@ -189,7 +177,12 @@ public partial class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Gets <see cref="UIModel"/> collection from "UIMarkup.json" file.
     /// </summary>
-    public ConcurrentBag<UIModel> JsonModels { get; private set; } = [];
+    public ObservableCollection<UIModel> JsonModels { get; private set; } = [];
+
+    /// <summary>
+    /// Gets <see cref="UIModel"/> collection founded by AutoSuggestBox query.
+    /// </summary>
+    public ObservableCollection<UIModel> FoundModels { get; private set; } = [];
 
     /// <summary>
     /// Executes the ViewModel logic of the MVVM pattern.
@@ -199,6 +192,7 @@ public partial class ShellViewModel : ObservableRecipient
         var numberOfRequirements = 12;
         await Task.Run(() =>
         {
+            var timer = Stopwatch.StartNew();
             _ = Result.Try(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 startupModel.StatusText = "OsRequirements_GetOsBitness".GetLocalized();
@@ -272,9 +266,8 @@ public partial class ShellViewModel : ObservableRecipient
             }))
             .Tap(async () =>
             {
-                var jsonModels = await modelService.BuildJsonModelsAsync();
-                JsonModels = new (jsonModels);
-                await modelService.GetStateAsync(JsonModels);
+                JsonModels = await modelService.BuildJsonModelsAsync();
+                modelService.GetModelsState(JsonModels);
             })
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
@@ -288,13 +281,20 @@ public partial class ShellViewModel : ObservableRecipient
                 UwpAppsModels = new (uwpAllUsersModels);
             })
             .Match(
-                onSuccess: () => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                onSuccess: () =>
                 {
-                    NavigationViewHitTestVisible = true;
-                    _ = NavigationService.NavigateTo(pageKey: typeof(PrivacyViewModel).FullName!, clearNavigation: true);
-                }),
+                    timer.Stop();
+                    App.Logger.LogViewModelExecute(timer);
+                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        NavigationViewHitTestVisible = true;
+                        _ = NavigationService.NavigateTo(pageKey: typeof(PrivacyViewModel).FullName!, clearNavigation: true);
+                    });
+                },
                 onFailure: failure =>
                 {
+                    timer.Stop();
+                    App.Logger.LogViewModelExecute(timer);
                     var failureReason = failure.ToEnum<RequirementsFailure>();
                     App.Logger.LogNavigateToRequirementsFailure(failureReason);
                     failureViewModel.PrepareForNavigation(failureReason);
@@ -363,15 +363,12 @@ public partial class ShellViewModel : ObservableRecipient
         ProgressBarValue = 0;
         SetUpCustomizationsPanelText = ApplicableModels.Count == 1 ? "Panel_SetupCustomization_Applying".GetLocalized() : "Panel_SetupCustomizations_Applying".GetLocalized();
         SetUpCustomizationsPanelIsVisible = true;
-        SetUpCustomizationsPanelCancelButtonIsVisible = true;
-        cancellationTokenSource = new CancellationTokenSource();
         var callback = new Action(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => ProgressBarValue = ProgressBarValue.Increase(ApplicableModels.Count)));
-        await modelService.SetStateAsync(ApplicableModels, callback, cancellationTokenSource.Token);
-        cancellationTokenSource.Dispose();
+        App.Logger.LogStartApplicableModelsSetState();
+        await modelService.SetModelsStateAsync(ApplicableModels, callback);
         ProgressBarValue = 0;
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
-        SetUpCustomizationsPanelCancelButtonIsVisible = false;
-        await modelService.GetStateAsync(ApplicableModels, callback);
+        await modelService.GetModelsStateAsync(ApplicableModels, callback);
         ApplicableModels.Clear();
         App.Logger.LogApplicableModelsClear();
         groupPolicyService.UpdateLocalPolicy();
@@ -385,13 +382,6 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationViewHitTestVisible = true;
     }
 
-    private void ApplicableModelsCancel()
-    {
-        SetUpCustomizationsPanelCancelButtonIsVisible = false;
-        cancellationTokenSource?.Cancel();
-        App.Logger.LogApplicableModelsCanceled();
-    }
-
     private async Task ApplicableModelsClearAsync()
     {
         NavigationViewHitTestVisible = false;
@@ -399,9 +389,8 @@ public partial class ShellViewModel : ObservableRecipient
         ProgressBarValue = 0;
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
         SetUpCustomizationsPanelIsVisible = true;
-        SetUpCustomizationsPanelCancelButtonIsVisible = false;
         var callback = new Action(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => ProgressBarValue = ProgressBarValue.Increase(ApplicableModels.Count)));
-        await modelService.GetStateAsync(ApplicableModels, callback);
+        await modelService.GetModelsStateAsync(ApplicableModels, callback);
         ApplicableModels.Clear();
         App.Logger.LogApplicableModelsClear();
         SetUpCustomizationsPanelIsVisible = false;
@@ -413,8 +402,7 @@ public partial class ShellViewModel : ObservableRecipient
         if (!string.IsNullOrWhiteSpace(args.QueryText))
         {
             NavigationViewHitTestVisible = false;
-            App.Logger.LogStartTextSearch(args.QueryText);
-            FoundModels = new (await modelService.GetModelsContainsAsync(JsonModels, args.QueryText));
+            FoundModels = await modelService.GetModelsContainsTextAsync(JsonModels, args.QueryText);
             _ = NavigationService.NavigateTo(pageKey: typeof(SearchViewModel).FullName!);
             NavigationViewHitTestVisible = true;
         }

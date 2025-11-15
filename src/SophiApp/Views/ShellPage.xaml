@@ -217,27 +217,12 @@
                                  Margin="20, 0, 20, 0"
                                  Foreground="{ThemeResource WindowAccent}"
                                  Background="{ThemeResource ProgressBarBackground}"/>
-                    <Button x:Name="Button_Cancel"
-                            x:Uid="Button_Cancel"
-                            Style="{StaticResource AccentButtonStyle}"
-                            Grid.Column="2"
-                            Margin="0, 0, 26, 0"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Right"
-                            Command="{x:Bind ViewModel.ApplicableModelsCancel_Command, Mode=OneWay}"
-                            Visibility="Collapsed"/>
                     <i:Interaction.Behaviors>
                         <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.SetUpCustomizationsPanelIsVisible, Mode=OneWay}" ComparisonCondition="Equal" Value="False">
                             <interaction:ChangePropertyAction PropertyName="Visibility" Value="Collapsed"/>
                         </interaction:DataTriggerBehavior>
                         <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.SetUpCustomizationsPanelIsVisible, Mode=OneWay}" ComparisonCondition="Equal" Value="True">
                             <interaction:ChangePropertyAction PropertyName="Visibility" Value="Visible"/>
-                        </interaction:DataTriggerBehavior>
-                        <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.SetUpCustomizationsPanelCancelButtonIsVisible, Mode=OneWay}" ComparisonCondition="Equal" Value="False">
-                            <interaction:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetObject="{Binding ElementName=Button_Cancel}"/>
-                        </interaction:DataTriggerBehavior>
-                        <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.SetUpCustomizationsPanelCancelButtonIsVisible, Mode=OneWay}" ComparisonCondition="Equal" Value="True">
-                            <interaction:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetObject="{Binding ElementName=Button_Cancel}"/>
                         </interaction:DataTriggerBehavior>
                         <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.ProgressBarValue, Mode=OneWay}" ComparisonCondition="Equal" Value="0">
                             <interaction:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetObject="{Binding ElementName=SetUpCustomizationsProcentText}"/>
@@ -253,10 +238,10 @@
         </NavigationView>
         <AutoSuggestBox x:Uid="AutoSuggestBox"
                         QueryIcon="Find"
-                        MinWidth="235"
+                        Width="235"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Left"
-                        Margin="10, 10, 10, 15"
+                        Margin="10, 10, 0, 15"
                         Canvas.ZIndex="2"
                         IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
             <i:Interaction.Behaviors>

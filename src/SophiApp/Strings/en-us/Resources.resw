@@ -1022,10 +1022,10 @@
   <data name="UIModel_SearchHighlightsWindows10_Title" xml:space="preserve">
     <value>Show widgets icon on the taskbar</value>
   </data>
-  <data name="ContextMenu_CopyDescription.Label" xml:space="preserve">
+  <data name="UIModel_ContextMenu_CopyDescription.Label" xml:space="preserve">
     <value>Copy description</value>
   </data>
-  <data name="ContextMenu_CopyTitle.Label" xml:space="preserve">
+  <data name="UIModel_ContextMenu_CopyTitle.Label" xml:space="preserve">
     <value>Copy title</value>
   </data>
   <data name="UIModel_EditWithPaintContext_Title" xml:space="preserve">
@@ -1043,7 +1043,7 @@
   <data name="SettingsPage_ShowLogPage.Text" xml:space="preserve">
     <value>Show log page in navigation menu</value>
   </data>
-  <data name="ContextMenu_CopyAll.Label" xml:space="preserve">
+  <data name="LogPage_ContextMenu_CopyAll.Label" xml:space="preserve">
     <value>Copy all</value>
   </data>
   <data name="OsRequirements_Malware_Defendnot" xml:space="preserve">
@@ -1339,5 +1339,11 @@
   </data>
   <data name="SettingsPage_UxDevelopment.NickName" xml:space="preserve">
     <value>Vladimir Nameless</value>
+  </data>
+  <data name="LogPage_ContextMenu_OpenLogFile.Label" xml:space="preserve">
+    <value>Open log file</value>
+  </data>
+  <data name="LogPage_ContextMenu_OpenLogFolder.Label" xml:space="preserve">
+    <value>Open log folder</value>
   </data>
 </root>

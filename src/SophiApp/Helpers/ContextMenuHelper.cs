@@ -7,6 +7,7 @@ namespace SophiApp.Helpers
     using Microsoft.UI.Xaml;
     using Microsoft.UI.Xaml.Controls;
     using Microsoft.UI.Xaml.Controls.Primitives;
+    using System.Diagnostics;
     using Windows.ApplicationModel.DataTransfer;
     using Windows.Foundation;
 
@@ -33,6 +34,12 @@ namespace SophiApp.Helpers
         public static void CopyToClipboard(List<string> text) => CopyToClipboard(string.Join("\r", text));
 
         /// <summary>
+        /// Opens the specified <paramref name="path"/> with Windows Explorer.
+        /// </summary>
+        /// <param name="path">Path to open in Windows Explorer.</param>
+        public static void OpenInExplorer(string path) => Process.Start("explorer", path);
+
+        /// <summary>
         /// Shows the flyout placed in relation to the specified element using the specified options.
         /// </summary>
         /// <param name="sender">UIElement is a base class for most of the Windows Runtime UI objects.</param>
@@ -46,9 +53,9 @@ namespace SophiApp.Helpers
             var options = new FlyoutShowOptions()
             {
                 Position = point,
+                Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft,
                 ShowMode = FlyoutShowMode.Standard,
             };
-
             flyout.ShowAt((FrameworkElement)sender, options);
         }
     }

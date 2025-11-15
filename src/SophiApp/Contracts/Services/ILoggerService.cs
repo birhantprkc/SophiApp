@@ -9,12 +9,23 @@ namespace SophiApp.Contracts.Services
     using System.ServiceProcess;
     using Microsoft.UI.Xaml;
     using SophiApp.Helpers;
+    using SophiApp.ViewModels;
 
     /// <summary>
     /// A service for working with app log.
     /// </summary>
     public interface ILoggerService
     {
+        /// <summary>
+        /// Gets log folder path.
+        /// </summary>
+        string LogFolder { get; init; }
+
+        /// <summary>
+        /// Gets log file path.
+        /// </summary>
+        string LogFile { get; init; }
+
         /// <summary>
         /// Write <see cref="OsProperties"/> data in the log.
         /// </summary>
@@ -101,18 +112,6 @@ namespace SophiApp.Contracts.Services
         /// <param name="timer">Models get state spent time.</param>
         /// <param name="count">Number of models.</param>
         void LogAllModelsGetState(Stopwatch timer, int count);
-
-        /// <summary>
-        /// Write the spent time taken by all models to set the state in the log.
-        /// </summary>
-        /// <param name="timer">Models set state spent time.</param>
-        /// <param name="count">Number of models.</param>
-        void LogAllModelsSetState(Stopwatch timer, int count);
-
-        /// <summary>
-        /// Write the cancel models set state in applicable models collection in the log.
-        /// </summary>
-        void LogAllModelsSetStateCanceled();
 
         /// <summary>
         /// Write the spent time taken by one model to get the state in the log.
@@ -210,17 +209,18 @@ namespace SophiApp.Contracts.Services
         void LogTitleTextSizeChanged(int size);
 
         /// <summary>
-        /// Write information about text search in UI elements title or description.
-        /// </summary>
-        /// /// <param name="text">A searched text.</param>
-        void LogStartTextSearch(string text);
-
-        /// <summary>
         /// Write the time spent searching for text in models.
         /// </summary>
+        /// <param name="text">A searched text.</param>
         /// <param name="timer">Time spent on search.</param>
         /// <param name="count">Number of found models.</param>
-        void LogStopTextSearch(Stopwatch timer, int count);
+        void LogStopTextSearch(string text, Stopwatch timer, int count);
+
+        /// <summary>
+        /// Write the spent time taken by <see cref="ShellViewModel"/> execute.
+        /// </summary>
+        /// <param name="timer">Time spent on execute.</param>
+        void LogViewModelExecute(Stopwatch timer);
 
         /// <summary>
         /// Write <see cref="RequirementsFailure"/> reason in the <see cref="IRequirementsService"/> in the log.
