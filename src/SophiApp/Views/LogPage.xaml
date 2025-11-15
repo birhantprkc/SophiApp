@@ -38,19 +38,22 @@
                 Margin="{StaticResource UIControlsPageRightMargin}"
                 BorderBrush="{ThemeResource UIControlBorderBackground}"
                 Background="{ThemeResource UIControlBackground}"
-                Style="{StaticResource UIControlBorderStyle}">
-            <ListView x:Name="LogListView"
-                      ItemsSource="{Binding Path=ViewModel.LoggedActions, ElementName=PageLog}"
-                      SelectionMode="None"
-                      ContextRequested="LogListView_ContextRequested">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource UIControlLogPageTextStyle}">
-                            <Run Text="{Binding}" FontSize="{Binding Path=ViewModel.FontOptions.TitleTextSize, ElementName=PageLog}"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                Style="{StaticResource UIControlBorderStyle}"
+                ContextRequested="LogListView_ContextRequested">
+            <ScrollView>
+                <ItemsRepeater ItemsSource="{Binding Path=ViewModel.LoggedActions, ElementName=PageLog}"
+                               VerticalCacheLength="{Binding Path=ViewModel.LoggedActions.Count, ElementName=PageLog}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource UIControlLogPageTextStyle}"
+                                       Margin="5, 0, 5, 2">
+                                <Run Text="{Binding}"
+                                     FontSize="{Binding Path=ViewModel.FontOptions.DescriptionTextSize, ElementName=PageLog}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </ScrollView>
         </Border>
     </Grid>
 </Page>

@@ -956,11 +956,6 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int WinPrtScrFolder()
         {
-            if (OneDriveService.IsInstalled())
-            {
-                throw new InvalidOperationException("First you need to uninstall OneDrive");
-            }
-
             var userShellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
             var prtScrPath = Registry.CurrentUser.OpenSubKey(userShellPath)
                 ?.GetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}") as string ?? string.Empty;
