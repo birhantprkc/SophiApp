@@ -780,7 +780,7 @@ namespace SophiApp.Customizations
                 {
                     if (OneDriveService.UserIsLogged())
                     {
-                        throw new InvalidOperationException("Cannot remove OneDrive. User is logged into account");
+                        throw new InvalidOperationException("Please log out from OneDrive account before uninstalling the application");
                     }
 
                     return true;
