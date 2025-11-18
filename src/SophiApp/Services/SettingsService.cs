@@ -20,6 +20,7 @@ public class SettingsService : ISettingsService
     private const string AppWindowPositionY = "AppWindowPositionY";
     private const string AppWindowState = "AppWindowState";
     private const string AppWindowWidth = "AppWindowWidth";
+    private const string LogPageVisibility = "ShowLogPage";
     private const string SettingsFile = "Settings.json";
     private const string TextDescriptionSize = "TextDescriptionSize";
     private const string TextTitleSize = "TextTitleSize";
@@ -84,6 +85,9 @@ public class SettingsService : ISettingsService
     }
 
     /// <inheritdoc/>
+    public bool ReadLogPageVisibility() => Task.Run(async () => await ReadSettingAsync<bool?>(LogPageVisibility)).Result ?? false;
+
+    /// <inheritdoc/>
     public async Task<int> ReadTextDescriptionSizeAsync()
     {
         var descriptionTextSize = await ReadSettingAsync<int>(TextDescriptionSize);
@@ -116,6 +120,9 @@ public class SettingsService : ISettingsService
 
     /// <inheritdoc/>
     public async Task SaveAppWindowStateAsync(WindowState state) => await SaveSettingAsync(AppWindowState, state);
+
+    /// <inheritdoc/>
+    public void SaveLogPageVisibility(bool isVisible) => Task.Run(async () => await SaveSettingAsync(LogPageVisibility, isVisible));
 
     /// <inheritdoc/>
     public async Task SaveTextDescriptionSizeAsync(int size) => await SaveSettingAsync(TextDescriptionSize, size);

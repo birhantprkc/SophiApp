@@ -21,21 +21,21 @@ using System.Diagnostics;
 /// </summary>
 public partial class ShellViewModel : ObservableRecipient
 {
-    private readonly IAppNotificationService appNotificationService;
+    private readonly IAppNotificationService notificationService;
     private readonly IAppxPackagesService packagesService;
-    private readonly ICommonDataService commonDataService;
+    private readonly ICommonDataService dataService;
     private readonly IDefenderService defenderService;
     private readonly IGroupPolicyService groupPolicyService;
     private readonly IModelService modelService;
     private readonly IProcessService processService;
     private readonly IRequirementsService requirementsService;
+    private readonly ISettingsService settingsService;
     private readonly RequirementsFailureViewModel failureViewModel;
     private readonly StartupViewModel startupModel;
+    private bool logPageVisible;
 
     [ObservableProperty]
     private bool isBackEnabled;
-    [ObservableProperty]
-    private bool logPageVisible = true;
     [ObservableProperty]
     private bool navigationViewHitTestVisible = false;
     [ObservableProperty]
@@ -62,9 +62,9 @@ public partial class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
-    /// <param name="appNotificationService">A service for working with toast notifications API.</param>
+    /// <param name="notificationService">A service for working with toast notifications API.</param>
     /// <param name="packagesService">A service for working with appx packages API.</param>
-    /// <param name="commonDataService">A service for working with common app data.</param>
+    /// <param name="dataService">A service for working with common app data.</param>
     /// <param name="defenderService">A service for working with Microsoft Defender API.</param>
     /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="navigationService">Page navigation service.</param>
@@ -74,10 +74,11 @@ public partial class ShellViewModel : ObservableRecipient
     /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
     /// <param name="startupViewModel">Implements the <see cref="StartupViewModel"/> class.</param>
     /// <param name="groupPolicyService">A service for working with group policy API.</param>
+    /// <param name="settingsService">A service for working with app settings.</param>
     public ShellViewModel(
-        IAppNotificationService appNotificationService,
+        IAppNotificationService notificationService,
         IAppxPackagesService packagesService,
-        ICommonDataService commonDataService,
+        ICommonDataService dataService,
         IDefenderService defenderService,
         IModelService modelService,
         INavigationService navigationService,
@@ -86,32 +87,37 @@ public partial class ShellViewModel : ObservableRecipient
         IRequirementsService requirementsService,
         RequirementsFailureViewModel requirementsFailureViewModel,
         StartupViewModel startupViewModel,
-        IGroupPolicyService groupPolicyService)
+        IGroupPolicyService groupPolicyService,
+        ISettingsService settingsService)
     {
-        this.appNotificationService = appNotificationService;
-        this.commonDataService = commonDataService;
+        this.notificationService = notificationService;
+        this.dataService = dataService;
         this.defenderService = defenderService;
         this.modelService = modelService;
         this.packagesService = packagesService;
         this.processService = processService;
         this.requirementsService = requirementsService;
         this.groupPolicyService = groupPolicyService;
+        this.settingsService = settingsService;
         startupModel = startupViewModel;
         NavigationViewService = navigationViewService;
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         failureViewModel = requirementsFailureViewModel;
-        delimiter = this.commonDataService.GetDelimiter();
+        delimiter = this.dataService.GetDelimiter();
 
         ApplicableModelsApply_Command = new AsyncRelayCommand(ApplicableModelsApplyAsync);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
-        ExpandingRadioButtonClicked_Command = new RelayCommand<UIRadioGroupItemModel>(ExpandingRadioButtonClicked);
+        RadioButtonsGroup2Clicked_Command = new RelayCommand<UIRadioButtonsGroup2Model>(group => RadioButtonsGroup2Clicked(group!));
+        RadioButtonsGroup3Clicked_Command = new RelayCommand<UIRadioButtonsGroup3Model>(group => RadioButtonsGroup3Clicked(group!));
+        RadioButtonsGroup4Clicked_Command = new RelayCommand<UIRadioButtonsGroup4Model>(group => RadioButtonsGroup4Clicked(group!));
         SetLogPageVisibility_Command = new RelayCommand<bool>(SetLogPageVisibility);
         OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
         SearchBoxQuerySubmitted_Command = new AsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args => SearchBoxQuerySubmittedAsync(args!));
         UIModelClicked_Command = new RelayCommand<UIModel>(model => UIModelClicked(model!));
         UIUwpAppModelClicked_Command = new RelayCommand<UIUwpAppModel>(model => UIUwpAppModelClicked(model!));
         UwpForAllUsersClicked_Command = new RelayCommand(UwpForAllUsersClicked);
+        LogPageVisible = settingsService.ReadLogPageVisibility();
     }
 
     /// <summary>
@@ -125,9 +131,36 @@ public partial class ShellViewModel : ObservableRecipient
     public IAsyncRelayCommand ApplicableModelsClear_Command { get; }
 
     /// <summary>
-    /// Gets <see cref="IRelayCommand"/> to click a RadioButton in <see cref="ExpandingRadioGroup"/>.
+    /// Gets or sets a value indicating whether log page visibility.
     /// </summary>
-    public IRelayCommand<UIRadioGroupItemModel> ExpandingRadioButtonClicked_Command { get; }
+    public bool LogPageVisible
+    {
+        get => logPageVisible;
+        set
+        {
+            if (logPageVisible != value)
+            {
+                logPageVisible = value;
+                settingsService.SaveLogPageVisibility(value);
+                OnPropertyChanged(nameof(LogPageVisible));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup2"/> clicked.
+    /// </summary>
+    public IRelayCommand<UIRadioButtonsGroup2Model> RadioButtonsGroup2Clicked_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup3"/> clicked.
+    /// </summary>
+    public IRelayCommand<UIRadioButtonsGroup3Model> RadioButtonsGroup3Clicked_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup4"/> clicked.
+    /// </summary>
+    public IRelayCommand<UIRadioButtonsGroup4Model> RadioButtonsGroup4Clicked_Command { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.
@@ -312,28 +345,65 @@ public partial class ShellViewModel : ObservableRecipient
         _ = NavigationService.NavigateTo(typeof(FatalErrorViewModel).FullName!);
     }
 
-    private void ExpandingRadioButtonClicked(UIRadioGroupItemModel? item)
+    private void RadioButtonsGroup2Clicked(UIRadioButtonsGroup2Model group)
     {
-        var groupModel = (UIExpandingRadioGroupModel)JsonModels.First(model => model.ViewId == item!.ParentId);
+        var selectedId = int.Parse(group.SelectedId);
 
-        if (ApplicableModels.Contains(groupModel) && groupModel.AccessorId == item!.Id)
+        if (ApplicableModels.Contains(group) && group.DefaultId == selectedId)
         {
-            groupModel.SelectedId = item.Id;
-            ApplicableModels.Remove(groupModel);
-            App.Logger.LogApplicableModelRemoved(groupModel.Name);
+            ApplicableModels.Remove(group);
+            App.Logger.LogApplicableModelRemoved(group.Name);
             return;
         }
 
-        if (ApplicableModels.Contains(groupModel) && groupModel.SelectedId != item!.Id)
+        ApplicableModels.Add(group);
+        App.Logger.LogApplicableModelAdded(group.Name, selectedId);
+    }
+
+    private void RadioButtonsGroup3Clicked(UIRadioButtonsGroup3Model group)
+    {
+        var selectedId = int.Parse(group.SelectedId);
+
+        if (ApplicableModels.Contains(group))
         {
-            App.Logger.LogApplicableModelChanged(groupModel.Name, groupModel.SelectedId, item.Id);
-            groupModel.SelectedId = item!.Id;
-            return;
+            if (group.DefaultId == selectedId)
+            {
+                ApplicableModels.Remove(group);
+                App.Logger.LogApplicableModelRemoved(group.Name);
+                return;
+            }
+            else
+            {
+                App.Logger.LogApplicableModelChanged(group.Name, selectedId);
+                return;
+            }
         }
 
-        groupModel.SelectedId = item!.Id;
-        ApplicableModels.Add(groupModel);
-        App.Logger.LogApplicableModelAdded(groupModel.Name, item.Id);
+        ApplicableModels.Add(group);
+        App.Logger.LogApplicableModelAdded(group.Name, selectedId);
+    }
+
+    private void RadioButtonsGroup4Clicked(UIRadioButtonsGroup4Model group)
+    {
+        var selectedId = int.Parse(group.SelectedId);
+
+        if (ApplicableModels.Contains(group))
+        {
+            if (group.DefaultId == selectedId)
+            {
+                ApplicableModels.Remove(group);
+                App.Logger.LogApplicableModelRemoved(group.Name);
+                return;
+            }
+            else
+            {
+                App.Logger.LogApplicableModelChanged(group.Name, selectedId);
+                return;
+            }
+        }
+
+        ApplicableModels.Add(group);
+        App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
     private void SetLogPageVisibility(bool isVisible)
@@ -376,7 +446,7 @@ public partial class ShellViewModel : ObservableRecipient
         EnvironmentHelper.ForcedRefresh();
         processService.KillProcessByName("StartMenuExperienceHost");
         processService.KillProcessByName("explorer");
-        appNotificationService.EnableToastNotification();
+        notificationService.EnableToastNotification();
         defenderService.EnableControlledFolder();
         SetUpCustomizationsPanelIsVisible = false;
         NavigationViewHitTestVisible = true;

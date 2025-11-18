@@ -4,12 +4,12 @@
 
 namespace SophiApp.Contracts.Services
 {
-    using System;
-    using System.Diagnostics;
-    using System.ServiceProcess;
     using Microsoft.UI.Xaml;
     using SophiApp.Helpers;
     using SophiApp.ViewModels;
+    using System;
+    using System.Diagnostics;
+    using System.ServiceProcess;
 
     /// <summary>
     /// A service for working with app log.
@@ -153,6 +153,15 @@ namespace SophiApp.Contracts.Services
         void LogApplicableModelRemoved(string name);
 
         /// <summary>
+        /// Write information about changes applicable model parameter in the log.
+        /// </summary>
+        /// <typeparam name="T">A parameters type.</typeparam>
+        /// <param name="name">Model name.</param>
+        /// <param name="value">Parameter value.</param>
+        void LogApplicableModelChanged<T>(string name, T value)
+            where T : struct;
+
+        /// <summary>
         /// Write information about changes model parameters from the applied collection in the log.
         /// </summary>
         /// <typeparam name="T">A parameters type.</typeparam>
@@ -221,6 +230,24 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="timer">Time spent on execute.</param>
         void LogViewModelExecute(Stopwatch timer);
+
+        /// <summary>
+        /// Write the spent time taken by UWP models built in the log.
+        /// </summary>
+        /// <param name="timer">Time spent on built.</param>
+        /// <param name="count">Number of models.</param>
+        /// <param name="forAllUsers">Is for all users built.</param>
+        void LogUwpModelsBuilt(Stopwatch timer, int count, bool forAllUsers);
+
+        /// <summary>
+        /// Write information about the availability of an Internet connection in log file.
+        /// </summary>
+        void LogInternetConnectionAvailable();
+
+        /// <summary>
+        /// Write information about the unavailability of an Internet connection in log file.
+        /// </summary>
+        void LogInternetConnectionUnavailable();
 
         /// <summary>
         /// Write <see cref="RequirementsFailure"/> reason in the <see cref="IRequirementsService"/> in the log.

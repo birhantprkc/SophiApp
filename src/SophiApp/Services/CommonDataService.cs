@@ -5,6 +5,7 @@
 namespace SophiApp.Services
 {
     using System;
+    using System.Net;
     using System.Reflection;
     using Microsoft.UI.Input;
     using SophiApp.Contracts.Services;
@@ -76,10 +77,14 @@ namespace SophiApp.Services
         public Version AppVersion => assembly.Version!;
 
         /// <inheritdoc/>
+        public bool InternetConnectionAvailable { get; private set; } = false;
+
+        /// <inheritdoc/>
         public void Initialize()
         {
             OsProperties = instrumentationService.GetOsPropertiesOrDefault();
             App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
+            InternetConnectionAvailable = HasInternetConnection();
         }
 
         /// <inheritdoc/>
@@ -90,5 +95,24 @@ namespace SophiApp.Services
 
         /// <inheritdoc/>
         public string GetFullName() => $"{assembly.Name} {assembly.Version!.Major}.{assembly.Version.Minor}.{assembly.Version.Build}";
+
+        private bool HasInternetConnection()
+        {
+            var isOnline = false;
+
+            try
+            {
+                using var client = new HttpClient();
+                using var response = client.GetAsync("https://www.google.com").Result;
+                isOnline = response.StatusCode == HttpStatusCode.OK;
+                App.Logger.LogInternetConnectionAvailable();
+            }
+            catch (Exception)
+            {
+                App.Logger.LogInternetConnectionUnavailable();
+            }
+
+            return isOnline;
+        }
     }
 }

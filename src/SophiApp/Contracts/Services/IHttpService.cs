@@ -29,6 +29,11 @@ namespace SophiApp.Contracts.Services
         Task DownloadHEVCAppxAsync(string fileName);
 
         /// <summary>
+        /// Get actual or default app version from GitHub repository.
+        /// </summary>
+        Version GetAppVersionOrDefault();
+
+        /// <summary>
         /// Read <paramref name="url"/> as json.
         /// </summary>
         /// <param name="url">Json url.</param>
@@ -39,12 +44,6 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="url">Discoverable url.</param>
         Task OpenUrlAsync(string? url);
-
-        /// <summary>
-        /// Throws exception if url unavailable.
-        /// </summary>
-        /// <param name="url">Url to check availability.</param>
-        void ThrowIfOffline(string url = "https://google.com");
 
         /// <summary>
         /// Determines whether the specified URL is available.

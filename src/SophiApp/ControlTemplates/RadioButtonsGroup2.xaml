@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UserControl
-    x:Class="SophiApp.ControlTemplates.ExpandingRadioGroup"
-    x:Name="ExpandingRadioGroupControl"
+    x:Class="SophiApp.ControlTemplates.RadioButtonsGroup2"
+    x:Name="RadioButtonsGroup2Control"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SophiApp.ControlTemplates"
@@ -10,6 +10,8 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:interaction="using:Microsoft.Xaml.Interactivity"
     xmlns:converters="using:SophiApp.Converters"
+    xmlns:models="using:SophiApp.Models"
+    d:DataContext="{d:DesignInstance Type=models:UIRadioButtonsGroup2Model}"
     mc:Ignorable="d"
     IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}">
     <interactivity:Interaction.Behaviors>
@@ -20,6 +22,8 @@
 
     <UserControl.Resources>
         <converters:StringToVisibility x:Key="StringToVisibilityConverter"/>
+        <converters:StringToBool x:Key="StringToBoolConverter"/>
+        <converters:StringToInverseBool x:Key="StringToInverseBoolConverter"/>
         <CommandBarFlyout x:Name="TextCommandsFlyout">
             <CommandBarFlyout.SecondaryCommands>
                 <AppBarButton x:Uid="UIModel_ContextMenu_CopyTitle"
@@ -31,36 +35,11 @@
                               Click="TextCommandsFlyoutCopyDescription_Click"/>
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
-        <DataTemplate x:Key="ExpanderItemTemplate">
-            <Grid Width="{Binding ElementName=ExpandingRadioGroupControl, Path=UserControlActualWidth, UpdateSourceTrigger=PropertyChanged}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0"
-                           Style="{StaticResource UIControlTitleTextStyle}"
-                           Margin="0, 5, 10, 7">
-                    <Run Text="{Binding Title}"
-                         FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=ExpandingRadioGroupControl}"/>
-                </TextBlock>
-                <RadioButton Grid.Column="1"
-                             VerticalAlignment="Center"
-                             Margin="0, 0, -64, 0"
-                             GroupName="{Binding GroupName}"
-                             IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                             Command="{Binding Path=Command, ElementName=ExpandingRadioGroupControl}"
-                             CommandParameter="{Binding}">
-                    <interactivity:Interaction.Behaviors>
-                        <interaction:DataTriggerBehavior Binding="{Binding IsChecked}" ComparisonCondition="Equal" Value="False">
-                            <interaction:ChangePropertyAction PropertyName="IsHitTestVisible" Value="True"/>
-                        </interaction:DataTriggerBehavior>
-                        <interaction:DataTriggerBehavior Binding="{Binding IsChecked}" ComparisonCondition="Equal" Value="True">
-                            <interaction:ChangePropertyAction PropertyName="IsHitTestVisible" Value="False"/>
-                        </interaction:DataTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
-                </RadioButton>
-            </Grid>
-        </DataTemplate>
+        <Style TargetType="RadioButton">
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0, 0, -64, 0"/>
+        </Style>
     </UserControl.Resources>
 
     <Border Style="{StaticResource UIControlBorderStyle}"
@@ -74,21 +53,52 @@
                     <TextBlock x:Name="TitleTextBlock"
                                Style="{StaticResource UIControlTitleTextStyle}">
                         <Run Text="{Binding Title}"
-                             FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=ExpandingRadioGroupControl}"/>
+                             FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=RadioButtonsGroup2Control}"/>
                     </TextBlock>
                     <TextBlock x:Name="DescriptionTextBlock"
                                Style="{StaticResource UIControlDescriptionTextStyle}"
                                Foreground="{ThemeResource UIControlDescriptionForeground}"
                                Visibility="{Binding Description, Converter={StaticResource StringToVisibilityConverter}}">
                         <Run Text="{Binding Description}"
-                             FontSize="{Binding Path=FontOptions.DescriptionTextSize, ElementName=ExpandingRadioGroupControl}"/>
+                             FontSize="{Binding Path=FontOptions.DescriptionTextSize, ElementName=RadioButtonsGroup2Control}"/>
                     </TextBlock>
                 </StackPanel>
             </Expander.Header>
             <Expander.Content>
-                <ItemsRepeater ItemsSource="{Binding Items}"
-                               ItemTemplate="{StaticResource ExpanderItemTemplate}"
-                               VerticalCacheLength="{Binding Items.Count}"/>
+                <StackPanel Width="{Binding ElementName=RadioButtonsGroup2Control, Path=UserControlActualWidth, UpdateSourceTrigger=PropertyChanged}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource UIControlTitleTextStyle}"
+                                   Margin="0, 5, 10, 7">
+                            <Run Text="{Binding Title_1}"
+                                 FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=RadioButtonsGroup2Control}"/>
+                        </TextBlock>
+                        <RadioButton IsChecked="{Binding SelectedId, Converter={StaticResource StringToBoolConverter}, ConverterParameter=1, Mode=TwoWay}"
+                                     IsHitTestVisible="{Binding SelectedId, Converter={StaticResource StringToInverseBoolConverter}, ConverterParameter=1}"
+                                     Command="{Binding Path=Command, ElementName=RadioButtonsGroup2Control}"
+                                     CommandParameter="{Binding}"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource UIControlTitleTextStyle}"
+                                   Margin="0, 5, 10, 7">
+                            <Run Text="{Binding Title_2}"
+                                 FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=RadioButtonsGroup2Control}"/>
+                        </TextBlock>
+                        <RadioButton IsChecked="{Binding SelectedId, Converter={StaticResource StringToBoolConverter}, ConverterParameter=2, Mode=TwoWay}"
+                                     IsHitTestVisible="{Binding SelectedId, Converter={StaticResource StringToInverseBoolConverter}, ConverterParameter=2}"
+                                     Command="{Binding Path=Command, ElementName=RadioButtonsGroup2Control}"
+                                     CommandParameter="{Binding}"/>
+                    </Grid>
+                </StackPanel>
             </Expander.Content>
             <interactivity:Interaction.Behaviors>
                 <interaction:DataTriggerBehavior Binding="{Binding Visibility, ElementName=DescriptionTextBlock}" ComparisonCondition="Equal" Value="Collapsed">

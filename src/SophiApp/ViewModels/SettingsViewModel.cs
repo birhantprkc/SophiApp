@@ -23,7 +23,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private string build;
 
     [ObservableProperty]
-    private Microsoft.UI.Xaml.ElementTheme elementTheme;
+    private ElementTheme elementTheme;
 
     [ObservableProperty]
     private string delimiter;
@@ -32,34 +32,34 @@ public partial class SettingsViewModel : ObservableRecipient
     private bool navigationViewHitTestVisible;
 
     [ObservableProperty]
-    private ObservableCollection<Helpers.AppTheme> themes =
+    private ObservableCollection<AppTheme> themes =
     [
-        new (Microsoft.UI.Xaml.ElementTheme.Default, "Settings_Themes_Default"), new (Microsoft.UI.Xaml.ElementTheme.Light, "Settings_Themes_Light"), new (Microsoft.UI.Xaml.ElementTheme.Dark, "Settings_Themes_Dark"),
+        new (ElementTheme.Default, "Settings_Themes_Default"), new (ElementTheme.Light, "Settings_Themes_Light"), new (ElementTheme.Dark, "Settings_Themes_Dark"),
     ];
 
     [ObservableProperty]
     private string version;
-    private Helpers.AppTheme selectedTheme;
+    private AppTheme selectedTheme;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
     /// </summary>
     /// <param name="themesService">A service for working with app themes.</param>
-    /// <param name="commonDataService">A service for transferring app data between layers of DI.</param>
+    /// <param name="dataService">A service for transferring app data between layers of DI.</param>
     /// <param name="httpService">A service for working with HTTP.</param>
     /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
-    public SettingsViewModel(IThemesService themesService, ICommonDataService commonDataService, IHttpService httpService, ShellViewModel shellViewModel)
+    public SettingsViewModel(IThemesService themesService, ICommonDataService dataService, IHttpService httpService, ShellViewModel shellViewModel)
     {
-        build = commonDataService.GetBuildName();
-        delimiter = commonDataService.GetDelimiter();
+        build = dataService.GetBuildName();
+        delimiter = dataService.GetDelimiter();
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
         LogPageVisible = shellViewModel.LogPageVisible;
         LogPageVisibleCommand = shellViewModel.SetLogPageVisibility_Command;
-        OpenLinkCommand = new AsyncRelayCommand<string>(url => httpService.OpenUrlAsync(url));
+        OpenLinkCommand = new AsyncRelayCommand<string>(httpService.OpenUrlAsync);
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
-        version = commonDataService.GetFullName();
+        version = dataService.GetFullName();
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public partial class SettingsViewModel : ObservableRecipient
     /// <summary>
     /// Gets or sets app selected theme.
     /// </summary>
-    public Helpers.AppTheme SelectedTheme
+    public AppTheme SelectedTheme
     {
         get => selectedTheme;
         set

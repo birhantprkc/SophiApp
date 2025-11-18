@@ -4,16 +4,16 @@
 
 namespace SophiApp.Services
 {
+    using SophiApp.Contracts.Services;
+    using SophiApp.Extensions;
+    using SophiApp.Helpers;
+    using SophiApp.Models;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Reflection;
     using System.Text;
-    using SophiApp.Contracts.Services;
-    using SophiApp.Extensions;
-    using SophiApp.Helpers;
-    using SophiApp.Models;
     using Windows.ApplicationModel.Resources.Core;
 
     /// <inheritdoc/>
@@ -47,7 +47,9 @@ namespace SophiApp.Services
                         return dto.Type switch
                         {
                             UIModelType.CheckBox => BuildCheckBoxModel(dto),
-                            UIModelType.ExpandingRadioGroup => BuildExpandingRadioGroupModel(dto),
+                            UIModelType.RadioButtonsGroup2 => BuildRadioButtons2Group(dto),
+                            UIModelType.RadioButtonsGroup3 => BuildRadioButtons3Group(dto),
+                            UIModelType.RadioButtonsGroup4 => BuildRadioButtons4Group(dto),
                             _ => throw new TypeAccessException($"An invalid type is specified: {dto.Type}"),
                         };
                     })
@@ -64,7 +66,7 @@ namespace SophiApp.Services
             return await Task.Run(() =>
             {
                 var models = new List<UIModel>();
-                var initialViewId = 400;
+                var viewId = 400;
                 var packages = appxPackagesService.GetPackages(forAllUsers);
                 var excludedAppx = new List<string>()
             {
@@ -151,23 +153,19 @@ namespace SophiApp.Services
                 "ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
                 "ELANMicroelectronicsCorpo.TrackPoint",
             };
+                var timer = Stopwatch.StartNew();
 
                 for (int i = 0; i < packages.Count; i++)
                 {
-                    try
+                    if (!excludedAppx.Contains(packages[i].Id.Name) && File.Exists(packages[i].Logo.LocalPath) && packages[i].DisplayName != string.Empty)
                     {
-                        if (!excludedAppx.Contains(packages[i].Id.Name) && File.Exists(packages[i].Logo.LocalPath) && packages[i].DisplayName != string.Empty)
-                        {
-                            var dto = new UIModelDto(name: packages[i].DisplayName, type: UIModelType.UwpApp, tag: UICategoryTag.UWP, viewId: initialViewId + i, windows10Support: true, windows11Support: true, numberOfItems: 0);
-                            models.Add(new UIUwpAppModel(dto, packages[i].Id.Name, packages[i].Logo));
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Do nothing.
+                        var dto = new UIModelDto(name: packages[i].DisplayName, type: UIModelType.UwpApp, tag: UICategoryTag.UWP, viewId: viewId + i, windows10Support: true, windows11Support: true, numberOfItems: 0);
+                        models.Add(new UIUwpAppModel(dto, packages[i].Id.Name, packages[i].Logo));
                     }
                 }
 
+                timer.Stop();
+                App.Logger.LogUwpModelsBuilt(timer, models.Count, forAllUsers);
                 return models;
             });
         }
@@ -246,23 +244,40 @@ namespace SophiApp.Services
             return new UICheckBoxModel(dto, title, description, accessor, mutator);
         }
 
-        private UIModel BuildExpandingRadioGroupModel(UIModelDto dto)
+        private UIModel BuildRadioButtons2Group(UIModelDto dto)
         {
             var title = GetTitle(dto.Name);
             var description = GetDescription(dto.Name);
+            var title_1 = GetTitle(dto.Name, 1);
+            var title_2 = GetTitle(dto.Name, 2);
             var accessor = GetAccessor<int>(dto.Name);
             var mutator = GetMutator<int>(dto.Name);
-            var groupModel = new UIExpandingRadioGroupModel(dto, title, description, accessor, mutator);
+            return new UIRadioButtonsGroup2Model(dto, title, description, title_1, title_2, accessor, mutator);
+        }
 
-            var items = Enumerable.Range(1, dto.NumberOfItems)
-                .Select(id =>
-                {
-                    var itemTitle = GetTitle(dto.Name, id);
-                    return new UIRadioGroupItemModel(itemTitle, dto.Name, id, groupModel.ViewId);
-                });
+        private UIModel BuildRadioButtons3Group(UIModelDto dto)
+        {
+            var title = GetTitle(dto.Name);
+            var description = GetDescription(dto.Name);
+            var title_1 = GetTitle(dto.Name, 1);
+            var title_2 = GetTitle(dto.Name, 2);
+            var title_3 = GetTitle(dto.Name, 3);
+            var accessor = GetAccessor<int>(dto.Name);
+            var mutator = GetMutator<int>(dto.Name);
+            return new UIRadioButtonsGroup3Model(dto, title, description, title_1, title_2, title_3, accessor, mutator);
+        }
 
-            groupModel.Items = new (items);
-            return groupModel;
+        private UIModel BuildRadioButtons4Group(UIModelDto dto)
+        {
+            var title = GetTitle(dto.Name);
+            var description = GetDescription(dto.Name);
+            var title_1 = GetTitle(dto.Name, 1);
+            var title_2 = GetTitle(dto.Name, 2);
+            var title_3 = GetTitle(dto.Name, 3);
+            var title_4 = GetTitle(dto.Name, 4);
+            var accessor = GetAccessor<int>(dto.Name);
+            var mutator = GetMutator<int>(dto.Name);
+            return new UIRadioButtonsGroup4Model(dto, title, description, title_1, title_2, title_3, title_4, accessor, mutator);
         }
 
         private string GetTitle(string name, int? id = null)

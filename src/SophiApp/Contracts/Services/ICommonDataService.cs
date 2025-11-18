@@ -57,6 +57,11 @@ namespace SophiApp.Contracts.Services
         Version AppVersion { get; }
 
         /// <summary>
+        /// Gets a value indicating whether Internet connection is available.
+        /// </summary>
+        bool InternetConnectionAvailable { get; }
+
+        /// <summary>
         /// Initialize <see cref="ICommonDataService"/> data.
         /// </summary>
         void Initialize();

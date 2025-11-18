@@ -5,7 +5,6 @@
 namespace SophiApp.Services
 {
     using System;
-    using System.Net.Http.Json;
     using System.Security.Principal;
     using System.ServiceProcess;
     using CSharpFunctionalExtensions;
@@ -17,9 +16,9 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class RequirementsService : IRequirementsService
     {
-        private readonly IAppNotificationService appNotificationService;
-        private readonly IAppxPackagesService appxPackagesService;
-        private readonly ICommonDataService commonDataService;
+        private readonly IAppNotificationService notificationService;
+        private readonly IAppxPackagesService packagesService;
+        private readonly ICommonDataService dataService;
         private readonly IDiskService diskService;
         private readonly IInstrumentationService instrumentationService;
         private readonly IProcessService processService;
@@ -28,25 +27,25 @@ namespace SophiApp.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="RequirementsService"/> class.
         /// </summary>
-        /// <param name="appNotificationService">A service for working with toast notifications API.</param>
-        /// <param name="appxPackagesService">A service for working with appx packages API.</param>
-        /// <param name="commonDataService">A service for transferring app data between DI layers.</param>
+        /// <param name="notificationService">A service for working with toast notifications API.</param>
+        /// <param name="packagesService">A service for working with appx packages API.</param>
+        /// <param name="dataService">A service for transferring app data between DI layers.</param>
         /// <param name="diskService">A service for working with disk API.</param>
         /// <param name="instrumentationService">A service for working with WMI API.</param>
         /// <param name="processService">A service for working with Windows process API.</param>
         /// <param name="httpService">A service for working with HTTP API.</param>
         public RequirementsService(
-            IAppNotificationService appNotificationService,
-            IAppxPackagesService appxPackagesService,
-            ICommonDataService commonDataService,
+            IAppNotificationService notificationService,
+            IAppxPackagesService packagesService,
+            ICommonDataService dataService,
             IDiskService diskService,
             IInstrumentationService instrumentationService,
             IProcessService processService,
             IHttpService httpService)
         {
-            this.appNotificationService = appNotificationService;
-            this.appxPackagesService = appxPackagesService;
-            this.commonDataService = commonDataService;
+            this.notificationService = notificationService;
+            this.packagesService = packagesService;
+            this.dataService = dataService;
             this.diskService = diskService;
             this.instrumentationService = instrumentationService;
             this.processService = processService;
@@ -69,7 +68,7 @@ namespace SophiApp.Services
                 using var verifyRepository = processService.WaitForExit(name: "cmd.exe", arguments: "/c winmgmt /verifyrepository");
                 var serviceIsRun = wmiService.Status == ServiceControllerStatus.Running;
                 var repoIsConsistent = verifyRepository.ExitCode.Equals(0);
-                var osPropertiesIsCorrect = commonDataService.OsProperties.BuildNumber != -1;
+                var osPropertiesIsCorrect = dataService.OsProperties.BuildNumber != -1;
                 App.Logger.LogWMIState(wmiService.Status, verifyRepository.ExitCode, repoIsConsistent);
                 return osPropertiesIsCorrect && serviceIsRun && repoIsConsistent ? Result.Success() : Result.Failure(nameof(RequirementsFailure.WMIBroken));
             }
@@ -83,13 +82,13 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result GetOsVersion()
         {
-            return commonDataService.OsProperties.BuildNumber switch
+            return dataService.OsProperties.BuildNumber switch
             {
-                var build when commonDataService.IsWindows11 && build < 22631 => Result.Failure(nameof(RequirementsFailure.Win11BuildLess22631)),
-                var build when commonDataService.IsWindows11 && build.Equals(22631) && commonDataService.OsProperties.UpdateBuildRevision < 2283 => Result.Failure(nameof(RequirementsFailure.Win11UbrLess2283)),
-                var build when !commonDataService.IsWindows11 && !build.Equals(19045) => Result.Failure(nameof(RequirementsFailure.Win10UnsupportedBuild)),
-                var build when !commonDataService.IsWindows11 && !build.Equals(19045) && commonDataService.OsProperties.Edition.Contains("EnterpriseS", StringComparison.InvariantCultureIgnoreCase) => Result.Failure(nameof(RequirementsFailure.Win10EnterpriseSVersion)),
-                var build when !commonDataService.IsWindows11 && build.Equals(19045) && commonDataService.OsProperties.UpdateBuildRevision < 3448 => Result.Failure(nameof(RequirementsFailure.Win10UpdateBuildRevisionLess3448)),
+                var build when dataService.IsWindows11 && build < 22631 => Result.Failure(nameof(RequirementsFailure.Win11BuildLess22631)),
+                var build when dataService.IsWindows11 && build.Equals(22631) && dataService.OsProperties.UpdateBuildRevision < 2283 => Result.Failure(nameof(RequirementsFailure.Win11UbrLess2283)),
+                var build when !dataService.IsWindows11 && !build.Equals(19045) => Result.Failure(nameof(RequirementsFailure.Win10UnsupportedBuild)),
+                var build when !dataService.IsWindows11 && !build.Equals(19045) && dataService.OsProperties.Edition.Contains("EnterpriseS", StringComparison.InvariantCultureIgnoreCase) => Result.Failure(nameof(RequirementsFailure.Win10EnterpriseSVersion)),
+                var build when !dataService.IsWindows11 && build.Equals(19045) && dataService.OsProperties.UpdateBuildRevision < 3448 => Result.Failure(nameof(RequirementsFailure.Win10UpdateBuildRevisionLess3448)),
                 _ => Result.Success()
             };
         }
@@ -183,8 +182,8 @@ namespace SophiApp.Services
             {
                 if (malware.Value())
                 {
-                    commonDataService.DetectedMalware = malware.Key.GetLocalized();
-                    App.Logger.LogMalwareDetected(commonDataService.DetectedMalware);
+                    dataService.DetectedMalware = malware.Key.GetLocalized();
+                    App.Logger.LogMalwareDetected(dataService.DetectedMalware);
                     return true;
                 }
 
@@ -195,7 +194,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result GetFeatureExperiencePackState()
         {
-            return appxPackagesService.PackageExist("MicrosoftWindows.Client.CBS") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.FeatureExperiencePackRemoved));
+            return packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.FeatureExperiencePackRemoved));
         }
 
         /// <inheritdoc/>
@@ -215,7 +214,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result GetMicrosoftStoreState()
         {
-            return appxPackagesService.PackageExist("Microsoft.WindowsStore") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsStoreRemoved));
+            return packagesService.PackageExist("Microsoft.WindowsStore") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsStoreRemoved));
         }
 
         /// <inheritdoc/>
@@ -238,18 +237,13 @@ namespace SophiApp.Services
         {
             try
             {
-                httpService.ThrowIfOffline("https://github.com");
-                using var client = new HttpClient();
-                var versionsUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/master/sophiapp_versions.json";
-                var json = client.GetFromJsonAsync<AppVersion>(versionsUrl).Result;
-                var jsonVersion = json?.SophiApp_release ?? new Version(0, 0, 0);
-                App.Logger.LogAppUpdate(jsonVersion);
+                var version = httpService.GetAppVersionOrDefault();
 
-                if (jsonVersion > commonDataService.AppVersion)
+                if (version > dataService.AppVersion)
                 {
-                    var releasesUrl = "https://github.com/Sophia-Community/SophiApp/releases";
-                    var toastPayload = string.Format("AppUpdateNotification".GetLocalized(), jsonVersion.ToString(3), releasesUrl);
-                    appNotificationService.Show(toastPayload);
+                    App.Logger.LogAppUpdate(version);
+                    var payload = string.Format("AppUpdateNotification".GetLocalized(), version.ToString(3), "https://github.com/Sophia-Community/SophiApp/releases");
+                    notificationService.Show(payload);
                 }
             }
             catch (Exception ex)

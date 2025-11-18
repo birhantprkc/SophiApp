@@ -5,13 +5,16 @@
 namespace SophiApp.Services
 {
     using SophiApp.Contracts.Services;
+    using SophiApp.Helpers;
     using System.Diagnostics;
+    using System.Net.Http.Json;
     using System.Text.RegularExpressions;
     using System.Xml;
 
     /// <inheritdoc/>
     public class HttpService : IHttpService
     {
+        private readonly ICommonDataService dataService;
         private readonly Regex hrefPattern = new (@"(?inx)
 <a \s [^>]*
     href \s* = \s*
@@ -19,6 +22,15 @@ namespace SophiApp.Services
             (?<url> [^""]+ )
         \k<q>
 [^>]* >");
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpService"/> class.
+        /// </summary>
+        /// <param name="dataService">A service for transferring app data between DI layers.</param>
+        public HttpService(ICommonDataService dataService)
+        {
+            this.dataService = dataService;
+        }
 
         /// <inheritdoc/>
         public void DownloadFile(string url, string saveTo)
@@ -72,9 +84,24 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public Version GetAppVersionOrDefault()
+        {
+            var version = new Version(0, 0, 0);
+
+            if (dataService.InternetConnectionAvailable)
+            {
+                using var client = new HttpClient();
+                var json = client.GetFromJsonAsync<AppVersion>("https://raw.githubusercontent.com/Sophia-Community/SophiApp/master/sophiapp_versions.json").Result;
+                return json?.SophiApp_release ?? version;
+            }
+
+            return version;
+        }
+
+        /// <inheritdoc/>
         public string ReadAsJson(string url)
         {
-            if (InternetGetConnectedState(out _, 0))
+            if (dataService.InternetConnectionAvailable)
             {
                 using var client = new HttpClient();
                 using var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -100,32 +127,9 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void ThrowIfOffline(string url = "https://google.com")
-        {
-            var message = $"{url} is unreachable. Please check your Internet connection.";
-
-            if (InternetGetConnectedState(out _, 0))
-            {
-                try
-                {
-                    using var client = new HttpClient();
-                    using var request = new HttpRequestMessage(HttpMethod.Head, url);
-                    using var response = client.Send(request);
-                    return;
-                }
-                catch (Exception)
-                {
-                    throw new HttpRequestException(message);
-                }
-            }
-
-            throw new HttpRequestException(message);
-        }
-
-        /// <inheritdoc/>
         public bool UrlIsAvailable(string url)
         {
-            if (InternetGetConnectedState(out _, 0))
+            if (dataService.InternetConnectionAvailable)
             {
                 try
                 {
@@ -142,8 +146,5 @@ namespace SophiApp.Services
 
             return false;
         }
-
-        [System.Runtime.InteropServices.DllImport("wininet.dll")]
-        private static extern bool InternetGetConnectedState(out int description, int reservedValue);
     }
 }

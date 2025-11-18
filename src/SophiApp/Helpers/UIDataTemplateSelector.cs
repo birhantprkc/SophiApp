@@ -17,14 +17,19 @@ namespace SophiApp.Helpers
         public DataTemplate TextCheckBox { get; set; } = new ();
 
         /// <summary>
-        /// Gets or sets <see cref="ExpandingRadioGroup"/> template.
+        /// Gets or sets <see cref="UIRadioButtonsGroup2Model"/> template.
         /// </summary>
-        public DataTemplate ExpandingRadioGroup { get; set; } = new ();
+        public DataTemplate RadioButtonsGroup2 { get; set; } = new ();
 
         /// <summary>
-        /// Gets or sets <see cref="ExpandingCheckBoxGroup"/> template.
+        /// Gets or sets <see cref="UIRadioButtonsGroup3Model"/> template.
         /// </summary>
-        public DataTemplate ExpandingCheckBoxGroup { get; set; } = new ();
+        public DataTemplate RadioButtonsGroup3 { get; set; } = new ();
+
+        /// <summary>
+        /// Gets or sets <see cref="UIRadioButtonsGroup4Model"/> template.
+        /// </summary>
+        public DataTemplate RadioButtonsGroup4 { get; set; } = new ();
 
         /// <inheritdoc/>
         protected override DataTemplate SelectTemplateCore(object item)
@@ -33,7 +38,9 @@ namespace SophiApp.Helpers
             return itemType switch
             {
                 var type when type == typeof(UICheckBoxModel) => TextCheckBox,
-                var type when type == typeof(UIExpandingRadioGroupModel) => ExpandingRadioGroup,
+                var type when type == typeof(UIRadioButtonsGroup2Model) => RadioButtonsGroup2,
+                var type when type == typeof(UIRadioButtonsGroup3Model) => RadioButtonsGroup3,
+                var type when type == typeof(UIRadioButtonsGroup4Model) => RadioButtonsGroup4,
                 _ => throw new TypeAccessException($"Attempt to access method '{nameof(SelectTemplateCore)}' to type '{itemType}' failed")
             };
         }

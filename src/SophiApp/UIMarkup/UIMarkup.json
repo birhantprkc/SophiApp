@@ -9,12 +9,11 @@
   },
   {
     "Name": "DiagnosticDataLevel",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Privacy",
     "ViewId": 101,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "ErrorReporting",
@@ -26,12 +25,11 @@
   },
   {
     "Name": "FeedbackFrequency",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Privacy",
     "ViewId": 103,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "ScheduledTasks",
@@ -179,21 +177,19 @@
   },
   {
     "Name": "OpenFileExplorerTo",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 205,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "FileExplorerRibbon",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 206,
     "Windows10Support": "True",
-    "Windows11Support": "False",
-    "NumberOfItems": 2
+    "Windows11Support": "False"
   },
   {
     "Name": "FileExplorerCompactMode",
@@ -221,12 +217,11 @@
   },
   {
     "Name": "FileTransferDialog",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 210,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "RecycleBinDeleteConfirmation",
@@ -254,12 +249,11 @@
   },
   {
     "Name": "TaskbarAlignment",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 214,
     "Windows10Support": "False",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "TaskbarWidgets",
@@ -271,21 +265,19 @@
   },
   {
     "Name": "TaskbarSearchWindows10",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup3",
     "Tag": "Personalization",
     "ViewId": 216,
     "Windows10Support": "True",
-    "Windows11Support": "False",
-    "NumberOfItems": 3
+    "Windows11Support": "False"
   },
   {
     "Name": "TaskbarSearchWindows11",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup4",
     "Tag": "Personalization",
     "ViewId": 217,
     "Windows10Support": "False",
-    "Windows11Support": "True",
-    "NumberOfItems": 4
+    "Windows11Support": "True"
   },
   {
     "Name": "SearchHighlightsWindows10",
@@ -361,12 +353,11 @@
   },
   {
     "Name": "TaskbarCombine",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup3",
     "Tag": "Personalization",
     "ViewId": 227,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 3
+    "Windows11Support": "True"
   },
   {
     "Name": "TaskbarEndTask",
@@ -378,30 +369,27 @@
   },
   {
     "Name": "ControlPanelView",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup3",
     "Tag": "Personalization",
     "ViewId": 229,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 3
+    "Windows11Support": "True"
   },
   {
     "Name": "WindowsColorMode",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 230,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "AppColorMode",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 231,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "NewAppInstalledNotification",
@@ -421,12 +409,11 @@
   },
   {
     "Name": "JPEGWallpapersQuality",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 234,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "ShortcutsSuffix",
@@ -462,21 +449,19 @@
   },
   {
     "Name": "Cursors",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup3",
     "Tag": "Personalization",
     "ViewId": 239,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 3
+    "Windows11Support": "True"
   },
   {
     "Name": "FolderGroupBy",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "Personalization",
     "ViewId": 240,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "NavigationPaneExpand",
@@ -504,12 +489,11 @@
   },
   {
     "Name": "StartLayout",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup3",
     "Tag": "Personalization",
     "ViewId": 244,
     "Windows10Support": "False",
-    "Windows11Support": "True",
-    "NumberOfItems": 3
+    "Windows11Support": "True"
   },
   {
     "Name": "StartRecommendedSection",
@@ -561,12 +545,11 @@
   },
   {
     "Name": "AdminApprovalMode",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 305,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "DeliveryOptimization",
@@ -610,12 +593,11 @@
   },
   {
     "Name": "ActiveHours",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 311,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "WindowsLatestUpdate",
@@ -635,12 +617,11 @@
   },
   {
     "Name": "InputMethod",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 314,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "LatestInstalledNET",
@@ -652,21 +633,19 @@
   },
   {
     "Name": "WinPrtScrFolder",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 316,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "RecommendedTroubleshooting",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 317,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "FoldersLaunchSeparateProcess",
@@ -750,12 +729,11 @@
   },
   {
     "Name": "PowerPlan",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 328,
     "Windows10Support": "True",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "RKNBypass",
@@ -783,12 +761,11 @@
   },
   {
     "Name": "DefaultTerminalApp",
-    "Type": "ExpandingRadioGroup",
+    "Type": "RadioButtonsGroup2",
     "Tag": "System",
     "ViewId": 332,
     "Windows10Support": "False",
-    "Windows11Support": "True",
-    "NumberOfItems": 2
+    "Windows11Support": "True"
   },
   {
     "Name": "ShowClockInNotificationCenter",

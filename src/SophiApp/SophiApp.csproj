@@ -33,8 +33,10 @@
     <None Remove="Assets\GitHub.svg" />
     <None Remove="Assets\Info.svg" />
     <None Remove="Assets\Telegram.svg" />
-    <None Remove="ControlTemplates\ExpandingRadioGroup.xaml" />
     <None Remove="ControlTemplates\IconHyperlink.xaml" />
+    <None Remove="ControlTemplates\RadioButtonsGroup2.xaml" />
+    <None Remove="ControlTemplates\RadioButtonsGroup3.xaml" />
+    <None Remove="ControlTemplates\RadioButtonsGroup4.xaml" />
     <None Remove="ControlTemplates\TeamMateLink.xaml" />
     <None Remove="ControlTemplates\TextCheckBox.xaml" />
     <None Remove="ControlTemplates\UwpAppCheckBox.xaml" />
@@ -172,6 +174,15 @@
     <None Update="Binaries\LGPO.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="ControlTemplates\RadioButtonsGroup4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ControlTemplates\RadioButtonsGroup3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ControlTemplates\RadioButtonsGroup2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\FatalErrorPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,9 +196,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Styles\Expander.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="ControlTemplates\ExpandingRadioGroup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Styles\CheckBox.xaml">

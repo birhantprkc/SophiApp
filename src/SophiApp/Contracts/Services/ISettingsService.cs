@@ -68,6 +68,11 @@ public interface ISettingsService
     Task<double> ReadAppWindowWidthAsync();
 
     /// <summary>
+    /// Read navigation menu item log page visibility from a settings file.
+    /// </summary>
+    bool ReadLogPageVisibility();
+
+    /// <summary>
     /// Read UI elements descriptions size from a settings file.
     /// </summary>
     Task<int> ReadTextDescriptionSizeAsync();
@@ -100,6 +105,12 @@ public interface ISettingsService
     /// </summary>
     /// <param name="state">Specifies app window state.</param>
     Task SaveAppWindowStateAsync(WindowState state);
+
+    /// <summary>
+    /// Write navigation menu item log page visibility to a settings file.
+    /// </summary>
+    /// <param name="isVisible">Log page visibility.</param>
+    void SaveLogPageVisibility(bool isVisible);
 
     /// <summary>
     /// Write UI elements description size to a settings file.

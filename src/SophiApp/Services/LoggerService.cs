@@ -150,8 +150,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogStartApplicableModelsSetState()
         {
-            Log.Information("Service {Service:l} has started set customizations in the applicable customizations collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} has started set customizations state in the applicable customizations collection");
+            Log.Information("Service {Service:l} has started set customizations in the applicable collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} has started set customizations state in the applicable collection");
         }
 
         /// <inheritdoc/>
@@ -193,38 +193,46 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogApplicableModelsClear()
         {
-            Log.Information("Applicable customizations collection has been cleaned up");
-            shellViewModel.LoggedActions.Add($"[INF] Applicable customizations collection has been cleaned up");
+            Log.Information("Applicable collection has been cleaned up");
+            shellViewModel.LoggedActions.Add($"[INF] Applicable collection has been cleaned up");
+        }
+
+        /// <inheritdoc/>
+        public void LogApplicableModelChanged<T>(string name, T value)
+            where T : struct
+        {
+            Log.Information("The parameter value of customization {Name:l} has been changed to {Value} in applicable collection", name, value);
+            shellViewModel.LoggedActions.Add($"[INF] The parameter value of the customization {name} has been changed to {value} in applicable collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelChanged<T>(string name, T previous, T current)
             where T : struct
         {
-            Log.Information("The value of the customization {Name:l} parameter has been changed from {Previous} to {Current} in applicable customizations collection", name, previous, current);
-            shellViewModel.LoggedActions.Add($"[INF] The value of the customization {name} parameter has been changed from {previous} to {current} in applicable customizations collection");
+            Log.Information("The value of the customization {Name:l} parameter has been changed from {Previous} to {Current} in applicable collection", name, previous, current);
+            shellViewModel.LoggedActions.Add($"[INF] The value of the customization {name} parameter has been changed from {previous} to {current} in applicable collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelRemoved(string name)
         {
-            Log.Information("{Name:l} has been removed from applicable customizations collection", name);
-            shellViewModel.LoggedActions.Add($"[INF] {name} has been removed from applicable customizations collection");
+            Log.Information("{Name:l} has been removed from applicable collection", name);
+            shellViewModel.LoggedActions.Add($"[INF] {name} has been removed from applicable collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded(string name)
         {
-            Log.Information("{Name:l} has been added to applicable customizations collection", name);
-            shellViewModel.LoggedActions.Add($"[INF] {name} has been added to applicable customizations collection");
+            Log.Information("{Name:l} has been added to applicable collection", name);
+            shellViewModel.LoggedActions.Add($"[INF] {name} has been added to applicable collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded<T>(string name, T parameter)
             where T : struct
         {
-            Log.Information("{Name:l} with parameter {Parameter} has been added to applicable customizations collection", name, parameter);
-            shellViewModel.LoggedActions.Add($"[INF] {name} with parameter {parameter} has been added to applicable customizations collection");
+            Log.Information("{Name:l} with parameter {Parameter} has been added to applicable collection", name, parameter);
+            shellViewModel.LoggedActions.Add($"[INF] {name} with parameter {parameter} has been added to applicable collection");
         }
 
         /// <inheritdoc/>
@@ -272,8 +280,37 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogViewModelExecute(Stopwatch timer)
         {
-            Log.Information("View model took time to execute: {TimeSpent}", timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"[INF] View model took time to execute: {timer.Elapsed}");
+            Log.Information("{ViewModel:l} took time to execute: {TimeSpent}", nameof(ShellViewModel), timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"[INF] {nameof(ShellViewModel)} took time to execute: {timer.Elapsed}");
+        }
+
+        /// <inheritdoc/>
+        public void LogUwpModelsBuilt(Stopwatch timer, int count, bool forAllUsers)
+        {
+            if (forAllUsers)
+            {
+                Log.Information("Service {Service:l} took {TimeSpent} to built {Count} UWP models for all users", nameof(IModelService), timer.Elapsed, count);
+            }
+            else
+            {
+                Log.Information("Service {Service:l} took {TimeSpent} to built {Count} UWP models for current user", nameof(IModelService), timer.Elapsed, count);
+            }
+
+            shellViewModel.LoggedActions.Add($"[INF] Service {nameof(IModelService)} took {timer.Elapsed} to built {count} UWP models for {(forAllUsers ? "all users" : "current user")}");
+        }
+
+        /// <inheritdoc/>
+        public void LogInternetConnectionAvailable()
+        {
+            Log.Information("Internet connection is available");
+            shellViewModel.LoggedActions.Add("[INF] Internet connection is available");
+        }
+
+        /// <inheritdoc/>
+        public void LogInternetConnectionUnavailable()
+        {
+            Log.Information("Internet connection is not available");
+            shellViewModel.LoggedActions.Add("[INF] Internet connection is not available");
         }
 
         /// <inheritdoc/>

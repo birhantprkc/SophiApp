@@ -27,7 +27,7 @@ namespace SophiApp.Services
         public void DeleteInstallerLogs(string logPattern)
         {
             Directory.GetFileSystemEntries(Path.GetTempPath(), logPattern, SearchOption.TopDirectoryOnly)
-                .ForEach(log => File.Delete(log));
+                .ForEach(File.Delete);
         }
 
         /// <inheritdoc/>

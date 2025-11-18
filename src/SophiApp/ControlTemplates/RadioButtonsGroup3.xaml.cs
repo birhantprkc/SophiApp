@@ -1,4 +1,4 @@
-// <copyright file="ExpandingRadioGroup.xaml.cs" company="Team Sophia">
+// <copyright file="RadioButtonsGroup3.xaml.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -11,28 +11,28 @@ namespace SophiApp.ControlTemplates
     using SophiApp.ViewModels;
 
     /// <summary>
-    /// Implements the logic and appearance of the <see cref="ExpandingRadioGroup"/> element.
+    /// Implements the logic and appearance of the <see cref="RadioButtonsGroup3"/> element.
     /// </summary>
-    public sealed partial class ExpandingRadioGroup : UserControl
+    public sealed partial class RadioButtonsGroup3 : UserControl
     {
         /// <summary>
         /// <see cref="Command"/>.
         /// </summary>
         public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(IRelayCommand), typeof(ExpandingRadioGroup), new PropertyMetadata(default));
+            DependencyProperty.Register("Command", typeof(IRelayCommand), typeof(RadioButtonsGroup3), new PropertyMetadata(default));
 
         /// <summary>
         /// <see cref="UserControlActualWidth"/>.
         /// </summary>
         public static readonly DependencyProperty UserControlActualWidthProperty =
-            DependencyProperty.Register("UserControlActualWidth", typeof(double), typeof(ExpandingRadioGroup), new PropertyMetadata(default));
+            DependencyProperty.Register("UserControlActualWidth", typeof(double), typeof(RadioButtonsGroup3), new PropertyMetadata(default));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpandingRadioGroup"/> class.
+        /// Initializes a new instance of the <see cref="RadioButtonsGroup3"/> class.
         /// </summary>
-        public ExpandingRadioGroup()
+        public RadioButtonsGroup3()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             FontOptions = App.GetService<ShellViewModel>().FontOptions;
         }
 
@@ -42,7 +42,7 @@ namespace SophiApp.ControlTemplates
         public FontOptions FontOptions { get; }
 
         /// <summary>
-        /// Gets or sets <see cref="ExpandingRadioGroup"/> command.
+        /// Gets or sets <see cref="RadioButtonsGroup3"/> command.
         /// </summary>
         public IRelayCommand Command
         {
@@ -51,7 +51,7 @@ namespace SophiApp.ControlTemplates
         }
 
         /// <summary>
-        /// Gets or sets user uontrol actual width"/>.
+        /// Gets or sets user control actual width"/>.
         /// </summary>
         public double UserControlActualWidth
         {
@@ -68,6 +68,7 @@ namespace SophiApp.ControlTemplates
         private void ExpandingRadioGroup_ContextRequested(UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs args)
             => ContextMenuHelper.ShowContextMenu(sender, TextCommandsFlyout, args);
 
-        private void Border_SizeChanged(object sender, SizeChangedEventArgs e) => UserControlActualWidth = e.NewSize.Width;
+        private void Border_SizeChanged(object sender, SizeChangedEventArgs e)
+            => UserControlActualWidth = e.NewSize.Width;
     }
 }
