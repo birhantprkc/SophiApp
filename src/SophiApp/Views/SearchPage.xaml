@@ -57,7 +57,6 @@
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="NothingFoundPanel"
-                        Orientation="Horizontal"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                 <TextBlock Style="{StaticResource UIControlTitleTextStyle}">

@@ -473,7 +473,7 @@ public partial class ShellViewModel : ObservableRecipient
         {
             NavigationViewHitTestVisible = false;
             FoundModels = await modelService.GetModelsContainsTextAsync(JsonModels, args.QueryText);
-            _ = NavigationService.NavigateTo(pageKey: typeof(SearchViewModel).FullName!);
+            _ = NavigationService.NavigateTo(pageKey: typeof(SearchViewModel).FullName!, ignorePageType: true);
             NavigationViewHitTestVisible = true;
         }
     }
