@@ -145,19 +145,13 @@
     <value>&lt;toast duration="Long" scenario="reminder"&gt;
 &lt;visual&gt;
 	&lt;binding template="ToastGeneric"&gt;
-		&lt;text&gt;The new version is available&lt;/text&gt;
 		&lt;text&gt;Version {0} is available&lt;/text&gt;
-		&lt;group&gt;
-			&lt;subgroup&gt;
-				&lt;text hint-style="body" hint-wrap="true"&gt;{1}&lt;/text&gt;
-			&lt;/subgroup&gt;
-		&lt;/group&gt;
 	&lt;/binding&gt;
 &lt;/visual&gt;
 &lt;audio src="ms-winsoundevent:notification.default" /&gt;
 &lt;actions&gt;
-	&lt;action arguments="{1}" content="Download" activationType="protocol"/&gt;
-	&lt;action arguments="dismiss" content="" activationType="system"/&gt;
+	&lt;action content="Download" arguments="{1}" activationType="protocol"/&gt;
+	&lt;action content="" arguments="dismiss" activationType="system"/&gt;
 &lt;/actions&gt;
 &lt;/toast&gt;</value>
   </data>
@@ -255,7 +249,7 @@
     <value>Checking whether Windows was broken by 3rd party harmful tweakers and trojans</value>
   </data>
   <data name="OsRequirementsFailure_MalwareDetected" xml:space="preserve">
-    <value>The Windows stability may have been compromised by using {0}.</value>
+    <value>Windows stability may have been compromised by using {0}.</value>
   </data>
   <data name="OsRequirements_Malware_BloatwareRemoval" xml:space="preserve">
     <value>Bloatware Removal</value>
@@ -324,7 +318,7 @@
     <value>File "{0}" broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_RebootRequired" xml:space="preserve">
-    <value>The PC is waiting to be restarted.</value>
+    <value>PC is waiting to be restarted.</value>
   </data>
   <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
     <value>Checking a pending reboot</value>
@@ -345,7 +339,7 @@
     <value>Enable the telemetry service</value>
   </data>
   <data name="UIModel_DiagTrackService_Description" xml:space="preserve">
-    <value>Configure the Connected User Experiences and Telemetry (DiagTrack) service, and connection for the Unified Telemetry Client Outbound Traffic. Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub.</value>
+    <value>Configure "Connected User Experiences and Telemetry" (DiagTrack) service and connection for the Unified Telemetry Client Outbound Traffic. Disabling "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub.</value>
   </data>
   <data name="UIModel_DiagnosticDataLevel_Title" xml:space="preserve">
     <value>Configure Windows level of diagnostic data gathering</value>
@@ -363,7 +357,7 @@
     <value>Configure Windows Error Reporting</value>
   </data>
   <data name="UIModel_ErrorReporting_Description" xml:space="preserve">
-    <value>The error reporting feature enables users to notify Microsoft of application faults, kernel faults, unresponsive applications, and other application specific problems. Microsoft can use the error reporting feature to provide customers with troubleshooting information, solutions, or updates for their specific problems.</value>
+    <value>Error reporting feature enables users to notify Microsoft of application faults, kernel faults, unresponsive applications, and other application specific problems. Microsoft can use error reporting feature to provide customers with troubleshooting information, solutions, or updates for their specific problems.</value>
   </data>
   <data name="UIModel_FeedbackFrequency_Title" xml:space="preserve">
     <value>Configure feedback frequency</value>
@@ -444,7 +438,7 @@
     <value>Enable Xbox Game Bar</value>
   </data>
   <data name="UIModel_XboxGameBar_Description" xml:space="preserve">
-    <value>To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before.</value>
+    <value>Disable Xbox Game Bar app (even if you uninstalled it before) to prevent a popup message "You'll need a new app to open this ms-gamingoverlay".</value>
   </data>
   <data name="UIModel_XboxGameTips_Title" xml:space="preserve">
     <value>Xbox Game Bar tips</value>
@@ -453,7 +447,7 @@
     <value>Enable Hardware-accelerated GPU scheduling</value>
   </data>
   <data name="UIModel_GPUScheduling_Description" xml:space="preserve">
-    <value>Reduce latency and improve performance. You'll need to restart your PC to have your changes take effect. With the Hardware-Accelerated GPU Scheduling feature, the GPU's scheduling processor and memory (VRAM) take over the same work and runs it in batches to render the frames. This allows your GPU to reduce the load on your CPU and improve latency, potentially making your PC run better. However, don’t expect GPU hardware scheduling to have a significant impact on your computer performance.</value>
+    <value>Reduce latency and improve performance. You'll need to restart your PC to have your changes take effect. With Hardware-Accelerated GPU Scheduling feature, GPU's scheduling processor and memory (VRAM) take over the same work and runs it in batches to render the frames. This allows your GPU to reduce the load on your CPU and improve latency, potentially making your PC run better. However, don’t expect GPU hardware scheduling to have a significant impact on your computer performance.</value>
   </data>
   <data name="UIModel_CleanupTask_Title" xml:space="preserve">
     <value>Create Windows Cleanup scheduled task</value>
@@ -489,7 +483,7 @@
     <value>Applying customizations</value>
   </data>
   <data name="OsRequirementsFailure_EventLogStopped" xml:space="preserve">
-    <value>The Event Viewer broken or removed from Windows.</value>
+    <value>The Event Viewer is broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_MsStoreRemoved" xml:space="preserve">
     <value>Microsoft Store broken or removed from Windows.</value>
@@ -567,10 +561,10 @@
     <value>Running Microsoft Defender in a sandbox ensures that in the unlikely event of a compromise, malicious actions are limited to the isolated environment, protecting the rest of the system from harm. The sandbox for Microsoft Defender is enabled by default in Windows 11.</value>
   </data>
   <data name="UIModel_EventViewerCustomView_Description" xml:space="preserve">
-    <value>The "Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled.</value>
+    <value>"Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled.</value>
   </data>
   <data name="UIModel_NetworkProtection_Description" xml:space="preserve">
-    <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the internet.</value>
+    <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the Internet.</value>
   </data>
   <data name="UIModel_PowerShellModulesLogging_Description" xml:space="preserve">
     <value>Pipeline execution events for members of the specified modules are recorded in the Windows PowerShell log in the Event Viewer. For the built-in Windows PowerShell 5.1 only.</value>
@@ -609,7 +603,7 @@
     <value>Enable sandboxing for Microsoft Defender</value>
   </data>
   <data name="UIModel_EventViewerCustomView_Title" xml:space="preserve">
-    <value>Create the "Process Creation" Custom View in the Event Viewer</value>
+    <value>Create "Process Creation" Custom View in the Event Viewer</value>
   </data>
   <data name="UIModel_NetworkProtection_Title" xml:space="preserve">
     <value>Enable Microsoft Defender Exploit Guard network protection</value>
@@ -648,7 +642,7 @@
     <value>Run</value>
   </data>
   <data name="TaskSchedulerPage_AboutTasks.Text" xml:space="preserve">
-    <value>The scheduled tasks options below are sufficient enough to keep your Windows OS clean. There is no need to constantly clean more system folders as advised from the Internet.</value>
+    <value>The scheduled tasks options below are sufficient enough to keep your Windows clean. There is no need to constantly clean more system folders as advised from the Internet.</value>
   </data>
   <data name="SettingsPage_FontOptions.Title" xml:space="preserve">
     <value>UI font sizes</value>
@@ -954,7 +948,7 @@
     <value>When you set a JPEG image as the desktop wallpaper or slideshow, the operating system reduces the quality of the original image to 85%. A PNG image as your desktop background wallpaper or slideshow is not affected.</value>
   </data>
   <data name="UIModel_NewsInterests_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+    <value>Changes will be made via Windows API without disabling a UCDP driver.</value>
   </data>
   <data name="UIModel_OneDriveFileExplorerAd_Description" xml:space="preserve">
     <value>They are designed to help you by providing quick, easy information about things you can do or new features you can try to have a better experience with Windows.</value>
@@ -1218,7 +1212,7 @@
     <value>OneDrive user folder won't be removed if any file found there. Internet connection required to download OneDrive installer from Microsoft resource.</value>
   </data>
   <data name="UIModel_PowerPlan_Description" xml:space="preserve">
-    <value>"High performance" is not recommended to turn on for laptops. You need to know that enabling "High performance" power plan doesn't effect on your FPS conunt is video games. It only manages how your PC uses power.</value>
+    <value>"High performance" is not recommended to use on laptops. Also, enabling "High performance" power plan doesn't effect on your FPS. It only manages how your PC uses power.</value>
   </data>
   <data name="UIModel_RecommendedTroubleshooting_Description" xml:space="preserve">
     <value>Microsoft can recommend and run troubleshooters to fix issues. How much do you want Microsoft to help when there are issues on your device that troubleshooters might be able to fix?</value>
