@@ -75,6 +75,7 @@ namespace SophiApp.Customizations
                 var isEnterpriseOrEducation = osEdition.Contains("Enterprise") || osEdition.Contains("Education");
                 Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection")
                     .SetValue("AllowTelemetry", isEnterpriseOrEducation ? 0 : 1, RegistryValueKind.DWord);
+                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: "Software\\Policies\\Microsoft\\Windows\\DataCollection", name: AllowTelemetry, type: "DWORD", value: isEnterpriseOrEducation ? "0" : "1");
                 Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection")
                     .SetValue("MaxTelemetryAllowed", 1, RegistryValueKind.DWord);
                 Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack")
@@ -88,6 +89,7 @@ namespace SophiApp.Customizations
                 .SetValue("ShowedToastAtLevel", 3, RegistryValueKind.DWord);
             Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection", true)
                 ?.DeleteValue("AllowTelemetry", false);
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", AllowTelemetry);
         }
 
         /// <summary>
@@ -217,7 +219,7 @@ namespace SophiApp.Customizations
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, advertisingPolicyPath, disabledByPolicy);
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", disabledByPolicy);
             Registry.CurrentUser.OpenOrCreateSubKey(advertisingPath)
-                .SetValue("enable", enable ? 1 : 0, RegistryValueKind.DWord);
+                .SetValue("Enabled", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -311,11 +313,13 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey(explorerPath, true)
                     ?.DeleteValue(disableSuggestions, false);
+                GroupPolicyService.ClearLocalCache(LGPOScope.User, explorerPath, disableSuggestions);
                 return;
             }
 
             Registry.CurrentUser.OpenOrCreateSubKey(explorerPath)
                 .SetValue(disableSuggestions, 1, RegistryValueKind.DWord);
+            GroupPolicyService.ClearLocalCache(scope: LGPOScope.User, path: explorerPath, name: disableSuggestions, type: "DWORD", value: "1");
         }
 
         /// <summary>
@@ -1202,6 +1206,7 @@ namespace SophiApp.Customizations
             Registry.LocalMachine.OpenSubKey(supportPath, true)
                 ?.SetValue(longPathEnabled, enable ? 1 : 0, RegistryValueKind.DWord);
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, supportPath, longPathEnabled, enable ? 1 : 0, RegistryValueKind.DWord);
+            GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: supportPath, name: longPathEnabled, type: "DWORD", value: enable ? "0" : "1");
         }
 
         /// <summary>
@@ -1446,6 +1451,9 @@ namespace SophiApp.Customizations
             ScheduledTaskService.SetState(queueReportingTask, true);
             Registry.CurrentUser.OpenSubKey(reportingPath, true)
                 ?.DeleteValue("Disabled", false);
+            Registry.LocalMachine.OpenSubKey(reportingPath, true)
+                ?.DeleteValue("Disabled", false);
+            GroupPolicyService.ClearLocalCache(reportingPath, "Disabled", LGPOScope.User, LGPOScope.Computer);
             using var werService = new System.ServiceProcess.ServiceController("WerSvc");
             OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
             werService.TryStart();
@@ -2005,6 +2013,8 @@ namespace SophiApp.Customizations
                     .SetValue("*", "*");
                 Registry.LocalMachine.OpenSubKey(loggingPath, true)
                     ?.SetValue(enableLogging, 1, RegistryValueKind.DWord);
+                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: loggingPath, name: enableLogging, type: "DWORD", value: "1");
+                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: namesPath, name: "*", type: "SZ", value: "*");
                 return;
             }
 
@@ -2012,6 +2022,7 @@ namespace SophiApp.Customizations
                 ?.DeleteValue(enableLogging, false);
             Registry.LocalMachine.OpenSubKey(namesPath, true)
                 ?.DeleteValue("*", false);
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, loggingPath, enableLogging);
         }
 
         /// <summary>
@@ -2027,11 +2038,13 @@ namespace SophiApp.Customizations
             {
                 Registry.LocalMachine.OpenOrCreateSubKey(loggingPath)
                     .SetValue(enableLogging, 1, RegistryValueKind.DWord);
+                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: loggingPath, name: enableLogging, type: "DWORD", value: "1");
                 return;
             }
 
             Registry.LocalMachine.OpenSubKey(loggingPath, true)
                 ?.DeleteValue(enableLogging, false);
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, loggingPath, enableLogging);
         }
 
         /// <summary>
@@ -2060,11 +2073,13 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey(attachmentsPath, true)
                     ?.DeleteValue(zoneInformation, false);
+                GroupPolicyService.ClearLocalCache(scope: LGPOScope.User, path: attachmentsPath, name: zoneInformation, type: "DWORD", value: "1");
                 return;
             }
 
             Registry.CurrentUser.OpenOrCreateSubKey(attachmentsPath)
                 .SetValue(zoneInformation, 1, RegistryValueKind.DWord);
+            GroupPolicyService.ClearLocalCache(LGPOScope.User, attachmentsPath, zoneInformation);
         }
 
         /// <summary>
@@ -2455,11 +2470,13 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey(storePath, true)
                     ?.DeleteValue(noStore, false);
+                GroupPolicyService.ClearLocalCache(LGPOScope.User, storePath, noStore);
                 return;
             }
 
             Registry.CurrentUser.OpenOrCreateSubKey(storePath)
                 .SetValue(noStore, 1, RegistryValueKind.DWord);
+            GroupPolicyService.ClearLocalCache(scope: LGPOScope.User, path: storePath, name: noStore, type: "DWORD", value: "1");
         }
 
         /// <summary>
