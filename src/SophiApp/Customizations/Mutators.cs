@@ -4,6 +4,7 @@
 
 namespace SophiApp.Customizations
 {
+    using CSharpFunctionalExtensions;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -12,9 +13,12 @@ namespace SophiApp.Customizations
     using SophiApp.Extensions;
     using SophiApp.Helpers;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ServiceProcess;
     using System.Text;
+    using System.Xml.Linq;
+    using static System.Formats.Asn1.AsnWriter;
 
     /// <summary>
     /// Set the OS settings.
@@ -75,7 +79,6 @@ namespace SophiApp.Customizations
                 var isEnterpriseOrEducation = osEdition.Contains("Enterprise") || osEdition.Contains("Education");
                 Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection")
                     .SetValue("AllowTelemetry", isEnterpriseOrEducation ? 0 : 1, RegistryValueKind.DWord);
-                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: "Software\\Policies\\Microsoft\\Windows\\DataCollection", name: AllowTelemetry, type: "DWORD", value: isEnterpriseOrEducation ? "0" : "1");
                 Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection")
                     .SetValue("MaxTelemetryAllowed", 1, RegistryValueKind.DWord);
                 Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack")
@@ -89,7 +92,6 @@ namespace SophiApp.Customizations
                 .SetValue("ShowedToastAtLevel", 3, RegistryValueKind.DWord);
             Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection", true)
                 ?.DeleteValue("AllowTelemetry", false);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", AllowTelemetry);
         }
 
         /// <summary>
@@ -219,7 +221,7 @@ namespace SophiApp.Customizations
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, advertisingPolicyPath, disabledByPolicy);
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", disabledByPolicy);
             Registry.CurrentUser.OpenOrCreateSubKey(advertisingPath)
-                .SetValue("Enabled", enable ? 1 : 0, RegistryValueKind.DWord);
+                .SetValue("enable", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -313,13 +315,11 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey(explorerPath, true)
                     ?.DeleteValue(disableSuggestions, false);
-                GroupPolicyService.ClearLocalCache(LGPOScope.User, explorerPath, disableSuggestions);
                 return;
             }
 
             Registry.CurrentUser.OpenOrCreateSubKey(explorerPath)
                 .SetValue(disableSuggestions, 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearLocalCache(scope: LGPOScope.User, path: explorerPath, name: disableSuggestions, type: "DWORD", value: "1");
         }
 
         /// <summary>
@@ -504,17 +504,11 @@ namespace SophiApp.Customizations
         /// <param name="enable">Recycle bin dialog state.</param>
         public static void RecycleBinDeleteConfirmation(bool enable)
         {
-            var confirmDelete = "ConfirmFileDelete";
-            var policyExplorerPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
-            var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            var shellStateValue = "ShellState";
-            GroupPolicyService.ClearRegistryCache(policyExplorerPath, confirmDelete, Registry.LocalMachine, Registry.CurrentUser);
-            GroupPolicyService.ClearLocalCache(policyExplorerPath, confirmDelete, LGPOScope.Computer, LGPOScope.User);
-            var confirmation = Registry.CurrentUser.OpenSubKey(shellPath)
-                ?.GetValue(shellStateValue) as byte[] ?? new byte[5];
+            GroupPolicyService.ClearRegistryCache("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", "ConfirmFileDelete", Registry.LocalMachine, Registry.CurrentUser);
+            GroupPolicyService.ClearLocalCache("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", "ConfirmFileDelete", LGPOScope.Computer, LGPOScope.User);
+            var confirmation = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("ShellState") as byte[] ?? new byte[5];
             confirmation[4] = enable ? (byte)51 : (byte)55;
-            Registry.CurrentUser.OpenSubKey(shellPath, true)
-                ?.SetValue(shellStateValue, confirmation, RegistryValueKind.Binary);
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true)?.SetValue("ShellState", confirmation, RegistryValueKind.Binary);
         }
 
         /// <summary>
@@ -523,15 +517,11 @@ namespace SophiApp.Customizations
         /// <param name="enable">Quick access files state.</param>
         public static void QuickAccessRecentFiles(bool enable)
         {
-            var explorerMachinePath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            var explorerSoftwarePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            var explorerUserPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
             var noRecent = "NoRecentDocsHistory";
-            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, explorerMachinePath, noRecent);
-            GroupPolicyService.ClearRegistryCache(Registry.CurrentUser, explorerUserPath, noRecent);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, explorerMachinePath, noRecent);
-            GroupPolicyService.ClearLocalCache(LGPOScope.User, explorerMachinePath, noRecent);
-            Registry.CurrentUser.OpenSubKey(explorerSoftwarePath, true)
+            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\Explorer", noRecent);
+            GroupPolicyService.ClearRegistryCache(Registry.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", noRecent);
+            GroupPolicyService.ClearLocalCache("Software\\Policies\\Microsoft\\Windows\\Explorer", noRecent, LGPOScope.Computer, LGPOScope.User);
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true)
                 ?.SetValue("ShowRecent", enable ? 1 : 0, RegistryValueKind.DWord);
         }
 
@@ -1206,7 +1196,6 @@ namespace SophiApp.Customizations
             Registry.LocalMachine.OpenSubKey(supportPath, true)
                 ?.SetValue(longPathEnabled, enable ? 1 : 0, RegistryValueKind.DWord);
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, supportPath, longPathEnabled, enable ? 1 : 0, RegistryValueKind.DWord);
-            GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: supportPath, name: longPathEnabled, type: "DWORD", value: enable ? "0" : "1");
         }
 
         /// <summary>
@@ -1451,9 +1440,6 @@ namespace SophiApp.Customizations
             ScheduledTaskService.SetState(queueReportingTask, true);
             Registry.CurrentUser.OpenSubKey(reportingPath, true)
                 ?.DeleteValue("Disabled", false);
-            Registry.LocalMachine.OpenSubKey(reportingPath, true)
-                ?.DeleteValue("Disabled", false);
-            GroupPolicyService.ClearLocalCache(reportingPath, "Disabled", LGPOScope.User, LGPOScope.Computer);
             using var werService = new System.ServiceProcess.ServiceController("WerSvc");
             OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
             werService.TryStart();
@@ -1957,11 +1943,11 @@ namespace SophiApp.Customizations
         /// <param name="enable">Event Viewer custom view state.</param>
         public static void EventViewerCustomView(bool enable)
         {
-            var auditValueName = "ProcessCreationIncludeCmdLine_enable";
-            var viewerXmlPath = $"{Environment.GetEnvironmentVariable("ALLUSERSPROFILE")}\\Microsoft\\Event Viewer\\Views\\ProcessCreation.xml";
-            var viewerAuditPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit";
+            var processCreationEnabled = "ProcessCreationIncludeCmdLine_Enabled";
+            var viewerXml = $"{Environment.GetEnvironmentVariable("ALLUSERSPROFILE")}\\Microsoft\\Event Viewer\\Views\\ProcessCreation.xml";
+            var viewerAudit = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit";
             var viewerGuid = "{0CCE922B-69AE-11D9-BED3-505054503030}";
-            var viewerXml = @$"<ViewerConfig>
+            var xml = @$"<ViewerConfig>
   <QueryConfig>
     <QueryParams>
       <UserQuery />
@@ -1981,9 +1967,9 @@ namespace SophiApp.Customizations
             if (enable)
             {
                 _ = PowerShellService.Invoke($"auditpol /set /subcategory:\"{viewerGuid}\" /success:enable /failure:enable");
-                Registry.LocalMachine.OpenSubKey(viewerAuditPath, true)
-                    ?.SetValue(auditValueName, 1, RegistryValueKind.DWord);
-                FileService.Save(file: viewerXmlPath, content: viewerXml, encoding: Encoding.Default);
+                Registry.LocalMachine.OpenSubKey(viewerAudit, true)?.SetValue(processCreationEnabled, 1, RegistryValueKind.DWord);
+                FileService.Save(file: viewerXml, content: xml, encoding: Encoding.Default);
+                GroupPolicyService.ClearLocalCache(LGPOScope.Computer, viewerAudit, processCreationEnabled, "DWORD", "1");
                 return;
             }
 
@@ -1992,9 +1978,9 @@ namespace SophiApp.Customizations
                 _ = PowerShellService.Invoke($"auditpol / set / subcategory:\"{viewerGuid}\" / success:disable / failure:disable");
             }
 
-            Registry.LocalMachine.OpenSubKey(viewerAuditPath, true)
-                ?.DeleteValue(auditValueName, false);
-            File.Delete(viewerXmlPath);
+            Registry.LocalMachine.OpenSubKey(viewerAudit, true)?.DeleteValue(processCreationEnabled, false);
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, viewerAudit, processCreationEnabled);
+            File.Delete(viewerXml);
         }
 
         /// <summary>
@@ -2013,8 +1999,6 @@ namespace SophiApp.Customizations
                     .SetValue("*", "*");
                 Registry.LocalMachine.OpenSubKey(loggingPath, true)
                     ?.SetValue(enableLogging, 1, RegistryValueKind.DWord);
-                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: loggingPath, name: enableLogging, type: "DWORD", value: "1");
-                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: namesPath, name: "*", type: "SZ", value: "*");
                 return;
             }
 
@@ -2022,7 +2006,6 @@ namespace SophiApp.Customizations
                 ?.DeleteValue(enableLogging, false);
             Registry.LocalMachine.OpenSubKey(namesPath, true)
                 ?.DeleteValue("*", false);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, loggingPath, enableLogging);
         }
 
         /// <summary>
@@ -2038,13 +2021,11 @@ namespace SophiApp.Customizations
             {
                 Registry.LocalMachine.OpenOrCreateSubKey(loggingPath)
                     .SetValue(enableLogging, 1, RegistryValueKind.DWord);
-                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: loggingPath, name: enableLogging, type: "DWORD", value: "1");
                 return;
             }
 
             Registry.LocalMachine.OpenSubKey(loggingPath, true)
                 ?.DeleteValue(enableLogging, false);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, loggingPath, enableLogging);
         }
 
         /// <summary>
@@ -2073,33 +2054,11 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey(attachmentsPath, true)
                     ?.DeleteValue(zoneInformation, false);
-                GroupPolicyService.ClearLocalCache(scope: LGPOScope.User, path: attachmentsPath, name: zoneInformation, type: "DWORD", value: "1");
                 return;
             }
 
             Registry.CurrentUser.OpenOrCreateSubKey(attachmentsPath)
                 .SetValue(zoneInformation, 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearLocalCache(LGPOScope.User, attachmentsPath, zoneInformation);
-        }
-
-        /// <summary>
-        /// Set Windows script host state.
-        /// </summary>
-        /// <param name="enable">Windows script host state.</param>
-        public static void WindowsScriptHost(bool enable)
-        {
-            var scriptEnable = "enable";
-            var scriptPath = "Software\\Microsoft\\Windows Script Host\\Settings";
-
-            if (enable)
-            {
-                Registry.CurrentUser.OpenSubKey(scriptPath, true)
-                    ?.DeleteValue(scriptEnable, false);
-                return;
-            }
-
-            Registry.CurrentUser.OpenOrCreateSubKey(scriptPath)
-                .SetValue(scriptEnable, 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -2470,13 +2429,11 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey(storePath, true)
                     ?.DeleteValue(noStore, false);
-                GroupPolicyService.ClearLocalCache(LGPOScope.User, storePath, noStore);
                 return;
             }
 
             Registry.CurrentUser.OpenOrCreateSubKey(storePath)
                 .SetValue(noStore, 1, RegistryValueKind.DWord);
-            GroupPolicyService.ClearLocalCache(scope: LGPOScope.User, path: storePath, name: noStore, type: "DWORD", value: "1");
         }
 
         /// <summary>

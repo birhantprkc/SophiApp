@@ -138,9 +138,11 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool UserIsLogged()
         {
-            var personalPath = "Software\\Microsoft\\OneDrive\\Accounts\\Personal";
-            var userEmail = Registry.CurrentUser.OpenSubKey(personalPath)?.GetValue("UserEmail") as string ?? string.Empty;
-            return !string.IsNullOrWhiteSpace(userEmail);
+            var personalEmail = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\OneDrive\\Accounts\\Personal")
+                ?.GetValue("UserEmail") as string ?? string.Empty;
+            var businessEmail = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\OneDrive\\Accounts\\Business1")
+                ?.GetValue("UserEmail") as string ?? string.Empty;
+            return !(string.IsNullOrWhiteSpace(personalEmail) || string.IsNullOrWhiteSpace(businessEmail));
         }
 
         private void DeleteResources()

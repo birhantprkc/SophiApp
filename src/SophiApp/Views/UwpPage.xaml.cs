@@ -64,13 +64,7 @@ public sealed partial class UwpPage : Page, INotifyPropertyChanged
     /// </summary>
     public ObservableCollection<UIModel> UWPModels { get; }
 
-    private void PageUwp_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
-    {
-        CurrentWidth = ActualWidth;
-    }
+    private void PageUwp_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e) => CurrentWidth = ActualWidth;
 
-    private void OnPropertyChanged([CallerMemberName] string? name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
+    private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

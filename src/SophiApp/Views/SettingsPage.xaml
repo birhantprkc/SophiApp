@@ -5,162 +5,174 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:SophiApp.ControlTemplates"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:interaction="using:Microsoft.Xaml.Interactivity"
       xmlns:service="using:SophiApp.Services"
-      mc:Ignorable="d">
+      mc:Ignorable="d"
+      SizeChanged="PageSettings_SizeChanged">
 
-    <StackPanel IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock x:Uid="Page_Settings" Style="{StaticResource PageTitleTextStyle}"/>
+    <ScrollView>
+        <StackPanel IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Uid="Page_Settings" Style="{StaticResource PageTitleTextStyle}"/>
+            </StackPanel>
+            <controls:MadeForWindows Margin="2, 0, 0, 0"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <controls:ContentBlock x:Uid="SettingsPage_SelectedTheme"
+                                           Height="120"
+                                           Margin="0, 0, 10, 10">
+                        <controls:ContentBlock.Content>
+                            <ComboBox Width="260"
+                                      ItemsSource="{x:Bind ViewModel.Themes, Mode=OneWay}"
+                                      SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}"
+                                      DisplayMemberPath="Description"/>
+                        </controls:ContentBlock.Content>
+                    </controls:ContentBlock>
+
+                    <controls:ContentBlock x:Uid="SettingsPage_FontOptions"
+                                           Height="200"
+                                           Margin="0, 0, 10, 10">
+                        <controls:ContentBlock.Content>
+                            <StackPanel Width="256">
+                                <Slider x:Uid="SettingsPage_TitleFontSize"
+                                        Minimum="{x:Bind ViewModel.FontOptions.TitleTextMinSize, Mode=OneWay}"
+                                        Maximum="{x:Bind ViewModel.FontOptions.TitleTextMaxSize, Mode=OneWay}"
+                                        Value="{x:Bind ViewModel.FontOptions.TitleTextSize, Mode=TwoWay}"
+                                        StepFrequency="2"
+                                        Margin="0, 0, 0, 15"/>
+
+                                <Slider x:Uid="SettingsPage_DescriptionFontSize"
+                                        Minimum="{x:Bind ViewModel.FontOptions.DescriptionTextMinSize, Mode=OneWay}"
+                                        Maximum="{x:Bind ViewModel.FontOptions.DescriptionTextMaxSize, Mode=OneWay}"
+                                        Value="{x:Bind ViewModel.FontOptions.DescriptionTextSize, Mode=TwoWay}"
+                                        StepFrequency="2"/>
+                            </StackPanel>
+                        </controls:ContentBlock.Content>
+                    </controls:ContentBlock>
+
+                    <controls:ContentBlock x:Uid="SettingsPage_LogPage"
+                                           Height="104"
+                                           Margin="0, 0, 10, 10">
+                        <controls:ContentBlock.Content>
+                            <Grid Margin="0, 0, 15, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="ShowLogPageCheckBox"
+                                          Grid.Column="0"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{x:Bind ViewModel.LogPageVisible, Mode=OneWay}"
+                                          Command="{x:Bind ViewModel.LogPageVisibleCommand, Mode=OneWay}"
+                                          CommandParameter="{Binding Path=IsChecked, ElementName=ShowLogPageCheckBox}"/>
+                                <TextBlock x:Uid="SettingsPage_ShowLogPage"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           Margin="0, 0, 5, 1"/>
+                            </Grid>
+                        </controls:ContentBlock.Content>
+                    </controls:ContentBlock>
+                </StackPanel>
+                <StackPanel x:Name="InfoPanel"
+                            Grid.Column="1">
+                    <controls:ContentBlock x:Uid="SettingsPage_AboutApp"
+                                           Height="120"
+                                           Margin="0, 0, 10, 10">
+                        <controls:ContentBlock.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Assets/AppLogo.svg"
+                                       Width="22"
+                                       Height="22"/>
+                                <TextBlock Text="{x:Bind ViewModel.Version, Mode=OneWay}"
+                                           Style="{StaticResource NormalTextStyle}"
+                                           Margin="10, 2, 0, 0"/>
+                                <TextBlock Text="{x:Bind ViewModel.Delimiter, Mode=OneWay}"
+                                           Style="{StaticResource NormalTextStyle}"
+                                           Margin="5, 1, 0, 0"/>
+                                <TextBlock Text="{x:Bind ViewModel.Build, Mode=OneWay}"
+                                           Style="{StaticResource NormalTextStyle}"
+                                           Margin="5, 2, 0, 0"
+                                           Foreground="{ThemeResource WindowAccent}"/>
+                            </StackPanel>
+                        </controls:ContentBlock.Content>
+                    </controls:ContentBlock>
+
+                    <controls:IconHyperlink x:Uid="App_GitHub"
+                                            Height="60"
+                                            Margin="0, 0, 10, 10"
+                                            ImageSource="/Assets/GitHub.svg"
+                                            Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                            CommandParameter="https://github.com/Sophia-Community/SophiApp"/>
+
+                    <controls:IconHyperlink x:Uid="App_Telegram"
+                                            Height="60"
+                                            Margin="0, 0, 10, 10"
+                                            ImageSource="/Assets/Telegram.svg"
+                                            Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                            CommandParameter="https://t.me/sophia_chat"/>
+
+                    <controls:IconHyperlink x:Uid="App_Discord"
+                                            Height="60"
+                                            Margin="0, 0, 10, 10"
+                                            ImageSource="/Assets/Discord.svg"
+                                            Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                            CommandParameter="https://discord.gg/sSryhaEv79"/>
+
+                    <controls:ContentBlock x:Uid="SettingsPage_Team"
+                                           Height="210"
+                                           Margin="0, 0, 10, 10">
+                        <controls:ContentBlock.Content>
+                            <StackPanel>
+                                <controls:TeamMateLink x:Uid="SettingsPage_ProjectManager"
+                                                       ImageSource="/Assets/GitHub.svg"
+                                                       Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                                       CommandParameter="https://github.com/farag2"/>
+
+                                <controls:TeamMateLink x:Uid="SettingsPage_DevelopedBy"
+                                                       ImageSource="/Assets/GitHub.svg"
+                                                       Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                                       CommandParameter="https://github.com/Inestic"/>
+
+                                <controls:TeamMateLink x:Uid="SettingsPage_UxDevelopment"
+                                                       ImageSource="/Assets/LinkedIn.svg"
+                                                       IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
+                                                       Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                                       CommandParameter="https://www.linkedin.com/in/vladimir-palii-132745a1"/>
+
+                                <controls:TeamMateLink x:Uid="SettingsPage_UiDevelopment"
+                                                       ImageSource="/Assets/LinkedIn.svg"
+                                                       IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
+                                                       Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                                       CommandParameter="https://www.linkedin.com/in/artenjoyers"/>
+
+                                <controls:TeamMateLink x:Uid="SettingsPage_Animation"
+                                                       ImageSource="/Assets/LinkedIn.svg"
+                                                       IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
+                                                       Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                                       CommandParameter="https://www.linkedin.com/in/tmcrowmax"/>
+
+                                <controls:TeamMateLink x:Uid="SettingsPage_AppTester"
+                                                       ImageSource="/Assets/GitHub.svg"
+                                                       Command="{x:Bind ViewModel.OpenLinkCommand}"
+                                                       CommandParameter="https://github.com/lowl1f3"/>
+                            </StackPanel>
+                        </controls:ContentBlock.Content>
+                    </controls:ContentBlock>
+                </StackPanel>
+            </Grid>
+            <interaction:Interaction.Behaviors>
+                <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageSettings, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="660">
+                    <interaction:ChangePropertyAction TargetObject="{Binding ElementName=InfoPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                </interaction:DataTriggerBehavior>
+                <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageSettings, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="660">
+                    <interaction:ChangePropertyAction TargetObject="{Binding ElementName=InfoPanel}" PropertyName="Visibility" Value="Visible"/>
+                </interaction:DataTriggerBehavior>
+            </interaction:Interaction.Behaviors>
         </StackPanel>
-        <controls:MadeForWindows Margin="2, 0, 0, 0"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="310"/>
-                <ColumnDefinition Width="15"/>
-                <ColumnDefinition Width="510"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <controls:ContentBlock x:Uid="SettingsPage_SelectedTheme"
-                                       Height="120"
-                                       Margin="0, 0, 0, 15">
-                    <controls:ContentBlock.Content>
-                        <ComboBox Width="260"
-                                  ItemsSource="{x:Bind ViewModel.Themes, Mode=OneWay}"
-                                  SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}"
-                                  DisplayMemberPath="Description"/>
-                    </controls:ContentBlock.Content>
-                </controls:ContentBlock>
-
-                <controls:ContentBlock x:Uid="SettingsPage_FontOptions"
-                                       Height="200"
-                                       Margin="0, 0, 0, 15">
-                    <controls:ContentBlock.Content>
-                        <StackPanel Width="256">
-                            <Slider x:Uid="SettingsPage_TitleFontSize"
-                                    Minimum="{x:Bind ViewModel.FontOptions.TitleTextMinSize, Mode=OneWay}"
-                                    Maximum="{x:Bind ViewModel.FontOptions.TitleTextMaxSize, Mode=OneWay}"
-                                    Value="{x:Bind ViewModel.FontOptions.TitleTextSize, Mode=TwoWay}"
-                                    StepFrequency="2"
-                                    Margin="0, 0, 0, 15"/>
-
-                            <Slider x:Uid="SettingsPage_DescriptionFontSize"
-                                    Minimum="{x:Bind ViewModel.FontOptions.DescriptionTextMinSize, Mode=OneWay}"
-                                    Maximum="{x:Bind ViewModel.FontOptions.DescriptionTextMaxSize, Mode=OneWay}"
-                                    Value="{x:Bind ViewModel.FontOptions.DescriptionTextSize, Mode=TwoWay}"
-                                    StepFrequency="2"/>
-                        </StackPanel>
-                    </controls:ContentBlock.Content>
-                </controls:ContentBlock>
-
-                <controls:ContentBlock x:Uid="SettingsPage_LogPage"
-                                       Height="120"
-                                       Margin="0, 0, 0, 15">
-                    <controls:ContentBlock.Content>
-                        <Grid Margin="0, 0, 15, 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="ShowLogPageCheckBox"
-                                      Grid.Column="0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{x:Bind ViewModel.LogPageVisible, Mode=OneWay}"
-                                      Command="{x:Bind ViewModel.LogPageVisibleCommand, Mode=OneWay}"
-                                      CommandParameter="{Binding Path=IsChecked, ElementName=ShowLogPageCheckBox}"/>
-                            <TextBlock x:Uid="SettingsPage_ShowLogPage"
-                                       Grid.Column="1"
-                                       VerticalAlignment="Center"
-                                       Margin="0, 0, 5, 1"/>
-                        </Grid>
-                    </controls:ContentBlock.Content>
-                </controls:ContentBlock>
-            </StackPanel>
-            <StackPanel Grid.Column="2">
-                <controls:ContentBlock x:Uid="SettingsPage_AboutApp"
-                                       Height="120"
-                                       Margin="0, 0, 0, 15">
-                    <controls:ContentBlock.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Assets/AppLogo.svg"
-                                   Width="22"
-                                   Height="22"/>
-                            <TextBlock Text="{x:Bind ViewModel.Version, Mode=OneWay}"
-                                       Style="{StaticResource NormalTextStyle}"
-                                       Margin="10, 2, 0, 0"/>
-                            <TextBlock Text="{x:Bind ViewModel.Delimiter, Mode=OneWay}"
-                                       Style="{StaticResource NormalTextStyle}"
-                                       Margin="5, 1, 0, 0"/>
-                            <TextBlock Text="{x:Bind ViewModel.Build, Mode=OneWay}"
-                                       Style="{StaticResource NormalTextStyle}"
-                                       Margin="5, 2, 0, 0"
-                                       Foreground="{ThemeResource WindowAccent}"/>
-                        </StackPanel>
-                    </controls:ContentBlock.Content>
-                </controls:ContentBlock>
-
-                <controls:IconHyperlink x:Uid="App_GitHub"
-                                        Height="60"
-                                        Margin="0, 0, 0, 10"
-                                        ImageSource="/Assets/GitHub.svg"
-                                        Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                        CommandParameter="https://github.com/Sophia-Community/SophiApp"/>
-
-                <controls:IconHyperlink x:Uid="App_Telegram"
-                                        Height="60"
-                                        Margin="0, 0, 0, 10"
-                                        ImageSource="/Assets/Telegram.svg"
-                                        Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                        CommandParameter="https://t.me/sophia_chat"/>
-
-                <controls:IconHyperlink x:Uid="App_Discord"
-                                        Height="60"
-                                        Margin="0, 0, 0, 15"
-                                        ImageSource="/Assets/Discord.svg"
-                                        Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                        CommandParameter="https://discord.gg/sSryhaEv79"/>
-
-                <controls:ContentBlock x:Uid="SettingsPage_Team"
-                                       Height="210"
-                                       Margin="0, 0, 0, 15">
-                    <controls:ContentBlock.Content>
-                        <StackPanel>
-                            <controls:TeamMateLink x:Uid="SettingsPage_ProjectManager"
-                                                   ImageSource="/Assets/GitHub.svg"
-                                                   Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="https://github.com/farag2"/>
-
-                            <controls:TeamMateLink x:Uid="SettingsPage_DevelopedBy"
-                                                   ImageSource="/Assets/GitHub.svg"
-                                                   Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="https://github.com/Inestic"/>
-
-                            <controls:TeamMateLink x:Uid="SettingsPage_UxDevelopment"
-                                                   ImageSource="/Assets/LinkedIn.svg"
-                                                   IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
-                                                   Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="https://www.linkedin.com/in/vladimir-palii-132745a1"/>
-
-                            <controls:TeamMateLink x:Uid="SettingsPage_UiDevelopment"
-                                                   ImageSource="/Assets/LinkedIn.svg"
-                                                   IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
-                                                   Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="https://www.linkedin.com/in/artenjoyers"/>
-
-                            <controls:TeamMateLink x:Uid="SettingsPage_Animation"
-                                                   ImageSource="/Assets/LinkedIn.svg"
-                                                   IconMargin="{StaticResource SettingPageTeamMateLinkIconMargin}"
-                                                   Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="https://www.linkedin.com/in/tmcrowmax"/>
-
-                            <controls:TeamMateLink x:Uid="SettingsPage_AppTester"
-                                                   ImageSource="/Assets/GitHub.svg"
-                                                   Command="{x:Bind ViewModel.OpenLinkCommand}"
-                                                   CommandParameter="https://github.com/lowl1f3"/>
-                        </StackPanel>
-                    </controls:ContentBlock.Content>
-                </controls:ContentBlock>
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+    </ScrollView>
 </Page>

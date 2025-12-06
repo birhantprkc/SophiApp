@@ -79,8 +79,8 @@ public class InitializeService : IInitializeService
         }
         else
         {
-            App.MainWindow.Height = settingsService.AppWindowMinHeight;
-            App.MainWindow.Width = settingsService.AppWindowMinWidth;
+            App.MainWindow.Height = settingsService.AppWindowDefaultHeight;
+            App.MainWindow.Width = settingsService.AppWindowDefaultWidth;
             App.MainWindow.CenterOnScreen();
         }
 

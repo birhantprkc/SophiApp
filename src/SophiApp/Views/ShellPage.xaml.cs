@@ -10,13 +10,17 @@ using Microsoft.UI.Xaml.Media;
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
 using SophiApp.ViewModels;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.System;
 
 /// <summary>
 /// Implements the <see cref="ShellPage"/> class.
 /// </summary>
-public sealed partial class ShellPage : Page
+public sealed partial class ShellPage : Page, INotifyPropertyChanged
 {
+    private double currentWidth = default;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellPage"/> class.
     /// </summary>
@@ -25,6 +29,7 @@ public sealed partial class ShellPage : Page
     public ShellPage(ShellViewModel viewModel, ICommonDataService commonDataService)
     {
         InitializeComponent();
+        CurrentWidth = ActualWidth;
         ViewModel = viewModel;
         ViewModel.NavigationService.Frame = NavigationFrame;
         ViewModel.NavigationViewService.Initialize(NavigationViewControl);
@@ -35,11 +40,26 @@ public sealed partial class ShellPage : Page
     }
 
     /// <summary>
+    /// Property change event.
+    /// </summary>
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
     /// Gets <see cref="ShellViewModel"/>.
     /// </summary>
-    public ShellViewModel ViewModel
+    public ShellViewModel ViewModel { get; }
+
+    /// <summary>
+    /// Gets a value indicating current width.
+    /// </summary>
+    public double CurrentWidth
     {
-        get;
+        get => currentWidth;
+        private set
+        {
+            currentWidth = value;
+            OnPropertyChanged(nameof(CurrentWidth));
+        }
     }
 
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
@@ -62,6 +82,10 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
         args.Handled = result;
     }
+
+    private void PageShell_SizeChanged(object sender, SizeChangedEventArgs e) => CurrentWidth = ActualWidth;
+
+    private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {

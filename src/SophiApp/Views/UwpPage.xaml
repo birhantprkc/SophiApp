@@ -136,11 +136,11 @@
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=ForAllUsersCheckBox}" PropertyName="Visibility" Value="Visible"/>
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsBorder}" PropertyName="Visibility" Value="Visible"/>
             </interaction:DataTriggerBehavior>
-            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="1100">
+            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="1008">
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsContainerLayoutGrid}" PropertyName="MaximumRowsOrColumns" Value="2"/>
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=AboutAppIconTextBlock}" PropertyName="HorizontalAlignment" Value="Left"/>
             </interaction:DataTriggerBehavior>
-            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="1100">
+            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="1008">
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsContainerLayoutGrid}" PropertyName="MaximumRowsOrColumns" Value="3"/>
                 <interaction:ChangePropertyAction TargetObject="{Binding ElementName=AboutAppIconTextBlock}" PropertyName="HorizontalAlignment" Value="Center"/>
             </interaction:DataTriggerBehavior>

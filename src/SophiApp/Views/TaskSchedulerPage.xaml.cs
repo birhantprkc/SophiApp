@@ -63,8 +63,5 @@ public sealed partial class TaskSchedulerPage : Page, INotifyPropertyChanged
         CurrentWidth = ActualWidth;
     }
 
-    private void OnPropertyChanged([CallerMemberName] string? name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
+    private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

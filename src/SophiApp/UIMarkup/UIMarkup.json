@@ -812,8 +812,8 @@
     "Type": "CheckBox",
     "Tag": "UWP",
     "ViewId": 400,
-    "Windows10Support": "False",
-    "Windows11Support": "True"
+    "Windows10Support": "True",
+    "Windows11Support": "False"
   },
   {
     "Name": "CortanaAutostart",
@@ -936,7 +936,7 @@
     "Windows11Support": "True"
   },
   {
-    "Name": "WindowsScriptHost",
+    "Name": "WindowsSandbox",
     "Type": "CheckBox",
     "Tag": "Security",
     "ViewId": 608,
@@ -944,18 +944,10 @@
     "Windows11Support": "True"
   },
   {
-    "Name": "WindowsSandbox",
-    "Type": "CheckBox",
-    "Tag": "Security",
-    "ViewId": 609,
-    "Windows10Support": "True",
-    "Windows11Support": "True"
-  },
-  {
     "Name": "LocalSecurityAuthority",
     "Type": "CheckBox",
     "Tag": "Security",
-    "ViewId": 610,
+    "ViewId": 609,
     "Windows10Support": "False",
     "Windows11Support": "True"
   },

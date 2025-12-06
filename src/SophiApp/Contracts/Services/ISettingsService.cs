@@ -13,6 +13,16 @@ using Windows.Graphics;
 public interface ISettingsService
 {
     /// <summary>
+    /// Gets app <see cref="MainWindow"/> default width.
+    /// </summary>
+    double AppWindowDefaultWidth { get; }
+
+    /// <summary>
+    /// Gets app <see cref="MainWindow"/> default height.
+    /// </summary>
+    double AppWindowDefaultHeight { get; }
+
+    /// <summary>
     /// Gets app <see cref="MainWindow"/> minimal height.
     /// </summary>
     double AppWindowMinHeight { get; }

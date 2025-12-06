@@ -925,7 +925,7 @@ namespace SophiApp.Customizations
         public static bool NetworkAdaptersSavePower()
         {
             return PowerShellService.TurnOffDeviceNetworkAdapterExist()
-                ?? throw new InvalidOperationException("There is no network adapters which has AllowComputerToTurnOffDevice property");
+                ?? throw new InvalidOperationException("There are no network adapter that supports AllowComputerToTurnOffDevice property");
         }
 
         /// <summary>
@@ -956,10 +956,14 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int WinPrtScrFolder()
         {
-            var userShellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
-            var prtScrPath = Registry.CurrentUser.OpenSubKey(userShellPath)
+            if (OneDriveService.UserIsLogged())
+            {
+                throw new InvalidOperationException("Please log out from OneDrive account");
+            }
+
+            var prtScrPath = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")
                 ?.GetValue("{B7BEDE81-DF94-4682-A7D8-57A52620B86F}") as string ?? string.Empty;
-            var desktopPath = Registry.CurrentUser.OpenSubKey(userShellPath)
+            var desktopPath = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")
                 ?.GetValue("Desktop") as string;
             return prtScrPath.Equals(desktopPath) ? 1 : 2;
         }
@@ -1505,18 +1509,6 @@ else
             var saveZonePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Attachments";
             var saveZoneInformation = Registry.CurrentUser.OpenSubKey(saveZonePath)?.GetValue("SaveZoneInformation") as int? ?? -1;
             return saveZoneInformation.Equals(1);
-        }
-
-        /// <summary>
-        /// Get Windows script host state.
-        /// </summary>
-        public static bool WindowsScriptHost()
-        {
-            var blockingTasks = new[] { "SoftwareDistribution", "Temp", "Windows Cleanup", "Windows Cleanup Notification" };
-            var blockingTasksExist = ScheduledTaskService.FindTaskOrDefault(blockingTasks).Any(task => task?.State == TaskState.Ready);
-            var scriptHostPath = "Software\\Microsoft\\Windows Script Host\\Settings";
-            var scriptHostIsEnabled = Registry.CurrentUser.OpenSubKey(scriptHostPath)?.GetValue("Enabled") as int? ?? -1;
-            return blockingTasksExist ? throw new InvalidOperationException("One of \"SoftwareDistribution\", \"Temp\", \"Windows Cleanup\", \"Windows Cleanup Notification\" in the Task Scheduler is in Ready state. Please check 'Sophia' folder in the Task Scheduler") : !scriptHostIsEnabled.Equals(0);
         }
 
         /// <summary>
