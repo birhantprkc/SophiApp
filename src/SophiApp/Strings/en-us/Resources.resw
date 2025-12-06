@@ -145,19 +145,13 @@
     <value>&lt;toast duration="Long" scenario="reminder"&gt;
 &lt;visual&gt;
 	&lt;binding template="ToastGeneric"&gt;
-		&lt;text&gt;The new version is available&lt;/text&gt;
 		&lt;text&gt;Version {0} is available&lt;/text&gt;
-		&lt;group&gt;
-			&lt;subgroup&gt;
-				&lt;text hint-style="body" hint-wrap="true"&gt;{1}&lt;/text&gt;
-			&lt;/subgroup&gt;
-		&lt;/group&gt;
 	&lt;/binding&gt;
 &lt;/visual&gt;
 &lt;audio src="ms-winsoundevent:notification.default" /&gt;
 &lt;actions&gt;
-	&lt;action arguments="{1}" content="Download" activationType="protocol"/&gt;
-	&lt;action arguments="dismiss" content="" activationType="system"/&gt;
+	&lt;action content="Download" arguments="{1}" activationType="protocol"/&gt;
+	&lt;action content="" arguments="dismiss" activationType="system"/&gt;
 &lt;/actions&gt;
 &lt;/toast&gt;</value>
   </data>
@@ -201,7 +195,7 @@
     <value>Developed by</value>
   </data>
   <data name="SettingsPage_ProjectManager.WorkedOn" xml:space="preserve">
-    <value>Project Manager</value>
+    <value>Product Manager</value>
   </data>
   <data name="SettingsPage_UiDevelopment.WorkedOn" xml:space="preserve">
     <value>UI development</value>
@@ -255,7 +249,7 @@
     <value>Checking whether Windows was broken by 3rd party harmful tweakers and trojans</value>
   </data>
   <data name="OsRequirementsFailure_MalwareDetected" xml:space="preserve">
-    <value>The Windows stability may have been compromised by using {0}.</value>
+    <value>Windows stability may have been compromised by using {0}.</value>
   </data>
   <data name="OsRequirements_Malware_BloatwareRemoval" xml:space="preserve">
     <value>Bloatware Removal</value>
@@ -324,7 +318,7 @@
     <value>File "{0}" broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_RebootRequired" xml:space="preserve">
-    <value>The PC is waiting to be restarted.</value>
+    <value>PC is waiting to be restarted.</value>
   </data>
   <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
     <value>Checking a pending reboot</value>
@@ -345,7 +339,7 @@
     <value>Enable the telemetry service</value>
   </data>
   <data name="UIModel_DiagTrackService_Description" xml:space="preserve">
-    <value>Configure the Connected User Experiences and Telemetry (DiagTrack) service, and connection for the Unified Telemetry Client Outbound Traffic. Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub.</value>
+    <value>Configure "Connected User Experiences and Telemetry" (DiagTrack) service and connection for the Unified Telemetry Client Outbound Traffic. Disabling "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub.</value>
   </data>
   <data name="UIModel_DiagnosticDataLevel_Title" xml:space="preserve">
     <value>Configure Windows level of diagnostic data gathering</value>
@@ -363,7 +357,7 @@
     <value>Configure Windows Error Reporting</value>
   </data>
   <data name="UIModel_ErrorReporting_Description" xml:space="preserve">
-    <value>The error reporting feature enables users to notify Microsoft of application faults, kernel faults, unresponsive applications, and other application specific problems. Microsoft can use the error reporting feature to provide customers with troubleshooting information, solutions, or updates for their specific problems.</value>
+    <value>Error reporting feature enables users to notify Microsoft of application faults, kernel faults, unresponsive applications, and other application specific problems. Microsoft can use error reporting feature to provide customers with troubleshooting information, solutions, or updates for their specific problems.</value>
   </data>
   <data name="UIModel_FeedbackFrequency_Title" xml:space="preserve">
     <value>Configure feedback frequency</value>
@@ -387,7 +381,7 @@
     <value>Use sign-in info to automatically finish setting up device after an update</value>
   </data>
   <data name="UIModel_SigninInfo_Description" xml:space="preserve">
-    <value>Some updates require you to restart your PC and afterwards sign in to Windows in order to finish installing the update, which means you might not be able to use your PC until the update is finished. Windows helps prevents this by allowing Windows to use your sign in info to create a special token. This token is used to automatically sign in after a restart, finish setting up your PC, and then lock your PC to keep your account and personal info safe.</value>
+    <value>Some updates require you to restart your PC and afterwards sign in to Windows in order to finish installing update, which means you might not be able to use your PC until update is finished. Windows helps prevents this by allowing Windows to use your sign in info to create a special token. This token is used to automatically sign in after a restart, finish setting up your PC, and then lock your PC to keep your account and personal info safe.</value>
   </data>
   <data name="UIModel_LanguageListAccess_Title" xml:space="preserve">
     <value>Let websites show me locally relevant content by accessing language my list</value>
@@ -420,7 +414,7 @@
     <value>Enable tailored experiences</value>
   </data>
   <data name="UIModel_TailoredExperiences_Description" xml:space="preserve">
-    <value>Let Microsoft offer you tailored expereinces based on the diagnostic data setting you have chosen.</value>
+    <value>Let Microsoft offer you tailored expereinces based on diagnostic data setting you have chosen.</value>
   </data>
   <data name="UIModel_BingSearch_Title" xml:space="preserve">
     <value>Enable Bing search in the Start Menu</value>
@@ -444,7 +438,7 @@
     <value>Enable Xbox Game Bar</value>
   </data>
   <data name="UIModel_XboxGameBar_Description" xml:space="preserve">
-    <value>To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before.</value>
+    <value>Disable Xbox Game Bar app (even if you uninstalled it before) to prevent a popup message "You'll need a new app to open this ms-gamingoverlay".</value>
   </data>
   <data name="UIModel_XboxGameTips_Title" xml:space="preserve">
     <value>Xbox Game Bar tips</value>
@@ -453,19 +447,19 @@
     <value>Enable Hardware-accelerated GPU scheduling</value>
   </data>
   <data name="UIModel_GPUScheduling_Description" xml:space="preserve">
-    <value>Reduce latency and improve performance. You'll need to restart your PC to have your changes take effect. With the Hardware-Accelerated GPU Scheduling feature, the GPU's scheduling processor and memory (VRAM) take over the same work and runs it in batches to render the frames. This allows your GPU to reduce the load on your CPU and improve latency, potentially making your PC run better. However, don’t expect GPU hardware scheduling to have a significant impact on your computer performance.</value>
+    <value>Reduce latency and improve performance. You'll need to restart your PC to have your changes take effect. With Hardware-Accelerated GPU Scheduling feature, GPU's scheduling processor and memory (VRAM) take over the same work and runs it in batches to render the frames. This allows your GPU to reduce load on your CPU and improve latency, potentially making your PC run better. However, don’t expect GPU hardware scheduling to have a significant impact on your computer performance.</value>
   </data>
   <data name="UIModel_CleanupTask_Title" xml:space="preserve">
     <value>Create Windows Cleanup scheduled task</value>
   </data>
   <data name="UIModel_CleanupTask_Description" xml:space="preserve">
-    <value>This function creates "Windows Cleanup" (main task) and "Windows Cleanup Notification" (task to generate a pop-up notification) tasks in the Task Scheduler to clean up unused files and Windows updates. A native notification prompting you to run the task will pop up before the cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+    <value>This function creates "Windows Cleanup" (main task) and "Windows Cleanup Notification" (task to generate a pop-up notification) tasks in the Task Scheduler to clean up unused files and Windows updates. A native notification prompting you to run the task will pop up before cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
   </data>
   <data name="UIModel_SoftwareDistributionTask_Title" xml:space="preserve">
     <value>Create SoftwareDistribution scheduled task</value>
   </data>
   <data name="UIModel_SoftwareDistributionTask_Description" xml:space="preserve">
-    <value>This function creates "SoftwareDistribution" task in the Task Scheduler to clean up "%SystemRoot%\SoftwareDistribution\Download" folder where the installation files for all Windows updates are downloaded. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+    <value>This function creates "SoftwareDistribution" task in the Task Scheduler to clean up %SystemRoot%\SoftwareDistribution\Download folder where Windows updates installation files are downloaded. The task will wait until Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
   </data>
   <data name="UIModel_TempTask_Title" xml:space="preserve">
     <value>Create Temp scheduled task</value>
@@ -489,7 +483,7 @@
     <value>Applying customizations</value>
   </data>
   <data name="OsRequirementsFailure_EventLogStopped" xml:space="preserve">
-    <value>The Event Viewer broken or removed from Windows.</value>
+    <value>The Event Viewer is broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_MsStoreRemoved" xml:space="preserve">
     <value>Microsoft Store broken or removed from Windows.</value>
@@ -567,28 +561,25 @@
     <value>Running Microsoft Defender in a sandbox ensures that in the unlikely event of a compromise, malicious actions are limited to the isolated environment, protecting the rest of the system from harm. The sandbox for Microsoft Defender is enabled by default in Windows 11.</value>
   </data>
   <data name="UIModel_EventViewerCustomView_Description" xml:space="preserve">
-    <value>The "Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled.</value>
+    <value>"Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled.</value>
   </data>
   <data name="UIModel_NetworkProtection_Description" xml:space="preserve">
-    <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the internet.</value>
+    <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the Internet.</value>
   </data>
   <data name="UIModel_PowerShellModulesLogging_Description" xml:space="preserve">
-    <value>Pipeline execution events for members of the specified modules are recorded in the Windows PowerShell log in the Event Viewer. For the built-in Windows PowerShell 5.1 only.</value>
+    <value>Pipeline execution events for members of the specified modules are recorded in Windows PowerShell log in the Event Viewer. For built-in Windows PowerShell 5.1 only.</value>
   </data>
   <data name="UIModel_PowerShellScriptsLogging_Description" xml:space="preserve">
-    <value>Windows PowerShell will log the processing of commands, script blocks, functions, and scripts – whether invoked interactively, or through automation to the "Applications and Services Logs\Microsoft\Windows\PowerShell\Operational" event log. For the built-in Windows PowerShell 5.1 only.</value>
+    <value>Windows PowerShell will log processing of commands, script blocks, functions, and scripts – whether invoked interactively, or through automation to "Applications and Services Logs\Microsoft\Windows\PowerShell\Operational" event log. For the built-in Windows PowerShell 5.1 only.</value>
   </data>
   <data name="UIModel_PUAppsDetection_Title" xml:space="preserve">
     <value>Enable detection in Microsoft Defender for potentially unwanted applications and block them</value>
   </data>
   <data name="UIModel_SaveZoneInformation_Description" xml:space="preserve">
-    <value>The Attachment Manager is included in Windows to protect from unsafe files downloaded from the Internet. If the Attachment Manager identifies an attachment that might be unsafe, the Attachment Manager prevents (blocks) you from opening the file, or it warns you before you open the file. The metadata is saved as an Alternate Data Stream (ADS). If you wish to unblock a downloaded file manually, you can do so by right-clicking it, selecting Properties and clicking on "Unblock".</value>
+    <value>Attachment Manager is included in Windows to protect from unsafe files downloaded from the Internet. If Attachment Manager identifies an attachment that might be unsafe, Attachment Manager prevents (blocks) you from opening file, or it warns you before you open file. Metadata is saved as an Alternate Data Stream (ADS). If you wish to unblock a downloaded file manually, you can do so by right-clicking it, selecting Properties and clicking on "Unblock".</value>
   </data>
   <data name="UIModel_WindowsSandbox_Description" xml:space="preserve">
-    <value>Windows Sandbox provides a lightweight desktop environment to safely run applications in isolation. Software installed inside the Windows Sandbox environment remains sandboxed and runs separately from the host machine. A sandbox is temporary. When it's closed, all the software and files and the state are deleted. You get a brand-new instance of the sandbox every time you open the application. Applicable only to Professional, Enterprise and Education editions.</value>
-  </data>
-  <data name="UIModel_WindowsScriptHost_Description" xml:space="preserve">
-    <value>Disabling this feature blocks the execution of .js and .vbs scripts, preventing malicious JScript scripts from running.</value>
+    <value>Windows Sandbox provides a lightweight desktop environment to safely run applications in isolation. Software installed inside Windows Sandbox environment remains sandboxed and runs separately from host machine. A sandbox is temporary. When it's closed, all software and files and state are deleted. You get a brand-new instance of the sandbox every time you open the application. Applicable only to Professional, Enterprise and Education editions.</value>
   </data>
   <data name="EventViewerCustomView_ProcessCreationXml_Description" xml:space="preserve">
     <value>Process creation and command-line auditing events.</value>
@@ -600,7 +591,7 @@
     <value>No data to display, or necessary packages were removed</value>
   </data>
   <data name="UIModel_LocalSecurityAuthority_Description" xml:space="preserve">
-    <value>Protection for the LSA is provided to prevent reading memory and code injection by nonprotected processes. This feature provides added security for the credentials that LSA stores and manages.</value>
+    <value>Protection for the Local Security Authority (LSA) is provided to prevent reading memory and code injection by nonprotected processes. This feature provides added security for the credentials that LSA stores and manages.</value>
   </data>
   <data name="UIModel_LocalSecurityAuthority_Title" xml:space="preserve">
     <value>Enable protection for the Local Security Authority (LSA) process without UEFI lock to prevent code injection</value>
@@ -609,7 +600,7 @@
     <value>Enable sandboxing for Microsoft Defender</value>
   </data>
   <data name="UIModel_EventViewerCustomView_Title" xml:space="preserve">
-    <value>Create the "Process Creation" Custom View in the Event Viewer</value>
+    <value>Create "Process Creation" Custom View in the Event Viewer</value>
   </data>
   <data name="UIModel_NetworkProtection_Title" xml:space="preserve">
     <value>Enable Microsoft Defender Exploit Guard network protection</value>
@@ -625,9 +616,6 @@
   </data>
   <data name="UIModel_WindowsSandbox_Title" xml:space="preserve">
     <value>Enable Windows Sandbox</value>
-  </data>
-  <data name="UIModel_WindowsScriptHost_Title" xml:space="preserve">
-    <value>Enable Windows Script Host</value>
   </data>
   <data name="TaskScheduler_WindowsCleanup_Description" xml:space="preserve">
     <value>Cleaning up Windows unused files and updates using built-in Disk cleanup app. Scheduled task can be run only if user {0} logged into the system.</value>
@@ -648,7 +636,7 @@
     <value>Run</value>
   </data>
   <data name="TaskSchedulerPage_AboutTasks.Text" xml:space="preserve">
-    <value>The scheduled tasks options below are sufficient enough to keep your Windows OS clean. There is no need to constantly clean more system folders as advised from the Internet.</value>
+    <value>The scheduled tasks options below are sufficient enough to keep your Windows clean. There is no need to constantly clean more system folders as advised from the Internet.</value>
   </data>
   <data name="SettingsPage_FontOptions.Title" xml:space="preserve">
     <value>UI font sizes</value>
@@ -954,7 +942,7 @@
     <value>When you set a JPEG image as the desktop wallpaper or slideshow, the operating system reduces the quality of the original image to 85%. A PNG image as your desktop background wallpaper or slideshow is not affected.</value>
   </data>
   <data name="UIModel_NewsInterests_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+    <value>Changes will be made via Windows API without disabling a UCDP driver.</value>
   </data>
   <data name="UIModel_OneDriveFileExplorerAd_Description" xml:space="preserve">
     <value>They are designed to help you by providing quick, easy information about things you can do or new features you can try to have a better experience with Windows.</value>
@@ -1050,7 +1038,7 @@
     <value>Defendnot</value>
   </data>
   <data name="AppFatalError.Text" xml:space="preserve">
-    <value>Perhaps the root cause of the exception is due to the use a Defender tampering utility like "Defender Killer".</value>
+    <value>Perhaps the root cause of the exception is due to a usage a Defender tampering utility like "Defender Killer".</value>
   </data>
   <data name="UIModel_ActiveHours_Title" xml:space="preserve">
     <value>Enable Active hours for Windows updating</value>
@@ -1191,7 +1179,7 @@
     <value>Set Windows Terminal as default terminal app</value>
   </data>
   <data name="UIModel_DeliveryOptimization_Description" xml:space="preserve">
-    <value>Windows Update Delivery Optimization works by letting you get Windows updates and Microsoft Store apps from sources in addition to Microsoft, like other PCs on your local network, or PCs on the Internet that are downloading the same files. Delivery Optimization also sends updates and apps from your PC to other PCs on your local network or PCs on the Internet, based on your settings. Sharing this data between PCs helps reduce the Internet bandwidth that's needed to keep more than one device up to date or can make downloads more successful if you have a limited or unreliable Internet connection.</value>
+    <value>Windows Update Delivery Optimization works by letting you get Windows updates and Microsoft Store apps from other PCs on your local network or PCs in the Internet that downloaded the same files. Delivery Optimization also sends updates and apps from your PC to other PCs on your local network or PCs in the Internet, based on your settings. Sharing this data between PCs helps reduce the Internet bandwidth that's needed to keep more than one device up to date or can make downloads more successful if you have a limited or unreliable Internet connection.</value>
   </data>
   <data name="UIModel_F1HelpPage_Description" xml:space="preserve">
     <value>By default, pressing F1 in Windows opens a help page in a default web browser, which may result in accidental opening web browser.</value>
@@ -1200,7 +1188,7 @@
     <value>By default, all File Explorer windows, including the desktop shell, run in a single explorer.exe process. If one File Explorer window hangs or crashes, it will cause the whole graphical shell to freeze until the process restarts. When enabled, each explorer.exe process will have its own process ID (PID) to improve stability of the explorer shell.</value>
   </data>
   <data name="UIModel_Hibernation_Description" xml:space="preserve">
-    <value>Hibernate is a power-saving state used primarily for laptops. Unlike sleep, hibernation puts your open documents and programs on the system drive to the C:\hiberfil.sys file, and turns off your computer. By default, the size of the hidden system protected file C:\hiberfil.sys is 40% of the total amount of RAM installed. Disabling hibernation will also disable fast startup, and hibernate will no longer show in the Power menu. Not recommended to turn off for laptops.</value>
+    <value>Hibernate is a power-saving state used primarily for laptops. Unlike sleep, hibernation puts your open documents and programs on the system drive to the C:\hiberfil.sys file, and turns off your computer. By default, the size of hidden system protected file C:\hiberfil.sys is 40% of the total amount of RAM installed. Disabling hibernation will also disable fast startup, and hibernate will no longer show in the Power menu. Not recommended to turn off for laptops.</value>
   </data>
   <data name="UIModel_InputMethod_Description" xml:space="preserve">
     <value>Your default keyboard layout is the one that’s automatically used at sign in screen.</value>
@@ -1209,7 +1197,7 @@
     <value>This function will force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1. If you do not use old applications, there's no need to enable this function.</value>
   </data>
   <data name="UIModel_NetworkAdaptersSavePower_Description" xml:space="preserve">
-    <value>Allow the computer to turn off the network adapter to save power and prevent them from going to sleep. Only currently used network adapter will be configured, even if your motherboard has an additional Wi-Fi alongside with an Ethernet one.</value>
+    <value>Allow PC to turn off the network adapter to save power and prevent them from going to sleep. Only currently used network adapter will be configured, even if your motherboard has an additional Wi-Fi alongside with an Ethernet one.</value>
   </data>
   <data name="UIModel_NetworkDiscovery_Description" xml:space="preserve">
     <value>Network Discovery makes PC discoverable in the same network, and other devices can see your PC, and vice versa.</value>
@@ -1218,13 +1206,13 @@
     <value>OneDrive user folder won't be removed if any file found there. Internet connection required to download OneDrive installer from Microsoft resource.</value>
   </data>
   <data name="UIModel_PowerPlan_Description" xml:space="preserve">
-    <value>"High performance" is not recommended to turn on for laptops. You need to know that enabling "High performance" power plan doesn't effect on your FPS conunt is video games. It only manages how your PC uses power.</value>
+    <value>"High performance" is not recommended to use on laptops. Also, enabling "High performance" power plan doesn't effect on your FPS. It only manages how your PC uses power.</value>
   </data>
   <data name="UIModel_RecommendedTroubleshooting_Description" xml:space="preserve">
     <value>Microsoft can recommend and run troubleshooters to fix issues. How much do you want Microsoft to help when there are issues on your device that troubleshooters might be able to fix?</value>
   </data>
   <data name="UIModel_ReservedStorage_Description" xml:space="preserve">
-    <value>Windows reseres some storage (~7GB) to facilitate proper performance and successful updates of device. Disabling reserved storage will free up space reserved by reserved storage (~7GB). After disabling the reserved storage will be deleted after the next update installation.</value>
+    <value>Windows reserves some storage (~7GB) to facilitate proper performance and successful updates of device. After disabling reserved storage will be deleted after the next update installation.</value>
   </data>
   <data name="UIModel_RestartDeviceAfterUpdate_Description" xml:space="preserve">
     <value>Restart as soon as possible (even during active hours) to finish updating, and notify 15 minutes before restarting.</value>
@@ -1239,7 +1227,7 @@
     <value>Restore previous folder windows at logon</value>
   </data>
   <data name="UIModel_SaveRestartableApps_Description" xml:space="preserve">
-    <value>If the program was run as administrator in the previous session, it will be restarted with non-admin permissions.</value>
+    <value>If program was run as administrator in the previous session, it will be restarted with non-admin permissions.</value>
   </data>
   <data name="UIModel_StickyShift_Description" xml:space="preserve">
     <value>Pressing Shift key 5 times in a row results in a popup appear which may interrupt your work.</value>
@@ -1248,7 +1236,7 @@
     <value>Automatically free up space and delete temporary files. Storage Sense runs when disk space is low. We clean enough space to help your system runs its best.</value>
   </data>
   <data name="UIModel_ThumbnailCacheRemoval_Description" xml:space="preserve">
-    <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable the thumbnail cache preset to stop the thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. The thumbnail cache is stored as .db files located in the hidden %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
+    <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable thumbnail cache preset to stop thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. Thumbnail cache is stored as .db files located in %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
   </data>
   <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
     <value>Get other Microsoft products updates, like Microsoft 365 (ex-Office), and automatically download and install the latest drivers alongside with Windows Updates.</value>

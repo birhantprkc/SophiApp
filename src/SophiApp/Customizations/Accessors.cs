@@ -210,8 +210,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StartRecommendationsTips()
         {
-            var irisPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var irisRecommendations = Registry.CurrentUser.OpenSubKey(irisPath)?.GetValue("Start_IrisRecommendations") as int? ?? -1;
+            var irisRecommendations = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_IrisRecommendations") as int? ?? -1;
             return !irisRecommendations.Equals(0);
         }
 
@@ -220,8 +219,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StartAccountNotifications()
         {
-            var notificationsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var accountNotifications = Registry.CurrentUser.OpenSubKey(notificationsPath)?.GetValue("Start_AccountNotifications") as int? ?? -1;
+            var accountNotifications = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_AccountNotifications") as int? ?? -1;
             return !accountNotifications.Equals(0);
         }
 
@@ -230,9 +228,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool ThisPC()
         {
-            var panelGuid = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
-            var panelPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel";
-            var panelValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue(panelGuid) as int? ?? -1;
+            var panelValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel")?.GetValue("{20D04FE0-3AEA-1069-A2D8-08002B30309D}") as int? ?? -1;
             return panelValue.Equals(0);
         }
 
@@ -241,8 +237,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool CheckBoxes()
         {
-            var checkPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var checkValue = Registry.CurrentUser.OpenSubKey(checkPath)?.GetValue("AutoCheckSelect") as int? ?? -1;
+            var checkValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("AutoCheckSelect") as int? ?? -1;
             return checkValue.Equals(1);
         }
 
@@ -251,8 +246,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool HiddenItems()
         {
-            var itemsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var itemsValue = Registry.CurrentUser.OpenSubKey(itemsPath)?.GetValue("Hidden") as int? ?? -1;
+            var itemsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Hidden") as int? ?? -1;
             return itemsValue.Equals(1);
         }
 
@@ -261,8 +255,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool FileExtensions()
         {
-            var extensionsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var extensionsValue = Registry.CurrentUser.OpenSubKey(extensionsPath)?.GetValue("HideFileExt") as int? ?? -1;
+            var extensionsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("HideFileExt") as int? ?? -1;
             return extensionsValue.Equals(0);
         }
 
@@ -271,8 +264,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool MergeConflicts()
         {
-            var mergePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var mergeValue = Registry.CurrentUser.OpenSubKey(mergePath)?.GetValue("HideMergeConflicts") as int? ?? -1;
+            var mergeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("HideMergeConflicts") as int? ?? -1;
             return mergeValue.Equals(0);
         }
 
@@ -281,8 +273,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int OpenFileExplorerTo()
         {
-            var filePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var fileValue = Registry.CurrentUser.OpenSubKey(filePath)?.GetValue("LaunchTo") as int? ?? -1;
+            var fileValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("LaunchTo") as int? ?? -1;
             return fileValue.Equals(1) ? 1 : 2;
         }
 
@@ -291,8 +282,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int FileExplorerRibbon()
         {
-            var ribbonPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Ribbon";
-            var ribbonValue = Registry.CurrentUser.OpenSubKey(ribbonPath)?.GetValue("MinimizedStateTabletModeOff") as int? ?? -1;
+            var ribbonValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Ribbon")?.GetValue("MinimizedStateTabletModeOff") as int? ?? -1;
             return ribbonValue.Equals(0) ? 1 : 2;
         }
 
@@ -301,8 +291,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool FileExplorerCompactMode()
         {
-            var compactModePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var compactModeValue = Registry.CurrentUser.OpenSubKey(compactModePath)?.GetValue("UseCompactMode") as int? ?? -1;
+            var compactModeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("UseCompactMode") as int? ?? -1;
             return !compactModeValue.Equals(0);
         }
 
@@ -311,8 +300,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool OneDriveFileExplorerAd()
         {
-            var notificationsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var notificationsValue = Registry.CurrentUser.OpenSubKey(notificationsPath)?.GetValue("ShowSyncProviderNotifications") as int? ?? -1;
+            var notificationsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("ShowSyncProviderNotifications") as int? ?? -1;
             return !notificationsValue.Equals(0);
         }
 
@@ -321,8 +309,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SnapAssist()
         {
-            var snapPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var snapValue = Registry.CurrentUser.OpenSubKey(snapPath)?.GetValue("SnapAssist") as int? ?? -1;
+            var snapValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("SnapAssist") as int? ?? -1;
             return !snapValue.Equals(0);
         }
 
@@ -331,8 +318,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int FileTransferDialog()
         {
-            var modePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\OperationStatusManager";
-            var modeValue = Registry.CurrentUser.OpenSubKey(modePath)?.GetValue("EnthusiastMode") as int? ?? -1;
+            var modeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\OperationStatusManager")?.GetValue("EnthusiastMode") as int? ?? -1;
             return modeValue.Equals(1) ? 1 : 2;
         }
 
@@ -341,8 +327,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RecycleBinDeleteConfirmation()
         {
-            var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            var shellValue = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("ShellState") as byte[] ?? new byte[5];
+            var shellValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("ShellState") as byte[] ?? new byte[5];
             return shellValue[4].Equals(51);
         }
 
@@ -351,8 +336,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool QuickAccessRecentFiles()
         {
-            var recentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            var recentValue = Registry.CurrentUser.OpenSubKey(recentPath)?.GetValue("ShowRecent") as int? ?? -1;
+            var recentValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("ShowRecent") as int? ?? -1;
             return !recentValue.Equals(0);
         }
 
@@ -361,8 +345,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool QuickAccessFrequentFolders()
         {
-            var frequentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            var frequentValue = Registry.CurrentUser.OpenSubKey(frequentPath)?.GetValue("ShowFrequent") as int? ?? -1;
+            var frequentValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("ShowFrequent") as int? ?? -1;
             return !frequentValue.Equals(0);
         }
 
@@ -371,8 +354,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int TaskbarAlignment()
         {
-            var taskbarPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var taskbarValue = Registry.CurrentUser.OpenSubKey(taskbarPath)?.GetValue("TaskbarAl") as int? ?? -1;
+            var taskbarValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarAl") as int? ?? -1;
             return taskbarValue.Equals(1) ? 1 : 2;
         }
 
@@ -381,16 +363,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool TaskbarWidgets()
         {
-            var appxWebExperience = "MicrosoftWindows.Client.WebExperience";
-
-            if (AppxPackagesService.PackageExist(appxWebExperience))
+            if (AppxPackagesService.PackageExist("MicrosoftWindows.Client.WebExperience"))
             {
-                var taskbarPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-                var taskbarValue = Registry.CurrentUser.OpenSubKey(taskbarPath)?.GetValue("TaskbarDa") as int? ?? -1;
+                var taskbarValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarDa") as int? ?? -1;
                 return !taskbarValue.Equals(0);
             }
 
-            throw new InvalidOperationException($"AppX package {appxWebExperience} is not installed");
+            throw new InvalidOperationException($"AppX package MicrosoftWindows.Client.WebExperience is not installed");
         }
 
         /// <summary>
@@ -398,10 +377,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int TaskbarSearchWindows10()
         {
-            var smallIconsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var searchModePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Search";
-            var smallIconsValue = Registry.CurrentUser.OpenSubKey(smallIconsPath)?.GetValue("TaskbarSmallIcons") as int? ?? -1;
-            var searchModeValue = Registry.CurrentUser.OpenSubKey(searchModePath)?.GetValue("SearchboxTaskbarMode") as int? ?? -1;
+            var smallIconsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarSmallIcons") as int? ?? -1;
+            var searchModeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("SearchboxTaskbarMode") as int? ?? -1;
 
             if (smallIconsValue.Equals(1))
             {
@@ -416,10 +393,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int TaskbarSearchWindows11()
         {
-            var smallIconsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var searchModePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Search";
-            var smallIconsValue = Registry.CurrentUser.OpenSubKey(smallIconsPath)?.GetValue("TaskbarSmallIcons") as int? ?? -1;
-            var searchModeValue = Registry.CurrentUser.OpenSubKey(searchModePath)?.GetValue("SearchboxTaskbarMode") as int? ?? -1;
+            var smallIconsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarSmallIcons") as int? ?? -1;
+            var searchModeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("SearchboxTaskbarMode") as int? ?? -1;
 
             if (smallIconsValue.Equals(1))
             {
@@ -440,10 +415,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SearchHighlightsWindows10()
         {
-            var contentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Feeds\\DSB";
-            var searchPath = "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings";
-            var dynamicContent = Registry.CurrentUser.OpenSubKey(contentPath)?.GetValue("ShowDynamicContent") as int? ?? -1;
-            var dynamicSearch = Registry.CurrentUser.OpenSubKey(searchPath)?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
+            var dynamicContent = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Feeds\\DSB")?.GetValue("ShowDynamicContent") as int? ?? -1;
+            var dynamicSearch = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings")?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
             return !(dynamicContent.Equals(0) && dynamicSearch.Equals(0));
         }
 
@@ -452,21 +425,16 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SearchHighlightsWindows11()
         {
-            var bingSearchEnabled = "BingSearchEnabled";
-            var disableSearchBox = "DisableSearchBoxSuggestions";
-            var searchPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Search";
-            var suggestionPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            var searchEnabled = Registry.CurrentUser.OpenSubKey(searchPath)?.GetValue(bingSearchEnabled) as int? ?? -1;
-            var searchSuggestions = Registry.CurrentUser.OpenSubKey(suggestionPath)?.GetValue(disableSearchBox) as int? ?? -1;
+            var searchEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("BingSearchEnabled") as int? ?? -1;
+            var searchSuggestions = Registry.CurrentUser.OpenSubKey( "Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
 
             if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
-                var blockedKey = searchEnabled.Equals(1) ? bingSearchEnabled : disableSearchBox;
+                var blockedKey = searchEnabled.Equals(1) ? "BingSearchEnabled" : "DisableSearchBoxSuggestions";
                 throw new InvalidOperationException($"SearchHighlights is already blocked within {blockedKey} registry keys. No need to block searchhighlights again.");
             }
 
-            var settingsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings";
-            var dynamicSearch = Registry.CurrentUser.OpenSubKey(settingsPath)?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
+            var dynamicSearch = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings")?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
             return !dynamicSearch.Equals(0);
         }
 
@@ -475,16 +443,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool CortanaButton()
         {
-            var appxCortana = "Microsoft.549981C3F5F10";
-
-            if (AppxPackagesService.PackageExist(appxCortana))
+            if (AppxPackagesService.PackageExist("Microsoft.549981C3F5F10"))
             {
-                var buttonPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-                var buttonValue = Registry.CurrentUser.OpenSubKey(buttonPath)?.GetValue("ShowCortanaButton") as int? ?? -1;
+                var buttonValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("ShowCortanaButton") as int? ?? -1;
                 return !buttonValue.Equals(0);
             }
 
-            throw new InvalidOperationException($"AppX package {appxCortana} is not installed");
+            throw new InvalidOperationException($"AppX package Microsoft.549981C3F5F10 is not installed");
         }
 
         /// <summary>
@@ -492,8 +457,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool TaskViewButton()
         {
-            var buttonPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var buttonValue = Registry.CurrentUser.OpenSubKey(buttonPath)?.GetValue("ShowTaskViewButton") as int? ?? -1;
+            var buttonValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("ShowTaskViewButton") as int? ?? -1;
             return !buttonValue.Equals(0);
         }
 
@@ -502,8 +466,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NewsInterests()
         {
-            var feedsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Feeds";
-            var feedsValue = Registry.CurrentUser.OpenSubKey(feedsPath)?.GetValue("ShellFeedsTaskbarViewMode") as int? ?? -1;
+            var feedsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Feeds")?.GetValue("ShellFeedsTaskbarViewMode") as int? ?? -1;
             return !feedsValue.Equals(2);
         }
 
@@ -512,8 +475,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool PeopleTaskbar()
         {
-            var peoplePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People";
-            var peopleValue = Registry.CurrentUser.OpenSubKey(peoplePath)?.GetValue("PeopleBand") as int? ?? -1;
+            var peopleValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People")?.GetValue("PeopleBand") as int? ?? -1;
             return !peopleValue.Equals(0);
         }
 
@@ -522,8 +484,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool MeetNow()
         {
-            var meetPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3";
-            var meetValue = Registry.CurrentUser.OpenSubKey(meetPath)?.GetValue("Settings") as byte[] ?? new byte[10];
+            var meetValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3")?.GetValue("Settings") as byte[] ?? new byte[10];
             return !meetValue[9].Equals(128);
         }
 
@@ -532,8 +493,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool WindowsInkWorkspace()
         {
-            var workspacePath = "Software\\Microsoft\\Windows\\CurrentVersion\\PenWorkspace";
-            var workspaceValue = Registry.CurrentUser.OpenSubKey(workspacePath)?.GetValue("PenWorkspaceButtonDesiredVisibility") as int? ?? -1;
+            var workspaceValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\PenWorkspace")?.GetValue("PenWorkspaceButtonDesiredVisibility") as int? ?? -1;
             return workspaceValue.Equals(1);
         }
 
@@ -542,8 +502,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NotificationAreaIcons()
         {
-            var trayPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-            var trayValue = Registry.CurrentUser.OpenSubKey(trayPath)?.GetValue("EnableAutoTray") as int? ?? -1;
+            var trayValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("EnableAutoTray") as int? ?? -1;
             return trayValue.Equals(0);
         }
 
@@ -552,8 +511,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SecondsInSystemClock()
         {
-            var clockPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var clockValue = Registry.CurrentUser.OpenSubKey(clockPath)?.GetValue("ShowSecondsInSystemClock") as int? ?? -1;
+            var clockValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("ShowSecondsInSystemClock") as int? ?? -1;
             return clockValue.Equals(1);
         }
 
@@ -562,8 +520,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int TaskbarCombine()
         {
-            var levelPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var levelValue = Registry.CurrentUser.OpenSubKey(levelPath)?.GetValue("TaskbarGlomLevel") as int? ?? -1;
+            var levelValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarGlomLevel") as int? ?? -1;
             return levelValue.Equals(-1) ? 1 : levelValue + 1;
         }
 
@@ -572,8 +529,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool TaskbarEndTask()
         {
-            var taskPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings";
-            var taskValue = Registry.CurrentUser.OpenSubKey(taskPath)?.GetValue("TaskbarEndTask") as int? ?? -1;
+            var taskValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings")?.GetValue("TaskbarEndTask") as int? ?? -1;
             return taskValue.Equals(1);
         }
 
@@ -582,9 +538,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int ControlPanelView()
         {
-            var panelPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel";
-            var viewValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue("AllItemsIconView") as int? ?? 0;
-            var pageValue = Registry.CurrentUser.OpenSubKey(panelPath)?.GetValue("StartupPage") as int? ?? 0;
+            var viewValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel")?.GetValue("AllItemsIconView") as int? ?? 0;
+            var pageValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel")?.GetValue("StartupPage") as int? ?? 0;
 
             if (viewValue.Equals(0) && pageValue.Equals(0))
             {
@@ -599,8 +554,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int WindowsColorMode()
         {
-            var themePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
-            var themeValue = Registry.CurrentUser.OpenSubKey(themePath)?.GetValue("SystemUsesLightTheme") as int? ?? -1;
+            var themeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize")?.GetValue("SystemUsesLightTheme") as int? ?? -1;
             return themeValue.Equals(0) ? 1 : 2;
         }
 
@@ -609,8 +563,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int AppColorMode()
         {
-            var themePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Feeds";
-            var themeValue = Registry.CurrentUser.OpenSubKey(themePath)?.GetValue("AppsUseLightTheme") as int? ?? -1;
+            var themeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Feeds")?.GetValue("AppsUseLightTheme") as int? ?? -1;
             return themeValue.Equals(0) ? 1 : 2;
         }
 
@@ -619,8 +572,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NewAppInstalledNotification()
         {
-            var alertPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            var alertValue = Registry.LocalMachine.OpenSubKey(alertPath)?.GetValue("NoNewAppAlert") as int? ?? -1;
+            var alertValue = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("NoNewAppAlert") as int? ?? -1;
             return !alertValue.Equals(1);
         }
 
@@ -629,8 +581,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool FirstLogonAnimation()
         {
-            var logonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
-            var logonValue = Registry.LocalMachine.OpenSubKey(logonPath)?.GetValue("EnableFirstLogonAnimation") as int? ?? -1;
+            var logonValue = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon")?.GetValue("EnableFirstLogonAnimation") as int? ?? -1;
             return !logonValue.Equals(0);
         }
 
@@ -639,8 +590,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int JPEGWallpapersQuality()
         {
-            var qualityPath = "Control Panel\\Desktop";
-            var qualityValue = Registry.CurrentUser.OpenSubKey(qualityPath)?.GetValue("JPEGImportQuality") as int? ?? -1;
+            var qualityValue = Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop")?.GetValue("JPEGImportQuality") as int? ?? -1;
             return qualityValue.Equals(100) ? 1 : 2;
         }
 
@@ -649,8 +599,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool ShortcutsSuffix()
         {
-            var shortcutsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\NamingTemplates";
-            var shortcutsValue = Registry.CurrentUser.OpenSubKey(shortcutsPath)?.GetValue("ShortcutNameTemplate") as string ?? string.Empty;
+            var shortcutsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\NamingTemplates")?.GetValue("ShortcutNameTemplate") as string ?? string.Empty;
             return !shortcutsValue.Equals("%s.lnk");
         }
 
@@ -659,8 +608,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool PrtScnSnippingTool()
         {
-            var snippingPath = "Control Panel\\Keyboard";
-            var snippingValue = Registry.CurrentUser.OpenSubKey(snippingPath)?.GetValue("PrintScreenKeyForSnippingEnabled") as int? ?? -1;
+            var snippingValue = Registry.CurrentUser.OpenSubKey("Control Panel\\Keyboard")?.GetValue("PrintScreenKeyForSnippingEnabled") as int? ?? -1;
             return snippingValue.Equals(1);
         }
 
@@ -677,8 +625,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool AeroShaking()
         {
-            var shakingPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var shakingValue = Registry.CurrentUser.OpenSubKey(shakingPath)?.GetValue("DisallowShaking") as int? ?? -1;
+            var shakingValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("DisallowShaking") as int? ?? -1;
             return shakingValue.Equals(0);
         }
 
@@ -717,8 +664,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NavigationPaneExpand()
         {
-            var panePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var paneValue = Registry.CurrentUser.OpenSubKey(panePath)?.GetValue("NavPaneExpandToCurrentFolder") as int? ?? -1;
+            var paneValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("NavPaneExpandToCurrentFolder") as int? ?? -1;
             return !paneValue.Equals(0);
         }
 
@@ -727,8 +673,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RecentlyAddedApps()
         {
-            var appsPath = "Software\\Policies\\Microsoft\\Windows\\Explorer";
-            var appsValue = Registry.LocalMachine.OpenSubKey(appsPath)?.GetValue("HideRecentlyAddedApps") as int? ?? -1;
+            var appsValue = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("HideRecentlyAddedApps") as int? ?? -1;
             return !appsValue.Equals(1);
         }
 
@@ -737,8 +682,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool AppSuggestions()
         {
-            var contentPath = "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager";
-            var contentValue = Registry.CurrentUser.OpenSubKey(contentPath)?.GetValue("SubscribedContent-338388Enabled") as int? ?? -1;
+            var contentValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager")?.GetValue("SubscribedContent-338388Enabled") as int? ?? -1;
             return !contentValue.Equals(0);
         }
 
@@ -747,8 +691,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int StartLayout()
         {
-            var layoutPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-            var layoutValue = Registry.CurrentUser.OpenSubKey(layoutPath)?.GetValue("Start_Layout") as int? ?? 0;
+            var layoutValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_Layout") as int? ?? 0;
             return layoutValue + 1;
         }
 
@@ -804,10 +747,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StorageSense()
         {
-            var policyPath = "Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy";
-            var storagePolicy01 = Registry.CurrentUser.OpenSubKey(policyPath)?.GetValue("01") as int? ?? -1;
-            var storagePolicy04 = Registry.CurrentUser.OpenSubKey(policyPath)?.GetValue("04") as int? ?? -1;
-            var storagePolicy2048 = Registry.CurrentUser.OpenSubKey(policyPath)?.GetValue("2048") as int? ?? -1;
+            var storagePolicy01 = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy")?.GetValue("01") as int? ?? -1;
+            var storagePolicy04 = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy")?.GetValue("04") as int? ?? -1;
+            var storagePolicy2048 = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy")?.GetValue("2048") as int? ?? -1;
             return storagePolicy01.Equals(1) && storagePolicy04.Equals(1) && storagePolicy2048.Equals(30);
         }
 
@@ -856,8 +798,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool DeliveryOptimization()
         {
-            var settingsPath = "S-1-5-20\\Software\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Settings";
-            var isEnabled = Registry.Users.OpenSubKey(settingsPath)?.GetValue("DownloadMode") as int? ?? -1;
+            var isEnabled = Registry.Users.OpenSubKey("S-1-5-20\\Software\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Settings")?.GetValue("DownloadMode") as int? ?? -1;
             return !isEnabled.Equals(0);
         }
 
@@ -866,8 +807,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool WindowsManageDefaultPrinter()
         {
-            var printerPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(printerPath)?.GetValue("LegacyDefaultPrinterMode") as int? ?? -1;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows")?.GetValue("LegacyDefaultPrinterMode") as int? ?? -1;
             return !isEnabled.Equals(1);
         }
 
@@ -884,8 +824,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RestartNotification()
         {
-            var notificationPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(notificationPath)?.GetValue("RestartNotificationsAllowed2") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")?.GetValue("RestartNotificationsAllowed2") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -894,8 +833,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RestartDeviceAfterUpdate()
         {
-            var settingsPath = "Software\\Microsoft\\WindowsUpdate\\UX\\Settings";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(settingsPath)?.GetValue("IsExpedited") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")?.GetValue("IsExpedited") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -925,7 +863,7 @@ namespace SophiApp.Customizations
         public static bool NetworkAdaptersSavePower()
         {
             return PowerShellService.TurnOffDeviceNetworkAdapterExist()
-                ?? throw new InvalidOperationException("There are no network adapter that supports AllowComputerToTurnOffDevice property");
+                ?? throw new InvalidOperationException("There is no network adapter which has an AllowComputerToTurnOffDevice property");
         }
 
         /// <summary>
@@ -933,8 +871,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int InputMethod()
         {
-            var profilePath = "Control Panel\\International\\User Profile";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(profilePath)?.GetValue("InputMethodOverride") as string ?? string.Empty;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Control Panel\\International\\User Profile")?.GetValue("InputMethodOverride") as string ?? string.Empty;
             return isEnabled.Equals("0409:00000409") ? 1 : 2;
         }
 
@@ -943,11 +880,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool LatestInstalledNET()
         {
-            var clrPath = "Software\\Microsoft\\.NETFramework";
-            var clrWowPath = "Software\\Wow6432Node\\Microsoft\\.NETFramework";
-            var useLatestClr = "OnlyUseLatestCLR";
-            var latesClr = Registry.LocalMachine.OpenSubKey(clrPath)?.GetValue(useLatestClr) as int? ?? -1;
-            var latesWowClr = Registry.LocalMachine.OpenSubKey(clrWowPath)?.GetValue(useLatestClr) as int? ?? -1;
+            var latesClr = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\.NETFramework")?.GetValue("OnlyUseLatestCLR") as int? ?? -1;
+            var latesWowClr = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\.NETFramework")?.GetValue("OnlyUseLatestCLR") as int? ?? -1;
             return latesClr.Equals(1) && latesWowClr.Equals(1);
         }
 
@@ -973,8 +907,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int RecommendedTroubleshooting()
         {
-            var preferencePath = "Software\\Microsoft\\WindowsMitigation";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(preferencePath)?.GetValue("UserPreference") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsMitigation")?.GetValue("UserPreference") as int? ?? -1;
             return isEnabled.Equals(3) ? 1 : 2;
         }
 
@@ -1005,8 +938,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool F1HelpPage()
         {
-            var helpPath = "Software\\Classes\\Typelib\\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\\1.0\\0\\win64";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(helpPath)?.GetValue(string.Empty) as string;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Classes\\Typelib\\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\\1.0\\0\\win64")?.GetValue(string.Empty) as string;
             return isEnabled is null;
         }
 
@@ -1015,8 +947,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NumLock()
         {
-            var keyboardPath = ".DEFAULT\\Control Panel\\Keyboard";
-            var isEnabled = Registry.Users.OpenSubKey(keyboardPath)?.GetValue("InitialKeyboardIndicators") as string ?? string.Empty;
+            var isEnabled = Registry.Users.OpenSubKey(".DEFAULT\\Control Panel\\Keyboard")?.GetValue("InitialKeyboardIndicators") as string ?? string.Empty;
             return isEnabled.Equals("2147483650");
         }
 
@@ -1026,8 +957,7 @@ namespace SophiApp.Customizations
         public static bool CapsLock()
         {
             var scancodeMap = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 58, 0, 0, 0, 0, 0 };
-            var keyboardPath = "System\\CurrentControlSet\\Control\\Keyboard Layout";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(keyboardPath)?.GetValue("Scancode Map") as byte[] ?? [];
+            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Keyboard Layout")?.GetValue("Scancode Map") as byte[] ?? [];
             return !isEnabled.SequenceEqual(scancodeMap);
         }
 
@@ -1036,8 +966,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StickyShift()
         {
-            var keysPath = "Control Panel\\Accessibility\\StickyKeys";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(keysPath)?.GetValue("Flags") as string ?? string.Empty;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\StickyKeys")?.GetValue("Flags") as string ?? string.Empty;
             return !isEnabled.Equals("506");
         }
 
@@ -1046,8 +975,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool Autoplay()
         {
-            var handlersPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoplayHandlers";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(handlersPath)?.GetValue("DisableAutoplay") as int? ?? -1;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoplayHandlers")?.GetValue("DisableAutoplay") as int? ?? -1;
             return !isEnabled.Equals(1);
         }
 
@@ -1056,11 +984,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool ThumbnailCacheRemoval()
         {
-            var autorun = "Autorun";
-            var cachePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache";
-            var cacheWowPath = "Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(cachePath)?.GetValue(autorun) as int? ?? -1;
-            var isEnabledWow = Registry.LocalMachine.OpenSubKey(cacheWowPath)?.GetValue(autorun) as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache")?.GetValue("Autorun") as int? ?? -1;
+            var isEnabledWow = Registry.LocalMachine.OpenSubKey("Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VolumeCaches\\Thumbnail Cache")?.GetValue("Autorun") as int? ?? -1;
             return !(isEnabled.Equals(0) && isEnabledWow.Equals(0));
         }
 
@@ -1069,8 +994,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SaveRestartableApps()
         {
-            var logonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
-            var isEnabled = Registry.CurrentUser.OpenSubKey(logonPath)?.GetValue("RestartApps") as int? ?? -1;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon")?.GetValue("RestartApps") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -1088,12 +1012,11 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int PowerPlan()
         {
-            var performancePlanGuid = "{8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c}";
             var activePlan = InstrumentationService.GetPowerPlans()
                 .Select(plan => (IsActive: (bool)plan.GetPropertyValue("IsActive"), InstanceID: (string)plan.GetPropertyValue("InstanceID")))
                 .First(plan => plan.IsActive);
 
-            return activePlan.InstanceID.Contains(performancePlanGuid) ? 1 : 2;
+            return activePlan.InstanceID.Contains("{8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c}") ? 1 : 2;
         }
 
         /// <summary>
@@ -1103,10 +1026,8 @@ namespace SophiApp.Customizations
         {
             if (RegionInfo.CurrentRegion.GeoId.Equals(203))
             {
-                var bypassUrl = "https://p.thenewone.lol:8443/proxy.pac";
-                var settingsPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
-                var isEnabled = Registry.CurrentUser.OpenSubKey(settingsPath)?.GetValue("AutoConfigURL") as string ?? string.Empty;
-                return isEnabled.Equals(bypassUrl);
+                var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings")?.GetValue("AutoConfigURL") as string ?? string.Empty;
+                return isEnabled.Equals("https://p.thenewone.lol:8443/proxy.pac");
             }
 
             throw new InvalidOperationException("Unsupported GEO ID");
@@ -1232,10 +1153,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool HEVC()
         {
-            var video = "Microsoft.HEVCVideoExtension";
-            var photos = "Microsoft.Windows.Photos";
-            var appxVideoExists = AppxPackagesService.PackageExist(video);
-            var appxPhotosExists = AppxPackagesService.PackageExist(photos);
+            var appxVideoExists = AppxPackagesService.PackageExist("Microsoft.HEVCVideoExtension");
+            var appxPhotosExists = AppxPackagesService.PackageExist("Microsoft.Windows.Photos");
 
             if (appxVideoExists && appxPhotosExists)
             {
@@ -1243,7 +1162,7 @@ namespace SophiApp.Customizations
             }
             else if (!appxPhotosExists)
             {
-                throw new InvalidOperationException($"AppX package {photos} is not installed");
+                throw new InvalidOperationException($"AppX package Microsoft.Windows.Photos is not installed");
             }
             else
             {
@@ -1289,15 +1208,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool XboxGameTips()
         {
-            var appGaming = "Microsoft.GamingApp";
-
-            if (AppxPackagesService.PackageExist(appGaming))
+            if (AppxPackagesService.PackageExist("Microsoft.GamingApp"))
             {
                 var startupPanelIsEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\GameBar")?.GetValue("ShowStartupPanel") as int? ?? -1;
                 return startupPanelIsEnabled == 1;
             }
 
-            throw new InvalidOperationException($"AppX package {appGaming} is not installed");
+            throw new InvalidOperationException($"AppX package Microsoft.GamingApp is not installed");
         }
 
         /// <summary>
@@ -1306,15 +1223,13 @@ namespace SophiApp.Customizations
         public static bool GPUScheduling()
         {
             const int WDDMMinimalVersion = 2700;
-            var featureUsagePath = "System\\CurrentControlSet\\Control\\GraphicsDrivers\\FeatureSetUsage";
             var isExternalDACType = InstrumentationService.IsExternalDACType();
             var isVirtualMachine = InstrumentationService.IsVirtualMachine();
-            var wddmVersion = Registry.LocalMachine.OpenSubKey(featureUsagePath)?.GetValue("WddmVersion_Min") as int? ?? -1;
+            var wddmVersion = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\GraphicsDrivers\\FeatureSetUsage")?.GetValue("WddmVersion_Min") as int? ?? -1;
 
             if (isExternalDACType && !isVirtualMachine && wddmVersion >= WDDMMinimalVersion)
             {
-                var graphicsDriversPath = "System\\CurrentControlSet\\Control\\GraphicsDrivers";
-                var hwSchMode = Registry.LocalMachine.OpenSubKey(graphicsDriversPath)?.GetValue("HwSchMode") as int? ?? -1;
+                var hwSchMode = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\GraphicsDrivers")?.GetValue("HwSchMode") as int? ?? -1;
                 return hwSchMode == 2;
             }
 
@@ -1392,8 +1307,7 @@ namespace SophiApp.Customizations
 
             if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
             {
-                var networkProtectionPath = "Software\\Microsoft\\Windows Defender\\Windows Defender Exploit Guard\\Network Protection";
-                var networkProtection = Registry.LocalMachine.OpenSubKey(networkProtectionPath)?.GetValue("EnableNetworkProtection") as int? ?? -1;
+                var networkProtection = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender\\Windows Defender Exploit Guard\\Network Protection")?.GetValue("EnableNetworkProtection") as int? ?? -1;
                 return networkProtection.Equals(1);
             }
 
@@ -1440,7 +1354,6 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool EventViewerCustomView()
         {
-            var processAuditPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit";
             var processXmlPath = $"{Environment.GetEnvironmentVariable("ALLUSERSPROFILE")}\\Microsoft\\Event Viewer\\Views\\ProcessCreation.xml";
             var auditPolicyScript = @"$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 $Enabled = auditpol /get /Subcategory:'{0CCE922B-69AE-11D9-BED3-505054503030}' /r | ConvertFrom-Csv | Select-Object -ExpandProperty 'Inclusion Setting'
@@ -1454,7 +1367,7 @@ else
 }";
 
             var auditPolicyIsEnabled = PowerShellService.Invoke<bool>(auditPolicyScript);
-            var processAuditIsEnabled = Registry.LocalMachine.OpenSubKey(processAuditPath)?.GetValue("ProcessCreationIncludeCmdLine_Enabled") as int? ?? -1;
+            var processAuditIsEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit")?.GetValue("ProcessCreationIncludeCmdLine_Enabled") as int? ?? -1;
             var xmlAuditIsEnabled = XmlService.TryLoad(processXmlPath)?.SelectSingleNode("//Select[@Path=\"Security\"]")?.InnerText ?? string.Empty;
             return auditPolicyIsEnabled && processAuditIsEnabled.Equals(1) && xmlAuditIsEnabled.Equals("*[System[(EventID=4688)]]");
         }
@@ -1477,8 +1390,7 @@ else
         /// </summary>
         public static bool PowerShellScriptsLogging()
         {
-            var scriptLoggingPath = "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging";
-            var scriptLogging = Registry.LocalMachine.OpenSubKey(scriptLoggingPath)?.GetValue("EnableScriptBlockLogging") as int? ?? -1;
+            var scriptLogging = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging")?.GetValue("EnableScriptBlockLogging") as int? ?? -1;
             return scriptLogging.Equals(1);
         }
 
@@ -1493,8 +1405,7 @@ else
 
             if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
             {
-                var smartScreenPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer";
-                var smartScreenIsEnabled = Registry.LocalMachine.OpenSubKey(smartScreenPath)?.GetValue("SmartScreenEnabled") as string ?? string.Empty;
+                var smartScreenIsEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("SmartScreenEnabled") as string ?? string.Empty;
                 return !smartScreenIsEnabled.Equals("Off");
             }
 
@@ -1506,8 +1417,7 @@ else
         /// </summary>
         public static bool SaveZoneInformation()
         {
-            var saveZonePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Attachments";
-            var saveZoneInformation = Registry.CurrentUser.OpenSubKey(saveZonePath)?.GetValue("SaveZoneInformation") as int? ?? -1;
+            var saveZoneInformation = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Attachments")?.GetValue("SaveZoneInformation") as int? ?? -1;
             return saveZoneInformation.Equals(1);
         }
 
@@ -1597,11 +1507,8 @@ else
         /// </summary>
         public static bool CastToDeviceContext()
         {
-            var castToDevicePath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-            var castToDeviceGuid = "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}";
-
-            var userCastToDevice = Registry.CurrentUser.OpenSubKey(castToDevicePath)?.GetValue(castToDeviceGuid) as string;
-            var machineCastToDevice = Registry.LocalMachine.OpenSubKey(castToDevicePath)?.GetValue(castToDeviceGuid) as string;
+            var userCastToDevice = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{7AD84985-87B4-4a16-BE58-8B72A5B390F7}") as string;
+            var machineCastToDevice = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{7AD84985-87B4-4a16-BE58-8B72A5B390F7}") as string;
             return userCastToDevice is null && machineCastToDevice is null;
         }
 
@@ -1610,11 +1517,8 @@ else
         /// </summary>
         public static bool ShareContext()
         {
-            var shareContextPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-            var shareContextGuid = "{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}";
-
-            var userShareContext = Registry.CurrentUser.OpenSubKey(shareContextPath)?.GetValue(shareContextGuid) as string;
-            var machineShareContext = Registry.LocalMachine.OpenSubKey(shareContextPath)?.GetValue(shareContextGuid) as string;
+            var userShareContext = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}") as string;
+            var machineShareContext = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}") as string;
             return userShareContext is null && machineShareContext is null;
         }
 
@@ -1623,18 +1527,14 @@ else
         /// </summary>
         public static bool EditWithClipchampContext()
         {
-            var clipChampAppx = "Clipchamp.Clipchamp";
-            var clipChampPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-            var clipChampGuid = "{8AB635F8-9A67-4698-AB99-784AD929F3B4}";
-
-            if (AppxPackagesService.PackageExist(clipChampAppx))
+            if (AppxPackagesService.PackageExist("Clipchamp.Clipchamp"))
             {
-                var userClipchamp = Registry.CurrentUser.OpenSubKey(clipChampPath)?.GetValue(clipChampGuid);
-                var machineClipchamp = Registry.LocalMachine.OpenSubKey(clipChampPath)?.GetValue(clipChampGuid);
+                var userClipchamp = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{8AB635F8-9A67-4698-AB99-784AD929F3B4}");
+                var machineClipchamp = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{8AB635F8-9A67-4698-AB99-784AD929F3B4}");
                 return userClipchamp is null && machineClipchamp is null;
             }
 
-            throw new InvalidOperationException($"AppX package {clipChampAppx} is not installed");
+            throw new InvalidOperationException($"AppX package Clipchamp.Clipchamp is not installed");
         }
 
         /// <summary>
@@ -1642,18 +1542,14 @@ else
         /// </summary>
         public static bool EditWithPhotosContext()
         {
-            var appxPhotos = "Microsoft.Windows.Photos";
-            var photosPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-            var photosGuid = "{8AB635F8-9A67-4698-AB99-784AD929F3B4}";
-
-            if (AppxPackagesService.PackageExist(appxPhotos))
+            if (AppxPackagesService.PackageExist("Microsoft.Windows.Photos"))
             {
-                var userPhotosContext = Registry.CurrentUser.OpenSubKey(photosPath)?.GetValue(photosGuid);
-                var machinePhotosContext = Registry.LocalMachine.OpenSubKey(photosPath)?.GetValue(photosGuid);
+                var userPhotosContext = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{8AB635F8-9A67-4698-AB99-784AD929F3B4}");
+                var machinePhotosContext = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{8AB635F8-9A67-4698-AB99-784AD929F3B4}");
                 return userPhotosContext is null && machinePhotosContext is null;
             }
 
-            throw new InvalidOperationException($"AppX package {appxPhotos} is not installed");
+            throw new InvalidOperationException($"AppX package Microsoft.Windows.Photos is not installed");
         }
 
         /// <summary>
@@ -1661,17 +1557,13 @@ else
         /// </summary>
         public static bool EditWithPaintContext()
         {
-            var appxPaint = "Microsoft.Paint";
-
-            if (AppxPackagesService.PackageExist(appxPaint))
+            if (AppxPackagesService.PackageExist("Microsoft.Paint"))
             {
-                var paintPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-                var paintGuid = "{2430F218-B743-4FD6-97BF-5C76541B4AE9}";
-                var paintContext = Registry.CurrentUser.OpenSubKey(paintPath)?.GetValue(paintGuid);
+                var paintContext = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{2430F218-B743-4FD6-97BF-5C76541B4AE9}");
                 return paintContext is null;
             }
 
-            throw new InvalidOperationException($"AppX package {appxPaint} is not installed");
+            throw new InvalidOperationException($"AppX package Microsoft.Paint is not installed");
         }
 
         /// <summary>
@@ -1679,9 +1571,7 @@ else
         /// </summary>
         public static bool EditWithPaint3DContext()
         {
-            var appxPaint = "Microsoft.MSPaint";
-
-            if (AppxPackagesService.PackageExist(appxPaint))
+            if (AppxPackagesService.PackageExist("Microsoft.MSPaint"))
             {
                 var accessValues = new List<object?>()
                 {
@@ -1698,7 +1588,7 @@ else
                 return !accessValues.TrueForAll(value => value is not null);
             }
 
-            throw new InvalidOperationException($"AppX package {appxPaint} is not installed");
+            throw new InvalidOperationException($"AppX package Microsoft.MSPaint is not installed");
         }
 
         /// <summary>
@@ -1801,11 +1691,8 @@ else
 
             if (AppxPackagesService.PackageExist(appxTerminal))
             {
-                var extensionsBlockPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-                var terminalContextGuid = "{9F156763-7844-4DC4-B2B1-901F640F5155}";
-
-                var userBlockedGuid = Registry.CurrentUser.OpenSubKey(extensionsBlockPath)?.GetValue(terminalContextGuid);
-                var machineBlockedGuid = Registry.LocalMachine.OpenSubKey(extensionsBlockPath)?.GetValue(terminalContextGuid);
+                var userBlockedGuid = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}");
+                var machineBlockedGuid = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}");
                 return userBlockedGuid is null && machineBlockedGuid is null;
             }
 
@@ -1821,11 +1708,8 @@ else
 
             if (AppxPackagesService.PackageExist(appxTerminal))
             {
-                var extensionsBlockPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
-                var adminContextGuid = "{9F156763-7844-4DC4-B2B1-901F640F5155}";
-
-                var userBlockedGuid = Registry.CurrentUser.OpenSubKey(extensionsBlockPath)?.GetValue(adminContextGuid);
-                var machineBlockedGuid = Registry.LocalMachine.OpenSubKey(extensionsBlockPath)?.GetValue(adminContextGuid);
+                var userBlockedGuid = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}");
+                var machineBlockedGuid = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}");
 
                 if (userBlockedGuid is null && machineBlockedGuid is null)
                 {
