@@ -7,12 +7,24 @@ namespace SophiApp.Services;
 using Microsoft.Win32;
 using SophiApp.Contracts.Services;
 using SophiApp.Extensions;
+using SophiApp.Helpers;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
 /// <inheritdoc/>
 public class AppNotificationService : IAppNotificationService
 {
+    private readonly IGroupPolicyService groupPolicyService;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AppNotificationService"/> class.
+    /// </summary>
+    /// <param name="groupPolicyService">A service for working with group policy API.</param>
+    public AppNotificationService(IGroupPolicyService groupPolicyService)
+    {
+        this.groupPolicyService = groupPolicyService;
+    }
+
     /// <inheritdoc/>
     public void EnableToastNotification()
     {
@@ -23,6 +35,7 @@ public class AppNotificationService : IAppNotificationService
         Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\SophiApp", true)?.DeleteValue("Enabled", false);
         Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer", true)?.DeleteValue("DisableNotificationCenter", false);
         Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications", true)?.DeleteValue("NoToastApplicationNotification", false);
+        groupPolicyService.ClearLocalCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "DisableNotificationCenter", LGPOScope.Computer, LGPOScope.User);
     }
 
     /// <inheritdoc/>

@@ -4,7 +4,6 @@
 
 namespace SophiApp.Customizations
 {
-    using CSharpFunctionalExtensions;
     using Microsoft.Win32;
     using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
@@ -13,12 +12,9 @@ namespace SophiApp.Customizations
     using SophiApp.Extensions;
     using SophiApp.Helpers;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ServiceProcess;
     using System.Text;
-    using System.Xml.Linq;
-    using static System.Formats.Asn1.AsnWriter;
 
     /// <summary>
     /// Set the OS settings.
@@ -81,7 +77,7 @@ namespace SophiApp.Customizations
 
                 Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection")
                     .SetValue("AllowTelemetry", isEnterpriseOrEducation ? 0 : 1, RegistryValueKind.DWord);
-                GroupPolicyService.ClearLocalCache(scope: LGPOScope.Computer, path: "Software\\Policies\\Microsoft\\Windows\\DataCollection", name: AllowTelemetry, type: "DWORD", value: isEnterpriseOrEducation ? "0" : "1");
+                GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry", "DWORD", isEnterpriseOrEducation ? "0" : "1");
                 Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection")
                     .SetValue("MaxTelemetryAllowed", 1, RegistryValueKind.DWord);
                 Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack")
@@ -96,7 +92,7 @@ namespace SophiApp.Customizations
                 .SetValue("ShowedToastAtLevel", 3, RegistryValueKind.DWord);
             Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection", true)
                 ?.DeleteValue("AllowTelemetry", false);
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", AllowTelemetry);
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry");
         }
 
         /// <summary>
@@ -136,7 +132,7 @@ namespace SophiApp.Customizations
         public static void FeedbackFrequency(int state)
         {
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "DoNotShowFeedbackNotifications");
-            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "DoNotShowFeedbackNotifications" );
+            GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "DoNotShowFeedbackNotifications");
 
             if (state.Equals(2))
             {
@@ -1097,6 +1093,7 @@ namespace SophiApp.Customizations
             approvalKey?.SetValue("PromptOnSecureDesktop", 1, RegistryValueKind.DWord);
             approvalKey?.SetValue("EnableVirtualization", 1, RegistryValueKind.DWord);
             approvalKey?.SetValue("EnableUIADesktopToggle", 1, RegistryValueKind.DWord);
+            approvalKey?.SetValue("ConsentPromptBehaviorAdmin", state.Equals(1) ? 5 : 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1499,8 +1496,8 @@ namespace SophiApp.Customizations
                 return;
             }
 
-            Registry.CurrentUser.OpenOrCreateSubKey(consolePath).SetValue("DelegationConsole", consoleGuid, RegistryValueKind.String);
-            Registry.CurrentUser.OpenSubKey(consolePath, true)?.SetValue("DelegationTerminal", consoleGuid, RegistryValueKind.String);
+            Registry.CurrentUser.OpenOrCreateSubKey("Console\\%%Startup").SetValue("DelegationConsole", "{B23D10C0-E52E-411E-9D5B-C09FDF709C7D}", RegistryValueKind.String);
+            Registry.CurrentUser.OpenSubKey("Console\\%%Startup", true)?.SetValue("DelegationTerminal", "{B23D10C0-E52E-411E-9D5B-C09FDF709C7D}", RegistryValueKind.String);
         }
 
         /// <summary>
@@ -1894,7 +1891,7 @@ namespace SophiApp.Customizations
             if (enable)
             {
                 Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa", true)?.SetValue("RunAsPPL", 2, RegistryValueKind.DWord);
-                Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa", true)?.SetValue( "RunAsPPLBoot", 2, RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa", true)?.SetValue("RunAsPPLBoot", 2, RegistryValueKind.DWord);
                 return;
             }
 

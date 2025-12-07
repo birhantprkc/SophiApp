@@ -426,12 +426,12 @@ namespace SophiApp.Customizations
         public static bool SearchHighlightsWindows11()
         {
             var searchEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("BingSearchEnabled") as int? ?? -1;
-            var searchSuggestions = Registry.CurrentUser.OpenSubKey( "Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
+            var searchSuggestions = Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
 
             if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
                 var blockedKey = searchEnabled.Equals(1) ? "BingSearchEnabled" : "DisableSearchBoxSuggestions";
-                throw new InvalidOperationException($"SearchHighlights is already blocked within {blockedKey} registry keys. No need to block searchhighlights again.");
+                throw new InvalidOperationException($"SearchHighlights is already blocked within {blockedKey} registry keys. No need to block search highlights again.");
             }
 
             var dynamicSearch = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings")?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
