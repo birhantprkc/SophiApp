@@ -51,11 +51,16 @@ $Process = New-Object -TypeName System.Diagnostics.Process
 $Process.StartInfo = $ProcessInfo
 $Process.Start() | Out-Null";
 
+        // Create vbs script that will help us calling Windows_Cleanup.ps1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
         private readonly string cleanupVbsAction = @"' https://github.com/farag2/Sophia-Script-for-Windows
 ' https://t.me/sophia_chat
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup.ps1"", 0";
 
+        // We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
+        // powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
+        // https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+        // https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
         private readonly string notificationPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -63,8 +68,8 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
 # https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
 # https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 
-$CompilerParameters = [System.CodeDom.Compiler.CompilerParameters]::new(""System.dll"")
-$CompilerParameters.TempFiles = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
+$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new(""System.dll"")
+$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 $CompilerParameters.GenerateInMemory = $true
 $Signature = @{
 	Namespace          = ""WinAPI""
@@ -179,6 +184,10 @@ $ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"", 0";
 
+        // We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
+        // powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
+        // https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+        // https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
         private readonly string softwareDistributionPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -299,6 +308,10 @@ $ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\SoftwareDistributionTask.ps1"", 0";
 
+        // We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
+        // powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
+        // https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
+        // https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
         private readonly string tempPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
@@ -462,6 +475,9 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
             File.WriteAllText(cleanupPsFile.FullName, cleanupPsAction, Encoding.UTF8);
             File.WriteAllText(cleanupVbsFile.FullName, cleanupVbsAction, Encoding.Default);
 
+            // Create "Windows Cleanup" task
+            // We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
+            // https://github.com/PowerShell/PowerShell/issues/21377
             _ = RegisterTask(
                 name: "Sophia\\Windows Cleanup",
                 description: string.Format("TaskScheduler_WindowsCleanup_Description".GetLocalized(), Environment.UserName),
@@ -485,6 +501,9 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
             File.WriteAllText(notificationPsFile.FullName, notificationPsAction, Encoding.UTF8);
             File.WriteAllText(notificationVbsFile.FullName, notificationVbsAction, Encoding.Default);
 
+            // Create "Windows Cleanup" task
+            // We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
+            // https://github.com/PowerShell/PowerShell/issues/21377
             _ = RegisterTask(
                 name: "Sophia\\Windows Cleanup Notification",
                 description: string.Format("TaskScheduler_WindowsCleanupNotification_Description".GetLocalized(), Environment.UserName),
@@ -519,6 +538,9 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
             File.WriteAllText(softwareDistributionPsFile.FullName, softwareDistributionPsAction, Encoding.UTF8);
             File.WriteAllText(softwareDistributionVbsFile.FullName, softwareDistributionVbsAction, Encoding.Default);
 
+            // Create "Windows Cleanup" task
+            // We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
+            // https://github.com/PowerShell/PowerShell/issues/21377
             _ = RegisterTask(
                 name: "Sophia\\SoftwareDistribution",
                 description: string.Format("TaskScheduler_SoftwareDistribution_Description".GetLocalized(), Environment.UserName),

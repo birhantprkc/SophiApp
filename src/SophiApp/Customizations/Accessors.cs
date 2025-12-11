@@ -428,6 +428,7 @@ namespace SophiApp.Customizations
             var searchEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("BingSearchEnabled") as int? ?? -1;
             var searchSuggestions = Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
 
+            // Checking whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
             if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
                 var blockedKey = searchEnabled.Equals(1) ? "BingSearchEnabled" : "DisableSearchBoxSuggestions";
@@ -691,7 +692,11 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int StartLayout()
         {
+            // Default — 0 
+            // Show More Pins — 1
+            // Show More Recommendations — 2
             var layoutValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_Layout") as int? ?? 0;
+
             return layoutValue + 1;
         }
 
@@ -1024,6 +1029,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RKNBypass()
         {
+            // If current region is Russia
             if (RegionInfo.CurrentRegion.GeoId.Equals(203))
             {
                 var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings")?.GetValue("AutoConfigURL") as string ?? string.Empty;
@@ -1113,6 +1119,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_8()
         {
+            // Get latest build version
+            // https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
             var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe");
             return installedVersion >= latestRelease.Version;
@@ -1133,8 +1141,11 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x86()
         {
+            // Get latest build version
+            // https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
             var latestRelease = RedistributablePackageService.GetPackageRelease<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x86.exe");
+
             return installedVersion >= latestRelease.Version;
         }
 
@@ -1223,10 +1234,12 @@ namespace SophiApp.Customizations
         public static bool GPUScheduling()
         {
             const int WDDMMinimalVersion = 2700;
+            // Determining whether PC has an external graphics card
             var isExternalDACType = InstrumentationService.IsExternalDACType();
             var isVirtualMachine = InstrumentationService.IsVirtualMachine();
             var wddmVersion = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\GraphicsDrivers\\FeatureSetUsage")?.GetValue("WddmVersion_Min") as int? ?? -1;
 
+            // Checking whether a WDDM verion is 2.7 or higher
             if (isExternalDACType && !isVirtualMachine && wddmVersion >= WDDMMinimalVersion)
             {
                 var hwSchMode = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\GraphicsDrivers")?.GetValue("HwSchMode") as int? ?? -1;
@@ -1369,6 +1382,7 @@ else
             var auditPolicyIsEnabled = PowerShellService.Invoke<bool>(auditPolicyScript);
             var processAuditIsEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit")?.GetValue("ProcessCreationIncludeCmdLine_Enabled") as int? ?? -1;
             var xmlAuditIsEnabled = XmlService.TryLoad(processXmlPath)?.SelectSingleNode("//Select[@Path=\"Security\"]")?.InnerText ?? string.Empty;
+
             return auditPolicyIsEnabled && processAuditIsEnabled.Equals(1) && xmlAuditIsEnabled.Equals("*[System[(EventID=4688)]]");
         }
 
@@ -1428,6 +1442,7 @@ else
         {
             bool WindowsSandboxIsEnabled()
             {
+                // Checking whether x86 virtualization is enabled in the firmware
                 var sandboxScript = "Get-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online";
                 var sandboxState = PowerShellService.Invoke(sandboxScript).FirstOrDefault();
                 return !sandboxState?.Properties["State"]?.Value.Equals("Disabled") ?? throw new InvalidOperationException("Windows Sandbox state undefined");
@@ -1435,6 +1450,7 @@ else
 
             if (CommonDataService.OsProperties.Edition.Equals("Professional") || CommonDataService.OsProperties.Edition.Equals("Enterprise"))
             {
+                // Determining whether Hyper-V is enabled
                 var virtualizationIsEnabled = InstrumentationService.CpuVirtualizationFirmwareIsEnabled() ?? throw new InvalidOperationException("This CPU does not support virtualization");
                 var hypervisorPresent = InstrumentationService.HypervisorIsPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
 

@@ -34,6 +34,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool? TurnOffDeviceNetworkAdapterExist()
         {
+            // Checking whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
+            // We need also check for adapter status per some laptops have many equal adapters records in adapters list
             var command = @"$AllowTurnOffDevice = $null
 Get-NetAdapter -Physical | Where-Object -FilterScript {$_.MacAddress -and ($_.Status -eq ""Up"")} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne ""Unsupported""} | ForEach-Object -Process {
     $AllowTurnOffDevice = $_.AllowComputerToTurnOffDevice -eq ""Enabled""

@@ -17,8 +17,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public uint GetNewsAndInterestsHash(bool enable)
         {
-            var clientPath = "Software\\Microsoft\\SQMClient";
-            var machineId = Registry.LocalMachine.OpenSubKey(clientPath)?.GetValue("MachineId") as string ?? string.Empty;
+            // https://forums.mydigitallife.net/threads/taskbarda-widgets-registry-change-is-now-blocked.88547/#post-1849006
+            var machineId = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\SQMClient")?.GetValue("MachineId") as string ?? string.Empty;
             var combinedId = $"{machineId}_{(enable ? 0 : 2)}".ToCharArray();
             Array.Reverse(combinedId);
             var bytesIn = Encoding.Unicode.GetBytes(new string(combinedId));

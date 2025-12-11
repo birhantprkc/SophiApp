@@ -151,6 +151,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool IsExternalDACType()
         {
+            // Determining whether PC has an external graphics card
             using var managementObject = new ManagementObjectSearcher("Select * from CIM_VideoController")
                 .Get()
                 .Cast<ManagementObject>()
@@ -163,6 +164,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool IsVirtualMachine()
         {
+            // Determining whether an OS is not installed on a virtual machine
             var vmTokens = new[] { "Virtual", "VMware" };
             using var managementObject = new ManagementObjectSearcher("Select * from CIM_ComputerSystem")
                 .Get()

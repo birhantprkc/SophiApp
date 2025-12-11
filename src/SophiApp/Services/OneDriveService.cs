@@ -138,6 +138,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool UserIsLogged()
         {
+            // Checking whether user is logged into OneDrive (Microsoft account)
             var personalEmail = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\OneDrive\\Accounts\\Personal")
                 ?.GetValue("UserEmail") as string ?? string.Empty;
             var businessEmail = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\OneDrive\\Accounts\\Business1")
