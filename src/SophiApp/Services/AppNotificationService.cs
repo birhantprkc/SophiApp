@@ -37,13 +37,11 @@ public class AppNotificationService : IAppNotificationService
         Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\SystemSettings\\AccountNotifications", true)?.DeleteValue("EnableAccountNotifications", false);
         Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer", true)?.DeleteValue("DisableNotificationCenter", false);
         Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications", true)?.DeleteValue("NoToastApplicationNotification", false);
-
         // Remove registry keys if Windows Script Host is disabled
         Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows Script Host\\Settings", true)?.DeleteValue("Enabled", false);
         Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Script Host\\Settings", true)?.DeleteValue("Enabled", false);
-
         // // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
-        GroupPolicyService.ClearLocalCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "DisableNotificationCenter", LGPOScope.Computer, LGPOScope.User);
+        groupPolicyService.ClearLocalCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "DisableNotificationCenter", LGPOScope.Computer, LGPOScope.User);
     }
 
     /// <inheritdoc/>
@@ -68,11 +66,9 @@ public class AppNotificationService : IAppNotificationService
     /// <inheritdoc/>
     public void RegisterCleanupProtocolAsToastSender()
     {
-        
         // Start the "Windows Cleanup" task if the "Run" button clicked
         var cleanupCommand = @"powershell.exe -Command ""& {Start-ScheduledTask -TaskPath '\Sophia\' -TaskName 'Windows Cleanup'}""";
         Registry.ClassesRoot.OpenOrCreateSubKey("WindowsCleanup\\shell\\open\\command").SetValue(string.Empty, cleanupCommand, RegistryValueKind.String);
-
         // Register the "WindowsCleanup" protocol to be able to run the scheduled task by clicking the "Run" button in a toast
         Registry.ClassesRoot.OpenSubKey("WindowsCleanup", true)?.SetValue(string.Empty, "URL:WindowsCleanup", RegistryValueKind.String);
         Registry.ClassesRoot.OpenSubKey("WindowsCleanup", true)?.SetValue("URL Protocol", string.Empty, RegistryValueKind.String);

@@ -692,7 +692,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int StartLayout()
         {
-            // Default — 0 
+            // Default — 0
             // Show More Pins — 1
             // Show More Recommendations — 2
             var layoutValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_Layout") as int? ?? 0;

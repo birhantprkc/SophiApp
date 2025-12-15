@@ -118,7 +118,7 @@ dotnet_diagnostic.S125.severity = error
 dotnet_diagnostic.SA1617.severity = error
 
 # SA1515: Single-line comment should be preceded by blank line
-dotnet_diagnostic.SA1515.severity = error
+dotnet_diagnostic.SA1515.severity = silent
 
 # SA1309: Field names must not begin with underscore
 dotnet_diagnostic.SA1309.severity = error

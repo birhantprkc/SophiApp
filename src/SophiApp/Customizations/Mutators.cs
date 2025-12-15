@@ -13,6 +13,7 @@ namespace SophiApp.Customizations
     using SophiApp.Helpers;
     using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
     using System.ServiceProcess;
     using System.Text;
 
@@ -142,15 +143,15 @@ namespace SophiApp.Customizations
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "DoNotShowFeedbackNotifications");
             // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "DoNotShowFeedbackNotifications");
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Siuf\\Rules", true)?.DeleteValue("PeriodInNanoSeconds", false);
 
             if (state.Equals(2))
             {
                 Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Siuf\\Rules").SetValue("NumberOfSIUFInPeriod", 0, RegistryValueKind.DWord);
-
                 return;
             }
 
-            Registry.CurrentUser.DeleteSubKey("Software\\Microsoft\\Siuf\\Rules", false);
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Siuf\\Rules", true)?.DeleteValue("NumberOfSIUFInPeriod", false);
         }
 
         /// <summary>
@@ -232,9 +233,9 @@ namespace SophiApp.Customizations
         /// Set the permission for apps to use advertising ID state.
         /// </summary>
         /// <param name="enable">Advertising ID state.</param>
-        public static void (bool enable)
+        public static void AdvertisingID(bool enable)
         {
-            GroupPolicyServiceAdvertisingID.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\AdvertisingInfo", "DisabledByGroupPolicy");
+            GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\AdvertisingInfo", "DisabledByGroupPolicy");
             // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "DisabledByGroupPolicy");
             Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo").SetValue("Enabled", enable ? 1 : 0, RegistryValueKind.DWord);
@@ -540,10 +541,9 @@ namespace SophiApp.Customizations
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Dsh", "AllowNewsAndInterests");
             // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
             GroupPolicyService.ClearLocalCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Dsh", "AllowNewsAndInterests");
-
             // We cannot set a value to TaskbarDa, having called any of APIs, except of copying powershell.exe (or any other tricks) with a different name,
             // due to a UCPD driver tracks all executables to block the access to the registry
-            var command = $"-Command \"& {{New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value {(enable ? 1 : 0)} -Force}}\"";
+            var command = $"-Command \"& {{New-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced -Name TaskbarDa -PropertyType DWord -Value {(enable ? 1 : 0)} -Force}}\"";
             PowerShellService.InvokeCommandBypassUCPD(command);
         }
 
@@ -938,16 +938,12 @@ namespace SophiApp.Customizations
         /// <param name="state">Files and folders grouping state.</param>
         public static void FolderGroupBy(int state)
         {
-
-
+            var folderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FolderTypes\\{885a186e-a440-4ada-812b-db871b942259}\\TopViews\\{00000000-0000-0000-0000-000000000000}";
             if (state.Equals(1))
             {
                 // Clear any Common Dialog views
                 PowerShellService.ClearCommonDialogViews();
-
-                #pragma warning disable SA1003 // Symbols should be spaced correctly
                 // https://learn.microsoft.com/en-us/windows/win32/properties/props-system-null
-                var folderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FolderTypes\\{885a186e-a440-4ada-812b-db871b942259}\\TopViews\\{00000000-0000-0000-0000-000000000000}";
                 Registry.CurrentUser.OpenOrCreateSubKey(folderPath).SetValue("ColumnList", "System.Null", RegistryValueKind.String);
                 Registry.CurrentUser.OpenOrCreateSubKey(folderPath).SetValue("GroupBy", "System.Null", RegistryValueKind.String);
                 Registry.CurrentUser.OpenOrCreateSubKey(folderPath).SetValue("LogicalViewMode", 1, RegistryValueKind.DWord);
@@ -955,12 +951,10 @@ namespace SophiApp.Customizations
                 Registry.CurrentUser.OpenOrCreateSubKey(folderPath).SetValue("Order", 0, RegistryValueKind.DWord);
                 Registry.CurrentUser.OpenOrCreateSubKey(folderPath).SetValue("PrimaryProperty", "System.ItemNameDisplay", RegistryValueKind.String);
                 Registry.CurrentUser.OpenOrCreateSubKey(folderPath).SetValue("SortByList", "prop:System.ItemNameDisplay", RegistryValueKind.String);
-
                 return;
             }
 
             Registry.CurrentUser.DeleteSubKeyTree(folderPath, false);
-            #pragma warning restore SA1003 // Symbols should be spaced correctly
         }
 
         /// <summary>
@@ -1482,13 +1476,19 @@ namespace SophiApp.Customizations
         {
             if (enable)
             {
-                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true)
-                    ?.SetValue("AutoConfigURL", "https://p.thenewone.lol:8443/proxy.pac", RegistryValueKind.String);
-                return;
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true)?.SetValue("AutoConfigURL", "https://p.thenewone.lol:8443/proxy.pac", RegistryValueKind.String);
+            }
+            else
+            {
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true)?.DeleteValue("AutoConfigURL", false);
             }
 
-            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true)
-                ?.DeleteValue("AutoConfigURL", false);
+            // Apply changed proxy settings
+            // https://learn.microsoft.com/en-us/windows/win32/wininet/option-flags
+            // INTERNET_OPTION_SETTINGS_CHANGED = 39
+            // INTERNET_OPTION_REFRESH = 37
+            InternetSetOption(0, 39, 0, 0);
+            InternetSetOption(0, 37, 0, 0);
         }
 
         /// <summary>
@@ -2304,5 +2304,8 @@ namespace SophiApp.Customizations
 
             Registry.ClassesRoot.OpenOrCreateSubKey("SystemFileAssociations\\image\\shell\\edit").SetValue("ProgrammaticAccessOnly", string.Empty, RegistryValueKind.String);
         }
+
+        [DllImport("wininet.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
     }
 }

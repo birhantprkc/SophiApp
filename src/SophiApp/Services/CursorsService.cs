@@ -16,7 +16,7 @@ namespace SophiApp.Services
         private readonly IHttpService httpService;
         private readonly IProcessService processService;
         private readonly string jepriCursorsZip;
-        private readonly string jepriDarkUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/master/Misc/dark.zip";
+        private readonly string jepriDarkUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/master/misc/dark.zip";
         private readonly string jepriLightUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/master/misc/light.zip";
         private readonly string tarExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe");
         private readonly string jepriDarkCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Dark Free");
@@ -76,16 +76,12 @@ namespace SophiApp.Services
 
         private void SetJepriCursors(string downloadUrl, string cursorsFolder, string schemeName)
         {
-            var cursorsRegistryPath = "Control Panel\\Cursors";
             var cursorsFolderPath = cursorsFolder.Replace(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "%SystemRoot%");
             var schemeValue = $"{cursorsFolderPath}\\arrow.cur,{cursorsFolderPath}\\help.cur,{cursorsFolderPath}\\appstarting.ani,{cursorsFolderPath}\\wait.ani,{cursorsFolderPath}\\crosshair.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\nwpen.cur,{cursorsFolderPath}\\no.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\sizewe.cur,{cursorsFolderPath}\\sizenwse.cur,{cursorsFolderPath}\\sizenesw.cur,{cursorsFolderPath}\\sizeall.cur,{cursorsFolderPath}\\uparrow.cur,{cursorsFolderPath}\\hand.cur,{cursorsFolderPath}\\person.cur,{cursorsFolderPath}\\pin.cur";
-
             httpService.DownloadFile(downloadUrl, jepriCursorsZip);
             Directory.CreateDirectory(cursorsFolder);
-
             // Extract archive
             _ = processService.WaitForExit(tarExe, $"-xvf \"{jepriCursorsZip}\" -C \"{cursorsFolder}\"");
-
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue(string.Empty, schemeName, RegistryValueKind.String);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("AppStarting", $"{cursorsFolderPath}\\appstarting.ani", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Arrow", $"{cursorsFolderPath}\\arrow.cur", RegistryValueKind.ExpandString);
@@ -105,10 +101,7 @@ namespace SophiApp.Services
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeWE", $"{cursorsFolderPath}\\sizewe.cur", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("UpArrow", $"{cursorsFolderPath}\\uparrow.cur", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Wait", $"{cursorsFolderPath}\\wait.ani", RegistryValueKind.ExpandString);
-
-            var schemeValue = $"{cursorsFolderPath}\\arrow.cur,{cursorsFolderPath}\\help.cur,{cursorsFolderPath}\\appstarting.ani,{cursorsFolderPath}\\wait.ani,{cursorsFolderPath}\\crosshair.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\nwpen.cur,{cursorsFolderPath}\\no.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\sizewe.cur,{cursorsFolderPath}\\sizenwse.cur,{cursorsFolderPath}\\sizenesw.cur,{cursorsFolderPath}\\sizeall.cur,{cursorsFolderPath}\\uparrow.cur,{cursorsFolderPath}\\hand.cur,{cursorsFolderPath}\\person.cur,{cursorsFolderPath}\\pin.cur";
             Registry.CurrentUser.OpenOrCreateSubKey(Path.Combine("Control Panel\\Cursors", "Schemes")).SetValue(schemeName, schemeValue, RegistryValueKind.String);
-
             File.Delete(jepriCursorsZip);
         }
     }

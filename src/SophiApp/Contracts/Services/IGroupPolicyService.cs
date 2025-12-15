@@ -49,7 +49,7 @@ namespace SophiApp.Contracts.Services
             where T : struct;
 
         /// <summary>
-        /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
+        /// Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database.
         /// </summary>
         /// <param name="scope">Policy scope.</param>
         /// <param name="path">Policy path.</param>
@@ -59,7 +59,7 @@ namespace SophiApp.Contracts.Services
         void ClearLocalCache(LGPOScope scope, string path, string name, string type = "", string value = "");
 
         /// <summary>
-        /// Set LGPO settings file value to clear local policy cache and make changes visible in UI.
+        /// Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database.
         /// </summary>
         /// <param name="path">Policy path.</param>
         /// <param name="name">Policy value name.</param>
