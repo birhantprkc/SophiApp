@@ -22,7 +22,6 @@ namespace SophiApp.Services
         private readonly IDiskService diskService;
         private readonly IInstrumentationService instrumentationService;
         private readonly IProcessService processService;
-        private readonly IHttpService httpService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequirementsService"/> class.
@@ -33,15 +32,13 @@ namespace SophiApp.Services
         /// <param name="diskService">A service for working with disk API.</param>
         /// <param name="instrumentationService">A service for working with WMI API.</param>
         /// <param name="processService">A service for working with Windows process API.</param>
-        /// <param name="httpService">A service for working with HTTP API.</param>
         public RequirementsService(
             IAppNotificationService notificationService,
             IAppxPackagesService packagesService,
             ICommonDataService dataService,
             IDiskService diskService,
             IInstrumentationService instrumentationService,
-            IProcessService processService,
-            IHttpService httpService)
+            IProcessService processService)
         {
             this.notificationService = notificationService;
             this.packagesService = packagesService;
@@ -49,7 +46,6 @@ namespace SophiApp.Services
             this.diskService = diskService;
             this.instrumentationService = instrumentationService;
             this.processService = processService;
-            this.httpService = httpService;
         }
 
         /// <inheritdoc/>
@@ -235,20 +231,13 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result AppUpdateDetection()
         {
-            try
-            {
-                var version = httpService.GetAppVersionOrDefault();
+            var latestVersion = dataService.LatestAppRelease?.SophiApp_release ?? new Version(0, 0, 0);
 
-                if (version > dataService.AppVersion)
-                {
-                    App.Logger.LogAppUpdate(version);
-                    var payload = string.Format("AppUpdateNotification".GetLocalized(), version.ToString(3), "https://github.com/Sophia-Community/SophiApp/releases");
-                    notificationService.Show(payload);
-                }
-            }
-            catch (Exception ex)
+            if (latestVersion > dataService.AppVersion)
             {
-                App.Logger.LogAppUpdateException(ex);
+                App.Logger.LogAppUpdate(latestVersion);
+                var payload = string.Format("AppUpdateNotification".GetLocalized(), latestVersion.ToString(3), "https://github.com/Sophia-Community/SophiApp/releases");
+                notificationService.Show(payload);
             }
 
             return Result.Success();

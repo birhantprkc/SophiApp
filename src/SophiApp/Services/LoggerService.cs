@@ -78,8 +78,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogNavigateToPage(string name)
         {
-            Log.Information("Navigate to page: {Name:l}", name);
-            shellViewModel.LoggedActions.Add($"Navigate to page: {name}");
+            Log.Information("Navigate to: {Name:l}", name);
+            shellViewModel.LoggedActions.Add($"Navigate to: {name}");
         }
 
         /// <inheritdoc/>
@@ -136,29 +136,29 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogAllModelsBuilt(int count)
         {
-            Log.Information("Service {Service:l} built {Count} models", nameof(IModelService), count);
-            shellViewModel.LoggedActions.Add($"Service {nameof(IModelService)} built {count} models");
+            Log.Information("{Service:l} built {Count} models", nameof(IModelService), count);
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} built {count} models");
         }
 
         /// <inheritdoc/>
         public void LogStartModelsGetState()
         {
-            Log.Information("Service {Service:l} has started initialization of models", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"Service {nameof(IModelService)} has started initialization of models");
+            Log.Information("{Service:l} has started initialization of models", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} has started initialization of models");
         }
 
         /// <inheritdoc/>
         public void LogStartApplicableModelsSetState()
         {
-            Log.Information("Service {Service:l} has started set customizations in the applicable collection", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"Service {nameof(IModelService)} has started set customizations state in the applicable collection");
+            Log.Information("{Service:l} has started set customizations in the applicable collection", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} has started set customizations state in the applicable collection");
         }
 
         /// <inheritdoc/>
         public void LogAllModelsGetState(Stopwatch timer, int count)
         {
-            Log.Information("Service {Service:l} took time to get {Count} models state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"Service {nameof(IModelService)} took time to get {count} models state: {timer.Elapsed}");
+            Log.Information("{Service:l} took time to get {Count} models state: {TimeSpent}", nameof(IModelService), count, timer.Elapsed);
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} took time to get {count} models state: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
@@ -289,28 +289,14 @@ namespace SophiApp.Services
         {
             if (forAllUsers)
             {
-                Log.Information("Service {Service:l} took {TimeSpent} to built {Count} UWP models for all users", nameof(IModelService), timer.Elapsed, count);
+                Log.Information("{Service:l} took {TimeSpent} to built {Count} UWP models for all users", nameof(IModelService), timer.Elapsed, count);
             }
             else
             {
-                Log.Information("Service {Service:l} took {TimeSpent} to built {Count} UWP models for current user", nameof(IModelService), timer.Elapsed, count);
+                Log.Information("{Service:l} took {TimeSpent} to built {Count} UWP models for current user", nameof(IModelService), timer.Elapsed, count);
             }
 
-            shellViewModel.LoggedActions.Add($"Service {nameof(IModelService)} took {timer.Elapsed} to built {count} UWP models for {(forAllUsers ? "all users" : "current user")}");
-        }
-
-        /// <inheritdoc/>
-        public void LogInternetConnectionAvailable()
-        {
-            Log.Information("Internet connection is available");
-            shellViewModel.LoggedActions.Add("Internet connection is available");
-        }
-
-        /// <inheritdoc/>
-        public void LogInternetConnectionUnavailable()
-        {
-            Log.Information("Internet connection is not available");
-            shellViewModel.LoggedActions.Add("Internet connection is not available");
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} took {timer.Elapsed} to built {count} UWP models for {(forAllUsers ? "all users" : "current user")}");
         }
 
         /// <inheritdoc/>
@@ -377,13 +363,6 @@ namespace SophiApp.Services
         {
             Log.Error(exception, "[WRN] The EventLog broken or removed: {Message}", exception.Message);
             shellViewModel.LoggedActions.Add($"[WRN] The EventLog broken or removed: {exception.Message}");
-        }
-
-        /// <inheritdoc/>
-        public void LogAppUpdateException(Exception exception)
-        {
-            Log.Error(exception, "[WRN] Failed to obtain app update requirements in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain app update requirements in the {nameof(IRequirementsService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>

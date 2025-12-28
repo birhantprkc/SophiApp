@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Navigation;
 using SophiApp.Contracts.Services;
 using SophiApp.Contracts.ViewModels;
 using SophiApp.Extensions;
+using SophiApp.Views;
 
 /// <inheritdoc/>
 public class NavigationService : INavigationService
@@ -132,7 +133,11 @@ public class NavigationService : INavigationService
                 navigationAware.OnNavigatedTo(e.Parameter);
             }
 
-            App.Logger.LogNavigateToPage(e.SourcePageType.Name);
+            if (e.SourcePageType != typeof(StartupPage))
+            {
+                App.Logger.LogNavigateToPage(e.SourcePageType.Name);
+            }
+
             Navigated?.Invoke(sender, e);
         }
     }

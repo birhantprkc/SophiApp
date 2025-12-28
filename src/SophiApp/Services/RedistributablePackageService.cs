@@ -12,30 +12,10 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class RedistributablePackageService : IRedistributablePackageService
     {
-        private readonly IHttpService httpService;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RedistributablePackageService"/> class.
-        /// </summary>
-        /// <param name="httpService">A service for working with HTTP API.</param>
-        public RedistributablePackageService(IHttpService httpService)
-        {
-            this.httpService = httpService;
-        }
-
         /// <inheritdoc/>
         public void DeleteInstallerLogs(string logPattern)
         {
-            Directory.GetFileSystemEntries(Path.GetTempPath(), logPattern, SearchOption.TopDirectoryOnly)
-                .ForEach(File.Delete);
-        }
-
-        /// <inheritdoc/>
-        public T GetPackageRelease<T>(string url)
-            where T : class
-        {
-            var releasedJson = httpService.ReadAsJson(url);
-            return Json.ToObject<T>(releasedJson);
+            Directory.GetFileSystemEntries(Path.GetTempPath(), logPattern, SearchOption.TopDirectoryOnly).ForEach(File.Delete);
         }
 
         /// <inheritdoc/>

@@ -67,7 +67,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool ErrorReporting()
         {
-            var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException($"Failed to find a QueueReporting scheduled task");
+            var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException("Failed to find a QueueReporting scheduled task");
             var disableErrorReporting = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting")?.GetValue("Disabled") as int? ?? -1;
             return !(queueReportingTask.State == TaskState.Disabled && disableErrorReporting.Equals(1) && new System.ServiceProcess.ServiceController("WerSvc").StartType == ServiceStartMode.Disabled);
         }
@@ -369,7 +369,7 @@ namespace SophiApp.Customizations
                 return !taskbarValue.Equals(0);
             }
 
-            throw new InvalidOperationException($"AppX package MicrosoftWindows.Client.WebExperience is not installed");
+            throw new InvalidOperationException("AppX package MicrosoftWindows.Client.WebExperience is not installed");
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace SophiApp.Customizations
 
             if (smallIconsValue.Equals(1))
             {
-                throw new InvalidOperationException($"Small taskbar icons mode is enabled");
+                throw new InvalidOperationException("Small taskbar icons mode is enabled");
             }
 
             return searchModeValue + 1;
@@ -398,7 +398,7 @@ namespace SophiApp.Customizations
 
             if (smallIconsValue.Equals(1))
             {
-                throw new InvalidOperationException($"Small taskbar icons mode is enabled");
+                throw new InvalidOperationException("Small taskbar icons mode is enabled");
             }
 
             return searchModeValue switch
@@ -450,7 +450,7 @@ namespace SophiApp.Customizations
                 return !buttonValue.Equals(0);
             }
 
-            throw new InvalidOperationException($"AppX package Microsoft.549981C3F5F10 is not installed");
+            throw new InvalidOperationException("AppX package Microsoft.549981C3F5F10 is not installed");
         }
 
         /// <summary>
@@ -1119,11 +1119,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_8()
         {
-            // Get latest build version
-            // https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-            var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
-            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe");
-            return installedVersion >= latestRelease.Version;
+            var latestVersion = CommonDataService.LatestReleaseNET8?.Version ?? throw new InvalidOperationException("Internet connection is not available");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
+            return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
         }
 
         /// <summary>
@@ -1131,9 +1129,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_9()
         {
-            var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
-            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe");
-            return installedVersion >= latestRelease.Version;
+            var latestVersion = CommonDataService.LatestReleaseNET9?.Version ?? throw new InvalidOperationException("Internet connection is not available");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
+            return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
         }
 
         /// <summary>
@@ -1141,12 +1139,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x86()
         {
-            // Get latest build version
-            // https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
-            var latestRelease = RedistributablePackageService.GetPackageRelease<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json");
+            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Internet connection is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x86.exe");
-
-            return installedVersion >= latestRelease.Version;
+            return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest Visual C++ x86 version is installed");
         }
 
         /// <summary>
@@ -1154,9 +1149,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x64()
         {
-            var latestRelease = RedistributablePackageService.GetPackageRelease<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json");
+            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Internet connection is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x64.exe");
-            return installedVersion >= latestRelease.Version;
+            return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest Visual C++ x64 version is installed");
         }
 
         /// <summary>
@@ -1167,18 +1162,12 @@ namespace SophiApp.Customizations
             var appxVideoExists = AppxPackagesService.PackageExist("Microsoft.HEVCVideoExtension");
             var appxPhotosExists = AppxPackagesService.PackageExist("Microsoft.Windows.Photos");
 
-            if (appxVideoExists && appxPhotosExists)
+            if (!appxPhotosExists)
             {
-                return true;
+                throw new InvalidOperationException("AppX package Microsoft.Windows.Photos is not installed");
             }
-            else if (!appxPhotosExists)
-            {
-                throw new InvalidOperationException($"AppX package Microsoft.Windows.Photos is not installed");
-            }
-            else
-            {
-                return false;
-            }
+
+            return appxVideoExists && appxPhotosExists;
         }
 
         /// <summary>
@@ -1193,7 +1182,7 @@ namespace SophiApp.Customizations
                 return stateCortana != 1;
             }
 
-            throw new InvalidOperationException($"AppX package Cortana is not installed");
+            throw new InvalidOperationException("AppX package Cortana is not installed");
         }
 
         /// <summary>
@@ -1225,7 +1214,7 @@ namespace SophiApp.Customizations
                 return startupPanelIsEnabled == 1;
             }
 
-            throw new InvalidOperationException($"AppX package Microsoft.GamingApp is not installed");
+            throw new InvalidOperationException("AppX package Microsoft.GamingApp is not installed");
         }
 
         /// <summary>
@@ -1550,7 +1539,7 @@ else
                 return userClipchamp is null && machineClipchamp is null;
             }
 
-            throw new InvalidOperationException($"AppX package Clipchamp.Clipchamp is not installed");
+            throw new InvalidOperationException("AppX package Clipchamp.Clipchamp is not installed");
         }
 
         /// <summary>
@@ -1565,7 +1554,7 @@ else
                 return userPhotosContext is null && machinePhotosContext is null;
             }
 
-            throw new InvalidOperationException($"AppX package Microsoft.Windows.Photos is not installed");
+            throw new InvalidOperationException("AppX package Microsoft.Windows.Photos is not installed");
         }
 
         /// <summary>
@@ -1579,7 +1568,7 @@ else
                 return paintContext is null;
             }
 
-            throw new InvalidOperationException($"AppX package Microsoft.Paint is not installed");
+            throw new InvalidOperationException("AppX package Microsoft.Paint is not installed");
         }
 
         /// <summary>
@@ -1604,7 +1593,7 @@ else
                 return !accessValues.TrueForAll(value => value is not null);
             }
 
-            throw new InvalidOperationException($"AppX package Microsoft.MSPaint is not installed");
+            throw new InvalidOperationException("AppX package Microsoft.MSPaint is not installed");
         }
 
         /// <summary>

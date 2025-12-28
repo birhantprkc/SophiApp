@@ -240,16 +240,6 @@ namespace SophiApp.Contracts.Services
         void LogUwpModelsBuilt(Stopwatch timer, int count, bool forAllUsers);
 
         /// <summary>
-        /// Write information about the availability of an Internet connection in log file.
-        /// </summary>
-        void LogInternetConnectionAvailable();
-
-        /// <summary>
-        /// Write information about the unavailability of an Internet connection in log file.
-        /// </summary>
-        void LogInternetConnectionUnavailable();
-
-        /// <summary>
         /// Write <see cref="RequirementsFailure"/> reason in the <see cref="IRequirementsService"/> in the log.
         /// </summary>
         /// <param name="failure">A failure reason.</param>
@@ -308,12 +298,6 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="exception">Represents errors that occur during app executing.</param>
         void LogEventLogException(Exception exception);
-
-        /// <summary>
-        /// Handles an exception when accessing to app update in the <see cref="IRequirementsService"/>.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogAppUpdateException(Exception exception);
 
         /// <summary>
         /// Handles occur during the Microsoft Defender files is missing exception.

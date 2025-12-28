@@ -14,6 +14,7 @@ namespace SophiApp.Services
     using System.Diagnostics;
     using System.Reflection;
     using System.Text;
+    using System.Threading.Tasks;
     using Windows.ApplicationModel.Resources.Core;
 
     /// <inheritdoc/>
@@ -171,11 +172,11 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void GetModelsState(ObservableCollection<UIModel> models)
+        public async Task GetModelsState(ObservableCollection<UIModel> models)
         {
             App.Logger.LogStartModelsGetState();
             var timer = Stopwatch.StartNew();
-            Task.WaitAll(
+            await Task.WhenAll(
                 GetStateByTagAsync(models, UICategoryTag.Privacy),
                 GetStateByTagAsync(models, UICategoryTag.Personalization),
                 GetStateByTagAsync(models, UICategoryTag.System),

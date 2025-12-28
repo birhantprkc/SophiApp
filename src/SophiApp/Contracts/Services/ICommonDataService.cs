@@ -4,6 +4,7 @@
 
 namespace SophiApp.Contracts.Services
 {
+    using CSharpFunctionalExtensions;
     using SophiApp.Helpers;
 
     /// <summary>
@@ -57,14 +58,34 @@ namespace SophiApp.Contracts.Services
         Version AppVersion { get; }
 
         /// <summary>
-        /// Gets a value indicating whether Internet connection is available.
+        /// Gets latest app release from GitHub repository.
         /// </summary>
-        bool InternetConnectionAvailable { get; }
+        AppVersion? LatestAppRelease { get; }
+
+        /// <summary>
+        /// Gets latest .NET 8 release.
+        /// </summary>
+        NetRelease? LatestReleaseNET8 { get; }
+
+        /// <summary>
+        /// Gets latest .NET 9 release.
+        /// </summary>
+        NetRelease? LatestReleaseNET9 { get; }
+
+        /// <summary>
+        /// Gets latest Visual C++ release.
+        /// </summary>
+        VCRelease? LatestReleaseVC { get; }
 
         /// <summary>
         /// Initialize <see cref="ICommonDataService"/> data.
         /// </summary>
-        void Initialize();
+        Task InitializeAsync();
+
+        /// <summary>
+        /// Receiving data from external services.
+        /// </summary>
+        Task<Result> GetExternalServicesDataAsync();
 
         /// <summary>
         /// Gets app name and version.

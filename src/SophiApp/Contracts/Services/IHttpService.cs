@@ -29,15 +29,13 @@ namespace SophiApp.Contracts.Services
         Task DownloadHEVCAppxAsync(string fileName);
 
         /// <summary>
-        /// Get actual or default app version from GitHub repository.
+        /// Sends a GET request to the specified url and returns deserialize value.
         /// </summary>
-        Version GetAppVersionOrDefault();
-
-        /// <summary>
-        /// Read <paramref name="url"/> as json.
-        /// </summary>
-        /// <param name="url">Json url.</param>
-        string ReadAsJson(string url);
+        /// <param name="url">A string that represents the request url.</param>
+        /// <param name="timeout"><see cref="HttpClient"/> timeout in seconds.</param>
+        /// <typeparam name="T">Type of return value.</typeparam>
+        Task<T> GetFromJsonAsync<T>(string url, double timeout)
+            where T : class;
 
         /// <summary>
         /// Opens a resource using an url.

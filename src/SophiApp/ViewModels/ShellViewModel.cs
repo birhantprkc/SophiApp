@@ -3,6 +3,7 @@
 // </copyright>
 
 namespace SophiApp.ViewModels;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CSharpFunctionalExtensions;
@@ -62,42 +63,42 @@ public partial class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
-    /// <param name="notificationService">A service for working with toast notifications API.</param>
-    /// <param name="packagesService">A service for working with appx packages API.</param>
     /// <param name="dataService">A service for working with common app data.</param>
     /// <param name="defenderService">A service for working with Microsoft Defender API.</param>
+    /// <param name="groupPolicyService">A service for working with group policy API.</param>
     /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="navigationService">Page navigation service.</param>
     /// <param name="navigationViewService">A service for navigating to View.</param>
+    /// <param name="notificationService">A service for working with toast notifications API.</param>
+    /// <param name="packagesService">A service for working with appx packages API.</param>
     /// <param name="processService">A service for working with Windows process API.</param>
-    /// <param name="requirementsService">Service for working with OS requirements.</param>
     /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
-    /// <param name="startupViewModel">Implements the <see cref="StartupViewModel"/> class.</param>
-    /// <param name="groupPolicyService">A service for working with group policy API.</param>
+    /// <param name="requirementsService">Service for working with OS requirements.</param>
     /// <param name="settingsService">A service for working with app settings.</param>
+    /// <param name="startupViewModel">Implements the <see cref="StartupViewModel"/> class.</param>
     public ShellViewModel(
         IAppNotificationService notificationService,
         IAppxPackagesService packagesService,
         ICommonDataService dataService,
         IDefenderService defenderService,
+        IGroupPolicyService groupPolicyService,
         IModelService modelService,
         INavigationService navigationService,
         INavigationViewService navigationViewService,
         IProcessService processService,
         IRequirementsService requirementsService,
+        ISettingsService settingsService,
         RequirementsFailureViewModel requirementsFailureViewModel,
-        StartupViewModel startupViewModel,
-        IGroupPolicyService groupPolicyService,
-        ISettingsService settingsService)
+        StartupViewModel startupViewModel)
     {
-        this.notificationService = notificationService;
         this.dataService = dataService;
         this.defenderService = defenderService;
+        this.groupPolicyService = groupPolicyService;
         this.modelService = modelService;
+        this.notificationService = notificationService;
         this.packagesService = packagesService;
         this.processService = processService;
         this.requirementsService = requirementsService;
-        this.groupPolicyService = groupPolicyService;
         this.settingsService = settingsService;
         startupModel = startupViewModel;
         NavigationViewService = navigationViewService;
@@ -222,89 +223,97 @@ public partial class ShellViewModel : ObservableRecipient
     /// </summary>
     public async Task ExecuteAsync()
     {
-        var numberOfRequirements = 12;
+        var progressSteps = 12;
         await Task.Run(() =>
         {
             var timer = Stopwatch.StartNew();
-            _ = Result.Try(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            Result.Try(async () =>
             {
-                startupModel.StatusText = "OsRequirements_GetOsBitness".GetLocalized();
-                _ = NavigationService.NavigateTo(typeof(StartupViewModel).FullName!);
-            }))
-            .Bind(_ => requirementsService.GetOsBitness())
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => startupModel.StatusText = "OsRequirements_ObtainingInternetData".GetLocalized());
+                await dataService.GetExternalServicesDataAsync();
+            })
+            .Tap(() =>
+            {
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                    startupModel.StatusText = "OsRequirements_GetOsBitness".GetLocalized();
+                });
+            })
+            .Bind(() => requirementsService.GetOsBitness())
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetWmiState".GetLocalized();
             }))
             .Bind(requirementsService.GetWmiState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetOsVersion".GetLocalized();
             }))
             .Bind(requirementsService.GetOsVersion)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_AppRunFromLoggedUser".GetLocalized();
             }))
             .Bind(requirementsService.AppRunFromLoggedUser)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_MalwareDetection".GetLocalized();
             }))
             .Bind(requirementsService.MalwareDetection)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetFeatureExperiencePackState".GetLocalized();
             }))
             .Bind(requirementsService.GetFeatureExperiencePackState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetEventLogState".GetLocalized();
             }))
             .Bind(requirementsService.GetEventLogState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetMicrosoftStoreState".GetLocalized();
             }))
             .Bind(requirementsService.GetMicrosoftStoreState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetPendingRebootState".GetLocalized();
             }))
             .Bind(requirementsService.GetPendingRebootState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_UpdateDetection".GetLocalized();
             }))
             .Bind(requirementsService.AppUpdateDetection)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GetMsDefenderState".GetLocalized();
             }))
             .Bind(defenderService.GetState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_ReadWindowsSettings".GetLocalized();
             }))
             .Tap(async () =>
             {
                 JsonModels = await modelService.BuildJsonModelsAsync();
-                modelService.GetModelsState(JsonModels);
+                await modelService.GetModelsState(JsonModels);
             })
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(numberOfRequirements);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
                 startupModel.StatusText = "OsRequirements_GeneratingUserInterface".GetLocalized();
             }))
             .Tap(async () =>
@@ -321,7 +330,7 @@ public partial class ShellViewModel : ObservableRecipient
                     App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                     {
                         NavigationViewHitTestVisible = true;
-                        _ = NavigationService.NavigateTo(pageKey: typeof(PrivacyViewModel).FullName!, clearNavigation: true);
+                        NavigationService.NavigateTo(pageKey: typeof(PrivacyViewModel).FullName!, clearNavigation: true);
                     });
                 },
                 onFailure: failure =>
@@ -331,7 +340,11 @@ public partial class ShellViewModel : ObservableRecipient
                     var failureReason = failure.ToEnum<RequirementsFailure>();
                     App.Logger.LogNavigateToRequirementsFailure(failureReason);
                     failureViewModel.PrepareForNavigation(failureReason);
-                    App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(typeof(RequirementsFailureViewModel).FullName!));
+                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        NavigationService.NavigateTo(pageKey: typeof(RequirementsFailureViewModel).FullName!, clearNavigation: true);
+                        failureViewModel.RunOsUpdate(failureReason);
+                    });
                 });
         });
     }

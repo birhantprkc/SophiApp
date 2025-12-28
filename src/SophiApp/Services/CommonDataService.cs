@@ -4,12 +4,13 @@
 
 namespace SophiApp.Services
 {
-    using System;
-    using System.Net;
-    using System.Reflection;
+    using CSharpFunctionalExtensions;
     using Microsoft.UI.Input;
     using SophiApp.Contracts.Services;
     using SophiApp.Helpers;
+    using System;
+    using System.Reflection;
+    using System.Threading.Tasks;
 
     /// <inheritdoc/>
     public class CommonDataService : ICommonDataService
@@ -17,15 +18,18 @@ namespace SophiApp.Services
         private static readonly InputCursor HandCursor = InputSystemCursor.Create(InputSystemCursorShape.Hand);
         private static InputCursor userCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         private readonly AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
+        private readonly IHttpService httpService;
         private readonly IInstrumentationService instrumentationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommonDataService"/> class.
         /// </summary>
         /// <param name="instrumentationService">Service for working with WMI.</param>
-        public CommonDataService(IInstrumentationService instrumentationService)
+        /// <param name="httpService">Service for working with HTTP API.</param>
+        public CommonDataService(IInstrumentationService instrumentationService, IHttpService httpService)
         {
             this.instrumentationService = instrumentationService;
+            this.httpService = httpService;
             OsProperties = new ();
         }
 
@@ -74,17 +78,39 @@ namespace SophiApp.Services
         public bool DefenderEnabled { get; set; } = false;
 
         /// <inheritdoc/>
-        public Version AppVersion => assembly.Version!;
+        public Version AppVersion => assembly.Version ?? new Version(0, 0, 0);
 
         /// <inheritdoc/>
-        public bool InternetConnectionAvailable { get; private set; } = false;
+        public AppVersion? LatestAppRelease { get; private set; }
 
         /// <inheritdoc/>
-        public void Initialize()
+        public NetRelease? LatestReleaseNET8 { get; private set; }
+
+        /// <inheritdoc/>
+        public NetRelease? LatestReleaseNET9 { get; private set; }
+
+        /// <inheritdoc/>
+        public VCRelease? LatestReleaseVC { get; private set; }
+
+        /// <inheritdoc/>
+        public async Task InitializeAsync()
         {
-            OsProperties = instrumentationService.GetOsPropertiesOrDefault();
-            App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
-            InternetConnectionAvailable = HasInternetConnection();
+            await Task.Run(() =>
+            {
+                OsProperties = instrumentationService.GetOsPropertiesOrDefault();
+                App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
+            });
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result> GetExternalServicesDataAsync()
+        {
+            await Task.WhenAll(
+                SetLatestAppReleaseAsync(),
+                SetNet8ReleaseAsync(),
+                SetNet9ReleaseAsync(),
+                SetVCReleaseAsync());
+            return Result.Success();
         }
 
         /// <inheritdoc/>
@@ -96,23 +122,52 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public string GetFullName() => $"{assembly.Name} {assembly.Version!.Major}.{assembly.Version.Minor}.{assembly.Version.Build}";
 
-        private bool HasInternetConnection()
+        private async Task SetLatestAppReleaseAsync()
         {
-            var isOnline = false;
-
             try
             {
-                using var client = new HttpClient();
-                using var response = client.GetAsync("https://www.google.com").Result;
-                isOnline = response.StatusCode == HttpStatusCode.OK;
-                App.Logger.LogInternetConnectionAvailable();
+                LatestAppRelease = await httpService.GetFromJsonAsync<AppVersion>("https://raw.githubusercontent.com/Sophia-Community/SophiApp/master/sophiapp_versions.json", 5);
+            }
+            catch
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task SetNet8ReleaseAsync()
+        {
+            try
+            {
+                LatestReleaseNET8 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json", 5);
             }
             catch (Exception)
             {
-                App.Logger.LogInternetConnectionUnavailable();
+                await Task.CompletedTask;
             }
+        }
 
-            return isOnline;
+        private async Task SetNet9ReleaseAsync()
+        {
+            try
+            {
+                LatestReleaseNET9 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json", 5);
+            }
+            catch (Exception)
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task SetVCReleaseAsync()
+        {
+            try
+            {
+                LatestReleaseVC = await httpService.GetFromJsonAsync<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json", 5);
+            }
+            catch (Exception)
+            {
+                await Task.CompletedTask;
+            }
         }
     }
 }

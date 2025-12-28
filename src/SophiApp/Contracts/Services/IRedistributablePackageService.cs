@@ -16,17 +16,9 @@ namespace SophiApp.Contracts.Services
         void DeleteInstallerLogs(string logPattern);
 
         /// <summary>
-        /// Get package release information from <paramref name="url"/>.
+        /// Get package offline installer version or default.
         /// </summary>
-        /// <typeparam name="T">Type of return value.</typeparam>
-        /// <param name="url">Release url.</param>
-        T GetPackageRelease<T>(string url)
-            where T : class;
-
-        /// <summary>
-        /// Get redistributable package offline installer version.
-        /// </summary>
-        /// <param name="name">Redistributable package installer file name.</param>
+        /// <param name="name">Package installer file name.</param>
         Version GetInstalledPackageVersionOrDefault(string name);
     }
 }

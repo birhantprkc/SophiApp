@@ -13,57 +13,55 @@ using System.Threading.Tasks;
 /// <inheritdoc/>
 public class InitializeService : IInitializeService
 {
-    private readonly IThemesService themesService;
-    private readonly ICommonDataService commonDataService;
-    private readonly ISettingsService settingsService;
-    private readonly ShellViewModel shellViewModel;
+    private readonly ICommonDataService dataService;
     private readonly IDisplayService displayService;
+    private readonly ISettingsService settingsService;
+    private readonly IThemesService themesService;
+    private readonly ShellViewModel viewModel;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InitializeService"/> class.
     /// </summary>
-    /// <param name="themesService">A service for working with app themes.</param>
     /// <param name="commonDataService">A service for working with common app data.</param>
-    /// <param name="settingsService">A service for working with app settings.</param>
-    /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
     /// <param name="displayService">A service for working with display API.</param>
+    /// <param name="settingsService">A service for working with app settings.</param>
+    /// <param name="themesService">A service for working with app themes.</param>
+    /// <param name="viewModel">Implements the <see cref="ShellViewModel"/> class.</param>
     public InitializeService(
-        IThemesService themesService,
         ICommonDataService commonDataService,
+        IDisplayService displayService,
         ISettingsService settingsService,
-        ShellViewModel shellViewModel,
-        IDisplayService displayService)
+        IThemesService themesService,
+        ShellViewModel viewModel)
     {
-        this.themesService = themesService;
-        this.commonDataService = commonDataService;
-        this.settingsService = settingsService;
-        this.shellViewModel = shellViewModel;
+        this.dataService = commonDataService;
         this.displayService = displayService;
+        this.settingsService = settingsService;
+        this.themesService = themesService;
+        this.viewModel = viewModel;
     }
 
     /// <inheritdoc/>
-    public async Task InitializeAsync(object args)
+    public async Task InitializeServicesAsync(object args)
     {
-        commonDataService.Initialize();
         await settingsService.InitializeAsync();
-        await InitializeAppWindow();
+        await viewModel.FontOptions.InitializeAsync();
         await themesService.InitializeAsync();
         await themesService.SetRequestedThemeAsync();
-        await shellViewModel.FontOptions.InitializeAsync();
+        await dataService.InitializeAsync();
     }
 
-    private async Task InitializeAppWindow()
+    /// <inheritdoc/>
+    public async Task InitializeMainWindowAsync()
     {
-        App.MainWindow.Title = commonDataService.GetFullName();
+        App.MainWindow.Title = dataService.GetFullName();
         App.MainWindow.Content = App.MainWindow.Content is null ? App.GetService<ShellPage>() : new Frame();
         App.MainWindow.MinHeight = settingsService.AppWindowMinHeight;
         App.MainWindow.MinWidth = settingsService.AppWindowMinWidth;
-
         var windowState = await settingsService.ReadAppWindowStateAsync();
         var windowPosition = await settingsService.ReadAppWindowPositionAsync();
         var windowHeight = await settingsService.ReadAppWindowHeightAsync();
         var windowWidth = await settingsService.ReadAppWindowWidthAsync();
-
         var displayArea = await displayService.GetDisplayAreaAsync();
         var positionIsValid = windowPosition.X > 0 && windowPosition.Y > 0;
         var heightIsValid = windowPosition.Y + windowHeight <= (displayArea?.WorkArea.Height ?? -1);
@@ -86,5 +84,6 @@ public class InitializeService : IInitializeService
 
         TitleBarHelper.ApplySystemThemeToCaptionButtons();
         App.MainWindow.Activate();
+        viewModel.NavigationService.NavigateTo(typeof(StartupViewModel).FullName!);
     }
 }

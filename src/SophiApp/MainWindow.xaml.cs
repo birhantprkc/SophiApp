@@ -6,7 +6,6 @@ namespace SophiApp;
 
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
-using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using Windows.UI.ViewManagement;

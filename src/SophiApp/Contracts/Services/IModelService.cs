@@ -27,7 +27,7 @@ namespace SophiApp.Contracts.Services
         /// Get <see cref="UIModel"/> state.
         /// </summary>
         /// <param name="models">A <see cref="UIModel"/> collection.</param>
-        void GetModelsState(ObservableCollection<UIModel> models);
+        Task GetModelsState(ObservableCollection<UIModel> models);
 
         /// <summary>
         /// Get <see cref="UIModel"/> state.

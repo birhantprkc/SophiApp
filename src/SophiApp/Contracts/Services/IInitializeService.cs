@@ -5,7 +5,7 @@
 namespace SophiApp.Contracts.Services;
 
 /// <summary>
-/// A service for working with app services data.
+/// Initializes with app services data.
 /// </summary>
 public interface IInitializeService
 {
@@ -13,5 +13,10 @@ public interface IInitializeService
     /// Initializes the app services data.
     /// </summary>
     /// <param name="args">App launch arguments.</param>
-    Task InitializeAsync(object args);
+    Task InitializeServicesAsync(object args);
+
+    /// <summary>
+    /// Initializes the <see cref="MainWindow"/> data.
+    /// </summary>
+    Task InitializeMainWindowAsync();
 }

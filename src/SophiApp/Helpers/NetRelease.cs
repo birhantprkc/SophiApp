@@ -17,7 +17,7 @@ namespace SophiApp.Helpers
         /// Gets or sets latest release version.
         /// </summary>
         [JsonProperty("latest-release")]
-        public Version Version { get; set; }
+        public Version? Version { get; set; }
 
         #pragma warning restore CS8618 // Non nullable field name is not initialized. Consider declare the field as nullable type.
     }

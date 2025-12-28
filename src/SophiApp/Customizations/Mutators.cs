@@ -1572,16 +1572,14 @@ namespace SophiApp.Customizations
         {
             if (enable)
             {
-                var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json");
-                var releaseName = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
+                var latestRelease = CommonDataService.LatestReleaseNET8!;
+                var releaseVersion = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
                 var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
                 var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
-                var offlineInstaller = Path.Combine(downloadFolder!, releaseName);
-                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseName}";
-
+                var offlineInstaller = Path.Combine(downloadFolder!, releaseVersion);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseVersion}";
                 HttpService.DownloadFile(downloadUrl, offlineInstaller);
                 ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
-
                 File.Delete(offlineInstaller);
                 RedistributablePackageService.DeleteInstallerLogs("Microsoft_Windows_Desktop_Runtime*.log");
             }
@@ -1595,15 +1593,13 @@ namespace SophiApp.Customizations
         {
             if (enable)
             {
-                var latestRelease = RedistributablePackageService.GetPackageRelease<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json");
-                var releaseName = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
+                var latestRelease = CommonDataService.LatestReleaseNET9!;
+                var releaseVersion = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
-                var offlineInstaller = Path.Combine(downloadFolder!, releaseName);
-                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseName}";
-
+                var offlineInstaller = Path.Combine(downloadFolder!, releaseVersion);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseVersion}";
                 HttpService.DownloadFile(downloadUrl, offlineInstaller);
                 ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
-
                 File.Delete(offlineInstaller);
                 RedistributablePackageService.DeleteInstallerLogs("Microsoft_Windows_Desktop_Runtime*.log");
             }
@@ -1619,10 +1615,8 @@ namespace SophiApp.Customizations
             {
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
                 var offlineInstaller = Path.Combine(downloadFolder!, "VC_redist.x86.exe");
-
                 HttpService.DownloadFile("https://aka.ms/vs/17/release/VC_redist.x86.exe", offlineInstaller);
                 ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
-
                 File.Delete(offlineInstaller);
                 RedistributablePackageService.DeleteInstallerLogs("dd_vcredist_x86_*.log");
             }
@@ -1638,10 +1632,8 @@ namespace SophiApp.Customizations
             {
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
                 var offlineInstaller = Path.Combine(downloadFolder!, "VC_redist.x64.exe");
-
                 HttpService.DownloadFile("https://aka.ms/vs/17/release/VC_redist.x64.exe", offlineInstaller);
                 ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
-
                 File.Delete(offlineInstaller);
                 RedistributablePackageService.DeleteInstallerLogs("dd_vcredist_amd64_*.log");
             }

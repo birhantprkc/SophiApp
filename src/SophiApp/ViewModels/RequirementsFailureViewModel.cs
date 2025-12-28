@@ -42,7 +42,25 @@ namespace SophiApp.ViewModels
         {
             TitleText = LocalizeTitleText(reason);
             DescriptionText = LocalizeDescriptionText(reason);
-            RunUpdateNecessary(reason);
+        }
+
+        /// <summary>
+        /// Start receiving OS updates.
+        /// </summary>
+        /// <param name="reason">Reasons for failure requirements.</param>
+        public void RunOsUpdate(RequirementsFailure reason)
+        {
+            switch (reason)
+            {
+                case RequirementsFailure.Win11BuildLess22631:
+                case RequirementsFailure.Win11UbrLess2283:
+                case RequirementsFailure.Win10UnsupportedBuild:
+                    updateService.RunOsUpdate();
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private string LocalizeTitleText(RequirementsFailure reason)
@@ -79,21 +97,6 @@ namespace SophiApp.ViewModels
 
                 default:
                     return string.Empty;
-            }
-        }
-
-        private void RunUpdateNecessary(RequirementsFailure reason)
-        {
-            switch (reason)
-            {
-                case RequirementsFailure.Win11BuildLess22631:
-                case RequirementsFailure.Win11UbrLess2283:
-                case RequirementsFailure.Win10UnsupportedBuild:
-                    updateService.RunOsUpdate();
-                    break;
-
-                default:
-                    break;
             }
         }
     }

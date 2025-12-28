@@ -152,12 +152,11 @@ public partial class App : Application
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
-        GetService<IAppNotificationService>()
-            .RegisterAsToastSender("SophiApp");
-        await GetService<IInitializeService>()
-            .InitializeAsync(args);
-        await GetService<ShellViewModel>()
-            .ExecuteAsync();
+        GetService<IAppNotificationService>().RegisterAsToastSender("SophiApp");
+        var initializeService = GetService<IInitializeService>();
+        await initializeService.InitializeServicesAsync(args);
+        await initializeService.InitializeMainWindowAsync();
+        await GetService<ShellViewModel>().ExecuteAsync();
     }
 
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)

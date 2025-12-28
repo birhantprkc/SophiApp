@@ -1334,4 +1334,7 @@
   <data name="LogPage_ContextMenu_OpenLogFolder.Label" xml:space="preserve">
     <value>Open log folder</value>
   </data>
+  <data name="OsRequirements_ObtainingInternetData" xml:space="preserve">
+    <value>Obtaining data from the Internet</value>
+  </data>
 </root>
