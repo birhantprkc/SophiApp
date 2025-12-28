@@ -1615,7 +1615,7 @@ namespace SophiApp.Customizations
             {
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
                 var offlineInstaller = Path.Combine(downloadFolder!, "VC_redist.x86.exe");
-                HttpService.DownloadFile("https://aka.ms/vs/17/release/VC_redist.x86.exe", offlineInstaller);
+                HttpService.DownloadFile("https://aka.ms/vc14/vc_redist.x86.exe", offlineInstaller);
                 ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
                 File.Delete(offlineInstaller);
                 RedistributablePackageService.DeleteInstallerLogs("dd_vcredist_x86_*.log");
@@ -1632,7 +1632,7 @@ namespace SophiApp.Customizations
             {
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
                 var offlineInstaller = Path.Combine(downloadFolder!, "VC_redist.x64.exe");
-                HttpService.DownloadFile("https://aka.ms/vs/17/release/VC_redist.x64.exe", offlineInstaller);
+                HttpService.DownloadFile("https://aka.ms/vc14/vc_redist.x64.exe", offlineInstaller);
                 ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
                 File.Delete(offlineInstaller);
                 RedistributablePackageService.DeleteInstallerLogs("dd_vcredist_amd64_*.log");

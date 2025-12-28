@@ -80,8 +80,10 @@ namespace SophiApp.Services
             var schemeValue = $"{cursorsFolderPath}\\arrow.cur,{cursorsFolderPath}\\help.cur,{cursorsFolderPath}\\appstarting.ani,{cursorsFolderPath}\\wait.ani,{cursorsFolderPath}\\crosshair.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\nwpen.cur,{cursorsFolderPath}\\no.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\sizewe.cur,{cursorsFolderPath}\\sizenwse.cur,{cursorsFolderPath}\\sizenesw.cur,{cursorsFolderPath}\\sizeall.cur,{cursorsFolderPath}\\uparrow.cur,{cursorsFolderPath}\\hand.cur,{cursorsFolderPath}\\person.cur,{cursorsFolderPath}\\pin.cur";
             httpService.DownloadFile(downloadUrl, jepriCursorsZip);
             Directory.CreateDirectory(cursorsFolder);
+
             // Extract archive
             _ = processService.WaitForExit(tarExe, $"-xvf \"{jepriCursorsZip}\" -C \"{cursorsFolder}\"");
+
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue(string.Empty, schemeName, RegistryValueKind.String);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("AppStarting", $"{cursorsFolderPath}\\appstarting.ani", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Arrow", $"{cursorsFolderPath}\\arrow.cur", RegistryValueKind.ExpandString);
@@ -102,6 +104,7 @@ namespace SophiApp.Services
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("UpArrow", $"{cursorsFolderPath}\\uparrow.cur", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Wait", $"{cursorsFolderPath}\\wait.ani", RegistryValueKind.ExpandString);
             Registry.CurrentUser.OpenOrCreateSubKey(Path.Combine("Control Panel\\Cursors", "Schemes")).SetValue(schemeName, schemeValue, RegistryValueKind.String);
+
             File.Delete(jepriCursorsZip);
         }
     }
