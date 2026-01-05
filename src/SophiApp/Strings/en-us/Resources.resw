@@ -195,7 +195,7 @@
     <value>Developed by</value>
   </data>
   <data name="SettingsPage_ProjectManager.WorkedOn" xml:space="preserve">
-    <value>Product Manager</value>
+    <value>PO & QA</value>
   </data>
   <data name="SettingsPage_UiDevelopment.WorkedOn" xml:space="preserve">
     <value>UI development</value>
@@ -210,7 +210,7 @@
     <value>Links</value>
   </data>
   <data name="SettingsPage_AppTester.WorkedOn" xml:space="preserve">
-    <value>Tester</value>
+    <value>QC</value>
   </data>
   <data name="UIModel_WindowsWelcomeExperience_Description" xml:space="preserve">
     <value>Windows may open a pop-up window to show you what's new about the operating system.</value>
