@@ -672,7 +672,7 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get Start menu recently added apps state.
         /// </summary>
-        public static bool RecentlyAddedApps()
+        public static bool RecentlyAddedStartApps()
         {
             var appsValue = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("HideRecentlyAddedApps") as int? ?? -1;
             return !appsValue.Equals(1);
@@ -773,8 +773,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool Win32LongPathsSupport()
         {
-            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\FileSystem")
-                ?.GetValue("LongPathsEnabled") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\FileSystem")?.GetValue("LongPathsEnabled") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -783,8 +782,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool BSoDStopError()
         {
-            var crashPath = "System\\CurrentControlSet\\Control\\CrashControl";
-            var isEnabled = Registry.LocalMachine.OpenSubKey(crashPath)?.GetValue("DisplayParameters") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\CrashControl")?.GetValue("DisplayParameters") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -793,8 +791,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int AdminApprovalMode()
         {
-            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System")
-                ?.GetValue("ConsentPromptBehaviorAdmin") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System")?.GetValue("ConsentPromptBehaviorAdmin") as int? ?? -1;
             return isEnabled.Equals(0) ? 2 : 1;
         }
 
@@ -847,8 +844,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int ActiveHours()
         {
-            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
-                ?.GetValue("SmartActiveHoursState") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")?.GetValue("SmartActiveHoursState") as int? ?? -1;
             return isEnabled.Equals(0) ? 2 : 1;
         }
 
@@ -857,8 +853,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool WindowsLatestUpdate()
         {
-            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")
-                ?.GetValue("IsContinuousInnovationOptedIn") as int? ?? -1;
+            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsUpdate\\UX\\Settings")?.GetValue("IsContinuousInnovationOptedIn") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 
@@ -921,8 +916,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool FoldersLaunchSeparateProcess()
         {
-            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
-                ?.GetValue("SeparateProcess") as int? ?? -1;
+            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("SeparateProcess") as int? ?? -1;
             return isEnabled.Equals(1);
         }
 

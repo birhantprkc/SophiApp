@@ -472,12 +472,12 @@
     "Windows11Support": "True"
   },
   {
-    "Name": "RecentlyAddedApps",
+    "Name": "RecentlyAddedStartApps",
     "Type": "CheckBox",
     "Tag": "Personalization",
     "ViewId": 242,
     "Windows10Support": "True",
-    "Windows11Support": "False"
+    "Windows11Support": "True"
   },
   {
     "Name": "AppSuggestions",

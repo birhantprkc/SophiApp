@@ -971,7 +971,7 @@ namespace SophiApp.Customizations
         /// Set Start menu recently added apps state.
         /// </summary>
         /// <param name="enable">Start menu recently added apps state.</param>
-        public static void RecentlyAddedApps(bool enable)
+        public static void RecentlyAddedStartApps(bool enable)
         {
             GroupPolicyService.ClearRegistryCache(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\Explorer", "HideRecentlyAddedApps");
 
