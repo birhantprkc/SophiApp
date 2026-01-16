@@ -46,6 +46,13 @@
                         Grid.Column="0"
                         Margin="17, 10, 10, 10"
                         VerticalAlignment="Center">
+                <TextBlock Grid.Column="0"
+                           Foreground="{ThemeResource WindowAccent}">
+                    <Run Text="Function name:"/>
+                    <Run Text="{Binding Name}"/>
+                    <Run Text="Function Id:"/>
+                    <Run Text="{Binding ViewId}"/>
+                </TextBlock>
                 <TextBlock x:Name="TitleTextBlock"
                            Grid.Column="0"
                            Style="{StaticResource UIControlTitleTextStyle}"

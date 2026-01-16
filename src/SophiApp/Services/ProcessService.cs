@@ -15,7 +15,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool Exists(string name)
         {
-            return Array.Exists(System.Diagnostics.Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
+            return Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
         }
 
         /// <inheritdoc/>
@@ -37,6 +37,18 @@ namespace SophiApp.Services
                     process.WaitForExit(timeout);
                     process.Dispose();
                 });
+        }
+
+        /// <inheritdoc/>
+        public void ThrowIfExist(params string[] processes)
+        {
+            processes.ForEach(process =>
+            {
+                if (Exists(process))
+                {
+                    throw new InvalidOperationException($"The process {process} listed in the throw list is running on your PC");
+                }
+            });
         }
 
         /// <inheritdoc/>
@@ -75,14 +87,13 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void SetAutoRestartShell(bool allow)
         {
-            var winlogonPath = "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
-            Registry.LocalMachine.OpenSubKey(winlogonPath, true)?.SetValue("AutoRestartShell", allow ? 1 : 0, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon", true)?.SetValue("AutoRestartShell", allow ? 1 : 0, RegistryValueKind.DWord);
         }
 
         /// <inheritdoc/>
         public Process? StartProcessByName(string name, string arguments = "", ProcessWindowStyle style = ProcessWindowStyle.Normal)
         {
-            return System.Diagnostics.Process.Start(new ProcessStartInfo()
+            return Process.Start(new ProcessStartInfo()
             {
                 FileName = name,
                 Arguments = arguments,

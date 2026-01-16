@@ -23,6 +23,7 @@
     <StartupObject>SophiApp.Program</StartupObject>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SignAssembly>False</SignAssembly>
+    <UseRidGraph>true</UseRidGraph>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\LinkedIn.svg" />

@@ -104,12 +104,15 @@ namespace SophiApp.Services
             try
             {
                 using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(5);
                 using var request = new HttpRequestMessage(HttpMethod.Head, url);
                 using var response = client.Send(request);
+                App.Logger.LogUrlIsAvailable(url, response.IsSuccessStatusCode);
                 return response.IsSuccessStatusCode;
             }
             catch
             {
+                App.Logger.LogUrlIsAvailable(url, false);
                 return false;
             }
         }

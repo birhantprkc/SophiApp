@@ -195,7 +195,7 @@
     <value>Developed by</value>
   </data>
   <data name="SettingsPage_ProjectManager.WorkedOn" xml:space="preserve">
-    <value>PO & QA</value>
+    <value>PO &amp; QA</value>
   </data>
   <data name="SettingsPage_UiDevelopment.WorkedOn" xml:space="preserve">
     <value>UI development</value>
@@ -845,7 +845,7 @@
   <data name="UIModel_QuickAccessRecentFiles_Title" xml:space="preserve">
     <value>Show recently used files in Quick access</value>
   </data>
-  <data name="UIModel_RecentlyAddedApps_Title" xml:space="preserve">
+  <data name="UIModel_RecentlyAddedStartApps_Title" xml:space="preserve">
     <value>Show recently added apps on Start</value>
   </data>
   <data name="UIModel_RecycleBinDeleteConfirmation_Title" xml:space="preserve">
@@ -1151,9 +1151,6 @@
   <data name="UIModel_Win32LongPathsSupport_Title" xml:space="preserve">
     <value>Enable Windows long paths support</value>
   </data>
-  <data name="UIModel_Win32LongPathsSupport_Description" xml:space="preserve">
-    <value>In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
   <data name="UIModel_WindowsLatestUpdate_Title" xml:space="preserve">
     <value>Get the latest Windows updates as soon as they're available</value>
   </data>
@@ -1342,5 +1339,8 @@
   </data>
   <data name="OsRequirements_ObtainingInternetData" xml:space="preserve">
     <value>Obtaining data from the Internet</value>
+  </data>
+  <data name="UIModel_MostUsedStartApps_Title" xml:space="preserve">
+    <value>Show most used Start apps</value>
   </data>
 </root>

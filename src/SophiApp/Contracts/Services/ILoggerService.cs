@@ -9,6 +9,7 @@ namespace SophiApp.Contracts.Services
     using SophiApp.ViewModels;
     using System;
     using System.Diagnostics;
+    using System.Security.Policy;
     using System.ServiceProcess;
 
     /// <summary>
@@ -56,6 +57,18 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="url">Openable url.</param>
         void LogOpenedUrl(string url);
+
+        /// <summary>
+        /// Write OneDrive setup file path in the log.
+        /// </summary>
+        /// <param name="path">OneDrive setup file path.</param>
+        /// <param name="exist">Exist OneDrive setup file.</param>
+        void LogOneDriveSetupFileFound(string path, bool exist);
+
+        /// <summary>
+        /// Write a message to the log if the OneDrive setup file not found.
+        /// </summary>
+        void LogOneDriveSetupFileNotFound();
 
         /// <summary>
         /// Write the number of user files remaining after uninstall OneDrive in the log.
@@ -238,6 +251,13 @@ namespace SophiApp.Contracts.Services
         /// <param name="count">Number of models.</param>
         /// <param name="forAllUsers">Is for all users built.</param>
         void LogUwpModelsBuilt(Stopwatch timer, int count, bool forAllUsers);
+
+        /// <summary>
+        /// Write url available state in the log.
+        /// </summary>
+        /// <param name="url">Checked url.</param>
+        /// <param name="state">Url available state.</param>
+        void LogUrlIsAvailable(string url, bool state);
 
         /// <summary>
         /// Write <see cref="RequirementsFailure"/> reason in the <see cref="IRequirementsService"/> in the log.

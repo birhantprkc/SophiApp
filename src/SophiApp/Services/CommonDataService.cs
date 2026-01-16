@@ -105,11 +105,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public async Task<Result> GetExternalServicesDataAsync()
         {
-            await Task.WhenAll(
-                SetLatestAppReleaseAsync(),
-                SetNet8ReleaseAsync(),
-                SetNet9ReleaseAsync(),
-                SetVCReleaseAsync());
+            await Task.WhenAll(SetLatestAppReleaseAsync(), SetNet8ReleaseAsync(), SetNet9ReleaseAsync(), SetVCReleaseAsync());
             return Result.Success();
         }
 

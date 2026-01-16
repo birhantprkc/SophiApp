@@ -13,6 +13,7 @@ namespace SophiApp.Services
     using System.Diagnostics;
     using System.Globalization;
     using System.ServiceProcess;
+    using System.Xml.Linq;
 
     /// <inheritdoc/>
     public class LoggerService : ILoggerService
@@ -94,6 +95,21 @@ namespace SophiApp.Services
         {
             Log.Information("Opened url: {Url}", url);
             shellViewModel.LoggedActions.Add($"Opened url: {url}");
+        }
+
+        /// <inheritdoc/>
+        public void LogOneDriveSetupFileFound(string path, bool exist)
+        {
+            Log.Information("OneDrive setup file path: {Path}", path);
+            Log.Information("OneDrive setup file exist: {Exist:l}", exist);
+            shellViewModel.LoggedActions.AddRange($"OneDrive setup file path: \"{path}\"", $"OneDrive setup file exist: {exist}");
+        }
+
+        /// <inheritdoc/>
+        public void LogOneDriveSetupFileNotFound()
+        {
+            Log.Information("OneDrive setup file not found in PC");
+            shellViewModel.LoggedActions.Add("OneDrive setup file not found in PC");
         }
 
         /// <inheritdoc/>
@@ -223,16 +239,16 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogApplicableModelAdded(string name)
         {
-            Log.Information("{Name:l} has been added to applicable collection", name);
-            shellViewModel.LoggedActions.Add($"{name} has been added to applicable collection");
+            Log.Information("{Name:l} has been added to applicable customization collection", name);
+            shellViewModel.LoggedActions.Add($"{name} has been added to applicable customization collection");
         }
 
         /// <inheritdoc/>
         public void LogApplicableModelAdded<T>(string name, T parameter)
             where T : struct
         {
-            Log.Information("{Name:l} with parameter {Parameter} has been added to applicable collection", name, parameter);
-            shellViewModel.LoggedActions.Add($"{name} with parameter {parameter} has been added to applicable collection");
+            Log.Information("{Name:l} with parameter {Parameter} has been added to applicable customization collection", name, parameter);
+            shellViewModel.LoggedActions.Add($"{name} with parameter {parameter} has been added to applicable customization collection");
         }
 
         /// <inheritdoc/>
@@ -259,7 +275,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogPageVisibility(bool isVisible)
         {
-            Log.Information("The log page visibility set to {IsVisible}", isVisible);
+            Log.Information("The log page visibility set to: {IsVisible}", isVisible);
             shellViewModel.LoggedActions.Add($"The log page visibility set to {isVisible}");
         }
 
@@ -282,6 +298,13 @@ namespace SophiApp.Services
         {
             Log.Information("{ViewModel:l} took time to execute: {TimeSpent}", nameof(ShellViewModel), timer.Elapsed);
             shellViewModel.LoggedActions.Add($"{nameof(ShellViewModel)} took time to execute: {timer.Elapsed}");
+        }
+
+        /// <inheritdoc/>
+        public void LogUrlIsAvailable(string url, bool state)
+        {
+            Log.Information("The url {Url} is available: {State}", url, state);
+            shellViewModel.LoggedActions.Add($"The url \"{url}\" is available: {state}");
         }
 
         /// <inheritdoc/>

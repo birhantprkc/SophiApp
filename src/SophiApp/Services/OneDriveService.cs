@@ -35,7 +35,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public string GetUninstallStringOrDefault()
         {
-            var uninstallPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\OneDriveSetup.exe";
+            var uninstallPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\OneDriveSetup.exe";
             var uninstallString = "UninstallString";
             var uninstallValue = Registry.CurrentUser.OpenSubKey(uninstallPath)?.GetValue(uninstallString) as string
                 ?? Registry.LocalMachine.OpenSubKey(uninstallPath)?.GetValue(uninstallString) as string;
@@ -45,8 +45,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public string GetUserDataFolderOrDefault()
         {
-            return Registry.CurrentUser.OpenSubKey("Environment")
-                ?.GetValue("OneDrive") as string ?? string.Empty;
+            return Registry.CurrentUser.OpenSubKey("Environment")?.GetValue("OneDrive") as string ?? string.Empty;
         }
 
         /// <inheritdoc/>
@@ -78,11 +77,14 @@ namespace SophiApp.Services
 
             if (string.IsNullOrWhiteSpace(uninstallString))
             {
+                App.Logger.LogOneDriveSetupFileNotFound();
                 return false;
             }
 
             var filePath = uninstallString[.. (uninstallString.IndexOf(".exe") + 4)];
-            return Path.Exists(filePath);
+            var fileExist = Path.Exists(filePath);
+            App.Logger.LogOneDriveSetupFileFound(filePath, fileExist);
+            return fileExist;
         }
 
         /// <inheritdoc/>

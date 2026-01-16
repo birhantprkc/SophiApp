@@ -29,12 +29,11 @@ namespace SophiApp.Services
         /// <param name="processService">A service for working with Windows process API.</param>
         public CursorsService(IHttpService httpService, IProcessService processService)
         {
+            this.httpService = httpService;
+            this.processService = processService;
             var downloadFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
             var downloadFolder = Registry.CurrentUser.OpenSubKey(downloadFolderPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             jepriCursorsZip = $"{downloadFolder}\\JepriCreationsW11CursorsFree.zip";
-
-            this.httpService = httpService;
-            this.processService = processService;
         }
 
         /// <inheritdoc/>

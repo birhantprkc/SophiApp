@@ -679,6 +679,16 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Get most used apps in Start.
+        /// </summary>
+        public static bool MostUsedStartApps()
+        {
+            ProcessService.ThrowIfExist("Start11Srv", "StartAllBackCfg", "StartMenu");
+            var appsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start")?.GetValue("ShowFrequentList") as int? ?? -1;
+            return !appsValue.Equals(0);
+        }
+
+        /// <summary>
         /// Get Start menu app suggestions state.
         /// </summary>
         public static bool AppSuggestions()

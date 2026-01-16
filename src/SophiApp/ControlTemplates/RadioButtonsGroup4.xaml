@@ -50,6 +50,14 @@
                   ContextRequested="ExpandingRadioGroup_ContextRequested">
             <Expander.Header>
                 <StackPanel>
+                    <TextBlock Grid.Column="0"
+                               Foreground="{ThemeResource WindowAccent}"
+                               Margin="0, 10, 0, 0">
+                        <Run Text="Function name:"/>
+                        <Run Text="{Binding Name}"/>
+                        <Run Text="Function Id:"/>
+                        <Run Text="{Binding ViewId}"/>
+                    </TextBlock>
                     <TextBlock x:Name="TitleTextBlock"
                                Style="{StaticResource UIControlTitleTextStyle}">
                         <Run Text="{Binding Title}"
