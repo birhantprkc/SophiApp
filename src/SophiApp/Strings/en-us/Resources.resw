@@ -186,7 +186,7 @@
     <value>Light</value>
   </data>
   <data name="SettingsPage_Team.Title" xml:space="preserve">
-    <value>Team</value>
+    <value>Team Sophia</value>
   </data>
   <data name="SettingsPage_Animation.WorkedOn" xml:space="preserve">
     <value>Animation</value>
@@ -211,9 +211,6 @@
   </data>
   <data name="SettingsPage_AppTester.WorkedOn" xml:space="preserve">
     <value>QC</value>
-  </data>
-  <data name="UIModel_WindowsWelcomeExperience_Description" xml:space="preserve">
-    <value>Windows may open a pop-up window to show you what's new about the operating system.</value>
   </data>
   <data name="OsRequirements_GetWmiState" xml:space="preserve">
     <value>Checking WMI state</value>
@@ -392,6 +389,9 @@
   <data name="UIModel_WindowsWelcomeExperience_Title" xml:space="preserve">
     <value>Show Windows welcome experiences after updates and occasionally when signed in to show what's new suggested</value>
   </data>
+  <data name="UIModel_WindowsWelcomeExperience_Description" xml:space="preserve">
+    <value>Windows may open a pop-up window to show you what's new about the operating system.</value>
+  </data>
   <data name="UIModel_WindowsTips_Title" xml:space="preserve">
     <value>Get tips and suggestions when using Windows</value>
   </data>
@@ -422,20 +422,557 @@
   <data name="UIModel_BingSearch_Description" xml:space="preserve">
     <value>In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
   </data>
+  <data name="UIModel_ThisPC_Title" xml:space="preserve">
+    <value>Show "This PC" icon on Desktop</value>
+  </data>
+  <data name="UIModel_CheckBoxes_Title" xml:space="preserve">
+    <value>Use check boxes to select items in File Explorer</value>
+  </data>
+  <data name="UIModel_HiddenItems_Title" xml:space="preserve">
+    <value>Show hidden files, folders, or drives</value>
+  </data>
+  <data name="UIModel_FileExtensions_Title" xml:space="preserve">
+    <value>Show file name extensions</value>
+  </data>
+  <data name="UIModel_MergeConflicts_Title" xml:space="preserve">
+    <value>Show folder merge conflicts</value>
+  </data>
+  <data name="UIModel_OpenFileExplorerTo_Title" xml:space="preserve">
+    <value>Open File Explorer to:</value>
+  </data>
+  <data name="UIModel_OpenFileExplorerTo_Title_1" xml:space="preserve">
+    <value>This PC</value>
+  </data>
+  <data name="UIModel_OpenFileExplorerTo_Title_2" xml:space="preserve">
+    <value>Quick access</value>
+  </data>
+  <data name="UIModel_FileExplorerRibbon_Title" xml:space="preserve">
+    <value>Start File Explorer with the Ribbon always maximized</value>
+  </data>
+  <data name="UIModel_FileExplorerRibbon_Title_1" xml:space="preserve">
+    <value>Expanded</value>
+  </data>
+  <data name="UIModel_FileExplorerRibbon_Title_2" xml:space="preserve">
+    <value>Minimized</value>
+  </data>
+  <data name="UIModel_FileExplorerCompactMode_Title" xml:space="preserve">
+    <value>Use compact mode in File Explorer</value>
+  </data>
+  <data name="UIModel_OneDriveFileExplorerAd_Title" xml:space="preserve">
+    <value>Show sync provider notifications within File Explorer</value>
+  </data>
+  <data name="UIModel_OneDriveFileExplorerAd_Description" xml:space="preserve">
+    <value>They are designed to help you by providing quick, easy information about things you can do or new features you can try to have a better experience with Windows.</value>
+  </data>
+  <data name="UIModel_SnapAssist_Title" xml:space="preserve">
+    <value>When I snap a window, show what I can snap next to it</value>
+  </data>
+  <data name="UIModel_FileTransferDialog_Title" xml:space="preserve">
+    <value>Show more details in file transfer dialog</value>
+  </data>
+  <data name="UIModel_FileTransferDialog_Title_1" xml:space="preserve">
+    <value>Detailed</value>
+  </data>
+  <data name="UIModel_FileTransferDialog_Title_2" xml:space="preserve">
+    <value>Compact</value>
+  </data>
+  <data name="UIModel_RecycleBinDeleteConfirmation_Title" xml:space="preserve">
+    <value>Display recycle bin delete confirmation dialog</value>
+  </data>
+  <data name="UIModel_QuickAccessRecentFiles_Title" xml:space="preserve">
+    <value>Show recently used files in Quick access</value>
+  </data>
+  <data name="UIModel_QuickAccessFrequentFolders_Title" xml:space="preserve">
+    <value>Show frequently used folders in Quick access</value>
+  </data>
+  <data name="UIModel_TaskbarAlignment_Title" xml:space="preserve">
+    <value>Set the taskbar alignment</value>
+  </data>
+  <data name="UIModel_TaskbarAlignment_Title_1" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="UIModel_TaskbarAlignment_Title_2" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="UIModel_TaskbarWidgets_Title" xml:space="preserve">
+    <value>Show widgets icon on the taskbar</value>
+  </data>
+  <data name="UIModel_TaskbarWidgets_Description" xml:space="preserve">
+    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows11_Title" xml:space="preserve">
+    <value>Show search button on the taskbar</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows11_Title_1" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows11_Title_2" xml:space="preserve">
+    <value>Search icon only</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows11_Title_3" xml:space="preserve">
+    <value>Search icon and label</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows11_Title_4" xml:space="preserve">
+    <value>Search box</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows11_Description" xml:space="preserve">
+    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows10_Title" xml:space="preserve">
+    <value>Show search button on the taskbar</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows10_Title_1" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows10_Title_2" xml:space="preserve">
+    <value>Search icon only</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows10_Title_3" xml:space="preserve">
+    <value>Search box</value>
+  </data>
+  <data name="UIModel_TaskbarSearchWindows10_Description" xml:space="preserve">
+    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+  </data>
+  <data name="UIModel_SearchHighlightsWindows11_Title" xml:space="preserve">
+    <value>Show widgets icon on the taskbar</value>
+  </data>
+  <data name="UIModel_CortanaButton_Title" xml:space="preserve">
+    <value>Show Cortana button on the taskbar</value>
+  </data>
+  <data name="UIModel_SearchHighlightsWindows11_Description" xml:space="preserve">
+    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+  </data>
+  <data name="UIModel_SearchHighlightsWindows10_Title" xml:space="preserve">
+    <value>Show widgets icon on the taskbar</value>
+  </data>
+  <data name="UIModel_SearchHighlightsWindows10_Description" xml:space="preserve">
+    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+  </data>
+  <data name="UIModel_TaskViewButton_Title" xml:space="preserve">
+    <value>Show Task view button on the taskbar</value>
+  </data>
+  <data name="UIModel_NewsInterests_Title" xml:space="preserve">
+    <value>Show news and interests on the taskbar</value>
+  </data>
+  <data name="UIModel_MeetNow_Title" xml:space="preserve">
+    <value>Show the Meet Now icon in the notification area</value>
+  </data>
+  <data name="UIModel_WindowsInkWorkspace_Title" xml:space="preserve">
+    <value>Show Windows Ink Workspace button on the taskbar</value>
+  </data>
+  <data name="UIModel_NotificationAreaIcons_Title" xml:space="preserve">
+    <value>Always show all icons in the notification area</value>
+  </data>
+  <data name="UIModel_SecondsInSystemClock_Title" xml:space="preserve">
+    <value>Show seconds on the taskbar clock</value>
+  </data>
+  <data name="UIModel_ShowClockInNotificationCenter_Title" xml:space="preserve">
+    <value>Show time in Notification Center</value>
+  </data>
+  <data name="UIModel_TaskbarCombine_Title" xml:space="preserve">
+    <value>Combine taskbar buttons and hide labels</value>
+  </data>
+  <data name="UIModel_TaskbarCombine_Title_1" xml:space="preserve">
+    <value>Always</value>
+  </data>
+  <data name="UIModel_TaskbarCombine_Title_2" xml:space="preserve">
+    <value>When taskbar is full</value>
+  </data>
+  <data name="UIModel_TaskbarCombine_Title_3" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="UIModel_TaskbarEndTask_Title" xml:space="preserve">
+    <value>Enable end task in taskbar by right click</value>
+  </data>
+  <data name="UIModel_ControlPanelView_Title" xml:space="preserve">
+    <value>Control Panel View</value>
+  </data>
+  <data name="UIModel_ControlPanelView_Title_1" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="UIModel_ControlPanelView_Title_2" xml:space="preserve">
+    <value>Large icons</value>
+  </data>
+  <data name="UIModel_ControlPanelView_Title_3" xml:space="preserve">
+    <value>Small icons</value>
+  </data>
+  <data name="UIModel_WindowsColorMode_Title" xml:space="preserve">
+    <value>Default Windows color mode</value>
+  </data>
+  <data name="UIModel_WindowsColorMode_Title_1" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="UIModel_WindowsColorMode_Title_2" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="UIModel_AppColorMode_Title" xml:space="preserve">
+    <value>Default app color mode</value>
+  </data>
+  <data name="UIModel_AppColorMode_Title_1" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="UIModel_AppColorMode_Title_2" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="UIModel_NewAppInstalledNotification_Title" xml:space="preserve">
+    <value>Show "New App Installed" notification</value>
+  </data>
+  <data name="UIModel_NewsInterests_Description" xml:space="preserve">
+    <value>Changes will be made via Windows API without disabling a UCDP driver.</value>
+  </data>
+  <data name="UIModel_FirstLogonAnimation_Title" xml:space="preserve">
+    <value>Enable first sign-in animation</value>
+  </data>
+  <data name="UIModel_FirstLogonAnimation_Description" xml:space="preserve">
+    <value>In Windows, after completing the setup on a new installation, upgrading, or when signing in to a new account, displays the first sign-in animation that features several messages to configure the account environment.</value>
+  </data>
+  <data name="UIModel_JPEGWallpapersQuality_Title" xml:space="preserve">
+    <value>Enable desktop wallpaper JPEG quality reduction</value>
+  </data>
+  <data name="UIModel_JPEGWallpapersQuality_Title_1" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="UIModel_JPEGWallpapersQuality_Title_2" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="UIModel_JPEGWallpapersQuality_Description" xml:space="preserve">
+    <value>When you set a JPEG image as the desktop wallpaper or slideshow, the operating system reduces the quality of the original image to 85%. A PNG image as your desktop background wallpaper or slideshow is not affected.</value>
+  </data>
+  <data name="UIModel_ShortcutsSuffix_Title" xml:space="preserve">
+    <value>Add the "- Shortcut" suffix to filenames of new shortcuts you create</value>
+  </data>
+  <data name="UIModel_PrtScnSnippingTool_Title" xml:space="preserve">
+    <value>Use Print Screen button to open screen snipping</value>
+  </data>
+  <data name="UIModel_AppsLanguageSwitch_Title" xml:space="preserve">
+    <value>Let me use a different input method for each app window</value>
+  </data>
+  <data name="UIModel_AeroShaking_Title" xml:space="preserve">
+    <value>Title bar windows shake</value>
+  </data>
+  <data name="UIModel_AeroShaking_Description" xml:space="preserve">
+    <value>When I grab a windows's title bar and shake it, minimize all other windows</value>
+  </data>
+  <data name="UIModel_Cursors_Title" xml:space="preserve">
+    <value>Install Windows 11 cursors from Jepri Creations</value>
+  </data>
+  <data name="UIModel_Cursors_Title_1" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="UIModel_Cursors_Title_2" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="UIModel_Cursors_Title_3" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="UIModel_Cursors_Description" xml:space="preserve">
+    <value>Install "Windows 11 Cursors Concept v2" cursors from Jepri Creations on-the-fly. Internet connection required. https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356</value>
+  </data>
+  <data name="UIModel_FolderGroupBy_Title" xml:space="preserve">
+    <value>Group files and folder by date modified in the Downloads folder</value>
+  </data>
+  <data name="UIModel_FolderGroupBy_Title_1" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="UIModel_FolderGroupBy_Title_2" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="UIModel_NavigationPaneExpand_Title" xml:space="preserve">
+    <value>Automatically expand to current folder in the navigation pane of File Explorer</value>
+  </data>
+  <data name="UIModel_RecentlyAddedStartApps_Title" xml:space="preserve">
+    <value>Show recently added apps on Start</value>
+  </data>
+  <data name="UIModel_MostUsedStartApps_Title" xml:space="preserve">
+    <value>Show most used Start apps</value>
+  </data>
+  <data name="UIModel_StartRecommendedSection_Title" xml:space="preserve">
+    <value>Show Recommended section on Start</value>
+  </data>
   <data name="UIModel_StartRecommendationsTips_Title" xml:space="preserve">
     <value>Show recommendations for tips, shortcuts, new apps, and more in Start</value>
   </data>
   <data name="UIModel_StartAccountNotifications_Title" xml:space="preserve">
     <value>Show Microsoft account-related notifications in Start</value>
   </data>
+  <data name="UIModel_AppSuggestions_Title" xml:space="preserve">
+    <value>Show app suggestions on Start</value>
+  </data>
+  <data name="UIModel_StartLayout_Title" xml:space="preserve">
+    <value>Start layout</value>
+  </data>
+  <data name="UIModel_StartLayout_Title_1" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="UIModel_StartLayout_Title_2" xml:space="preserve">
+    <value>More pins</value>
+  </data>
+  <data name="UIModel_StartLayout_Title_3" xml:space="preserve">
+    <value>More recommendations</value>
+  </data>
+  <data name="UIModel_OneDrive_Title" xml:space="preserve">
+    <value>OneDrive</value>
+  </data>
+  <data name="UIModel_OneDrive_Description" xml:space="preserve">
+    <value>OneDrive user folder won't be removed if any file found there. Internet connection required to download OneDrive installer from Microsoft resource.</value>
+  </data>
+  <data name="UIModel_StorageSense_Title" xml:space="preserve">
+    <value>Enable Storage Sense</value>
+  </data>
+  <data name="UIModel_StorageSense_Description" xml:space="preserve">
+    <value>Automatically free up space and delete temporary files. Storage Sense runs when disk space is low. We clean enough space to help your system runs its best.</value>
+  </data>
+  <data name="UIModel_Hibernation_Title" xml:space="preserve">
+    <value>Enable hibernation</value>
+  </data>
+  <data name="UIModel_Hibernation_Description" xml:space="preserve">
+    <value>Hibernate is a power-saving state used primarily for laptops. Unlike sleep, hibernation puts your open documents and programs on the system drive to C:\hiberfil.sys file, and turns off your computer. By default, the size of hidden system protected file C:\hiberfil.sys is 40% of the total amount of RAM installed. Disabling hibernation will also disable fast startup, and hibernate will no longer show in the Power menu. Not recommended to turn off for laptops.</value>
+  </data>
+  <data name="UIModel_Win32LongPathsSupport_Title" xml:space="preserve">
+    <value>Enable Windows long paths support</value>
+  </data>
+  <data name="UIModel_Win32LongPathsSupport_Description" xml:space="preserve">
+    <value>By default, the maximum path length limit in Windows is 260 characters. Enabling Win32 long paths removes restrictions when attempting to create, save, copy, or move folders/files with paths exceeding the limit. You won't encounter with an error "Path too long".</value>
+  </data>
+  <data name="UIModel_BSoDStopError_Title" xml:space="preserve">
+    <value>Display Stop error code when BSoD occurs</value>
+  </data>
+  <data name="UIModel_BSoDStopError_Description" xml:space="preserve">
+    <value>By default, Windows does not display a Stop error code when a BSoD occurs, which helps to identify the causes of a BSoD.</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Title" xml:space="preserve">
+    <value>Configure UAC behavior</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Title_1" xml:space="preserve">
+    <value>Notify me only when apps try to make changes to my computer</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Title_2" xml:space="preserve">
+    <value>Never notify</value>
+  </data>
+  <data name="UIModel_AdminApprovalMode_Description" xml:space="preserve">
+    <value>When User Account Control (UAC) is enabled, Windows prompts for consent or prompts for credentials of a valid local administrator account before starting a program or task that requires a full administrator access token. This prompt ensures that no malicious software can be silently installed or run.</value>
+  </data>
+  <data name="UIModel_DeliveryOptimization_Title" xml:space="preserve">
+    <value>Enable Windows update delivery optimization</value>
+  </data>
+  <data name="UIModel_DeliveryOptimization_Description" xml:space="preserve">
+    <value>Windows Update Delivery Optimization works by letting you get Windows updates and Microsoft Store apps from other PCs on your local network or PCs in the Internet that downloaded the same files. Delivery Optimization also sends updates and apps from your PC to other PCs on your local network or PCs in the Internet, based on your settings. Sharing this data between PCs helps reduce the Internet bandwidth that's needed to keep more than one device up to date or can make downloads more successful if you have a limited or unreliable Internet connection.</value>
+  </data>
+  <data name="UIModel_WindowsManageDefaultPrinter_Title" xml:space="preserve">
+    <value>Let Windows manage my default printer</value>
+  </data>
+  <data name="UIModel_WindowsManageDefaultPrinter_Description" xml:space="preserve">
+    <value>By default, Windows makes the last used printer as the default one.</value>
+  </data>
+  <data name="UIModel_UpdateMicrosoftProducts_Title" xml:space="preserve">
+    <value>Receive updates for other Microsoft products</value>
+  </data>
+  <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
+    <value>Get other Microsoft products updates, like Microsoft 365 (ex-Office), and automatically download and install the latest drivers alongside with Windows Updates.</value>
+  </data>
+  <data name="UIModel_RestartNotification_Title" xml:space="preserve">
+    <value>Notify me when a restart is required to finish updating</value>
+  </data>
+  <data name="UIModel_RestartNotification_Description" xml:space="preserve">
+    <value>Show notification when your device requires a restart to finish updating.</value>
+  </data>
+  <data name="UIModel_RestartDeviceAfterUpdate_Title" xml:space="preserve">
+    <value>Restart as soon as possible to finish updating</value>
+  </data>
+  <data name="UIModel_RestartDeviceAfterUpdate_Description" xml:space="preserve">
+    <value>Restart as soon as possible (even during active hours) to finish updating, and notify 15 minutes before restarting.</value>
+  </data>
+  <data name="UIModel_ActiveHours_Title" xml:space="preserve">
+    <value>Enable Active hours for Windows updating</value>
+  </data>
+  <data name="UIModel_ActiveHours_Title_1" xml:space="preserve">
+    <value>Automatically</value>
+  </data>
+  <data name="UIModel_ActiveHours_Title_2" xml:space="preserve">
+    <value>Manually</value>
+  </data>
+  <data name="UIModel_ActiveHours_Description" xml:space="preserve">
+    <value>You can set active hours to let Windows know when you're usually using your PC to prevent automatic reboots after a Windows Update. Default active hours is 8:00 AM for start time and 5:00 PM end time.</value>
+  </data>
+  <data name="UIModel_WindowsLatestUpdate_Title" xml:space="preserve">
+    <value>Get the latest Windows updates as soon as they're available</value>
+  </data>
+  <data name="UIModel_WindowsLatestUpdate_Description" xml:space="preserve">
+    <value>Get the latest non-security Windows updates, fixes, and improvements as they roll out. Windows will start downloading them immediately after you apply the function, if they are available for installation.</value>
+  </data>
+  <data name="UIModel_PowerPlan_Title" xml:space="preserve">
+    <value>Choose a power plan</value>
+  </data>
+  <data name="UIModel_PowerPlan_Title_1" xml:space="preserve">
+    <value>High Performance</value>
+  </data>
+  <data name="UIModel_PowerPlan_Title_2" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="UIModel_PowerPlan_Description" xml:space="preserve">
+    <value>"High performance" is not recommended to use on laptops. Also, enabling "High performance" power plan doesn't effect on your FPS. It only manages how your PC uses power.</value>
+  </data>
+  <data name="UIModel_NetworkAdaptersSavePower_Title" xml:space="preserve">
+    <value>Keep network adapter awake</value>
+  </data>
+  <data name="UIModel_NetworkAdaptersSavePower_Description" xml:space="preserve">
+    <value>Allow PC to turn off the network adapter to save power and prevent them from going to sleep. Only currently used network adapter will be configured, even if your motherboard has an additional Wi-Fi alongside with an Ethernet one.</value>
+  </data>
+  <data name="UIModel_InputMethod_Title" xml:space="preserve">
+    <value>Set default input method</value>
+  </data>
+  <data name="UIModel_InputMethod_Title_1" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="UIModel_InputMethod_Title_2" xml:space="preserve">
+    <value>Use language list</value>
+  </data>
+  <data name="UIModel_InputMethod_Description" xml:space="preserve">
+    <value>Your default keyboard layout is the one that’s automatically used at sign in screen.</value>
+  </data>
+  <data name="UIModel_LatestInstalledNET_Title" xml:space="preserve">
+    <value>Forcibly use .NET Framework 4.8.1 for old apps</value>
+  </data>
+  <data name="UIModel_LatestInstalledNET_Description" xml:space="preserve">
+    <value>This function will force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1. If you do not use old applications, there's no need to enable this function.</value>
+  </data>
+  <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
+    <value>Choose default screenshot folder when I press Win+PrtScn or Windows+Shift+S</value>
+  </data>
+  <data name="UIModel_WinPrtScrFolder_Title_1" xml:space="preserve">
+    <value>Desktop</value>
+  </data>
+  <data name="UIModel_WinPrtScrFolder_Title_2" xml:space="preserve">
+    <value>Pictures</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Title" xml:space="preserve">
+    <value>Recommended troubleshooting</value>
+  </data>
+  <data name="UIModel_FoldersLaunchSeparateProcess_Title" xml:space="preserve">
+    <value>Launch folder windows in a separate process</value>
+  </data>
+  <data name="UIModel_FoldersLaunchSeparateProcess_Description" xml:space="preserve">
+    <value>By default, all File Explorer windows, including the desktop shell, run in a single explorer.exe process. If one File Explorer window hangs or crashes, it will cause the whole graphical shell to freeze until the process restarts. When enabled, each explorer.exe process will have its own process ID (PID) to improve stability of the explorer shell.</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Title_1" xml:space="preserve">
+    <value>Run troubleshooters automatically, then notify</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Title_2" xml:space="preserve">
+    <value>Ask me before running troubleshooter</value>
+  </data>
+  <data name="UIModel_RecommendedTroubleshooting_Description" xml:space="preserve">
+    <value>Microsoft can recommend and run troubleshooters to fix issues. How much do you want Microsoft to help when there are issues on your device that troubleshooters might be able to fix?</value>
+  </data>
+  <data name="UIModel_ReservedStorage_Title" xml:space="preserve">
+    <value>Enable Reserved Storage</value>
+  </data>
+  <data name="UIModel_ReservedStorage_Description" xml:space="preserve">
+    <value>Windows reserves some storage (~7GB) to facilitate proper performance and successful updates of device. After disabling reserved storage will be deleted after the next update installation.</value>
+  </data>
+  <data name="UIModel_F1HelpPage_Title" xml:space="preserve">
+    <value>Enable help look up via F1</value>
+  </data>
+  <data name="UIModel_F1HelpPage_Description" xml:space="preserve">
+    <value>By default, pressing F1 in Windows opens a help page in a default web browser, which may result in accidental opening web browser.</value>
+  </data>
+  <data name="UIModel_NumLock_Title" xml:space="preserve">
+    <value>Enable Num Lock at startup</value>
+  </data>
+  <data name="UIModel_CapsLock_Title" xml:space="preserve">
+    <value>Enable Caps Lock at startup</value>
+  </data>
+  <data name="UIModel_StickyShift_Title" xml:space="preserve">
+    <value>Enable Sticky Shift key</value>
+  </data>
+  <data name="UIModel_StickyShift_Description" xml:space="preserve">
+    <value>Pressing Shift key 5 times in a row results in a popup appear which may interrupt your work.</value>
+  </data>
+  <data name="UIModel_Autoplay_Title" xml:space="preserve">
+    <value>Use AutoPlay for all media and devices</value>
+  </data>
+  <data name="UIModel_Autoplay_Description" xml:space="preserve">
+    <value>When you insert a removable device such as a USB flash stick or memory card into your PC, you'll often see an annoying "AutoPlay" popup.</value>
+  </data>
+  <data name="UIModel_ThumbnailCacheRemoval_Title" xml:space="preserve">
+    <value>Enable thumbnail cache removal</value>
+  </data>
+  <data name="UIModel_ThumbnailCacheRemoval_Description" xml:space="preserve">
+    <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable thumbnail cache preset to stop thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. Thumbnail cache is stored as .db files located in %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
+  </data>
+  <data name="UIModel_SaveRestartableApps_Title" xml:space="preserve">
+    <value>Automatically save my restartable apps and restart them when I sign back in</value>
+  </data>
+  <data name="UIModel_SaveRestartableApps_Description" xml:space="preserve">
+    <value>If program was run as administrator in the previous session, it will be restarted with non-admin permissions.</value>
+  </data>
+  <data name="UIModel_RestorePreviousFolders_Title" xml:space="preserve">
+    <value>Restore previous folder windows at logon</value>
+  </data>
+  <data name="UIModel_RestorePreviousFolders_Description" xml:space="preserve">
+    <value>Restore all the extra tabs which you previously had open in each File Explorer window.</value>
+  </data>
+  <data name="UIModel_NetworkDiscovery_Title" xml:space="preserve">
+    <value>Enable network discovery and file sharing</value>
+  </data>
+  <data name="UIModel_NetworkDiscovery_Description" xml:space="preserve">
+    <value>Network Discovery makes PC discoverable in the same network, and other devices can see your PC, and vice versa.</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Title" xml:space="preserve">
+    <value>Set Windows Terminal as default terminal app</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Title_1" xml:space="preserve">
+    <value>Windows Terminal</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Title_2" xml:space="preserve">
+    <value>Console Host</value>
+  </data>
+  <data name="UIModel_DefaultTerminalApp_Description" xml:space="preserve">
+    <value>Terminal application that launches when a command-line application is run without an existing session, like from the Start Menu or Run dialog.</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x64_Title" xml:space="preserve">
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x64</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
+    <value>Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x86</value>
+  </data>
+  <data name="UIModel_InstallVisualC_x86_Description" xml:space="preserve">
+    <value>Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
+  </data>
+  <data name="UIModel_InstallDotNetRuntime_8_Title" xml:space="preserve">
+    <value>Install latest .NET Desktop Runtime 8 x64</value>
+  </data>
+  <data name="UIModel_InstallDotNetRuntime_8_Description" xml:space="preserve">
+    <value>.NET is a successor to .NET Framework. You need to install .NET 8 if an app was developed within this framework, even if you already installed any other .NET versions. .NET 8 is an LTS (long-term support) version. Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
+  </data>
+  <data name="UIModel_InstallDotNetRuntime_9_Title" xml:space="preserve">
+    <value>Install latest .NET Desktop Runtime 9 x64</value>
+  </data>
+  <data name="UIModel_InstallDotNetRuntime_9_Description" xml:space="preserve">
+    <value>.NET is a successor to .NET Framework. You need to install .NET 9 if an app was developed within this framework, even if you already installed any other .NET versions. NET 9 is a rapid branch version. Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
+  </data>
+  <data name="UIModel_RKNBypass_Title" xml:space="preserve">
+    <value>Enable proxy by ProstoVPN.AntiZapret</value>
+  </data>
+  <data name="UIModel_RKNBypass_Description" xml:space="preserve">
+    <value>Enable proxying only blocked sites from Roskomnadzor's unified domains registry. Function is applicable for Russia only. https://antizapret.prostovpn.org</value>
+  </data>
+  <data name="UIModel_RegistryBackup_Title" xml:space="preserve">
+    <value>Enable automatic backup of the Windows registry</value>
+  </data>
+  <data name="UIModel_RegistryBackup_Description" xml:space="preserve">
+    <value>Starting from Windows 10 version 1803, Windows no longer automatically backs up the system registry to %SystemRoot%\System32\config\RegBack folder. Enabling registry backups may help you restore Windows in extreme cases.</value>
+  </data>
   <data name="UwpPage_AboutAppIcon.Text" xml:space="preserve">
     <value>Choose UWP app to uninstall. UWP apps list is rendered in real-time with their native icon logos taken from Windows. That means that the UWP apps list is not pre-prepared like in other similar apps.</value>
   </data>
-  <data name="UIModel_HEVC_Title" xml:space="preserve">
-    <value>Install HEVC Video codec (H.265)</value>
+  <data name="UwpPage_UwpAppsNotFound.Text" xml:space="preserve">
+    <value>No data to display, or necessary packages were removed</value>
   </data>
-  <data name="UIModel_HEVC_Description" xml:space="preserve">
-    <value>HEVC Video codec will be downloaded for an official Microsoft server. This codec allows you to open images and videos in .heif and .hevc formats, respectively.</value>
+  <data name="UwpPage_ForAllUsers.Text" xml:space="preserve">
+    <value>Show packages for all users</value>
   </data>
   <data name="UIModel_XboxGameBar_Title" xml:space="preserve">
     <value>Enable Xbox Game Bar</value>
@@ -446,32 +983,194 @@
   <data name="UIModel_XboxGameTips_Title" xml:space="preserve">
     <value>Xbox Game Bar tips</value>
   </data>
+  <data name="UIModel_HEVC_Title" xml:space="preserve">
+    <value>Install HEVC Video codec (H.265)</value>
+  </data>
+  <data name="UIModel_HEVC_Description" xml:space="preserve">
+    <value>HEVC Video codec will be downloaded for an official Microsoft server. This codec allows you to open images and videos in .heif and .hevc formats, respectively.</value>
+  </data>
   <data name="UIModel_GPUScheduling_Title" xml:space="preserve">
     <value>Enable Hardware-accelerated GPU scheduling</value>
   </data>
   <data name="UIModel_GPUScheduling_Description" xml:space="preserve">
     <value>Reduce latency and improve performance. You'll need to restart your PC to have your changes take effect. With Hardware-Accelerated GPU Scheduling feature, GPU's scheduling processor and memory (VRAM) take over the same work and runs it in batches to render the frames. This allows your GPU to reduce load on your CPU and improve latency, potentially making your PC run better. However, don’t expect GPU hardware scheduling to have a significant impact on your computer performance.</value>
   </data>
+  <data name="TaskSchedulerPage_AboutTasks.Text" xml:space="preserve">
+    <value>The scheduled tasks options below are sufficient enough to keep your Windows clean. There is no need to constantly clean more system folders as advised from the Internet.</value>
+  </data>
   <data name="UIModel_CleanupTask_Title" xml:space="preserve">
     <value>Create Windows Cleanup scheduled task</value>
   </data>
   <data name="UIModel_CleanupTask_Description" xml:space="preserve">
-    <value>This function creates "Windows Cleanup" (main task) and "Windows Cleanup Notification" (task to generate a pop-up notification) tasks in the Task Scheduler to clean up unused files and Windows updates. A native notification prompting you to run the task will pop up before cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+    <value>This function creates "Windows Cleanup" (main task) and "Windows Cleanup Notification" (task to generate a pop-up notification) tasks in the Task Scheduler to clean up unused files and Windows updates. A native notification prompting you to run the task will pop up before cleanup begins. Task runs every 30 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+  </data>
+  <data name="TaskScheduler_WindowsCleanup_Description" xml:space="preserve">
+    <value>Cleaning up Windows unused files and updates using built-in Disk cleanup app. Scheduled task can be run only if user {0} logged into the system.</value>
+  </data>
+  <data name="TaskScheduler_WindowsCleanupNotification_Description" xml:space="preserve">
+    <value>Pop-up notification reminder about cleaning up Windows unused files and updates. Scheduled task can be run only if user {0} logged into the system.</value>
+  </data>
+  <data name="TaskScheduler_WindowsCleanupToast_Description" xml:space="preserve">
+    <value>Run task to clean up Windows unused files and updates?</value>
+  </data>
+  <data name="TaskScheduler_WindowsCleanupToast_Title" xml:space="preserve">
+    <value>Windows clean up</value>
   </data>
   <data name="UIModel_SoftwareDistributionTask_Title" xml:space="preserve">
     <value>Create SoftwareDistribution scheduled task</value>
   </data>
   <data name="UIModel_SoftwareDistributionTask_Description" xml:space="preserve">
-    <value>This function creates "SoftwareDistribution" task in the Task Scheduler to clean up %SystemRoot%\SoftwareDistribution\Download folder where Windows updates installation files are downloaded. The task will wait until Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+    <value>This function creates "SoftwareDistribution" task in the Task Scheduler to clean up %SystemRoot%\SoftwareDistribution\Download folder where Windows updates installation files are downloaded. Task will wait until Windows Update service has finished running. Task runs every 90 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+  </data>
+  <data name="TaskScheduler_SoftwareDistribution_Description" xml:space="preserve">
+    <value>%SystemRoot%\SoftwareDistribution\Download folder cleanup. Scheduled task can be run only if user {0} logged into the system.</value>
+  </data>
+  <data name="TaskScheduler_SoftwareDistributionToast_Title" xml:space="preserve">
+    <value>Windows update cache successfully deleted.</value>
   </data>
   <data name="UIModel_TempTask_Title" xml:space="preserve">
     <value>Create Temp scheduled task</value>
   </data>
   <data name="UIModel_TempTask_Description" xml:space="preserve">
-    <value>This function creates "Temp" task in the Task Scheduler to clean up %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+    <value>This function creates "Temp" task in the Task Scheduler to clean up %TEMP% folder. Only files older than one day will be deleted. Task runs every 60 days. Windows Script Host must be enabled for the task to run. A native Windows notification will appear when complete.</value>
+  </data>
+  <data name="TaskScheduler_TempTaskToast_Title" xml:space="preserve">
+    <value>Temporary files folder successfully cleaned up.</value>
+  </data>
+  <data name="TaskScheduler_TempTask_Description" xml:space="preserve">
+    <value>%TEMP% folder cleanup. Scheduled task can be run only if user {0} logged into the system.</value>
   </data>
   <data name="TaskSchedulerPage_OpenTaskScheduler.Content" xml:space="preserve">
     <value>Open Task Scheduler</value>
+  </data>
+  <data name="UIModel_NetworkProtection_Title" xml:space="preserve">
+    <value>Enable Microsoft Defender Exploit Guard network protection</value>
+  </data>
+  <data name="UIModel_NetworkProtection_Description" xml:space="preserve">
+    <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the Internet.</value>
+  </data>
+  <data name="UIModel_PUAppsDetection_Title" xml:space="preserve">
+    <value>Enable detection in Microsoft Defender for potentially unwanted applications and block them</value>
+  </data>
+  <data name="UIModel_DefenderSandbox_Title" xml:space="preserve">
+    <value>Enable sandboxing for Microsoft Defender</value>
+  </data>
+  <data name="UIModel_DefenderSandbox_Description" xml:space="preserve">
+    <value>Running Microsoft Defender in a sandbox ensures that in the unlikely event of a compromise, malicious actions are limited to the isolated environment, protecting the rest of the system from harm. The sandbox for Microsoft Defender is enabled by default in Windows 11.</value>
+  </data>
+  <data name="UIModel_EventViewerCustomView_Title" xml:space="preserve">
+    <value>Create "Process Creation" Custom View in the Event Viewer</value>
+  </data>
+  <data name="UIModel_EventViewerCustomView_Description" xml:space="preserve">
+    <value>"Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
+  </data>
+  <data name="EventViewerCustomView_ProcessCreationXml_Description" xml:space="preserve">
+    <value>Process creation and command-line auditing events.</value>
+  </data>
+  <data name="EventViewerCustomView_ProcessCreationXml_Name" xml:space="preserve">
+    <value>Process Creation</value>
+  </data>
+  <data name="UIModel_PowerShellModulesLogging_Title" xml:space="preserve">
+    <value>Enable logging for all Windows PowerShell modules</value>
+  </data>
+  <data name="UIModel_PowerShellModulesLogging_Description" xml:space="preserve">
+    <value>Pipeline execution events for members of the specified modules are recorded in Windows PowerShell log in the Event Viewer. For built-in Windows PowerShell 5.1 only. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
+  </data>
+  <data name="UIModel_PowerShellScriptsLogging_Title" xml:space="preserve">
+    <value>Enable logging for all PowerShell scripts input to the Windows PowerShell event log</value>
+  </data>
+  <data name="UIModel_PowerShellScriptsLogging_Description" xml:space="preserve">
+    <value>Windows PowerShell will log processing of commands, script blocks, functions, and scripts – whether invoked interactively, or through automation to "Applications and Services Logs\Microsoft\Windows\PowerShell\Operational" event log. For the built-in Windows PowerShell 5.1 only. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
+  </data>
+  <data name="UIModel_AppsSmartScreen_Title" xml:space="preserve">
+    <value>Check apps and files within Microsoft Defender SmartScreen</value>
+  </data>
+  <data name="UIModel_SaveZoneInformation_Title" xml:space="preserve">
+    <value>Mark files that have been downloaded from the Internet as unsafe</value>
+  </data>
+  <data name="UIModel_SaveZoneInformation_Description" xml:space="preserve">
+    <value>Attachment Manager is included in Windows to protect from unsafe files downloaded from the Internet. If Attachment Manager identifies an attachment that might be unsafe, Attachment Manager prevents (blocks) you from opening file, or it warns you before you open file. Metadata is saved as an Alternate Data Stream (ADS). If you wish to unblock a downloaded file manually, you can do so by right-clicking it, selecting Properties and clicking on "Unblock". In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
+  </data>
+  <data name="UIModel_WindowsSandbox_Title" xml:space="preserve">
+    <value>Enable Windows Sandbox</value>
+  </data>
+  <data name="UIModel_WindowsSandbox_Description" xml:space="preserve">
+    <value>Windows Sandbox provides a lightweight desktop environment to safely run applications in isolation. Software installed inside Windows Sandbox environment remains sandboxed and runs separately from host machine. A sandbox is temporary. When it's closed, all software and files and state are deleted. You get a brand-new instance of the sandbox every time you open the application. Applicable only to Professional, Enterprise and Education editions.</value>
+  </data>
+  <data name="UIModel_LocalSecurityAuthority_Title" xml:space="preserve">
+    <value>Enable protection for the Local Security Authority (LSA) process without UEFI lock to prevent code injection</value>
+  </data>
+  <data name="UIModel_LocalSecurityAuthority_Description" xml:space="preserve">
+    <value>Protection for the Local Security Authority (LSA) is provided to prevent reading memory and code injection by nonprotected processes. This feature provides added security for the credentials that LSA stores and manages.</value>
+  </data>
+  <data name="UIModel_MSIExtractContext_Title" xml:space="preserve">
+    <value>Show "Extract all" item in the Windows Installer (.msi) context menu</value>
+  </data>
+  <data name="UIModel_MSIExtractContext_Description" xml:space="preserve">
+    <value>The "Extract all" context menu item will extract all contents of the .msi file into the "Extracted" folder at the same location as .msi file is.</value>
+  </data>
+  <data name="UIModel_CABInstallContext_Title" xml:space="preserve">
+    <value>Show "Install" item in the Cabinet archives (.cab) context menu</value>
+  </data>
+  <data name="UIModel_EditWithClipchampContext_Title" xml:space="preserve">
+    <value>Show "Edit With Clipchamp" item in the media files context menu</value>
+  </data>
+  <data name="UIModel_EditWithPhotosContext_Title" xml:space="preserve">
+    <value>Show "Edit with Photos" item in the media files context menu</value>
+  </data>
+  <data name="UIModel_EditWithPaintContext_Title" xml:space="preserve">
+    <value>Show the "Edit with Paint" item in the media files context menu</value>
+  </data>
+  <data name="UIModel_PrintCMDContext_Title" xml:space="preserve">
+    <value>Show "Print" item in the .bat and .cmd files context menu</value>
+  </data>
+  <data name="UIModel_CompressedFolderNewContext_Title" xml:space="preserve">
+    <value>Show "Compressed (zipped) Folder" item in the "New" context menu</value>
+  </data>
+  <data name="UIModel_MultipleInvokeContext_Title" xml:space="preserve">
+    <value>Make "Open", "Print", and "Edit" context menu items available when selecting more than 15 files</value>
+  </data>
+  <data name="UIModel_MultipleInvokeContext_Description" xml:space="preserve">
+    <value>By default, the "Open", "Print", "Edit" context menu items will not appear if selecting more than 15 items to avoid accidentally performing these actions on a large number of files.</value>
+  </data>
+  <data name="UIModel_UseStoreOpenWith_Title" xml:space="preserve">
+    <value>Show "Look for an app in the Microsoft Store" items in the "Open with" dialog</value>
+  </data>
+  <data name="UIModel_UseStoreOpenWith_Description" xml:space="preserve">
+    <value>In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
+  </data>
+  <data name="UIModel_OpenWindowsTerminalContext_Title" xml:space="preserve">
+    <value>Show "Open in Windows Terminal" item in the folders context menu</value>
+  </data>
+  <data name="UIModel_OpenWindowsTerminalAdminContext_Title" xml:space="preserve">
+    <value>Open Windows Terminal from context menu as administrator by default</value>
+  </data>
+  <data name="UIModel_BitmapImageNewContext_Title" xml:space="preserve">
+    <value>Show "Bitmap image" item in the "New" context menu</value>
+  </data>
+  <data name="UIModel_CastToDeviceContext_Title" xml:space="preserve">
+    <value>Show "Cast to Device" item in the media files and folders context menu</value>
+  </data>
+  <data name="UIModel_EditWithPaint3DContext_Description" xml:space="preserve">
+    <value>Show "Edit with Paint 3D" item from the context menu of media files for the following extensions: .bmp, .gif, .jpe, .jpeg, .jpg, .png, .tif, .tiff</value>
+  </data>
+  <data name="UIModel_EditWithPaint3DContext_Title" xml:space="preserve">
+    <value>Show "Edit with Paint 3D" item in the media files context menu</value>
+  </data>
+  <data name="UIModel_ImagesEditContext_Title" xml:space="preserve">
+    <value>Show "Edit" item in the images context menu</value>
+  </data>
+  <data name="UIModel_IncludeInLibraryContext_Title" xml:space="preserve">
+    <value>Show "Include in Library" item in the folders and drives context menu</value>
+  </data>
+  <data name="UIModel_RichTextDocumentNewContext_Title" xml:space="preserve">
+    <value>Show "Rich Text Document" item in the "New" context menu</value>
+  </data>
+  <data name="UIModel_SendToContext_Title" xml:space="preserve">
+    <value>Show "Send to" item in the folders context menu</value>
+  </data>
+  <data name="UIModel_ShareContext_Title" xml:space="preserve">
+    <value>Show "Share" context menu item</value>
   </data>
   <data name="OsRequirementsFailure_DefenderServiceBroken" xml:space="preserve">
     <value>Microsoft Defender service "{0}" is broken.</value>
@@ -500,149 +1199,11 @@
   <data name="OsRequirementsFailure_DefenderSettingsPageHidden" xml:space="preserve">
     <value>Microsoft Defender settings page was hidden from UI.</value>
   </data>
-  <data name="UIModel_BitmapImageNewContext_Title" xml:space="preserve">
-    <value>Show "Bitmap image" item in the "New" context menu</value>
-  </data>
-  <data name="UIModel_CABInstallContext_Title" xml:space="preserve">
-    <value>Show "Install" item in the Cabinet archives (.cab) context menu</value>
-  </data>
-  <data name="UIModel_CastToDeviceContext_Title" xml:space="preserve">
-    <value>Show "Cast to Device" item in the media files and folders context menu</value>
-  </data>
-  <data name="UIModel_CompressedFolderNewContext_Title" xml:space="preserve">
-    <value>Show "Compressed (zipped) Folder" item in the "New" context menu</value>
-  </data>
-  <data name="UIModel_EditWithClipchampContext_Title" xml:space="preserve">
-    <value>Show "Edit With Clipchamp" item in the media files context menu</value>
-  </data>
-  <data name="UIModel_EditWithPaint3DContext_Description" xml:space="preserve">
-    <value>Show "Edit with Paint 3D" item from the context menu of media files for the following extensions: .bmp, .gif, .jpe, .jpeg, .jpg, .png, .tif, .tiff</value>
-  </data>
-  <data name="UIModel_EditWithPaint3DContext_Title" xml:space="preserve">
-    <value>Show "Edit with Paint 3D" item in the media files context menu</value>
-  </data>
-  <data name="UIModel_IncludeInLibraryContext_Title" xml:space="preserve">
-    <value>Show "Include in Library" item in the folders and drives context menu</value>
-  </data>
-  <data name="UIModel_MSIExtractContext_Description" xml:space="preserve">
-    <value>The "Extract all" context menu item will extract all contents of the .msi file into the "Extracted" folder at the same location as .msi file is.</value>
-  </data>
-  <data name="UIModel_MSIExtractContext_Title" xml:space="preserve">
-    <value>Show "Extract all" item in the Windows Installer (.msi) context menu</value>
-  </data>
-  <data name="UIModel_MultipleInvokeContext_Description" xml:space="preserve">
-    <value>By default, the "Open", "Print", "Edit" context menu items will not appear if selecting more than 15 items to avoid accidentally performing these actions on a large number of files.</value>
-  </data>
-  <data name="UIModel_MultipleInvokeContext_Title" xml:space="preserve">
-    <value>Make "Open", "Print", and "Edit" context menu items available when selecting more than 15 files</value>
-  </data>
-  <data name="UIModel_OpenWindowsTerminalAdminContext_Title" xml:space="preserve">
-    <value>Open Windows Terminal from context menu as administrator by default</value>
-  </data>
-  <data name="UIModel_OpenWindowsTerminalContext_Title" xml:space="preserve">
-    <value>Show "Open in Windows Terminal" item in the folders context menu</value>
-  </data>
-  <data name="UIModel_PrintCMDContext_Title" xml:space="preserve">
-    <value>Show "Print" item in the .bat and .cmd files context menu</value>
-  </data>
-  <data name="UIModel_RichTextDocumentNewContext_Title" xml:space="preserve">
-    <value>Show "Rich Text Document" item in the "New" context menu</value>
-  </data>
-  <data name="UIModel_SendToContext_Title" xml:space="preserve">
-    <value>Show "Send to" item in the folders context menu</value>
-  </data>
-  <data name="UIModel_ShareContext_Title" xml:space="preserve">
-    <value>Show "Share" context menu item</value>
-  </data>
-  <data name="UIModel_UseStoreOpenWith_Title" xml:space="preserve">
-    <value>Show "Look for an app in the Microsoft Store" items in the "Open with" dialog</value>
-  </data>
-  <data name="UIModel_UseStoreOpenWith_Description" xml:space="preserve">
-    <value>In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
-  <data name="UIModel_AppsSmartScreen_Title" xml:space="preserve">
-    <value>Check apps and files within Microsoft Defender SmartScreen</value>
-  </data>
-  <data name="UIModel_DefenderSandbox_Description" xml:space="preserve">
-    <value>Running Microsoft Defender in a sandbox ensures that in the unlikely event of a compromise, malicious actions are limited to the isolated environment, protecting the rest of the system from harm. The sandbox for Microsoft Defender is enabled by default in Windows 11.</value>
-  </data>
-  <data name="UIModel_EventViewerCustomView_Description" xml:space="preserve">
-    <value>"Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
-  <data name="UIModel_NetworkProtection_Description" xml:space="preserve">
-    <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the Internet.</value>
-  </data>
-  <data name="UIModel_PowerShellModulesLogging_Description" xml:space="preserve">
-    <value>Pipeline execution events for members of the specified modules are recorded in Windows PowerShell log in the Event Viewer. For built-in Windows PowerShell 5.1 only. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
-  <data name="UIModel_PowerShellScriptsLogging_Description" xml:space="preserve">
-    <value>Windows PowerShell will log processing of commands, script blocks, functions, and scripts – whether invoked interactively, or through automation to "Applications and Services Logs\Microsoft\Windows\PowerShell\Operational" event log. For the built-in Windows PowerShell 5.1 only. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
-  <data name="UIModel_PUAppsDetection_Title" xml:space="preserve">
-    <value>Enable detection in Microsoft Defender for potentially unwanted applications and block them</value>
-  </data>
-  <data name="UIModel_SaveZoneInformation_Description" xml:space="preserve">
-    <value>Attachment Manager is included in Windows to protect from unsafe files downloaded from the Internet. If Attachment Manager identifies an attachment that might be unsafe, Attachment Manager prevents (blocks) you from opening file, or it warns you before you open file. Metadata is saved as an Alternate Data Stream (ADS). If you wish to unblock a downloaded file manually, you can do so by right-clicking it, selecting Properties and clicking on "Unblock". In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
-  <data name="UIModel_WindowsSandbox_Description" xml:space="preserve">
-    <value>Windows Sandbox provides a lightweight desktop environment to safely run applications in isolation. Software installed inside Windows Sandbox environment remains sandboxed and runs separately from host machine. A sandbox is temporary. When it's closed, all software and files and state are deleted. You get a brand-new instance of the sandbox every time you open the application. Applicable only to Professional, Enterprise and Education editions.</value>
-  </data>
-  <data name="EventViewerCustomView_ProcessCreationXml_Description" xml:space="preserve">
-    <value>Process creation and command-line auditing events.</value>
-  </data>
-  <data name="EventViewerCustomView_ProcessCreationXml_Name" xml:space="preserve">
-    <value>Process Creation</value>
-  </data>
-  <data name="UwpPage_UwpAppsNotFound.Text" xml:space="preserve">
-    <value>No data to display, or necessary packages were removed</value>
-  </data>
-  <data name="UIModel_LocalSecurityAuthority_Description" xml:space="preserve">
-    <value>Protection for the Local Security Authority (LSA) is provided to prevent reading memory and code injection by nonprotected processes. This feature provides added security for the credentials that LSA stores and manages.</value>
-  </data>
-  <data name="UIModel_LocalSecurityAuthority_Title" xml:space="preserve">
-    <value>Enable protection for the Local Security Authority (LSA) process without UEFI lock to prevent code injection</value>
-  </data>
-  <data name="UIModel_DefenderSandbox_Title" xml:space="preserve">
-    <value>Enable sandboxing for Microsoft Defender</value>
-  </data>
-  <data name="UIModel_EventViewerCustomView_Title" xml:space="preserve">
-    <value>Create "Process Creation" Custom View in the Event Viewer</value>
-  </data>
-  <data name="UIModel_NetworkProtection_Title" xml:space="preserve">
-    <value>Enable Microsoft Defender Exploit Guard network protection</value>
-  </data>
-  <data name="UIModel_PowerShellModulesLogging_Title" xml:space="preserve">
-    <value>Enable logging for all Windows PowerShell modules</value>
-  </data>
-  <data name="UIModel_PowerShellScriptsLogging_Title" xml:space="preserve">
-    <value>Enable logging for all PowerShell scripts input to the Windows PowerShell event log</value>
-  </data>
-  <data name="UIModel_SaveZoneInformation_Title" xml:space="preserve">
-    <value>Mark files that have been downloaded from the Internet as unsafe</value>
-  </data>
-  <data name="UIModel_WindowsSandbox_Title" xml:space="preserve">
-    <value>Enable Windows Sandbox</value>
-  </data>
-  <data name="TaskScheduler_WindowsCleanup_Description" xml:space="preserve">
-    <value>Cleaning up Windows unused files and updates using built-in Disk cleanup app. Scheduled task can be run only if user {0} logged into the system.</value>
-  </data>
-  <data name="TaskScheduler_WindowsCleanupNotification_Description" xml:space="preserve">
-    <value>Pop-up notification reminder about cleaning up Windows unused files and updates. Scheduled task can be run only if user {0} logged into the system.</value>
-  </data>
-  <data name="TaskScheduler_WindowsCleanupToast_Description" xml:space="preserve">
-    <value>Run task to clean up Windows unused files and updates?</value>
-  </data>
-  <data name="TaskScheduler_WindowsCleanupToast_Title" xml:space="preserve">
-    <value>Windows clean up</value>
-  </data>
   <data name="OsRequirements_GeneratingUserInterface" xml:space="preserve">
     <value>Generating UI</value>
   </data>
   <data name="TaskScheduler_WindowsCleanupToast_Run" xml:space="preserve">
     <value>Run</value>
-  </data>
-  <data name="TaskSchedulerPage_AboutTasks.Text" xml:space="preserve">
-    <value>The scheduled tasks options below are sufficient enough to keep your Windows clean. There is no need to constantly clean more system folders as advised from the Internet.</value>
   </data>
   <data name="SettingsPage_FontOptions.Title" xml:space="preserve">
     <value>UI font sizes</value>
@@ -664,18 +1225,6 @@
   </data>
   <data name="SearchPage_NothingFound.Text" xml:space="preserve">
     <value>Nothing found on your request</value>
-  </data>
-  <data name="TaskScheduler_SoftwareDistribution_Description" xml:space="preserve">
-    <value>The %SystemRoot%\SoftwareDistribution\Download folder cleanup. Scheduled task can be run only if user {0} logged into the system.</value>
-  </data>
-  <data name="TaskScheduler_SoftwareDistributionToast_Title" xml:space="preserve">
-    <value>Windows update cache successfully deleted.</value>
-  </data>
-  <data name="TaskScheduler_TempTaskToast_Title" xml:space="preserve">
-    <value>Temporary files folder successfully cleaned up.</value>
-  </data>
-  <data name="TaskScheduler_TempTask_Description" xml:space="preserve">
-    <value>The %TEMP% folder cleanup. Scheduled task can be run only if user {0} logged into the system.</value>
   </data>
   <data name="UIModel_CortanaAutostart_Title" xml:space="preserve">
     <value>Autostart Cortana</value>
@@ -710,275 +1259,8 @@
   <data name="Page_UWP_Gaming.Text" xml:space="preserve">
     <value>Gaming</value>
   </data>
-  <data name="UIModel_EditWithPhotosContext_Title" xml:space="preserve">
-    <value>Show "Edit with Photos" item in the media files context menu</value>
-  </data>
-  <data name="UwpPage_ForAllUsers.Text" xml:space="preserve">
-    <value>Show packages for all users</value>
-  </data>
   <data name="Page_Search.Text" xml:space="preserve">
     <value>Search</value>
-  </data>
-  <data name="UIModel_AeroShaking_Title" xml:space="preserve">
-    <value>Title bar windows shake</value>
-  </data>
-  <data name="UIModel_AppColorMode_Title" xml:space="preserve">
-    <value>Default app color mode</value>
-  </data>
-  <data name="UIModel_AppColorMode_Title_1" xml:space="preserve">
-    <value>Dark</value>
-  </data>
-  <data name="UIModel_AppColorMode_Title_2" xml:space="preserve">
-    <value>Light</value>
-  </data>
-  <data name="UIModel_AppsLanguageSwitch_Title" xml:space="preserve">
-    <value>Let me use a different input method for each app window</value>
-  </data>
-  <data name="UIModel_AppSuggestions_Title" xml:space="preserve">
-    <value>Show app suggestions on Start</value>
-  </data>
-  <data name="UIModel_CheckBoxes_Title" xml:space="preserve">
-    <value>Use check boxes to select items in File Explorer</value>
-  </data>
-  <data name="UIModel_ControlPanelView_Title" xml:space="preserve">
-    <value>Control Panel View</value>
-  </data>
-  <data name="UIModel_ControlPanelView_Title_1" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="UIModel_ControlPanelView_Title_2" xml:space="preserve">
-    <value>Large icons</value>
-  </data>
-  <data name="UIModel_ControlPanelView_Title_3" xml:space="preserve">
-    <value>Small icons</value>
-  </data>
-  <data name="UIModel_CortanaButton_Title" xml:space="preserve">
-    <value>Show Cortana button on the taskbar</value>
-  </data>
-  <data name="UIModel_Cursors_Title" xml:space="preserve">
-    <value>Install Windows 11 cursors from Jepri Creations</value>
-  </data>
-  <data name="UIModel_FileExplorerCompactMode_Title" xml:space="preserve">
-    <value>Use compact mode in File Explorer</value>
-  </data>
-  <data name="UIModel_FileExplorerRibbon_Title" xml:space="preserve">
-    <value>Start File Explorer with the Ribbon always maximized</value>
-  </data>
-  <data name="UIModel_FileExplorerRibbon_Title_1" xml:space="preserve">
-    <value>Expanded</value>
-  </data>
-  <data name="UIModel_FileExplorerRibbon_Title_2" xml:space="preserve">
-    <value>Minimized</value>
-  </data>
-  <data name="UIModel_FileExtensions_Title" xml:space="preserve">
-    <value>Show file name extensions</value>
-  </data>
-  <data name="UIModel_FileTransferDialog_Title" xml:space="preserve">
-    <value>Show more details in file transfer dialog</value>
-  </data>
-  <data name="UIModel_FileTransferDialog_Title_1" xml:space="preserve">
-    <value>Detailed</value>
-  </data>
-  <data name="UIModel_FileTransferDialog_Title_2" xml:space="preserve">
-    <value>Compact</value>
-  </data>
-  <data name="UIModel_FirstLogonAnimation_Title" xml:space="preserve">
-    <value>Enable first sign-in animation</value>
-  </data>
-  <data name="UIModel_FolderGroupBy_Title" xml:space="preserve">
-    <value>Group files and folder by date modified in the Downloads folder</value>
-  </data>
-  <data name="UIModel_FolderGroupBy_Title_1" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="UIModel_FolderGroupBy_Title_2" xml:space="preserve">
-    <value>Default</value>
-  </data>
-  <data name="UIModel_HiddenItems_Title" xml:space="preserve">
-    <value>Show hidden files, folders, or drives</value>
-  </data>
-  <data name="UIModel_JPEGWallpapersQuality_Title" xml:space="preserve">
-    <value>Enable desktop wallpaper JPEG quality reduction</value>
-  </data>
-  <data name="UIModel_JPEGWallpapersQuality_Title_1" xml:space="preserve">
-    <value>Max</value>
-  </data>
-  <data name="UIModel_JPEGWallpapersQuality_Title_2" xml:space="preserve">
-    <value>Default</value>
-  </data>
-  <data name="UIModel_MeetNow_Title" xml:space="preserve">
-    <value>Show the Meet Now icon in the notification area</value>
-  </data>
-  <data name="UIModel_MergeConflicts_Title" xml:space="preserve">
-    <value>Show folder merge conflicts</value>
-  </data>
-  <data name="UIModel_NavigationPaneExpand_Title" xml:space="preserve">
-    <value>Automatically expand to current folder in the navigation pane of File Explorer</value>
-  </data>
-  <data name="UIModel_NewAppInstalledNotification_Title" xml:space="preserve">
-    <value>Show "New App Installed" notification</value>
-  </data>
-  <data name="UIModel_NewsInterests_Title" xml:space="preserve">
-    <value>Show news and interests on the taskbar</value>
-  </data>
-  <data name="UIModel_NotificationAreaIcons_Title" xml:space="preserve">
-    <value>Always show all icons in the notification area</value>
-  </data>
-  <data name="UIModel_OneDriveFileExplorerAd_Title" xml:space="preserve">
-    <value>Show sync provider notifications within File Explorer</value>
-  </data>
-  <data name="UIModel_OpenFileExplorerTo_Title" xml:space="preserve">
-    <value>Open File Explorer to:</value>
-  </data>
-  <data name="UIModel_OpenFileExplorerTo_Title_1" xml:space="preserve">
-    <value>This PC</value>
-  </data>
-  <data name="UIModel_OpenFileExplorerTo_Title_2" xml:space="preserve">
-    <value>Quick access</value>
-  </data>
-  <data name="UIModel_PrtScnSnippingTool_Title" xml:space="preserve">
-    <value>Use Print Screen button to open screen snipping</value>
-  </data>
-  <data name="UIModel_QuickAccessFrequentFolders_Title" xml:space="preserve">
-    <value>Show frequently used folders in Quick access</value>
-  </data>
-  <data name="UIModel_QuickAccessRecentFiles_Title" xml:space="preserve">
-    <value>Show recently used files in Quick access</value>
-  </data>
-  <data name="UIModel_RecentlyAddedStartApps_Title" xml:space="preserve">
-    <value>Show recently added apps on Start</value>
-  </data>
-  <data name="UIModel_RecycleBinDeleteConfirmation_Title" xml:space="preserve">
-    <value>Display recycle bin delete confirmation dialog</value>
-  </data>
-  <data name="UIModel_SearchHighlightsWindows11_Title" xml:space="preserve">
-    <value>Show widgets icon on the taskbar</value>
-  </data>
-  <data name="UIModel_SecondsInSystemClock_Title" xml:space="preserve">
-    <value>Show seconds on the taskbar clock</value>
-  </data>
-  <data name="UIModel_ShortcutsSuffix_Title" xml:space="preserve">
-    <value>Add the "- Shortcut" suffix to filenames of new shortcuts you create</value>
-  </data>
-  <data name="UIModel_SnapAssist_Title" xml:space="preserve">
-    <value>When I snap a window, show what I can snap next to it</value>
-  </data>
-  <data name="UIModel_StartLayout_Title" xml:space="preserve">
-    <value>Start layout</value>
-  </data>
-  <data name="UIModel_StartLayout_Title_1" xml:space="preserve">
-    <value>Default</value>
-  </data>
-  <data name="UIModel_StartLayout_Title_2" xml:space="preserve">
-    <value>More pins</value>
-  </data>
-  <data name="UIModel_StartLayout_Title_3" xml:space="preserve">
-    <value>More recommendations</value>
-  </data>
-  <data name="UIModel_TaskbarAlignment_Title" xml:space="preserve">
-    <value>Set the taskbar alignment</value>
-  </data>
-  <data name="UIModel_TaskbarAlignment_Title_1" xml:space="preserve">
-    <value>Center</value>
-  </data>
-  <data name="UIModel_TaskbarAlignment_Title_2" xml:space="preserve">
-    <value>Left</value>
-  </data>
-  <data name="UIModel_TaskbarCombine_Title" xml:space="preserve">
-    <value>Combine taskbar buttons and hide labels</value>
-  </data>
-  <data name="UIModel_TaskbarCombine_Title_1" xml:space="preserve">
-    <value>Always</value>
-  </data>
-  <data name="UIModel_TaskbarCombine_Title_2" xml:space="preserve">
-    <value>When taskbar is full</value>
-  </data>
-  <data name="UIModel_TaskbarCombine_Title_3" xml:space="preserve">
-    <value>Never</value>
-  </data>
-  <data name="UIModel_TaskbarEndTask_Title" xml:space="preserve">
-    <value>Enable end task in taskbar by right click</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows11_Title" xml:space="preserve">
-    <value>Show search button on the taskbar</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows11_Title_1" xml:space="preserve">
-    <value>Hide</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows11_Title_2" xml:space="preserve">
-    <value>Search icon only</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows11_Title_3" xml:space="preserve">
-    <value>Search icon and label</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows11_Title_4" xml:space="preserve">
-    <value>Search box</value>
-  </data>
-  <data name="UIModel_TaskbarWidgets_Title" xml:space="preserve">
-    <value>Show widgets icon on the taskbar</value>
-  </data>
-  <data name="UIModel_TaskViewButton_Title" xml:space="preserve">
-    <value>Show Task view button on the taskbar</value>
-  </data>
-  <data name="UIModel_ThisPC_Title" xml:space="preserve">
-    <value>Show "This PC" icon on Desktop</value>
-  </data>
-  <data name="UIModel_WindowsColorMode_Title" xml:space="preserve">
-    <value>Default Windows color mode</value>
-  </data>
-  <data name="UIModel_WindowsColorMode_Title_1" xml:space="preserve">
-    <value>Dark</value>
-  </data>
-  <data name="UIModel_WindowsColorMode_Title_2" xml:space="preserve">
-    <value>Light</value>
-  </data>
-  <data name="UIModel_WindowsInkWorkspace_Title" xml:space="preserve">
-    <value>Show Windows Ink Workspace button on the taskbar</value>
-  </data>
-  <data name="UIModel_AeroShaking_Description" xml:space="preserve">
-    <value>When I grab a windows's title bar and shake it, minimize all other windows</value>
-  </data>
-  <data name="UIModel_Cursors_Description" xml:space="preserve">
-    <value>Install "Windows 11 Cursors Concept v2" cursors from Jepri Creations on-the-fly. Internet connection required. https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356</value>
-  </data>
-  <data name="UIModel_FirstLogonAnimation_Description" xml:space="preserve">
-    <value>In Windows, after completing the setup on a new installation, upgrading, or when signing in to a new account, displays the first sign-in animation that features several messages to configure the account environment.</value>
-  </data>
-  <data name="UIModel_JPEGWallpapersQuality_Description" xml:space="preserve">
-    <value>When you set a JPEG image as the desktop wallpaper or slideshow, the operating system reduces the quality of the original image to 85%. A PNG image as your desktop background wallpaper or slideshow is not affected.</value>
-  </data>
-  <data name="UIModel_NewsInterests_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling a UCDP driver.</value>
-  </data>
-  <data name="UIModel_OneDriveFileExplorerAd_Description" xml:space="preserve">
-    <value>They are designed to help you by providing quick, easy information about things you can do or new features you can try to have a better experience with Windows.</value>
-  </data>
-  <data name="UIModel_SearchHighlightsWindows11_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows11_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
-  </data>
-  <data name="UIModel_TaskbarWidgets_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows10_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows10_Title" xml:space="preserve">
-    <value>Show search button on the taskbar</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows10_Title_1" xml:space="preserve">
-    <value>Hide</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows10_Title_2" xml:space="preserve">
-    <value>Search icon only</value>
-  </data>
-  <data name="UIModel_TaskbarSearchWindows10_Title_3" xml:space="preserve">
-    <value>Search box</value>
-  </data>
-  <data name="UIModel_StartRecommendedSection_Title" xml:space="preserve">
-    <value>Show Recommended section on Start</value>
   </data>
   <data name="OsRequirements_Malware_ChlorideOS" xml:space="preserve">
     <value>ChlorideOS</value>
@@ -993,34 +1275,13 @@
     <value>KernelOS</value>
   </data>
   <data name="OsRequirementsFailure_ReinstallWindows" xml:space="preserve">
-    <value>Just in case, reinstall Windows.</value>
-  </data>
-  <data name="UIModel_ImagesEditContext_Title" xml:space="preserve">
-    <value>Show "Edit" item in the images context menu</value>
-  </data>
-  <data name="UIModel_Cursors_Title_1" xml:space="preserve">
-    <value>Dark</value>
-  </data>
-  <data name="UIModel_Cursors_Title_2" xml:space="preserve">
-    <value>Light</value>
-  </data>
-  <data name="UIModel_Cursors_Title_3" xml:space="preserve">
-    <value>Default</value>
-  </data>
-  <data name="UIModel_SearchHighlightsWindows10_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
-  </data>
-  <data name="UIModel_SearchHighlightsWindows10_Title" xml:space="preserve">
-    <value>Show widgets icon on the taskbar</value>
+    <value>Reinstall Windows using only a genuine ISO image.</value>
   </data>
   <data name="UIModel_ContextMenu_CopyDescription.Label" xml:space="preserve">
     <value>Copy description</value>
   </data>
   <data name="UIModel_ContextMenu_CopyTitle.Label" xml:space="preserve">
     <value>Copy title</value>
-  </data>
-  <data name="UIModel_EditWithPaintContext_Title" xml:space="preserve">
-    <value>Show the "Edit with Paint" item in the media files context menu</value>
   </data>
   <data name="NavigationItem_Log.Text" xml:space="preserve">
     <value>Log</value>
@@ -1043,266 +1304,8 @@
   <data name="AppFatalError.Text" xml:space="preserve">
     <value>Perhaps the root cause of the exception is due to a usage a Defender tampering utility like "Defender Killer".</value>
   </data>
-  <data name="UIModel_ActiveHours_Title" xml:space="preserve">
-    <value>Enable Active hours for Windows updating</value>
-  </data>
-  <data name="UIModel_ActiveHours_Title_1" xml:space="preserve">
-    <value>Automatically</value>
-  </data>
-  <data name="UIModel_ActiveHours_Title_2" xml:space="preserve">
-    <value>Manually</value>
-  </data>
-  <data name="UIModel_AdminApprovalMode_Title" xml:space="preserve">
-    <value>Configure UAC behavior</value>
-  </data>
-  <data name="UIModel_Autoplay_Title" xml:space="preserve">
-    <value>Use AutoPlay for all media and devices</value>
-  </data>
-  <data name="UIModel_BSoDStopError_Title" xml:space="preserve">
-    <value>Display Stop error code when BSoD occurs</value>
-  </data>
-  <data name="UIModel_CapsLock_Title" xml:space="preserve">
-    <value>Enable Caps Lock at startup</value>
-  </data>
-  <data name="UIModel_DeliveryOptimization_Title" xml:space="preserve">
-    <value>Enable Windows update delivery optimization</value>
-  </data>
-  <data name="UIModel_F1HelpPage_Title" xml:space="preserve">
-    <value>Enable help look up via F1</value>
-  </data>
-  <data name="UIModel_FoldersLaunchSeparateProcess_Title" xml:space="preserve">
-    <value>Launch folder windows in a separate process</value>
-  </data>
-  <data name="UIModel_Hibernation_Title" xml:space="preserve">
-    <value>Enable hibernation</value>
-  </data>
-  <data name="UIModel_InputMethod_Title" xml:space="preserve">
-    <value>Set default input method</value>
-  </data>
-  <data name="UIModel_InputMethod_Title_1" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="UIModel_InputMethod_Title_2" xml:space="preserve">
-    <value>Use language list</value>
-  </data>
-  <data name="UIModel_LatestInstalledNET_Title" xml:space="preserve">
-    <value>Forcibly use .NET Framework 4.8.1 for old apps</value>
-  </data>
-  <data name="UIModel_NetworkAdaptersSavePower_Title" xml:space="preserve">
-    <value>Keep network adapter awake</value>
-  </data>
-  <data name="UIModel_NetworkDiscovery_Title" xml:space="preserve">
-    <value>Enable network discovery and file sharing</value>
-  </data>
-  <data name="UIModel_NumLock_Title" xml:space="preserve">
-    <value>Enable Num Lock at startup</value>
-  </data>
-  <data name="UIModel_OneDrive_Title" xml:space="preserve">
-    <value>OneDrive</value>
-  </data>
-  <data name="UIModel_PowerPlan_Title" xml:space="preserve">
-    <value>Choose a power plan</value>
-  </data>
-  <data name="UIModel_PowerPlan_Title_1" xml:space="preserve">
-    <value>High Performance</value>
-  </data>
-  <data name="UIModel_PowerPlan_Title_2" xml:space="preserve">
-    <value>Balanced</value>
-  </data>
-  <data name="UIModel_RecommendedTroubleshooting_Title" xml:space="preserve">
-    <value>Recommended troubleshooting</value>
-  </data>
-  <data name="UIModel_RecommendedTroubleshooting_Title_1" xml:space="preserve">
-    <value>Run troubleshooters automatically, then notify</value>
-  </data>
-  <data name="UIModel_RecommendedTroubleshooting_Title_2" xml:space="preserve">
-    <value>Ask me before running troubleshooter</value>
-  </data>
-  <data name="UIModel_RegistryBackup_Title" xml:space="preserve">
-    <value>Enable automatic backup of the Windows registry</value>
-  </data>
-  <data name="UIModel_ReservedStorage_Title" xml:space="preserve">
-    <value>Enable Reserved Storage</value>
-  </data>
-  <data name="UIModel_RestartDeviceAfterUpdate_Title" xml:space="preserve">
-    <value>Restart as soon as possible to finish updating</value>
-  </data>
-  <data name="UIModel_RestartNotification_Title" xml:space="preserve">
-    <value>Notify me when a restart is required to finish updating</value>
-  </data>
-  <data name="UIModel_RKNBypass_Title" xml:space="preserve">
-    <value>Enable proxy by ProstoVPN.AntiZapret</value>
-  </data>
-  <data name="UIModel_SaveRestartableApps_Title" xml:space="preserve">
-    <value>Automatically save my restartable apps and restart them when I sign back in</value>
-  </data>
-  <data name="UIModel_StickyShift_Title" xml:space="preserve">
-    <value>Enable Sticky Shift key</value>
-  </data>
-  <data name="UIModel_StorageSense_Title" xml:space="preserve">
-    <value>Enable Storage Sense</value>
-  </data>
-  <data name="UIModel_ThumbnailCacheRemoval_Title" xml:space="preserve">
-    <value>Enable thumbnail cache removal</value>
-  </data>
-  <data name="UIModel_UpdateMicrosoftProducts_Title" xml:space="preserve">
-    <value>Receive updates for other Microsoft products</value>
-  </data>
-  <data name="UIModel_Win32LongPathsSupport_Title" xml:space="preserve">
-    <value>Enable Windows long paths support</value>
-  </data>
-  <data name="UIModel_WindowsLatestUpdate_Title" xml:space="preserve">
-    <value>Get the latest Windows updates as soon as they're available</value>
-  </data>
-  <data name="UIModel_WindowsManageDefaultPrinter_Title" xml:space="preserve">
-    <value>Let Windows manage my default printer</value>
-  </data>
-  <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
-    <value>Choose default screenshot folder when I press Win+PrtScn or Windows+Shift+S</value>
-  </data>
   <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
     <value>Applying customization</value>
-  </data>
-  <data name="UIModel_ActiveHours_Description" xml:space="preserve">
-    <value>You can set active hours to let Windows know when you're usually using your PC to prevent automatic reboots after a Windows Update. Default active hours is 8:00 AM for start time and 5:00 PM end time.</value>
-  </data>
-  <data name="UIModel_AdminApprovalMode_Description" xml:space="preserve">
-    <value>When User Account Control (UAC) is enabled, Windows prompts for consent or prompts for credentials of a valid local administrator account before starting a program or task that requires a full administrator access token. This prompt ensures that no malicious software can be silently installed or run.</value>
-  </data>
-  <data name="UIModel_Autoplay_Description" xml:space="preserve">
-    <value>When you insert a removable device such as a USB flash stick or memory card into your PC, you'll often see an annoying "AutoPlay" popup.</value>
-  </data>
-  <data name="UIModel_BSoDStopError_Description" xml:space="preserve">
-    <value>By default, Windows does not display a Stop error code when a BSoD occurs, which helps to identify the causes of a BSoD.</value>
-  </data>
-  <data name="UIModel_DefaultTerminalApp_Description" xml:space="preserve">
-    <value>The terminal application that launches when a command-line application is run without an existing session, like from the Start Menu or Run dialog.</value>
-  </data>
-  <data name="UIModel_DefaultTerminalApp_Title" xml:space="preserve">
-    <value>Set Windows Terminal as default terminal app</value>
-  </data>
-  <data name="UIModel_DeliveryOptimization_Description" xml:space="preserve">
-    <value>Windows Update Delivery Optimization works by letting you get Windows updates and Microsoft Store apps from other PCs on your local network or PCs in the Internet that downloaded the same files. Delivery Optimization also sends updates and apps from your PC to other PCs on your local network or PCs in the Internet, based on your settings. Sharing this data between PCs helps reduce the Internet bandwidth that's needed to keep more than one device up to date or can make downloads more successful if you have a limited or unreliable Internet connection.</value>
-  </data>
-  <data name="UIModel_F1HelpPage_Description" xml:space="preserve">
-    <value>By default, pressing F1 in Windows opens a help page in a default web browser, which may result in accidental opening web browser.</value>
-  </data>
-  <data name="UIModel_FoldersLaunchSeparateProcess_Description" xml:space="preserve">
-    <value>By default, all File Explorer windows, including the desktop shell, run in a single explorer.exe process. If one File Explorer window hangs or crashes, it will cause the whole graphical shell to freeze until the process restarts. When enabled, each explorer.exe process will have its own process ID (PID) to improve stability of the explorer shell.</value>
-  </data>
-  <data name="UIModel_Hibernation_Description" xml:space="preserve">
-    <value>Hibernate is a power-saving state used primarily for laptops. Unlike sleep, hibernation puts your open documents and programs on the system drive to C:\hiberfil.sys file, and turns off your computer. By default, the size of hidden system protected file C:\hiberfil.sys is 40% of the total amount of RAM installed. Disabling hibernation will also disable fast startup, and hibernate will no longer show in the Power menu. Not recommended to turn off for laptops.</value>
-  </data>
-  <data name="UIModel_InputMethod_Description" xml:space="preserve">
-    <value>Your default keyboard layout is the one that’s automatically used at sign in screen.</value>
-  </data>
-  <data name="UIModel_LatestInstalledNET_Description" xml:space="preserve">
-    <value>This function will force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1. If you do not use old applications, there's no need to enable this function.</value>
-  </data>
-  <data name="UIModel_NetworkAdaptersSavePower_Description" xml:space="preserve">
-    <value>Allow PC to turn off the network adapter to save power and prevent them from going to sleep. Only currently used network adapter will be configured, even if your motherboard has an additional Wi-Fi alongside with an Ethernet one.</value>
-  </data>
-  <data name="UIModel_NetworkDiscovery_Description" xml:space="preserve">
-    <value>Network Discovery makes PC discoverable in the same network, and other devices can see your PC, and vice versa.</value>
-  </data>
-  <data name="UIModel_OneDrive_Description" xml:space="preserve">
-    <value>OneDrive user folder won't be removed if any file found there. Internet connection required to download OneDrive installer from Microsoft resource.</value>
-  </data>
-  <data name="UIModel_PowerPlan_Description" xml:space="preserve">
-    <value>"High performance" is not recommended to use on laptops. Also, enabling "High performance" power plan doesn't effect on your FPS. It only manages how your PC uses power.</value>
-  </data>
-  <data name="UIModel_RecommendedTroubleshooting_Description" xml:space="preserve">
-    <value>Microsoft can recommend and run troubleshooters to fix issues. How much do you want Microsoft to help when there are issues on your device that troubleshooters might be able to fix?</value>
-  </data>
-  <data name="UIModel_ReservedStorage_Description" xml:space="preserve">
-    <value>Windows reserves some storage (~7GB) to facilitate proper performance and successful updates of device. After disabling reserved storage will be deleted after the next update installation.</value>
-  </data>
-  <data name="UIModel_RestartDeviceAfterUpdate_Description" xml:space="preserve">
-    <value>Restart as soon as possible (even during active hours) to finish updating, and notify 15 minutes before restarting.</value>
-  </data>
-  <data name="UIModel_RestartNotification_Description" xml:space="preserve">
-    <value>Show notification when your device requires a restart to finish updating.</value>
-  </data>
-  <data name="UIModel_RestorePreviousFolders_Description" xml:space="preserve">
-    <value>Restore all the extra tabs which you previously had open in each File Explorer window.</value>
-  </data>
-  <data name="UIModel_RestorePreviousFolders_Title" xml:space="preserve">
-    <value>Restore previous folder windows at logon</value>
-  </data>
-  <data name="UIModel_SaveRestartableApps_Description" xml:space="preserve">
-    <value>If program was run as administrator in the previous session, it will be restarted with non-admin permissions.</value>
-  </data>
-  <data name="UIModel_StickyShift_Description" xml:space="preserve">
-    <value>Pressing Shift key 5 times in a row results in a popup appear which may interrupt your work.</value>
-  </data>
-  <data name="UIModel_StorageSense_Description" xml:space="preserve">
-    <value>Automatically free up space and delete temporary files. Storage Sense runs when disk space is low. We clean enough space to help your system runs its best.</value>
-  </data>
-  <data name="UIModel_ThumbnailCacheRemoval_Description" xml:space="preserve">
-    <value>Windows deletes automatically thumbnail cache after restart or shutdown, and File Explorer has to re-create thumbnails again. You can disable thumbnail cache preset to stop thumbnail cache from automatically being deleted managed by "SilentCleanup" scheduled task. Thumbnail cache is stored as .db files located in %LOCALAPPDATA%\Microsoft\Windows\Explorer folder.</value>
-  </data>
-  <data name="UIModel_UpdateMicrosoftProducts_Description" xml:space="preserve">
-    <value>Get other Microsoft products updates, like Microsoft 365 (ex-Office), and automatically download and install the latest drivers alongside with Windows Updates.</value>
-  </data>
-  <data name="UIModel_Win32LongPathsSupport_Description" xml:space="preserve">
-    <value>By default, the maximum path length limit in Windows is 260 characters. Enabling Win32 long paths removes restrictions when attempting to create, save, copy, or move folders/files with paths exceeding the limit. You won't encounter with an error "Path too long".</value>
-  </data>
-  <data name="UIModel_WindowsLatestUpdate_Description" xml:space="preserve">
-    <value>Get the latest non-security Windows updates, fixes, and improvements as they roll out. Windows will start downloading them immediately after you apply the function, if they are available for installation.</value>
-  </data>
-  <data name="UIModel_WindowsManageDefaultPrinter_Description" xml:space="preserve">
-    <value>By default, Windows makes the last used printer as the default one.</value>
-  </data>
-  <data name="UIModel_AdminApprovalMode_Title_1" xml:space="preserve">
-    <value>Notify me only when apps try to make changes to my computer</value>
-  </data>
-  <data name="UIModel_AdminApprovalMode_Title_2" xml:space="preserve">
-    <value>Never notify</value>
-  </data>
-  <data name="UIModel_RegistryBackup_Description" xml:space="preserve">
-    <value>Starting from Windows 10 version 1803, Windows no longer automatically backs up the system registry to %SystemRoot%\System32\config\RegBack folder. Enabling registry backups may help you restore Windows in extreme cases.</value>
-  </data>
-  <data name="UIModel_RKNBypass_Description" xml:space="preserve">
-    <value>Enable proxying only blocked sites from Roskomnadzor's unified domains registry. The function is applicable for Russia only. https://antizapret.prostovpn.org</value>
-  </data>
-  <data name="UIModel_WinPrtScrFolder_Title_1" xml:space="preserve">
-    <value>Desktop</value>
-  </data>
-  <data name="UIModel_WinPrtScrFolder_Title_2" xml:space="preserve">
-    <value>Pictures</value>
-  </data>
-  <data name="UIModel_DefaultTerminalApp_Title_1" xml:space="preserve">
-    <value>Windows Terminal</value>
-  </data>
-  <data name="UIModel_DefaultTerminalApp_Title_2" xml:space="preserve">
-    <value>Console Host</value>
-  </data>
-  <data name="UIModel_ShowClockInNotificationCenter_Title" xml:space="preserve">
-    <value>Show time in Notification Center</value>
-  </data>
-  <data name="UIModel_InstallDotNetRuntime_8_Description" xml:space="preserve">
-    <value>.NET is a successor to .NET Framework. You need to install .NET 8 if an app was developed within this framework, even if you already installed any other .NET versions. .NET 8 is an LTS (long-term support) version. The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
-  </data>
-  <data name="UIModel_InstallDotNetRuntime_8_Title" xml:space="preserve">
-    <value>Install latest .NET Desktop Runtime 8 x64</value>
-  </data>
-  <data name="UIModel_InstallDotNetRuntime_9_Description" xml:space="preserve">
-    <value>.NET is a successor to .NET Framework. You need to install .NET 9 if an app was developed within this framework, even if you already installed any other .NET versions. NET 9 is a rapid branch version. The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
-  </data>
-  <data name="UIModel_InstallDotNetRuntime_9_Title" xml:space="preserve">
-    <value>Install latest .NET Desktop Runtime 9 x64</value>
-  </data>
-  <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
-    <value>The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
-  </data>
-  <data name="UIModel_InstallVisualC_x64_Title" xml:space="preserve">
-    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x64</value>
-  </data>
-  <data name="UIModel_InstallVisualC_x86_Description" xml:space="preserve">
-    <value>The installer will be downloaded from the Microsoft resource (Internet connection required).</value>
-  </data>
-  <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
-    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x86</value>
   </data>
   <data name="App_Discord.Text" xml:space="preserve">
     <value>Discord</value>
@@ -1323,7 +1326,7 @@
     <value>Dmitry "Inestic" Demin</value>
   </data>
   <data name="SettingsPage_ProjectManager.NickName" xml:space="preserve">
-    <value>Dmitry "farag" Nefedov</value>
+    <value>Dmitry Nefedov</value>
   </data>
   <data name="SettingsPage_UiDevelopment.NickName" xml:space="preserve">
     <value>Yaroslav Posmitiukh</value>
@@ -1339,8 +1342,5 @@
   </data>
   <data name="OsRequirements_ObtainingInternetData" xml:space="preserve">
     <value>Obtaining data from the Internet</value>
-  </data>
-  <data name="UIModel_MostUsedStartApps_Title" xml:space="preserve">
-    <value>Show most used Start apps</value>
   </data>
 </root>

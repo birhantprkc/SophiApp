@@ -432,7 +432,7 @@ namespace SophiApp.Customizations
             if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
                 var blockedKey = searchEnabled.Equals(1) ? "BingSearchEnabled" : "DisableSearchBoxSuggestions";
-                throw new InvalidOperationException($"Search highlights function is already blocked within {blockedKey} registry keys.");
+                throw new InvalidOperationException($"Search highlights already hidden.");
             }
 
             var dynamicSearch = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings")?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
