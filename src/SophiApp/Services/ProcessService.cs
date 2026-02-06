@@ -13,10 +13,10 @@ namespace SophiApp.Services
     public class ProcessService : IProcessService
     {
         /// <inheritdoc/>
-        public bool Exists(string name)
-        {
-            return Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
-        }
+        public bool Exist(string name) => Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
+
+        /// <inheritdoc/>
+        public bool Exist(params string[] process) => process.Any(Exist);
 
         /// <inheritdoc/>
         public void KillProcessByName(int timeout, params string[] processes)
@@ -37,18 +37,6 @@ namespace SophiApp.Services
                     process.WaitForExit(timeout);
                     process.Dispose();
                 });
-        }
-
-        /// <inheritdoc/>
-        public void ThrowIfExist(params string[] processes)
-        {
-            processes.ForEach(process =>
-            {
-                if (Exists(process))
-                {
-                    throw new InvalidOperationException($"The process {process} listed in the throw list is running on your PC");
-                }
-            });
         }
 
         /// <inheritdoc/>

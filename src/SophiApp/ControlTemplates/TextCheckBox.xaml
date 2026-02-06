@@ -46,8 +46,10 @@
                         Grid.Column="0"
                         Margin="17, 10, 10, 10"
                         VerticalAlignment="Center">
-                <TextBlock Grid.Column="0"
-                           Foreground="{ThemeResource WindowAccent}">
+                <TextBlock x:Name="DebugOptionsTextBlock"
+                           Grid.Column="0"
+                           Foreground="{ThemeResource WindowAccent}"
+                           Visibility="{Binding Path=DebugOptions.ShowFunctionsInfo, ElementName=TextCheckBoxControl}">
                     <Run Text="Function name:"/>
                     <Run Text="{Binding Name}"/>
                     <Run Text="Function Id:"/>

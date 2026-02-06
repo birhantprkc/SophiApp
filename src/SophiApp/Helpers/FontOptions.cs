@@ -84,7 +84,6 @@ namespace SophiApp.Helpers
             DescriptionTextMinSize = settingsService.DescriptionTextMinSize;
             DescriptionTextMaxSize = settingsService.DescriptionTextMaxSize;
             descriptionTextSize = await settingsService.ReadTextDescriptionSizeAsync();
-
             TitleTextMinSize = settingsService.TitleTextMinSize;
             TitleTextMaxSize = settingsService.TitleTextMaxSize;
             titleTextSize = await settingsService.ReadTextTitleSizeAsync();

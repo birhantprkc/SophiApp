@@ -109,9 +109,11 @@ public partial class ShellViewModel : ObservableRecipient
 
         ApplicableModelsApply_Command = new AsyncRelayCommand(ApplicableModelsApplyAsync);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
+        DeleteLGPOFile_Command = new RelayCommand(() => DebugOptions.DeleteLGPOFile = !DebugOptions.DeleteLGPOFile);
         RadioButtonsGroup2Clicked_Command = new RelayCommand<UIRadioButtonsGroup2Model>(group => RadioButtonsGroup2Clicked(group!));
         RadioButtonsGroup3Clicked_Command = new RelayCommand<UIRadioButtonsGroup3Model>(group => RadioButtonsGroup3Clicked(group!));
         RadioButtonsGroup4Clicked_Command = new RelayCommand<UIRadioButtonsGroup4Model>(group => RadioButtonsGroup4Clicked(group!));
+        SetShowFunctionsInfo_Command = new RelayCommand(() => DebugOptions.ShowFunctionsInfo = !DebugOptions.ShowFunctionsInfo);
         SetLogPageVisibility_Command = new RelayCommand<bool>(SetLogPageVisibility);
         OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
         SearchBoxQuerySubmitted_Command = new AsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args => SearchBoxQuerySubmittedAsync(args!));
@@ -130,6 +132,11 @@ public partial class ShellViewModel : ObservableRecipient
     /// Gets <see cref="IAsyncRelayCommand"/> to click an "Cancel" button in the Apply Customizations Panel.
     /// </summary>
     public IAsyncRelayCommand ApplicableModelsClear_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click an "Delete LGPO.txt file" CheckBox in Settings page.
+    /// </summary>
+    public IRelayCommand DeleteLGPOFile_Command { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether log page visibility.
@@ -169,6 +176,11 @@ public partial class ShellViewModel : ObservableRecipient
     public IRelayCommand<bool> SetLogPageVisibility_Command { get; }
 
     /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click an "Show functions name and ID" CheckBox in Settings page.
+    /// </summary>
+    public IRelayCommand SetShowFunctionsInfo_Command { get; }
+
+    /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click "Search" in AutoSuggestBox.
     /// </summary>
     public IAsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs> SearchBoxQuerySubmitted_Command { get; }
@@ -192,6 +204,11 @@ public partial class ShellViewModel : ObservableRecipient
     /// Gets <see cref="IRelayCommand"/> to click an "For all users" checkbox in the UWP page.
     /// </summary>
     public IRelayCommand UwpForAllUsersClicked_Command { get; }
+
+    /// <summary>
+    /// Gets app debug mode options.
+    /// </summary>
+    public DebugOptions DebugOptions { get; } = new ();
 
     /// <summary>
     /// Gets and saves the app font sizes to a setting file.
@@ -451,10 +468,10 @@ public partial class ShellViewModel : ObservableRecipient
         await modelService.SetModelsStateAsync(ApplicableModels, callback);
         ProgressBarValue = 0;
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
-        await modelService.GetModelsStateAsync(ApplicableModels, callback);
+        await modelService.GetModelsStateAsync(ApplicableModels);
         ApplicableModels.Clear();
         App.Logger.LogApplicableModelsClear();
-        groupPolicyService.UpdateLocalPolicy();
+        groupPolicyService.UpdatePolicy(deleteConfig: DebugOptions.DeleteLGPOFile);
         EnvironmentHelper.RefreshUserDesktop();
         EnvironmentHelper.ForcedRefresh();
         processService.KillProcessByName("StartMenuExperienceHost");
@@ -472,8 +489,7 @@ public partial class ShellViewModel : ObservableRecipient
         ProgressBarValue = 0;
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
         SetUpCustomizationsPanelIsVisible = true;
-        var callback = new Action(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => ProgressBarValue = ProgressBarValue.Increase(ApplicableModels.Count)));
-        await modelService.GetModelsStateAsync(ApplicableModels, callback);
+        await modelService.GetModelsStateAsync(ApplicableModels);
         ApplicableModels.Clear();
         App.Logger.LogApplicableModelsClear();
         SetUpCustomizationsPanelIsVisible = false;

@@ -210,8 +210,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StartRecommendationsTips()
         {
-            var irisRecommendations = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_IrisRecommendations") as int? ?? -1;
-            return !irisRecommendations.Equals(0);
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
+            {
+                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+            }
+
+            var startIrisRecommendations = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_IrisRecommendations") as int? ?? -1;
+            return !startIrisRecommendations.Equals(0);
         }
 
         /// <summary>
@@ -219,8 +224,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StartAccountNotifications()
         {
-            var accountNotifications = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_AccountNotifications") as int? ?? -1;
-            return !accountNotifications.Equals(0);
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
+            {
+                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+            }
+
+            var startAccountNotifications = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_AccountNotifications") as int? ?? -1;
+            return !startAccountNotifications.Equals(0);
         }
 
         /// <summary>
@@ -431,7 +441,6 @@ namespace SophiApp.Customizations
             // Checking whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
             if (searchEnabled.Equals(1) || searchSuggestions.Equals(1))
             {
-                var blockedKey = searchEnabled.Equals(1) ? "BingSearchEnabled" : "DisableSearchBoxSuggestions";
                 throw new InvalidOperationException($"Search highlights already hidden.");
             }
 
@@ -635,19 +644,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int Cursors()
         {
-            var cursorsScheme = Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors")?.GetValue(string.Empty) as string ?? string.Empty;
-
-            if (cursorsScheme.Equals("W11 Cursor Dark Free by Jepri Creations"))
+            var cursors = Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors")?.GetValue(string.Empty) as string ?? string.Empty;
+            return cursors switch
             {
-                return 1;
-            }
-
-            if (cursorsScheme.Equals("W11 Cursor Light Free by Jepri Creations"))
-            {
-                return 2;
-            }
-
-            return 3;
+                "W11 Cursor Dark Free by Jepri Creations" => 1,
+                "W11 Cursor Light Free by Jepri Creations" => 2,
+                _ => 3,
+            };
         }
 
         /// <summary>
@@ -674,8 +677,13 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RecentlyAddedStartApps()
         {
-            var appsValue = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("HideRecentlyAddedApps") as int? ?? -1;
-            return !appsValue.Equals(1);
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
+            {
+                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+            }
+
+            var showRecentList = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start")?.GetValue("ShowRecentList") as int? ?? -1;
+            return !showRecentList.Equals(0);
         }
 
         /// <summary>
@@ -683,9 +691,15 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool MostUsedStartApps()
         {
-            ProcessService.ThrowIfExist("Start11Srv", "StartAllBackCfg", "StartMenu");
-            var appsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start")?.GetValue("ShowFrequentList") as int? ?? -1;
-            return !appsValue.Equals(0);
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
+            {
+                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+            }
+
+            var startAppsPath = CommonDataService.IsWindows11 ? "Software\\Microsoft\\Windows\\CurrentVersion\\Start" : "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
+            var startAppList = CommonDataService.IsWindows11 ? "ShowFrequentList" : "NoStartMenuMFUprogramsList";
+            var usedStartApps = Registry.CurrentUser.OpenSubKey(startAppsPath)?.GetValue(startAppList) as int? ?? -1;
+            return !usedStartApps.Equals(CommonDataService.IsWindows11 ? 0 : 1);
         }
 
         /// <summary>
@@ -702,12 +716,16 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int StartLayout()
         {
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
+            {
+                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+            }
+
             // Default — 0
             // Show More Pins — 1
             // Show More Recommendations — 2
-            var layoutValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_Layout") as int? ?? 0;
-
-            return layoutValue + 1;
+            var startLayout = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_Layout") as int? ?? 0;
+            return startLayout + 1;
         }
 
         /// <summary>
@@ -715,16 +733,20 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool StartRecommendedSection()
         {
-            var os = CommonDataService.OsProperties;
-
-            if (os.Edition.Contains("Home", StringComparison.InvariantCultureIgnoreCase) || os.Edition.Contains("Core", StringComparison.InvariantCultureIgnoreCase))
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("This version Windows is not supported");
+                throw new InvalidOperationException("A third-party application is used instead of the Start button");
             }
 
-            var sectionValue = Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("HideRecommendedSection") as int? ?? -1;
-            var environmentValue = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\PolicyManager\\Current\\Device\\Education")?.GetValue("IsEducationEnvironment") as int? ?? -1;
-            return !sectionValue.Equals(1) && !environmentValue.Equals(1);
+            var startRecommended = new List<int>()
+            {
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start", false)?.GetValue("ShowRecentList") as int? ?? -1,
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start", false)?.GetValue("ShowFrequentList") as int? ?? -1,
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", false)?.GetValue("Start_IrisRecommendations") as int? ?? -1,
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", false)?.GetValue("Start_TrackDocs") as int? ?? -1,
+            };
+
+            return !startRecommended.TrueForAll(value => value.Equals(0));
         }
 
         /// <summary>
@@ -1123,7 +1145,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_8()
         {
-            var latestVersion = CommonDataService.LatestReleaseNET8?.Version ?? throw new InvalidOperationException("Internet connection is not available");
+            var latestVersion = CommonDataService.LatestReleaseNET8?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
         }
@@ -1133,7 +1155,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_9()
         {
-            var latestVersion = CommonDataService.LatestReleaseNET9?.Version ?? throw new InvalidOperationException("Internet connection is not available");
+            var latestVersion = CommonDataService.LatestReleaseNET9?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
         }
@@ -1143,7 +1165,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x86()
         {
-            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Internet connection is not available");
+            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x86.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest Visual C++ x86 version is installed");
         }
@@ -1153,7 +1175,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x64()
         {
-            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Internet connection is not available");
+            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x64.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest Visual C++ x64 version is installed");
         }
@@ -1349,7 +1371,7 @@ namespace SophiApp.Customizations
 
             if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
             {
-                return ProcessService.Exists("MsMpEngCP");
+                return ProcessService.Exist("MsMpEngCP");
             }
 
             throw new InvalidOperationException("Microsoft Defender antispyware protection is disabled");

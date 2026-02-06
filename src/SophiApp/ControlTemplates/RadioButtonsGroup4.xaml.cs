@@ -33,8 +33,15 @@ namespace SophiApp.ControlTemplates
         public RadioButtonsGroup4()
         {
             InitializeComponent();
-            FontOptions = App.GetService<ShellViewModel>().FontOptions;
+            var shellViewModel = App.GetService<ShellViewModel>();
+            DebugOptions = shellViewModel.DebugOptions;
+            FontOptions = shellViewModel.FontOptions;
         }
+
+        /// <summary>
+        /// Gets app debug mode options.
+        /// </summary>
+        public DebugOptions DebugOptions { get; }
 
         /// <summary>
         /// Gets the app font sizes.

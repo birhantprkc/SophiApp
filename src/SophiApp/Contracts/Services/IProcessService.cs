@@ -15,7 +15,13 @@ namespace SophiApp.Contracts.Services
         /// Determines whether the specified process exists.
         /// </summary>
         /// <param name="name">Process name.</param>
-        bool Exists(string name);
+        bool Exist(string name);
+
+        /// <summary>
+        /// Determines whether the specified process exists.
+        /// </summary>
+        /// <param name="process">Processes name.</param>
+        bool Exist(params string[] process);
 
         /// <summary>
         /// Immediately stops the process.
@@ -30,12 +36,6 @@ namespace SophiApp.Contracts.Services
         /// <param name="timeout">Time, in milliseconds, to wait for the process to complete.</param>
         /// <param name="processes">Processes name.</param>
         void KillProcessByName(int timeout, params string[] processes);
-
-        /// <summary>
-        /// Throw if any <paramref name="processes"/> exist.
-        /// </summary>
-        /// <param name="processes">Processes name.</param>
-        void ThrowIfExist(params string[] processes);
 
         /// <summary>
         /// Set File Explorer process automatically restart property.

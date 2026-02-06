@@ -460,7 +460,7 @@
         "Type": "CheckBox",
         "Tag": "Personalization",
         "ViewId": 242,
-        "Windows10Support": "True",
+        "Windows10Support": "False",
         "Windows11Support": "True"
     },
     {
@@ -468,7 +468,7 @@
         "Type": "CheckBox",
         "Tag": "Personalization",
         "ViewId": 243,
-        "Windows10Support": "False",
+        "Windows10Support": "True",
         "Windows11Support": "True"
     },
     {
@@ -492,7 +492,7 @@
         "Type": "CheckBox",
         "Tag": "Personalization",
         "ViewId": 246,
-        "Windows10Support": "True",
+        "Windows10Support": "False",
         "Windows11Support": "True"
     },
     {

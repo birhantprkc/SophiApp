@@ -52,15 +52,23 @@ public partial class SettingsViewModel : ObservableRecipient
     {
         build = dataService.GetBuildName();
         delimiter = dataService.GetDelimiter();
+        DebugOptions = shellViewModel.DebugOptions;
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
         LogPageVisible = shellViewModel.LogPageVisible;
+        DeleteLGPOFileCommand = shellViewModel.DeleteLGPOFile_Command;
         LogPageVisibleCommand = shellViewModel.SetLogPageVisibility_Command;
         OpenLinkCommand = new AsyncRelayCommand<string>(httpService.OpenUrlAsync);
+        SetShowFunctionsInfoCommand = shellViewModel.SetShowFunctionsInfo_Command;
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
         version = dataService.GetFullName();
     }
+
+    /// <summary>
+    /// Gets app debug mode options.
+    /// </summary>
+    public DebugOptions DebugOptions { get; }
 
     /// <summary>
     /// Gets or saves the app font sizes to a setting file.
@@ -89,9 +97,19 @@ public partial class SettingsViewModel : ObservableRecipient
     public bool LogPageVisible { get; set; }
 
     /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click an "Delete LGPO.txt file" CheckBox in Settings page.
+    /// </summary>
+    public IRelayCommand DeleteLGPOFileCommand { get; }
+
+    /// <summary>
     /// Gets a resource using an identifier.
     /// </summary>
     public IRelayCommand OpenLinkCommand { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click an "Show functions name and ID" CheckBox in Settings page.
+    /// </summary>
+    public IRelayCommand SetShowFunctionsInfoCommand { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.

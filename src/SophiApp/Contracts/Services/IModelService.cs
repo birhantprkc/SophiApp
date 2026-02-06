@@ -33,8 +33,7 @@ namespace SophiApp.Contracts.Services
         /// Get <see cref="UIModel"/> state.
         /// </summary>
         /// <param name="models">Models collection.</param>
-        /// <param name="callback">Action to be performed after invoke get state of each model.</param>
-        Task GetModelsStateAsync(ObservableCollection<UIModel> models, Action callback);
+        Task GetModelsStateAsync(ObservableCollection<UIModel> models);
 
         /// <summary>
         /// Set <see cref="UIModel"/> state.

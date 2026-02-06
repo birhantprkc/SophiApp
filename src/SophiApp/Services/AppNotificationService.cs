@@ -41,7 +41,7 @@ public class AppNotificationService : IAppNotificationService
         Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows Script Host\\Settings", true)?.DeleteValue("Enabled", false);
         Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Script Host\\Settings", true)?.DeleteValue("Enabled", false);
         // // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
-        groupPolicyService.ClearLocalCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "DisableNotificationCenter", LGPOScope.Computer, LGPOScope.User);
+        groupPolicyService.ClearPolicyCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "DisableNotificationCenter", LGPOScope.Computer, LGPOScope.User);
     }
 
     /// <inheritdoc/>

@@ -211,7 +211,7 @@
                     </StackPanel>
                     <ProgressBar x:Name="SetUpCustomizationsProgressBar"
                                  Grid.Column="1"
-                                 Value="{x:Bind ViewModel.ProgressBarValue, Mode=OneWay}"
+                                 IsIndeterminate="True"
                                  Maximum="100"
                                  Height="3"
                                  VerticalAlignment="Center"
@@ -227,11 +227,9 @@
                         </interaction:DataTriggerBehavior>
                         <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.ProgressBarValue, Mode=OneWay}" ComparisonCondition="Equal" Value="0">
                             <interaction:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetObject="{Binding ElementName=SetUpCustomizationsProcentText}"/>
-                            <interaction:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetObject="{Binding ElementName=SetUpCustomizationsProgressBar}"/>
                         </interaction:DataTriggerBehavior>
                         <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.ProgressBarValue, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
                             <interaction:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetObject="{Binding ElementName=SetUpCustomizationsProcentText}"/>
-                            <interaction:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetObject="{Binding ElementName=SetUpCustomizationsProgressBar}"/>
                         </interaction:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </Grid>

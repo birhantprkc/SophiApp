@@ -190,7 +190,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task GetModelsStateAsync(ObservableCollection<UIModel> models, Action callback)
+        public async Task GetModelsStateAsync(ObservableCollection<UIModel> models)
         {
             await Task.Run(() =>
             {
@@ -200,7 +200,6 @@ namespace SophiApp.Services
                     model.GetState();
                     timer.Stop();
                     App.Logger.LogModelGetState(model.Name, timer);
-                    callback?.Invoke();
                 }
 
                 return Task.CompletedTask;

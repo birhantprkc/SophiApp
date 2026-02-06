@@ -4,6 +4,8 @@
 
 namespace SophiApp.Contracts.Services
 {
+    using SophiApp.Helpers;
+
     /// <summary>
     /// A service for working with Windows cursors API.
     /// </summary>
@@ -15,18 +17,14 @@ namespace SophiApp.Contracts.Services
         void ReloadCursors();
 
         /// <summary>
-        /// Set "Windows 11 Cursors Concept v2 from Jepri Creations" dark scheme.
-        /// </summary>
-        void SetJepriCreationsDarkCursors();
-
-        /// <summary>
-        /// Set "Windows 11 Cursors Concept v2 from Jepri Creations" light scheme.
-        /// </summary>
-        void SetJepriCreationsLightCursors();
-
-        /// <summary>
         /// Set Windows cursors to default scheme.
         /// </summary>
         void SetDefaultCursors();
+
+        /// <summary>
+        /// Set "Windows 11 Cursors Concept from Jepri Creations" scheme.
+        /// </summary>
+        /// <param name="theme">Cursor scheme.</param>
+        void SetJepriCreationsCursors(JepriCursorsTheme theme);
     }
 }

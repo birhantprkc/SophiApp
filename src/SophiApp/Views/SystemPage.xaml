@@ -16,7 +16,7 @@
         </DataTemplate>
         <DataTemplate x:Key="RadioButtonsGroup2Template">
             <controls:RadioButtonsGroup2 Margin="{StaticResource UIControlsPageRightMargin}"
-                                         Command="{Binding ElementName=PagePrivacy, Path=ViewModel.RadioButtonsGroup2Clicked_Command}"/>
+                                         Command="{Binding ElementName=PageSystem, Path=ViewModel.RadioButtonsGroup2Clicked_Command}"/>
         </DataTemplate>
     </Page.Resources>
 

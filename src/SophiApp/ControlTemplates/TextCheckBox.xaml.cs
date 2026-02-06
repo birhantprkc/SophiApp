@@ -18,17 +18,23 @@ namespace SophiApp.ControlTemplates
         /// <summary>
         /// <see cref="Command"/>.
         /// </summary>
-        public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(IRelayCommand), typeof(TextCheckBox), new PropertyMetadata(default));
+        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(IRelayCommand), typeof(TextCheckBox), new PropertyMetadata(default));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextCheckBox"/> class.
         /// </summary>
         public TextCheckBox()
         {
-            this.InitializeComponent();
-            FontOptions = App.GetService<ShellViewModel>().FontOptions;
+            InitializeComponent();
+            var shellViewModel = App.GetService<ShellViewModel>();
+            FontOptions = shellViewModel.FontOptions;
+            DebugOptions = shellViewModel.DebugOptions;
         }
+
+        /// <summary>
+        /// Gets app debug mode options.
+        /// </summary>
+        public DebugOptions DebugOptions { get; }
 
         /// <summary>
         /// Gets the app font sizes.

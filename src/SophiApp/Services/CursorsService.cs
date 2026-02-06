@@ -4,23 +4,18 @@
 
 namespace SophiApp.Services
 {
-    using System;
-    using System.Runtime.InteropServices;
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
+    using SophiApp.Helpers;
+    using System;
+    using System.Runtime.InteropServices;
 
     /// <inheritdoc/>
     public class CursorsService : ICursorsService
     {
         private readonly IHttpService httpService;
         private readonly IProcessService processService;
-        private readonly string jepriCursorsZip;
-        private readonly string jepriDarkUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/master/misc/dark.zip";
-        private readonly string jepriLightUrl = "https://raw.githubusercontent.com/Sophia-Community/SophiApp/refs/heads/master/misc/light.zip";
-        private readonly string tarExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe");
-        private readonly string jepriDarkCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Dark Free");
-        private readonly string jepriLightCursorsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors\\W11 Cursor Light Free");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CursorsService"/> class.
@@ -31,13 +26,9 @@ namespace SophiApp.Services
         {
             this.httpService = httpService;
             this.processService = processService;
-            var downloadFolderPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
-            var downloadFolder = Registry.CurrentUser.OpenSubKey(downloadFolderPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            jepriCursorsZip = $"{downloadFolder}\\JepriCreationsW11CursorsFree.zip";
         }
 
         /// <inheritdoc/>
-        // Reload cursor on-the-fly
         public void ReloadCursors() => _ = SystemParametersInfo(0x0057, 0, 0, 0);
 
         /// <inheritdoc/>
@@ -65,46 +56,68 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void SetJepriCreationsDarkCursors() => SetJepriCursors(jepriDarkUrl, jepriDarkCursorsFolder, "W11 Cursor Dark Free by Jepri Creations");
+        public void SetJepriCreationsCursors(JepriCursorsTheme theme)
+        {
+            var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")
+                ?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var cursorsZip = Path.Combine(downloadFolder, "Windows11Cursors.zip");
+            var cursorsTheme = theme == JepriCursorsTheme.Light ? "W11 Cursor Light Free by Jepri Creations" : "W11 Cursor Dark Free by Jepri Creations";
+            var extractPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), theme == JepriCursorsTheme.Light ? "Cursors\\W11 Cursor Light Free" : "Cursors\\W11 Cursor Dark Free");
+            var extractArguments = $"-xvf \"{cursorsZip}\" -C \"{extractPath}\" --strip-components=1 {(theme == JepriCursorsTheme.Light ? "light" : "dark")}/";
+            var systemRootPath = extractPath.Replace(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "%SystemRoot%");
+            _ = Directory.CreateDirectory(extractPath);
+            httpService.DownloadFile("https://github.com/farag2/Sophia-Script-for-Windows/raw/refs/heads/master/Cursors/Windows11Cursors.zip", cursorsZip);
 
-        /// <inheritdoc/>
-        public void SetJepriCreationsLightCursors() => SetJepriCursors(jepriLightUrl, jepriLightCursorsFolder, "W11 Cursor Light Free by Jepri Creations");
+            // Extract archive
+            _ = processService.WaitForExit(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe"), extractArguments);
+
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue(string.Empty, cursorsTheme, RegistryValueKind.String);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("AppStarting", $"{systemRootPath}\\appstarting.ani", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Arrow", $"{systemRootPath}\\arrow.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Crosshair", $"{systemRootPath}\\crosshair.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Hand", $"{systemRootPath}\\hand.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Help", $"{systemRootPath}\\help.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("IBeam", $"{systemRootPath}\\ibeam.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("No", $"{systemRootPath}\\no.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("NWPen", $"{systemRootPath}\\nwpen.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Person", $"{systemRootPath}\\person.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Pin", $"{systemRootPath}\\pin.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Scheme Source", 1, RegistryValueKind.DWord);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeAll", $"{systemRootPath}\\sizeall.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeNESW", $"{systemRootPath}\\sizenesw.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeNS", $"{systemRootPath}\\sizens.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeNWSE", $"{systemRootPath}\\sizenwse.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeWE", $"{systemRootPath}\\sizewe.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("UpArrow", $"{systemRootPath}\\uparrow.cur", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Wait", $"{systemRootPath}\\wait.ani", RegistryValueKind.ExpandString);
+
+            var cursorScheme = string.Join(',', new List<string>()
+            {
+                $"{systemRootPath}\\arrow.cur",
+                $"{systemRootPath}\\help.cur",
+                $"{systemRootPath}\\appstarting.ani",
+                $"{systemRootPath}\\wait.ani",
+                $"{systemRootPath}\\crosshair.cur",
+                $"{systemRootPath}\\sizens.cur",
+                $"{systemRootPath}\\nwpen.cur",
+                $"{systemRootPath}\\no.cur",
+                $"{systemRootPath}\\sizens.cur",
+                $"{systemRootPath}\\sizewe.cur",
+                $"{systemRootPath}\\sizenwse.cur",
+                $"{systemRootPath}\\sizenesw.cur",
+                $"{systemRootPath}\\sizeall.cur",
+                $"{systemRootPath}\\uparrow.cur",
+                $"{systemRootPath}\\hand.cur",
+                $"{systemRootPath}\\person.cur",
+                $"{systemRootPath}\\pin.cur",
+            });
+
+            Registry.CurrentUser.OpenOrCreateSubKey(Path.Combine("Control Panel\\Cursors", "Schemes")).SetValue(cursorsTheme, cursorScheme, RegistryValueKind.String);
+            File.Delete(cursorsZip);
+            File.Delete(Path.Combine(extractPath, "Install.inf"));
+        }
 
         [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
         private static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
-
-        private void SetJepriCursors(string downloadUrl, string cursorsFolder, string schemeName)
-        {
-            var cursorsFolderPath = cursorsFolder.Replace(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "%SystemRoot%");
-            var schemeValue = $"{cursorsFolderPath}\\arrow.cur,{cursorsFolderPath}\\help.cur,{cursorsFolderPath}\\appstarting.ani,{cursorsFolderPath}\\wait.ani,{cursorsFolderPath}\\crosshair.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\nwpen.cur,{cursorsFolderPath}\\no.cur,{cursorsFolderPath}\\sizens.cur,{cursorsFolderPath}\\sizewe.cur,{cursorsFolderPath}\\sizenwse.cur,{cursorsFolderPath}\\sizenesw.cur,{cursorsFolderPath}\\sizeall.cur,{cursorsFolderPath}\\uparrow.cur,{cursorsFolderPath}\\hand.cur,{cursorsFolderPath}\\person.cur,{cursorsFolderPath}\\pin.cur";
-            httpService.DownloadFile(downloadUrl, jepriCursorsZip);
-            Directory.CreateDirectory(cursorsFolder);
-
-            // Extract archive
-            _ = processService.WaitForExit(tarExe, $"-xvf \"{jepriCursorsZip}\" -C \"{cursorsFolder}\"");
-
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue(string.Empty, schemeName, RegistryValueKind.String);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("AppStarting", $"{cursorsFolderPath}\\appstarting.ani", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Arrow", $"{cursorsFolderPath}\\arrow.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Crosshair", $"{cursorsFolderPath}\\crosshair.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Hand", $"{cursorsFolderPath}\\hand.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Help", $"{cursorsFolderPath}\\help.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("IBeam", $"{cursorsFolderPath}\\ibeam.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("No", $"{cursorsFolderPath}\\no.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("NWPen", $"{cursorsFolderPath}\\nwpen.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Person", $"{cursorsFolderPath}\\person.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Pin", $"{cursorsFolderPath}\\pin.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Scheme Source", 1, RegistryValueKind.DWord);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeAll", $"{cursorsFolderPath}\\sizeall.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeNESW", $"{cursorsFolderPath}\\sizenesw.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeNS", $"{cursorsFolderPath}\\sizens.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeNWSE", $"{cursorsFolderPath}\\sizenwse.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("SizeWE", $"{cursorsFolderPath}\\sizewe.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("UpArrow", $"{cursorsFolderPath}\\uparrow.cur", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Control Panel\\Cursors", true)?.SetValue("Wait", $"{cursorsFolderPath}\\wait.ani", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenOrCreateSubKey(Path.Combine("Control Panel\\Cursors", "Schemes")).SetValue(schemeName, schemeValue, RegistryValueKind.String);
-
-            File.Delete(jepriCursorsZip);
-        }
     }
 }

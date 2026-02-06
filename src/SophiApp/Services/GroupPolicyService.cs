@@ -13,8 +13,8 @@ namespace SophiApp.Services
     {
         private readonly IProcessService processService;
         private readonly bool gpeditExists = File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "gpedit.msc"));
-        private readonly string lgpoSettingsFile = Environment.ExpandEnvironmentVariables("%TEMP%\\LGPO.txt");
-        private readonly string lgpoExeFile = Path.Combine(AppContext.BaseDirectory, "Binaries", "LGPO.exe");
+        private readonly string lgpoExe = Path.Combine(AppContext.BaseDirectory, "Binaries", "LGPO.exe");
+        private readonly string lgpoSettings = Environment.ExpandEnvironmentVariables("%TEMP%\\LGPO.txt");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupPolicyService"/> class.
@@ -26,14 +26,14 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void ClearRegistryCache(RegistryKey registryKey, string subKey, string value)
+        public void DeleteRegistryValue(RegistryKey registryKey, string subKey, string value)
         {
             registryKey.OpenSubKey(subKey, true)?.DeleteValue(value, false);
             registryKey.Dispose();
         }
 
         /// <inheritdoc/>
-        public void ClearRegistryCache(RegistryKey registryKey, string subKey, params string[] values)
+        public void DeleteRegistryValue(RegistryKey registryKey, string subKey, params string[] values)
         {
             var regKey = registryKey.OpenSubKey(subKey, true);
 
@@ -47,7 +47,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void ClearRegistryCache(string subKey, string value, params RegistryKey[] registryKeys)
+        public void DeleteRegistryValue(string subKey, string value, params RegistryKey[] registryKeys)
         {
             foreach (var key in registryKeys)
             {
@@ -57,7 +57,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void ClearRegistryCache<T>(RegistryKey registryKey, string subKey, string name, T value, RegistryValueKind kind)
+        public void SetRegistryValue<T>(RegistryKey registryKey, string subKey, string name, T value, RegistryValueKind kind)
             where T : struct
         {
             registryKey.OpenSubKey(subKey, true)?.SetValue(name, value, kind);
@@ -65,19 +65,19 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void ClearLocalCache(LGPOScope scope, string path, string name, string type = "", string value = "")
+        public void ClearPolicyCache(LGPOScope scope, string path, string name, string type = "", string value = "")
         {
             if (gpeditExists)
             {
                 var settingValues = string.IsNullOrWhiteSpace(type) && string.IsNullOrWhiteSpace(value)
                     ? [scope.ToString(), path, name, "DELETE", string.Empty]
                     : new string[5] { scope.ToString(), path, name, $"{type}:{value}", string.Empty };
-                File.AppendAllLines(lgpoSettingsFile, settingValues, System.Text.Encoding.UTF8);
+                File.AppendAllLines(lgpoSettings, settingValues, System.Text.Encoding.UTF8);
             }
         }
 
         /// <inheritdoc/>
-        public void ClearLocalCache(string path, string name, params LGPOScope[] scopes)
+        public void ClearPolicyCache(string path, string name, params LGPOScope[] scopes)
         {
             if (gpeditExists)
             {
@@ -88,18 +88,22 @@ namespace SophiApp.Services
                     scopeValues.AddRange([scope.ToString(), path, name, "DELETE", string.Empty]);
                 }
 
-                File.AppendAllLines(lgpoSettingsFile, scopeValues, System.Text.Encoding.UTF8);
+                File.AppendAllLines(lgpoSettings, scopeValues, System.Text.Encoding.UTF8);
             }
         }
 
         /// <inheritdoc/>
-        public void UpdateLocalPolicy()
+        public void UpdatePolicy(bool deleteConfig = true)
         {
-            if (File.Exists(lgpoSettingsFile) && File.Exists(lgpoExeFile))
+            if (File.Exists(lgpoSettings) && File.Exists(lgpoExe))
             {
-                _ = processService.WaitForExit(name: lgpoExeFile, arguments: $"/t {lgpoSettingsFile}");
+                _ = processService.WaitForExit(name: lgpoExe, arguments: $"/t {lgpoSettings}");
                 _ = processService.WaitForExit(name: "gpupdate.exe", arguments: "/force");
-                File.Delete(lgpoSettingsFile);
+
+                if (deleteConfig)
+                {
+                    File.Delete(lgpoSettings);
+                }
             }
         }
     }
