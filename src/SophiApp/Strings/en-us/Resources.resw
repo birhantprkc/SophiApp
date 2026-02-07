@@ -930,13 +930,13 @@
     <value>Terminal application that launches when a command-line application is run without an existing session, like from the Start Menu or Run dialog.</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Title" xml:space="preserve">
-    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x64</value>
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2017–2026 x64</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
     <value>Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
-    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x86</value>
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2017–2026 x86</value>
   </data>
   <data name="UIModel_InstallVisualC_x86_Description" xml:space="preserve">
     <value>Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
