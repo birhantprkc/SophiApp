@@ -212,7 +212,7 @@ namespace SophiApp.Customizations
         {
             if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+                throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
             var startIrisRecommendations = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_IrisRecommendations") as int? ?? -1;
@@ -226,7 +226,7 @@ namespace SophiApp.Customizations
         {
             if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+                throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
             var startAccountNotifications = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("Start_AccountNotifications") as int? ?? -1;
@@ -679,7 +679,7 @@ namespace SophiApp.Customizations
         {
             if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+                throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
             var showRecentList = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start")?.GetValue("ShowRecentList") as int? ?? -1;
@@ -693,7 +693,7 @@ namespace SophiApp.Customizations
         {
             if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+                throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
             var startAppsPath = CommonDataService.IsWindows11 ? "Software\\Microsoft\\Windows\\CurrentVersion\\Start" : "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
@@ -718,7 +718,7 @@ namespace SophiApp.Customizations
         {
             if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+                throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
             // Default — 0
@@ -735,7 +735,7 @@ namespace SophiApp.Customizations
         {
             if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
             {
-                throw new InvalidOperationException("A third-party application is used instead of the Start button");
+                throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
             var startRecommended = new List<int>()
