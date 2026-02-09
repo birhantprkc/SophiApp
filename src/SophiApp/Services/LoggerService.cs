@@ -261,29 +261,29 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogUwpForAllUsersState(bool state)
         {
-            Log.Information("The UWP For All Users checkbox state has been changed to {State}", state);
-            shellViewModel.LoggedActions.Add($"The UWP For All Users checkbox state has been changed to {state}");
+            Log.Information("The UWP For All Users checkbox state has been changed to: {State}", state);
+            shellViewModel.LoggedActions.Add($"The UWP For All Users checkbox state has been changed to: {state}");
         }
 
         /// <inheritdoc/>
         public void LogDescriptionTextSizeChanged(int size)
         {
-            Log.Information("The text size of UI element descriptions set to {Size}", size);
-            shellViewModel.LoggedActions.Add($"The text size of UI element descriptions set to {size}");
+            Log.Information("The text size of UI element descriptions set to: {Size}", size);
+            shellViewModel.LoggedActions.Add($"The text size of UI element descriptions set to: {size}");
         }
 
         /// <inheritdoc/>
         public void LogPageVisibility(bool isVisible)
         {
             Log.Information("The log page visibility set to: {IsVisible}", isVisible);
-            shellViewModel.LoggedActions.Add($"The log page visibility set to {isVisible}");
+            shellViewModel.LoggedActions.Add($"The log page visibility set to: {isVisible}");
         }
 
         /// <inheritdoc/>
         public void LogTitleTextSizeChanged(int size)
         {
-            Log.Information("The text size of UI element headers set to {Size}", size);
-            shellViewModel.LoggedActions.Add($"The text size of UI element headers set to {size}");
+            Log.Information("The text size of UI element headers set to: {Size}", size);
+            shellViewModel.LoggedActions.Add($"The text size of UI element headers set to: {size}");
         }
 
         /// <inheritdoc/>

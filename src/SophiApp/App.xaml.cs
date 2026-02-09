@@ -44,7 +44,6 @@ public partial class App : Application
                 _ = services.AddTransient<IAppxPackagesService, AppxPackagesService>();
                 _ = services.AddTransient<ICursorsService, CursorsService>();
                 _ = services.AddTransient<IDefenderService, DefenderService>();
-                _ = services.AddTransient<IDiskService, DiskService>();
                 _ = services.AddTransient<IDisplayService, DisplayService>();
                 _ = services.AddTransient<IRedistributablePackageService, RedistributablePackageService>();
                 _ = services.AddTransient<IGroupPolicyService, GroupPolicyService>();

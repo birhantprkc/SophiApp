@@ -19,7 +19,6 @@ namespace SophiApp.Services
         private readonly IAppNotificationService notificationService;
         private readonly IAppxPackagesService packagesService;
         private readonly ICommonDataService dataService;
-        private readonly IDiskService diskService;
         private readonly IInstrumentationService instrumentationService;
         private readonly IProcessService processService;
 
@@ -29,21 +28,18 @@ namespace SophiApp.Services
         /// <param name="notificationService">A service for working with toast notifications API.</param>
         /// <param name="packagesService">A service for working with appx packages API.</param>
         /// <param name="dataService">A service for transferring app data between DI layers.</param>
-        /// <param name="diskService">A service for working with disk API.</param>
         /// <param name="instrumentationService">A service for working with WMI API.</param>
         /// <param name="processService">A service for working with Windows process API.</param>
         public RequirementsService(
             IAppNotificationService notificationService,
             IAppxPackagesService packagesService,
             ICommonDataService dataService,
-            IDiskService diskService,
             IInstrumentationService instrumentationService,
             IProcessService processService)
         {
             this.notificationService = notificationService;
             this.packagesService = packagesService;
             this.dataService = dataService;
-            this.diskService = diskService;
             this.instrumentationService = instrumentationService;
             this.processService = processService;
         }
@@ -100,78 +96,48 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result MalwareDetection()
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var programData = Environment.ExpandEnvironmentVariables("%ProgramData%");
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            var programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             var system32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            var systemDrive = Environment.ExpandEnvironmentVariables("%SystemDrive%");
-            var systemRoot = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            var temp = Environment.ExpandEnvironmentVariables("%TEMP%");
             var malwares = new Dictionary<string, Func<bool>>()
             {
-                { "OsRequirements_Malware_Windows10Debloater", () => Directory.Exists($"{systemDrive}\\Temp\\Windows10Debloater") },
-                { "OsRequirements_Malware_Win10BloatRemover", () => Directory.Exists($"{temp}\\.net\\Win10BloatRemover") },
-                {
-                    "OsRequirements_Malware_BloatwareRemoval", () =>
-                    {
-                        try
-                        {
-                            return Directory.GetFileSystemEntries(path: $"{systemDrive}\\BRU", searchPattern: "Bloatware-Removal*.log").Length > 0;
-                        }
-                        catch
-                        {
-                            return false;
-                        }
-                    }
-                },
+                // https://www.youtube.com/GHOSTSPECTRE
                 { "OsRequirements_Malware_GhostToolbox", () => File.Exists($"{system32}\\migwiz\\dlmanifests\\run.ghost.cmd") },
+                // https://win10tweaker.ru
                 { "OsRequirements_Malware_Win10Tweaker", () => Registry.CurrentUser.OpenSubKey("Software\\Win 10 Tweaker") is not null },
+                // https://revi.cc
+                { "OsRequirements_Malware_RevisionTool", () => Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Revision Tool")) },
+                // https://github.com/Atlas-OS/Atlas
+                { "OsRequirements_Malware_AtlasOS", () => Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "AtlasModules")) },
+                // https://boosterx.ru
                 { "OsRequirements_Malware_BoosterX", () => File.Exists($"{programFiles}\\GameModeX\\GameModeX.exe") },
-                { "OsRequirements_Malware_DefenderControl", () => Directory.Exists($"{appData}\\Defender Control") },
-                { "OsRequirements_Malware_DefenderSwitch", () => Directory.Exists($"{programData}\\DSW") },
-                { "OsRequirements_Malware_RevisionTool", () => Directory.Exists($"{programFilesX86}\\Revision Tool") },
-                {
-                    "OsRequirements_Malware_WinterOsTweaker", () =>
-                    {
-                        try
-                        {
-                            return Directory.GetFileSystemEntries(path: $"{systemRoot}", searchPattern: "WinterOS*").Length > 0;
-                        }
-                        catch
-                        {
-                            return false;
-                        }
-                    }
-                },
-                { "OsRequirements_Malware_WinCry", () => File.Exists($"{systemRoot}\\TempCleaner.exe") },
+                // https://www.youtube.com/watch?v=5NBqbUUB1Pk
                 { "OsRequirements_Malware_WinClean", () => Directory.Exists($"{programFiles}\\WinClean Plus Apps") },
-                { "OsRequirements_Malware_AtlasOS", () => Directory.Exists($"{systemRoot}\\AtlasModules") },
-                { "OsRequirements_Malware_KirbyOS", () => Directory.Exists($"{programData}\\KirbyOS") },
+                // https://pc-np.com
+                { "OsRequirements_Malware_PCNP", () => Registry.CurrentUser.OpenSubKey("Software\\PCNP") is not null },
+                // https://www.reddit.com/r/TronScript
+                { "OsRequirements_Malware_Tron", () => Directory.Exists(Path.Combine(Environment.ExpandEnvironmentVariables("%SystemDrive%"), "\\logs\\tron")) },
+                // https://crystalcry.ru
+                { "OsRequirements_Malware_CrystalCry", () => Registry.LocalMachine.OpenSubKey("Software\\CrystalCry") is not null },
+                // https://github.com/es3n1n/defendnot
+                { "OsRequirements_Malware_Defendnot", () => Directory.Exists($"{system32}\\Tasks\\defendnot") },
+                // https://github.com/zoicware/RemoveWindowsAI
+                { "OsRequirements_Malware_RemoveWindowsAI", () => Directory.GetDirectories(path: $"{system32}\\CatRoot", searchPattern: "ZoicwareRemoveWindowsAI*", searchOption: SearchOption.AllDirectories).Length > 0 },
+                // https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
                 {
                     "OsRequirements_Malware_AutoSettingsPS", () =>
                     {
                         var exclusions = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender\\Exclusions\\Paths")?.GetValueNames() ?? [];
-                        return Array.Exists(exclusions!, key => key.Contains("AutoSettingsPS"));
+                        return Array.Exists(exclusions, key => key.Contains("AutoSettingsPS"));
                     }
                 },
+                // https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
                 {
-                    "OsRequirements_Malware_FlibustierWindowsImage", () =>
+                    "OsRequirements_Malware_ModernTweaker", () =>
                     {
-                        var values = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Services\\.NETFramework\\Performance")?.GetValueNames() ?? [];
-                        return Array.Exists(values, key => key.Contains("flibustier"));
+                        var shellCache = Registry.CurrentUser.OpenSubKey("Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache")?.GetValueNames() ?? [];
+                        return Array.Exists(shellCache, key => key.Contains("ModernTweaker"));
                     }
                 },
-                { "OsRequirements_Malware_Winpilot", () => Registry.CurrentUser.OpenSubKey("Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache")?.ValueExist("Winpilot") ?? false },
-                { "OsRequirements_Malware_xd-AntiSpy", () => Registry.CurrentUser.OpenSubKey("Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache")?.ValueExist("xd-AntiSpy") ?? false },
-                { "OsRequirements_Malware_ModernTweaker", () => Registry.ClassesRoot.OpenSubKey("CLSID\\{645FF040-5081-101B-9F08-00AA002F954E}\\shell\\Modern Cleaner") is not null },
-                { "OsRequirements_Malware_Optimizer", () => Registry.CurrentUser.OpenSubKey("Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache")?.ValueExist("optimizer") ?? false },
-                { "OsRequirements_Malware_PCNP", () => Registry.CurrentUser.OpenSubKey("Software\\PCNP") is not null },
-                { "OsRequirements_Malware_Tron", () => Directory.Exists($"{systemDrive}\\logs\\tron") },
-                { "OsRequirements_Malware_ChlorideOS", () => diskService.GetVolumeLabels().Any(label => label.Equals("ChlorideOS")) },
-                { "OsRequirements_Malware_KernelOS", () => instrumentationService.GetPowerPlanNames().Any(name => name.Contains("KernelOS")) },
-                { "OsRequirements_Malware_WinUtil", () => instrumentationService.GetPowerPlanNames().Any(name => name.Contains("ChrisTitus")) },
-                { "OsRequirements_Malware_Defendnot", () => Directory.Exists($"{system32}\\Tasks\\defendnot") },
             };
 
             return malwares.Any(malware =>
@@ -184,14 +150,12 @@ namespace SophiApp.Services
                 }
 
                 return false;
-            }) ? Result.Failure(nameof(RequirementsFailure.MalwareDetected)) : Result.Success();
+            })
+                ? Result.Failure(nameof(RequirementsFailure.MalwareDetected)) : Result.Success();
         }
 
         /// <inheritdoc/>
-        public Result GetFeatureExperiencePackState()
-        {
-            return packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.FeatureExperiencePackRemoved));
-        }
+        public Result GetFeatureExperiencePackState() => packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.FeatureExperiencePackRemoved));
 
         /// <inheritdoc/>
         public Result GetEventLogState()
@@ -208,10 +172,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public Result GetMicrosoftStoreState()
-        {
-            return packagesService.PackageExist("Microsoft.WindowsStore") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsStoreRemoved));
-        }
+        public Result GetMicrosoftStoreState() => packagesService.PackageExist("Microsoft.WindowsStore") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsStoreRemoved));
 
         /// <inheritdoc/>
         public Result GetPendingRebootState()

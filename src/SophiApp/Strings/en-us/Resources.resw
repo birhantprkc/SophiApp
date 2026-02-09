@@ -248,44 +248,17 @@
   <data name="OsRequirementsFailure_MalwareDetected" xml:space="preserve">
     <value>Windows stability may have been compromised by using {0}.</value>
   </data>
-  <data name="OsRequirements_Malware_BloatwareRemoval" xml:space="preserve">
-    <value>Bloatware Removal</value>
-  </data>
   <data name="OsRequirements_Malware_GhostToolbox" xml:space="preserve">
     <value>Ghost Toolbox</value>
-  </data>
-  <data name="OsRequirements_Malware_Optimizer" xml:space="preserve">
-    <value>Optimizer</value>
-  </data>
-  <data name="OsRequirements_Malware_Win10BloatRemover" xml:space="preserve">
-    <value>Win10BloatRemover</value>
   </data>
   <data name="OsRequirements_Malware_Win10Tweaker" xml:space="preserve">
     <value>Win 10 Tweaker backdoor</value>
   </data>
-  <data name="OsRequirements_Malware_Windows10Debloater" xml:space="preserve">
-    <value>Windows10Debloater</value>
-  </data>
   <data name="OsRequirements_Malware_BoosterX" xml:space="preserve">
     <value>BoosterX</value>
   </data>
-  <data name="OsRequirements_Malware_DefenderControl" xml:space="preserve">
-    <value>Defender Control</value>
-  </data>
-  <data name="OsRequirements_Malware_DefenderSwitch" xml:space="preserve">
-    <value>Defender Switch</value>
-  </data>
   <data name="OsRequirements_Malware_RevisionTool" xml:space="preserve">
     <value>Revision Tool</value>
-  </data>
-  <data name="OsRequirements_Malware_WinterOsTweaker" xml:space="preserve">
-    <value>WinterOS Tweaker</value>
-  </data>
-  <data name="OsRequirements_Malware_WinCry" xml:space="preserve">
-    <value>WinCry</value>
-  </data>
-  <data name="OsRequirements_Malware_WinUtil" xml:space="preserve">
-    <value>Winutil</value>
   </data>
   <data name="OsRequirements_Malware_WinClean" xml:space="preserve">
     <value>WinClean</value>
@@ -295,12 +268,6 @@
   </data>
   <data name="OsRequirements_Malware_AutoSettingsPS" xml:space="preserve">
     <value>AutoSettingsPS</value>
-  </data>
-  <data name="OsRequirements_Malware_FlibustierWindowsImage" xml:space="preserve">
-    <value>Flblauncher</value>
-  </data>
-  <data name="OsRequirements_Malware_Winpilot" xml:space="preserve">
-    <value>Winpilot</value>
   </data>
   <data name="OsRequirements_Malware_ModernTweaker" xml:space="preserve">
     <value>Modern Tweaker</value>
@@ -930,13 +897,13 @@
     <value>Terminal application that launches when a command-line application is run without an existing session, like from the Start Menu or Run dialog.</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Title" xml:space="preserve">
-    <value>Install latest Microsoft Visual C++ Redistributable Packages 2017–2026 x64</value>
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x64</value>
   </data>
   <data name="UIModel_InstallVisualC_x64_Description" xml:space="preserve">
     <value>Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallVisualC_x86_Title" xml:space="preserve">
-    <value>Install latest Microsoft Visual C++ Redistributable Packages 2017–2026 x86</value>
+    <value>Install latest Microsoft Visual C++ Redistributable Packages 2015–2026 x86</value>
   </data>
   <data name="UIModel_InstallVisualC_x86_Description" xml:space="preserve">
     <value>Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
@@ -1214,12 +1181,6 @@
   <data name="SettingsPage_DescriptionFontSize.Header" xml:space="preserve">
     <value>UI elements description size</value>
   </data>
-  <data name="OsRequirements_Malware_KirbyOS" xml:space="preserve">
-    <value>KirbyOS</value>
-  </data>
-  <data name="OsRequirements_Malware_xd-AntiSpy" xml:space="preserve">
-    <value>xd-AntiSpy</value>
-  </data>
   <data name="AutoSuggestBox.PlaceholderText" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -1262,17 +1223,11 @@
   <data name="Page_Search.Text" xml:space="preserve">
     <value>Search</value>
   </data>
-  <data name="OsRequirements_Malware_ChlorideOS" xml:space="preserve">
-    <value>ChlorideOS</value>
-  </data>
   <data name="OsRequirements_Malware_PCNP" xml:space="preserve">
     <value>PCNP</value>
   </data>
   <data name="OsRequirements_Malware_Tron" xml:space="preserve">
     <value>Tron</value>
-  </data>
-  <data name="OsRequirements_Malware_KernelOS" xml:space="preserve">
-    <value>KernelOS</value>
   </data>
   <data name="OsRequirementsFailure_ReinstallWindows" xml:space="preserve">
     <value>Reinstall Windows using only a genuine ISO image.</value>
@@ -1342,5 +1297,11 @@
   </data>
   <data name="OsRequirements_ObtainingInternetData" xml:space="preserve">
     <value>Obtaining data from the Internet</value>
+  </data>
+  <data name="OsRequirements_Malware_CrystalCry" xml:space="preserve">
+    <value>CrystalCry</value>
+  </data>
+  <data name="OsRequirements_Malware_RemoveWindowsAI" xml:space="preserve">
+    <value>RemoveWindowsAI</value>
   </data>
 </root>
