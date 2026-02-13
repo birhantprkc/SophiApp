@@ -90,7 +90,6 @@ namespace SophiApp.Customizations
             {
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\MareBackup"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser"),
-                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser Exp"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\StartupAppTask"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\ProgramDataUpdater"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Autochk\\Proxy"),
@@ -99,6 +98,9 @@ namespace SophiApp.Customizations
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Maps\\MapsToastTask"),
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Maps\\MapsUpdateTask"),
+                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Shell\\FamilySafetyMonitor"),
+                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Shell\\FamilySafetyRefreshTask"),
+                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\XblGameSave\\XblGameSaveTask"),
             };
 
             return telemetryTasks.TrueForAll(task => task is null)
@@ -1327,11 +1329,11 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NetworkProtection()
         {
-            var defenderIsEnabled = CommonDataService.DefenderEnabled;
-            var defenderMpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = CommonDataService.DefenderEnabled;
+            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
             {
                 var networkProtection = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender\\Windows Defender Exploit Guard\\Network Protection")?.GetValue("EnableNetworkProtection") as int? ?? -1;
                 return networkProtection.Equals(1);
@@ -1345,11 +1347,11 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool PUAppsDetection()
         {
-            var defenderIsEnabled = CommonDataService.DefenderEnabled;
-            var defenderMpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = CommonDataService.DefenderEnabled;
+            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
             {
                 var puaProtection = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender")?.GetValue("PUAProtection") as int? ?? -1;
                 return puaProtection.Equals(1);
@@ -1363,11 +1365,11 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool DefenderSandbox()
         {
-            var defenderIsEnabled = CommonDataService.DefenderEnabled;
-            var defenderMpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = CommonDataService.DefenderEnabled;
+            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
             {
                 return ProcessService.Exist("MsMpEngCP");
             }
@@ -1426,11 +1428,11 @@ else
         /// </summary>
         public static bool AppsSmartScreen()
         {
-            var defenderIsEnabled = CommonDataService.DefenderEnabled;
-            var defenderMpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = CommonDataService.DefenderEnabled;
+            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderIsEnabled && !defenderMpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
             {
                 var smartScreenIsEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("SmartScreenEnabled") as string ?? string.Empty;
                 return !smartScreenIsEnabled.Equals("Off");

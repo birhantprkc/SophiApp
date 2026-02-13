@@ -70,7 +70,7 @@ namespace SophiApp.Services
             if (gpeditExists)
             {
                 var settingValues = string.IsNullOrWhiteSpace(type) && string.IsNullOrWhiteSpace(value)
-                    ? [scope.ToString(), path, name, "CLEAR", string.Empty]
+                    ? [scope.ToString(), path, name, "DELETE", string.Empty]
                     : new string[5] { scope.ToString(), path, name, $"{type}:{value}", string.Empty };
                 File.AppendAllLines(lgpoSettings, settingValues, System.Text.Encoding.UTF8);
             }
@@ -85,7 +85,7 @@ namespace SophiApp.Services
 
                 foreach (var scope in scopes)
                 {
-                    scopeValues.AddRange([scope.ToString(), path, name, "CLEAR", string.Empty]);
+                    scopeValues.AddRange([scope.ToString(), path, name, "DELETE", string.Empty]);
                 }
 
                 File.AppendAllLines(lgpoSettings, scopeValues, System.Text.Encoding.UTF8);

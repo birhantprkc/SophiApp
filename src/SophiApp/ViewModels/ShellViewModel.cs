@@ -477,7 +477,6 @@ public partial class ShellViewModel : ObservableRecipient
         processService.KillProcessByName("StartMenuExperienceHost");
         processService.KillProcessByName("explorer");
         notificationService.EnableToastNotification();
-        defenderService.EnableControlledFolder();
         SetUpCustomizationsPanelIsVisible = false;
         NavigationViewHitTestVisible = true;
     }

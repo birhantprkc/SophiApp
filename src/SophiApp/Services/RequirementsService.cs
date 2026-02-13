@@ -126,7 +126,7 @@ namespace SophiApp.Services
                 {
                     "OsRequirements_Malware_AutoSettingsPS", () =>
                     {
-                        var exclusions = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender\\Exclusions\\Paths")?.GetValueNames() ?? [];
+                        var exclusions = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Microsoft Defender\\Exclusions\\Paths")?.GetValueNames() ?? [];
                         return Array.Exists(exclusions, key => key.Contains("AutoSettingsPS"));
                     }
                 },

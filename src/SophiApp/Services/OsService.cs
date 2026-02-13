@@ -28,6 +28,13 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public ServiceControllerStatus GetStatus(string name)
+        {
+            using var service = new ServiceController(name);
+            return service.Status;
+        }
+
+        /// <inheritdoc/>
         public void SetServiceStartMode(ServiceController service, ServiceStartMode mode)
         {
             var scManagerHandle = OpenSCManager(null, null, 0x000F003F);

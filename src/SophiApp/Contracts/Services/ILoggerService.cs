@@ -9,7 +9,6 @@ namespace SophiApp.Contracts.Services
     using SophiApp.ViewModels;
     using System;
     using System.Diagnostics;
-    using System.Security.Policy;
     using System.ServiceProcess;
 
     /// <summary>
@@ -175,16 +174,6 @@ namespace SophiApp.Contracts.Services
             where T : struct;
 
         /// <summary>
-        /// Write information about changes model parameters from the applied collection in the log.
-        /// </summary>
-        /// <typeparam name="T">A parameters type.</typeparam>
-        /// <param name="name">Changed model name.</param>
-        /// <param name="previous">Previous parameter value.</param>
-        /// <param name="current">Current parameter value.</param>
-        void LogApplicableModelChanged<T>(string name, T previous, T current)
-            where T : struct;
-
-        /// <summary>
         /// Write information about adding a model to the applied collection in the log.
         /// </summary>
         /// <param name="name">Added model name.</param>
@@ -200,11 +189,11 @@ namespace SophiApp.Contracts.Services
             where T : struct;
 
         /// <summary>
-        /// Write Microsoft Defender services status.
+        /// Write Microsoft Defender services state.
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
         /// <param name="exists">Service exists.</param>
-        void LogDefenderServiceStatus(string service, bool exists);
+        void LogDefenderServiceState(string service, bool exists);
 
         /// <summary>
         /// Write information about state a "For all users" checkbox in the UWP page.
@@ -331,16 +320,51 @@ namespace SophiApp.Contracts.Services
         void LogDefenderMpPreferenceIsNull();
 
         /// <summary>
-        /// Handles an exception when accessing to WMI MSFT_MpComputerStatus class in the <see cref="IInstrumentationService"/>.
+        /// Handles occur when AntiVirusProduct class return null.
         /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogDefenderAntiSpywareEnabledException(Exception exception);
+        void LogDefenderAntivirusProductsIsNull();
 
         /// <summary>
         /// Handles occur during the Microsoft Defender services not found.
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
         void LogDefenderServiceBroken(string service);
+
+        /// <summary>
+        /// Write Microsoft Defender control folder state in the log.
+        /// </summary>
+        /// <param name="state">Microsoft Defender control folder state.</param>
+        void LogDefenderControlledFolderState(bool state);
+
+        /// <summary>
+        /// Write Microsoft Defender is default AV in the log.
+        /// </summary>
+        /// <param name="isDefault">Microsoft Defender is default AV.</param>
+        void LogDefenderIsDefault(bool isDefault);
+
+        /// <summary>
+        /// Write SecurityHealthService status in the log.
+        /// </summary>
+        /// <param name="status">SecurityHealthService status.</param>
+        void LogDefenderSecurityHealthStatus(ServiceControllerStatus status);
+
+        /// <summary>
+        /// Handles an exception when accessing to Security Health service status in the <see cref="IDefenderService"/>.
+        /// </summary>
+        /// <param name="exception">Represents errors that occur during app executing.</param>
+        void LogDefenderSecurityHealthException(Exception exception);
+
+        /// <summary>
+        /// Handles an exception when accessing to WMI MSFT_MpComputerStatus class in the <see cref="IInstrumentationService"/>.
+        /// </summary>
+        /// <param name="exception">Represents errors that occur during app executing.</param>
+        void LogDefenderAntiSpywareEnabledException(Exception exception);
+
+        /// <summary>
+        /// Handles occur exception of the Get-MpPreference cmdlet execution.
+        /// </summary>
+        /// <param name="exception">Represents errors that occur during app executing.</param>
+        void LogDefenderControlledFolderException(Exception exception);
 
         /// <summary>
         /// Handles an exception when accessing to get UI model state.

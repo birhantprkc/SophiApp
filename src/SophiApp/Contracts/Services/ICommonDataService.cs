@@ -28,11 +28,6 @@ namespace SophiApp.Contracts.Services
         string DetectedMalware { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Microsoft Defender controlled folder access state.
-        /// </summary>
-        bool DefenderControlledFolderAccess { get; set; }
-
-        /// <summary>
         /// Gets or sets Microsoft Defender missing files name.
         /// </summary>
         string DefenderFileMissing { get; set; }

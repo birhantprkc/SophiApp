@@ -15,10 +15,5 @@ namespace SophiApp.Contracts.Services
         /// Get a Microsoft Defender state.
         /// </summary>
         public Result GetState();
-
-        /// <summary>
-        /// Turn on Microsoft Defender controlled folder.
-        /// </summary>
-        public void EnableControlledFolder();
     }
 }

@@ -9,9 +9,11 @@ namespace SophiApp.Helpers
     /// </summary>
     public enum RequirementsFailure
     {
+        DefenderControlledFolderEnable,
         DefenderFileMissing,
         DefenderIsBroken,
-        DefenderServiceBroken,
+        DefenderSecurityHealthFailure,
+        DefenderServiceFailure,
         DefenderSettingsPageHidden,
         EventLogBroken,
         FeatureExperiencePackRemoved,

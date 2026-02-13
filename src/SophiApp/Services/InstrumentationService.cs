@@ -37,8 +37,7 @@ namespace SophiApp.Services
         {
             try
             {
-                return new ManagementObjectSearcher(scope: "root\\CIMV2\\mdm\\dmmap", queryString: "SELECT * FROM MDM_EnterpriseModernAppManagement_AppManagement01")
-                    .Get().Cast<ManagementObject>().First();
+                return new ManagementObjectSearcher(scope: "root\\CIMV2\\mdm\\dmmap", queryString: "SELECT * FROM MDM_EnterpriseModernAppManagement_AppManagement01").Get().Cast<ManagementObject>().First();
             }
             catch (Exception ex)
             {
@@ -53,13 +52,6 @@ namespace SophiApp.Services
             return [.. new ManagementObjectSearcher(scope: "root/CIMV2/power", queryString: "SELECT * FROM Win32_PowerPlan")
                 .Get()
                 .Cast<ManagementObject>()];
-        }
-
-        /// <inheritdoc/>
-        public List<string> GetPowerPlanNames()
-        {
-            return [.. GetPowerPlans()
-                .Select(plan => plan.GetPropertyValue("ElementName") as string ?? string.Empty)];
         }
 
         /// <inheritdoc/>
@@ -92,10 +84,9 @@ namespace SophiApp.Services
         {
             try
             {
-                return new ManagementObjectSearcher(scope: "root\\SecurityCenter2", queryString: "SELECT * FROM AntiVirusProduct")
+                return [.. new ManagementObjectSearcher(scope: "root\\SecurityCenter2", queryString: "SELECT * FROM AntiVirusProduct")
                     .Get()
-                    .Cast<ManagementObject>()
-                    .ToList();
+                    .Cast<ManagementObject>()];
             }
             catch (Exception ex)
             {
@@ -118,7 +109,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public bool GetAntiSpywareEnabled()
         {
-            using var managementObject = new ManagementObjectSearcher(scope: "root/microsoft/windows/defender", queryString: $"Select * from MSFT_MpComputerStatus")
+            using var managementObject = new ManagementObjectSearcher(scope: "root/Microsoft/Windows/Defender", queryString: $"Select * from MSFT_MpComputerStatus")
                 .Get()
                 .Cast<ManagementObject>()
                 .FirstOrDefault();

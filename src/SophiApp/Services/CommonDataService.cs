@@ -63,9 +63,6 @@ namespace SophiApp.Services
         public string DetectedMalware { get; set; } = string.Empty;
 
         /// <inheritdoc/>
-        public bool DefenderControlledFolderAccess { get; set; } = false;
-
-        /// <inheritdoc/>
         public string DefenderFileMissing { get; set; } = string.Empty;
 
         /// <inheritdoc/>

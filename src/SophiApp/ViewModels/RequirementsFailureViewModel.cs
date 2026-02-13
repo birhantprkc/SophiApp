@@ -15,7 +15,7 @@ namespace SophiApp.ViewModels
     public partial class RequirementsFailureViewModel : ObservableRecipient
     {
         private readonly IUpdateService updateService;
-        private readonly ICommonDataService commonDataService;
+        private readonly ICommonDataService dataService;
 
         [ObservableProperty]
         private string titleText = string.Empty;
@@ -27,11 +27,11 @@ namespace SophiApp.ViewModels
         /// Initializes a new instance of the <see cref="RequirementsFailureViewModel"/> class.
         /// </summary>
         /// <param name="updateService">A service for dealing with OS updates.</param>
-        /// <param name="commonDataService">A service for transferring app data between layers of DI.</param>
-        public RequirementsFailureViewModel(IUpdateService updateService, ICommonDataService commonDataService)
+        /// <param name="dataService">A service for transferring app data between layers of DI.</param>
+        public RequirementsFailureViewModel(IUpdateService updateService, ICommonDataService dataService)
         {
             this.updateService = updateService;
-            this.commonDataService = commonDataService;
+            this.dataService = dataService;
         }
 
         /// <summary>
@@ -67,23 +67,25 @@ namespace SophiApp.ViewModels
         {
             return reason switch
             {
-                RequirementsFailure.Is32BitOs => "OsRequirementsFailure_Is32BitOs".GetLocalized(),
-                RequirementsFailure.WMIBroken => "OsRequirementsFailure_WmiBroken".GetLocalized(),
-                RequirementsFailure.Win11BuildLess22631 => string.Format("OsRequirementsFailure_Win11UnsupportedBuild".GetLocalized(), commonDataService.OsProperties.BuildNumber, commonDataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.Win11UbrLess2283 => string.Format("OsRequirementsFailure_Win11UnsupportedBuild".GetLocalized(), commonDataService.OsProperties.BuildNumber, commonDataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.Win10EnterpriseSVersion => "OsRequirementsFailure_Win10EnterpriseSVersion".GetLocalized(),
-                RequirementsFailure.Win10UnsupportedBuild => string.Format("OsRequirementsFailure_Win10UnsupportedBuild".GetLocalized(), commonDataService.OsProperties.BuildNumber, commonDataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.Win10UpdateBuildRevisionLess3448 => string.Format("OsRequirementsFailure_Win10UnsupportedBuild".GetLocalized(), commonDataService.OsProperties.BuildNumber, commonDataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.RunByNotLoggedUser => "OsRequirementsFailure_RunByNotLoggedUser".GetLocalized(),
-                RequirementsFailure.MalwareDetected => string.Format("OsRequirementsFailure_MalwareDetected".GetLocalized(), commonDataService.DetectedMalware),
-                RequirementsFailure.FeatureExperiencePackRemoved => "OsRequirementsFailure_FeatureExperiencePackRemoved".GetLocalized(),
+                RequirementsFailure.DefenderControlledFolderEnable => "OsRequirementsFailure_DefenderControlledFolderEnable".GetLocalized(),
+                RequirementsFailure.DefenderFileMissing => string.Format("OsRequirementsFailure_DefenderFilesMissing".GetLocalized(), dataService.DefenderFileMissing),
+                RequirementsFailure.DefenderIsBroken => "OsRequirementsFailure_DefenderIsBroken".GetLocalized(),
+                RequirementsFailure.DefenderSecurityHealthFailure => "OsRequirementsFailure_DefenderSecurityHealthFailure".GetLocalized(),
+                RequirementsFailure.DefenderServiceFailure => string.Format("OsRequirementsFailure_DefenderServiceBroken".GetLocalized(), dataService.DefenderServiceBroken),
+                RequirementsFailure.DefenderSettingsPageHidden => "OsRequirementsFailure_DefenderSettingsPageHidden".GetLocalized(),
                 RequirementsFailure.EventLogBroken => "OsRequirementsFailure_EventLogStopped".GetLocalized(),
+                RequirementsFailure.FeatureExperiencePackRemoved => "OsRequirementsFailure_FeatureExperiencePackRemoved".GetLocalized(),
+                RequirementsFailure.Is32BitOs => "OsRequirementsFailure_Is32BitOs".GetLocalized(),
+                RequirementsFailure.MalwareDetected => string.Format("OsRequirementsFailure_MalwareDetected".GetLocalized(), dataService.DetectedMalware),
                 RequirementsFailure.MsStoreRemoved => "OsRequirementsFailure_MsStoreRemoved".GetLocalized(),
                 RequirementsFailure.RebootRequired => "OsRequirementsFailure_RebootRequired".GetLocalized(),
-                RequirementsFailure.DefenderFileMissing => string.Format("OsRequirementsFailure_DefenderFilesMissing".GetLocalized(), commonDataService.DefenderFileMissing),
-                RequirementsFailure.DefenderSettingsPageHidden => "OsRequirementsFailure_DefenderSettingsPageHidden".GetLocalized(),
-                RequirementsFailure.DefenderServiceBroken => string.Format("OsRequirementsFailure_DefenderServiceBroken".GetLocalized(), commonDataService.DefenderServiceBroken),
-                RequirementsFailure.DefenderIsBroken => "OsRequirementsFailure_DefenderIsBroken".GetLocalized(),
+                RequirementsFailure.RunByNotLoggedUser => "OsRequirementsFailure_RunByNotLoggedUser".GetLocalized(),
+                RequirementsFailure.Win10EnterpriseSVersion => "OsRequirementsFailure_Win10EnterpriseSVersion".GetLocalized(),
+                RequirementsFailure.Win10UnsupportedBuild => string.Format("OsRequirementsFailure_Win10UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
+                RequirementsFailure.Win10UpdateBuildRevisionLess3448 => string.Format("OsRequirementsFailure_Win10UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
+                RequirementsFailure.Win11BuildLess22631 => string.Format("OsRequirementsFailure_Win11UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
+                RequirementsFailure.Win11UbrLess2283 => string.Format("OsRequirementsFailure_Win11UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
+                RequirementsFailure.WMIBroken => "OsRequirementsFailure_WmiBroken".GetLocalized(),
                 _ => throw new ArgumentOutOfRangeException(paramName: nameof(reason), message: $"Value: {reason} is not found in {typeof(RequirementsFailure).FullName} enumeration.")
             };
         }

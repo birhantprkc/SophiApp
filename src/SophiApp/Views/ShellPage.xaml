@@ -215,7 +215,7 @@
                                  Maximum="100"
                                  Height="3"
                                  VerticalAlignment="Center"
-                                 Margin="20, 0, 20, 0"
+                                 Margin="20, 3, 20, 0"
                                  Foreground="{ThemeResource WindowAccent}"
                                  Background="{ThemeResource ProgressBarBackground}"/>
                     <i:Interaction.Behaviors>

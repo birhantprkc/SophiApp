@@ -13,7 +13,6 @@ namespace SophiApp.Services
     using System.Diagnostics;
     using System.Globalization;
     using System.ServiceProcess;
-    using System.Xml.Linq;
 
     /// <inheritdoc/>
     public class LoggerService : ILoggerService
@@ -222,14 +221,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogApplicableModelChanged<T>(string name, T previous, T current)
-            where T : struct
-        {
-            Log.Information("The value of the customization {Name:l} parameter has been changed from {Previous} to {Current} in applicable collection", name, previous, current);
-            shellViewModel.LoggedActions.Add($"The value of the customization {name} parameter has been changed from {previous} to {current} in applicable collection");
-        }
-
-        /// <inheritdoc/>
         public void LogApplicableModelRemoved(string name)
         {
             Log.Information("{Name:l} has been removed from applicable collection", name);
@@ -252,7 +243,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderServiceStatus(string service, bool exists)
+        public void LogDefenderServiceState(string service, bool exists)
         {
             Log.Information("Service {Service:l} exists: {Exists:l}", service, exists);
             shellViewModel.LoggedActions.Add($"Service {service} exists: {exists}");
@@ -398,15 +389,15 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogDefenderMpPreferenceIsNull()
         {
-            Log.Error("[WRN] Executing cmdlet “(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess” return null");
-            shellViewModel.LoggedActions.Add($"[WRN] Executing cmdlet “(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess” return null");
+            Log.Error("[WRN] Executing cmdlet (Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess return null");
+            shellViewModel.LoggedActions.Add($"[WRN] Executing cmdlet (Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess return null");
         }
 
         /// <inheritdoc/>
-        public void LogDefenderAntiSpywareEnabledException(Exception exception)
+        public void LogDefenderAntivirusProductsIsNull()
         {
-            Log.Error("[WRN] Failed to obtain AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain AntiSpywareEnabled value in the {nameof(IDefenderService)}: {exception.Message}");
+            Log.Error("[WRN] Class AntiVirusProduct from root/SecurityCenter2 namespace return null");
+            shellViewModel.LoggedActions.Add($"[WRN] Class AntiVirusProduct from root/SecurityCenter2 namespace return null");
         }
 
         /// <inheritdoc/>
@@ -414,6 +405,48 @@ namespace SophiApp.Services
         {
             Log.Error("[WRN] Microsoft Defender service broken: {Service:l}", service);
             shellViewModel.LoggedActions.Add($"[WRN] Microsoft Defender service broken: {service}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderControlledFolderState(bool state)
+        {
+            Log.Information("Microsoft Defender controlled folder access is enable: {State}", state);
+            shellViewModel.LoggedActions.Add($"Microsoft Defender controlled folder access is enable: {state}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderIsDefault(bool isDefault)
+        {
+            Log.Information("Microsoft Defender is default AV: {IsDefault}", isDefault);
+            shellViewModel.LoggedActions.Add($"Microsoft Defender is default AV: {isDefault}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderSecurityHealthStatus(ServiceControllerStatus status)
+        {
+            Log.Information("Microsoft Defender Security Health service status: {Status}", status);
+            shellViewModel.LoggedActions.Add($"Microsoft Defender Security Health service status: {status}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderSecurityHealthException(Exception exception)
+        {
+            Log.Error("[WRN] Failed to obtain Microsoft Defender Security Health service status in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender Security Health service status in the {nameof(IDefenderService)}: {exception.Message}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderAntiSpywareEnabledException(Exception exception)
+        {
+            Log.Error("[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {nameof(IDefenderService)}: {exception.Message}");
+        }
+
+        /// <inheritdoc/>
+        public void LogDefenderControlledFolderException(Exception exception)
+        {
+            Log.Error("[WRN] Failed to obtain Microsoft Defender EnableControlledFolderAccess value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender EnableControlledFolderAccess value in the {nameof(IDefenderService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>
