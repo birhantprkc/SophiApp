@@ -906,16 +906,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Get installed .NET state.
-        /// </summary>
-        public static bool LatestInstalledNET()
-        {
-            var latesClr = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\.NETFramework")?.GetValue("OnlyUseLatestCLR") as int? ?? -1;
-            var latesWowClr = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\.NETFramework")?.GetValue("OnlyUseLatestCLR") as int? ?? -1;
-            return latesClr.Equals(1) && latesWowClr.Equals(1);
-        }
-
-        /// <summary>
         /// Get Print Screen folder state.
         /// </summary>
         public static int WinPrtScrFolder()

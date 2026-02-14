@@ -1322,24 +1322,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Set installed .NET state.
-        /// </summary>
-        /// <param name="enable">Installed .NET state.</param>
-        public static void LatestInstalledNET(bool enable)
-        {
-            if (enable)
-            {
-                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\.NETFramework", true)?.SetValue("OnlyUseLatestCLR", 1, RegistryValueKind.DWord);
-                Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\.NETFramework", true)?.SetValue("OnlyUseLatestCLR", 1, RegistryValueKind.DWord);
-
-                return;
-            }
-
-            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\.NETFramework", true)?.DeleteValue("OnlyUseLatestCLR", false);
-            Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\.NETFramework", true)?.DeleteValue("OnlyUseLatestCLR", false);
-        }
-
-        /// <summary>
         /// Set Print Screen folder state.
         /// </summary>
         /// <param name="state">Print Screen folder state.</param>

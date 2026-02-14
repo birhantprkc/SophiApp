@@ -797,12 +797,6 @@
   <data name="UIModel_InputMethod_Description" xml:space="preserve">
     <value>Your default keyboard layout is the one that’s automatically used at sign in screen.</value>
   </data>
-  <data name="UIModel_LatestInstalledNET_Title" xml:space="preserve">
-    <value>Forcibly use .NET Framework 4.8.1 for old apps</value>
-  </data>
-  <data name="UIModel_LatestInstalledNET_Description" xml:space="preserve">
-    <value>This function will force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1. If you do not use old applications, there's no need to enable this function.</value>
-  </data>
   <data name="UIModel_WinPrtScrFolder_Title" xml:space="preserve">
     <value>Choose default screenshot folder when I press Win+PrtScn or Windows+Shift+S</value>
   </data>

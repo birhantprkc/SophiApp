@@ -640,14 +640,6 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "LatestInstalledNET",
-        "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 316,
-        "Windows10Support": "True",
-        "Windows11Support": "True"
-    },
-    {
         "Name": "WinPrtScrFolder",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
