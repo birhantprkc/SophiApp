@@ -162,10 +162,12 @@ namespace SophiApp.Customizations
         {
             new List<Task?>()
              {
-                // Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
+                // Gathers Win32 application data for App Backup scenario
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\MareBackup"),
                 // Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser"),
+                // Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
+                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser Exp"),
                 // Updates compatibility database
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\StartupAppTask"),
                 // This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
@@ -174,7 +176,9 @@ namespace SophiApp.Customizations
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Autochk\\Proxy"),
                 // The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator"),
-                // The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
+                // The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft
+                // The information received is used to help improve the reliability, stability, and overall functionality of USB in Windows
+                // If the user has not consented to participate in Windows CEIP, this task does not do anything
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip"),
                 // The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector"),
@@ -182,12 +186,6 @@ namespace SophiApp.Customizations
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Maps\\MapsToastTask"),
                 // This task checks for updates to maps which you have downloaded for offline use
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Maps\\MapsUpdateTask"),
-                // Initializes Family Safety monitoring and enforcement
-                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Shell\\FamilySafetyMonitor"),
-                // Synchronizes the latest settings with the Microsoft family features service
-                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Shell\\FamilySafetyRefreshTask"),
-                // XblGameSave Standby Task
-                ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\XblGameSave\\XblGameSaveTask"),
              }
             .ForEach(task => ScheduledTaskService.SetState(task, enable));
         }
