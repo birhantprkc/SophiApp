@@ -86,6 +86,17 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public async Task<string?> GetUrlAsStringOrDefaultAsync(string url, double timeout)
+        {
+            using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(timeout);
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            using var response = await client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            return response.IsSuccessStatusCode ? content : null;
+        }
+
+        /// <inheritdoc/>
         public async Task OpenUrlAsync(string? url)
         {
             await Task.Run(() =>

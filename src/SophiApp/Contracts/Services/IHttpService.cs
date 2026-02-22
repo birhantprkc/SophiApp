@@ -38,6 +38,13 @@ namespace SophiApp.Contracts.Services
             where T : class;
 
         /// <summary>
+        /// Sends a GET request to the specified url and returns string value.
+        /// </summary>
+        /// <param name="url">A string that represents the request url.</param>
+        /// <param name="timeout"><see cref="HttpClient"/> timeout in seconds.</param>
+        Task<string?> GetUrlAsStringOrDefaultAsync(string url, double timeout);
+
+        /// <summary>
         /// Opens a resource using an url.
         /// </summary>
         /// <param name="url">Discoverable url.</param>

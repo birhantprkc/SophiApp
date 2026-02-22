@@ -11,6 +11,7 @@ namespace SophiApp.Services
     using System;
     using System.Reflection;
     using System.Threading.Tasks;
+    using Windows.ApplicationModel;
 
     /// <inheritdoc/>
     public class CommonDataService : ICommonDataService
@@ -81,6 +82,9 @@ namespace SophiApp.Services
         public AppVersion? LatestAppRelease { get; private set; }
 
         /// <inheritdoc/>
+        public PackageVersion? LatestHEVCRelease { get; private set; }
+
+        /// <inheritdoc/>
         public NetRelease? LatestReleaseNET8 { get; private set; }
 
         /// <inheritdoc/>
@@ -102,8 +106,15 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public async Task<Result> GetExternalServicesDataAsync()
         {
-            await Task.WhenAll(SetLatestAppReleaseAsync(), SetNet8ReleaseAsync(), SetNet9ReleaseAsync(), SetVCReleaseAsync());
-            return Result.Success();
+            try
+            {
+                await Task.WhenAll(SetLatestAppReleaseAsync(), SetNet8ReleaseAsync(), SetNet9ReleaseAsync(), SetVCReleaseAsync(), SetLatestHEVCReleaseAsync());
+                return Result.Success();
+            }
+            catch
+            {
+                return Result.Success();
+            }
         }
 
         /// <inheritdoc/>
@@ -133,7 +144,7 @@ namespace SophiApp.Services
             {
                 LatestReleaseNET8 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json", 5);
             }
-            catch (Exception)
+            catch
             {
                 await Task.CompletedTask;
             }
@@ -145,7 +156,7 @@ namespace SophiApp.Services
             {
                 LatestReleaseNET9 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json", 5);
             }
-            catch (Exception)
+            catch
             {
                 await Task.CompletedTask;
             }
@@ -157,10 +168,23 @@ namespace SophiApp.Services
             {
                 LatestReleaseVC = await httpService.GetFromJsonAsync<VCRelease>("https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json", 5);
             }
-            catch (Exception)
+            catch
             {
                 await Task.CompletedTask;
             }
+        }
+
+        private async Task SetLatestHEVCReleaseAsync()
+        {
+            var release = await httpService.GetUrlAsStringOrDefaultAsync("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/HEVC/HEVC_version.txt", 5);
+
+            if (release is null)
+            {
+                return;
+            }
+
+            var version = release.Replace("\n", null).Split('.');
+            LatestHEVCRelease = new PackageVersion(Convert.ToUInt16(version[0]), Convert.ToUInt16(version[1]), Convert.ToUInt16(version[2]), Convert.ToUInt16(version[3]));
         }
     }
 }

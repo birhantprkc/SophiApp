@@ -22,7 +22,7 @@ namespace SophiApp.Customizations
     public static class Accessors
     {
         private static readonly IAppxPackagesService AppxPackagesService = App.GetService<IAppxPackagesService>();
-        private static readonly ICommonDataService CommonDataService = App.GetService<ICommonDataService>();
+        private static readonly ICommonDataService DataService = App.GetService<ICommonDataService>();
         private static readonly IRedistributablePackageService RedistributablePackageService = App.GetService<IRedistributablePackageService>();
         private static readonly IFirewallService FirewallService = App.GetService<IFirewallService>();
         private static readonly IHttpService HttpService = App.GetService<IHttpService>();
@@ -694,10 +694,10 @@ namespace SophiApp.Customizations
                 throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
-            var startAppsPath = CommonDataService.IsWindows11 ? "Software\\Microsoft\\Windows\\CurrentVersion\\Start" : "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
-            var startAppList = CommonDataService.IsWindows11 ? "ShowFrequentList" : "NoStartMenuMFUprogramsList";
+            var startAppsPath = DataService.IsWindows11 ? "Software\\Microsoft\\Windows\\CurrentVersion\\Start" : "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
+            var startAppList = DataService.IsWindows11 ? "ShowFrequentList" : "NoStartMenuMFUprogramsList";
             var usedStartApps = Registry.CurrentUser.OpenSubKey(startAppsPath)?.GetValue(startAppList) as int? ?? -1;
-            return !usedStartApps.Equals(CommonDataService.IsWindows11 ? 0 : 1);
+            return !usedStartApps.Equals(DataService.IsWindows11 ? 0 : 1);
         }
 
         /// <summary>
@@ -1133,7 +1133,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_8()
         {
-            var latestVersion = CommonDataService.LatestReleaseNET8?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json is not available");
+            var latestVersion = DataService.LatestReleaseNET8?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
         }
@@ -1143,7 +1143,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallDotNetRuntime_9()
         {
-            var latestVersion = CommonDataService.LatestReleaseNET9?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json is not available");
+            var latestVersion = DataService.LatestReleaseNET9?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
         }
@@ -1153,7 +1153,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x86()
         {
-            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json is not available");
+            var latestVersion = DataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x86.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest Visual C++ x86 version is installed");
         }
@@ -1163,9 +1163,23 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool InstallVisualC_x64()
         {
-            var latestVersion = CommonDataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json is not available");
+            var latestVersion = DataService.LatestReleaseVC?.Version ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json is not available");
             var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault("VC_redist.x64.exe");
             return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest Visual C++ x64 version is installed");
+        }
+
+        /// <summary>
+        /// Get Windows AI state.
+        /// </summary>
+        public static bool RemoveWindowsAI()
+        {
+            if (InstrumentationService.WindowsAIPresent())
+            {
+                var recall = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\Notifications\\OptionalFeatures\\Recall")?.GetValue("Selection") as int? ?? -1;
+                return recall.Equals(0) && !AppxPackagesService.PackageExist("Microsoft.Copilot");
+            }
+
+            throw new InvalidOperationException("You CPU has no a built-in NPU, so it doesn't support any Windows AI functions. No need to disable anything using GPO policies. Recall function and Copilot application were removed.");
         }
 
         /// <summary>
@@ -1173,15 +1187,10 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool HEVC()
         {
-            var appxVideoExists = AppxPackagesService.PackageExist("Microsoft.HEVCVideoExtension");
-            var appxPhotosExists = AppxPackagesService.PackageExist("Microsoft.Windows.Photos");
-
-            if (!appxPhotosExists)
-            {
-                throw new InvalidOperationException("AppX package Microsoft.Windows.Photos is not installed");
-            }
-
-            return appxVideoExists && appxPhotosExists;
+            var appxVideoVersion = DataService.LatestHEVCRelease ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/HEVC/HEVC_version.txt is not available");
+            var appxVideo = AppxPackagesService.GetPackageOrDefault("Microsoft.HEVCVideoExtension") ?? throw new InvalidOperationException("AppX package Microsoft.HEVCVideoExtension is not installed");
+            _ = AppxPackagesService.GetPackageOrDefault("Microsoft.Windows.Photos") ?? throw new InvalidOperationException("AppX package Microsoft.Windows.Photos is not installed");
+            return appxVideo.Id.Version.Major >= appxVideoVersion.Major && appxVideo.Id.Version.Minor >= appxVideoVersion.Minor && appxVideo.Id.Version.Build >= appxVideoVersion.Build;
         }
 
         /// <summary>
@@ -1257,7 +1266,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool CleanupTask()
         {
-            if (CommonDataService.IsWindows11 && !OsService.VBSIsInstalled())
+            if (DataService.IsWindows11 && !OsService.VBSIsInstalled())
             {
                 throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
@@ -1277,7 +1286,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SoftwareDistributionTask()
         {
-            if (CommonDataService.IsWindows11 && !OsService.VBSIsInstalled())
+            if (DataService.IsWindows11 && !OsService.VBSIsInstalled())
             {
                 throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
@@ -1297,7 +1306,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool TempTask()
         {
-            if (CommonDataService.IsWindows11 && !OsService.VBSIsInstalled())
+            if (DataService.IsWindows11 && !OsService.VBSIsInstalled())
             {
                 throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
@@ -1317,8 +1326,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool NetworkProtection()
         {
-            var defenderEnabled = CommonDataService.DefenderEnabled;
-            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = DataService.DefenderEnabled;
+            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
             if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
@@ -1335,8 +1344,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool PUAppsDetection()
         {
-            var defenderEnabled = CommonDataService.DefenderEnabled;
-            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = DataService.DefenderEnabled;
+            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
             if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
@@ -1353,8 +1362,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool DefenderSandbox()
         {
-            var defenderEnabled = CommonDataService.DefenderEnabled;
-            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = DataService.DefenderEnabled;
+            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
             if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
@@ -1416,8 +1425,8 @@ else
         /// </summary>
         public static bool AppsSmartScreen()
         {
-            var defenderEnabled = CommonDataService.DefenderEnabled;
-            var mpPreferenceBroken = CommonDataService.DefenderMpPreferenceBroken;
+            var defenderEnabled = DataService.DefenderEnabled;
+            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
             if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
@@ -1451,11 +1460,11 @@ else
                 return !sandboxState?.Properties["State"]?.Value.Equals("Disabled") ?? throw new InvalidOperationException("Windows Sandbox state undefined");
             }
 
-            if (CommonDataService.OsProperties.Edition.Equals("Professional") || CommonDataService.OsProperties.Edition.Equals("Enterprise"))
+            if (DataService.OsProperties.Edition.Equals("Professional") || DataService.OsProperties.Edition.Equals("Enterprise"))
             {
                 // Determining whether Hyper-V is enabled
                 var virtualizationIsEnabled = InstrumentationService.CpuVirtualizationFirmwareIsEnabled() ?? throw new InvalidOperationException("This CPU does not support virtualization");
-                var hypervisorPresent = InstrumentationService.HypervisorIsPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
+                var hypervisorPresent = InstrumentationService.HypervisorPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
 
                 if (virtualizationIsEnabled)
                 {
@@ -1478,7 +1487,7 @@ else
         public static bool LocalSecurityAuthority()
         {
             var virtualizationIsEnabled = InstrumentationService.CpuVirtualizationFirmwareIsEnabled() ?? throw new InvalidOperationException("This CPU does not support virtualization");
-            var hypervisorPresent = InstrumentationService.HypervisorIsPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
+            var hypervisorPresent = InstrumentationService.HypervisorPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
             var runAsPPL = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa")?.GetValue("RunAsPPL") ?? -1;
             var runAsPPLBoot = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa")?.GetValue("RunAsPPLBoot") ?? -1;
             var runAsPPLPolicy = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\System")?.GetValue("RunAsPPL") ?? -1;
@@ -1509,13 +1518,14 @@ else
         /// </summary>
         public static bool CABInstallContext()
         {
-            var isDefault = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.cab\\UserChoice")
-                ?.GetValue("ProgId") ?? string.Empty;
+            var cabProgId = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.cab\\UserChoice")?.GetValue("ProgId") as string ?? string.Empty;
+            var cabUserChoice = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.cab\\UserChoice")?.GetSubKeyNames() ?? [];
+            var explorerDefaultArchiver = cabProgId.Equals("CABFolder") || cabUserChoice.Length == 0;
 
-            if (isDefault.Equals("CABFolder"))
+            if (explorerDefaultArchiver)
             {
-                var muiVerb = Registry.ClassesRoot.OpenSubKey("CABFolder\\Shell\\runas")?.GetValue("MUIVerb") as string;
-                return muiVerb?.Equals("@shell32.dll,-10210") ?? false;
+                var muiVerb = Registry.ClassesRoot.OpenSubKey("CABFolder\\Shell\\runas")?.GetValue("MUIVerb") as string ?? string.Empty;
+                return muiVerb.Equals("@shell32.dll,-10210");
             }
 
             throw new InvalidOperationException("A third-party archiver is set as the default archiver");

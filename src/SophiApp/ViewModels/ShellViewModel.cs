@@ -22,17 +22,18 @@ using System.Diagnostics;
 /// </summary>
 public partial class ShellViewModel : ObservableRecipient
 {
-    private readonly IAppNotificationService notificationService;
-    private readonly IAppxPackagesService packagesService;
-    private readonly ICommonDataService dataService;
-    private readonly IDefenderService defenderService;
-    private readonly IGroupPolicyService groupPolicyService;
-    private readonly IModelService modelService;
-    private readonly IProcessService processService;
-    private readonly IRequirementsService requirementsService;
-    private readonly ISettingsService settingsService;
-    private readonly RequirementsFailureViewModel failureViewModel;
     private readonly StartupViewModel startupModel;
+    private readonly RequirementsFailureViewModel failureViewModel;
+    private readonly ISettingsService settingsService;
+    private readonly IRequirementsService requirementsService;
+    private readonly IRegistryService registryService;
+    private readonly IProcessService processService;
+    private readonly IModelService modelService;
+    private readonly IGroupPolicyService groupPolicyService;
+    private readonly IDefenderService defenderService;
+    private readonly ICommonDataService dataService;
+    private readonly IAppxPackagesService packagesService;
+    private readonly IAppNotificationService notificationService;
     private bool logPageVisible;
 
     [ObservableProperty]
@@ -72,6 +73,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// <param name="notificationService">A service for working with toast notifications API.</param>
     /// <param name="packagesService">A service for working with appx packages API.</param>
     /// <param name="processService">A service for working with Windows process API.</param>
+    /// <param name="registryService">A service for working with Windows registry API.</param>
     /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
     /// <param name="requirementsService">Service for working with OS requirements.</param>
     /// <param name="settingsService">A service for working with app settings.</param>
@@ -86,6 +88,7 @@ public partial class ShellViewModel : ObservableRecipient
         INavigationService navigationService,
         INavigationViewService navigationViewService,
         IProcessService processService,
+        IRegistryService registryService,
         IRequirementsService requirementsService,
         ISettingsService settingsService,
         RequirementsFailureViewModel requirementsFailureViewModel,
@@ -98,6 +101,7 @@ public partial class ShellViewModel : ObservableRecipient
         this.notificationService = notificationService;
         this.packagesService = packagesService;
         this.processService = processService;
+        this.registryService = registryService;
         this.requirementsService = requirementsService;
         this.settingsService = settingsService;
         startupModel = startupViewModel;
@@ -240,7 +244,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// </summary>
     public async Task ExecuteAsync()
     {
-        var progressSteps = 12;
+        var progressBarSteps = 12;
         await Task.Run(() =>
         {
             var timer = Stopwatch.StartNew();
@@ -253,74 +257,74 @@ public partial class ShellViewModel : ObservableRecipient
             {
                 App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {
-                    startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                    startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                     startupModel.StatusText = "OsRequirements_GetOsBitness".GetLocalized();
                 });
             })
             .Bind(() => requirementsService.GetOsBitness())
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetWmiState".GetLocalized();
             }))
             .Bind(requirementsService.GetWmiState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetOsVersion".GetLocalized();
             }))
             .Bind(requirementsService.GetOsVersion)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_AppRunFromLoggedUser".GetLocalized();
             }))
             .Bind(requirementsService.AppRunFromLoggedUser)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_MalwareDetection".GetLocalized();
             }))
             .Bind(requirementsService.MalwareDetection)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetFeatureExperiencePackState".GetLocalized();
             }))
             .Bind(requirementsService.GetFeatureExperiencePackState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetEventLogState".GetLocalized();
             }))
             .Bind(requirementsService.GetEventLogState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetMicrosoftStoreState".GetLocalized();
             }))
             .Bind(requirementsService.GetMicrosoftStoreState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetPendingRebootState".GetLocalized();
             }))
             .Bind(requirementsService.GetPendingRebootState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_UpdateDetection".GetLocalized();
             }))
             .Bind(requirementsService.AppUpdateDetection)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GetMsDefenderState".GetLocalized();
             }))
             .Bind(defenderService.GetState)
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_ReadWindowsSettings".GetLocalized();
             }))
             .Tap(async () =>
@@ -330,7 +334,7 @@ public partial class ShellViewModel : ObservableRecipient
             })
             .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressSteps);
+                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(progressBarSteps);
                 startupModel.StatusText = "OsRequirements_GeneratingUserInterface".GetLocalized();
             }))
             .Tap(async () =>
@@ -344,6 +348,7 @@ public partial class ShellViewModel : ObservableRecipient
                 {
                     timer.Stop();
                     App.Logger.LogViewModelExecute(timer);
+                    registryService.UseLatestCLR();
                     App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                     {
                         NavigationViewHitTestVisible = true;
@@ -536,7 +541,7 @@ public partial class ShellViewModel : ObservableRecipient
     private void UIUwpAppModelClicked(UIUwpAppModel model)
     {
         model.ForAllUsers = UwpForAllUsersState;
-        model.Mutator = (packageFullName, removeForAll) => packagesService.RemovePackage(packageName: model.Title, forAllUsers: model.ForAllUsers);
+        model.Mutator = (packageFullName, removeForAll) => packagesService.RemovePackage(packageId: model.Title, allUsers: model.ForAllUsers);
         UIModelClicked(model);
     }
 }

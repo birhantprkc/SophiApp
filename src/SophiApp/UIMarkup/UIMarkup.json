@@ -643,7 +643,7 @@
         "Name": "WinPrtScrFolder",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
-        "ViewId": 317,
+        "ViewId": 316,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -651,7 +651,7 @@
         "Name": "RecommendedTroubleshooting",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
-        "ViewId": 318,
+        "ViewId": 317,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -659,7 +659,7 @@
         "Name": "FoldersLaunchSeparateProcess",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 319,
+        "ViewId": 318,
         "Windows10Support": "True",
         "Windows11Support": "False"
     },
@@ -667,7 +667,7 @@
         "Name": "ReservedStorage",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 320,
+        "ViewId": 319,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -675,7 +675,7 @@
         "Name": "F1HelpPage",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 321,
+        "ViewId": 320,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -683,7 +683,7 @@
         "Name": "NumLock",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 322,
+        "ViewId": 321,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -691,7 +691,7 @@
         "Name": "CapsLock",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 323,
+        "ViewId": 322,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -699,7 +699,7 @@
         "Name": "StickyShift",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 324,
+        "ViewId": 323,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -707,7 +707,7 @@
         "Name": "Autoplay",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 325,
+        "ViewId": 324,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -715,7 +715,7 @@
         "Name": "ThumbnailCacheRemoval",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 326,
+        "ViewId": 325,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -723,7 +723,7 @@
         "Name": "SaveRestartableApps",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 327,
+        "ViewId": 326,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -731,7 +731,7 @@
         "Name": "NetworkDiscovery",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 328,
+        "ViewId": 327,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -739,7 +739,7 @@
         "Name": "RKNBypass",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 329,
+        "ViewId": 328,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -747,7 +747,7 @@
         "Name": "RegistryBackup",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 330,
+        "ViewId": 329,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -755,7 +755,7 @@
         "Name": "RestorePreviousFolders",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 331,
+        "ViewId": 330,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -763,7 +763,7 @@
         "Name": "DefaultTerminalApp",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
-        "ViewId": 332,
+        "ViewId": 331,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -771,7 +771,7 @@
         "Name": "ShowClockInNotificationCenter",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 333,
+        "ViewId": 332,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -779,7 +779,7 @@
         "Name": "InstallDotNetRuntime_8",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 334,
+        "ViewId": 333,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -787,7 +787,7 @@
         "Name": "InstallDotNetRuntime_9",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 335,
+        "ViewId": 334,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -795,7 +795,7 @@
         "Name": "InstallVisualC_x86",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 336,
+        "ViewId": 335,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -803,8 +803,16 @@
         "Name": "InstallVisualC_x64",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 337,
+        "ViewId": 336,
         "Windows10Support": "True",
+        "Windows11Support": "True"
+    },
+    {
+        "Name": "RemoveWindowsAI",
+        "Type": "CheckBox",
+        "Tag": "System",
+        "ViewId": 337,
+        "Windows10Support": "False",
         "Windows11Support": "True"
     },
     {

@@ -4,7 +4,6 @@
 
 namespace SophiApp.Contracts.Services
 {
-    using SophiApp.Models;
     using Windows.ApplicationModel;
 
     /// <summary>
@@ -13,24 +12,31 @@ namespace SophiApp.Contracts.Services
     public interface IAppxPackagesService
     {
         /// <summary>
-        /// Checks that the package is installed.
+        /// Checks by ID that the package is installed.
         /// </summary>
-        /// <param name="packageIdName">The Id of the package being checked, not to be confused with the package Display name.</param>
-        /// <param name="forAllUser">Search in installed packages for all users or only for the current user.</param>
-        bool PackageExist(string packageIdName, bool forAllUser = false);
+        /// <param name="packageId">The ID of the package being checked, not to be confused with the package Display name.</param>
+        /// <param name="allUsers">Search in installed packages for all users or only for the current user.</param>
+        bool PackageExist(string packageId, bool allUsers = false);
+
+        /// <summary>
+        /// Get appx package or default.
+        /// </summary>
+        /// <param name="packageId">The ID of the package being checked, not to be confused with the package Display name.</param>
+        /// <param name="allUsers">Search in installed packages for all users or only for the current user.</param>
+        Package? GetPackageOrDefault(string packageId, bool allUsers = false);
 
         /// <summary>
         /// Retrieves information about a appx packages.
         /// </summary>
-        /// <param name="forAllUsers">Get collection of UWP <see cref="UIModel"/> for all users, otherwise only for the current user.</param>
-        List<Package> GetPackages(bool forAllUsers = false);
+        /// <param name="allUsers">Search in installed packages for all users or only for the current user.</param>
+        List<Package> GetPackages(bool allUsers = false);
 
         /// <summary>
         /// Removes appx package.
         /// </summary>
-        /// <param name="packageName">The appx package identity name.</param>
-        /// <param name="forAllUsers">Remove a package for all users or current user only.</param>
-        void RemovePackage(string packageName, bool forAllUsers);
+        /// <param name="packageId">The appx package identity name.</param>
+        /// <param name="allUsers">Remove a package for all users or current user only.</param>
+        void RemovePackage(string packageId, bool allUsers = false);
 
         /// <summary>
         /// Installs the appx application using the file.

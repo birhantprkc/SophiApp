@@ -21,8 +21,15 @@ namespace SophiApp.Contracts.Services
         /// Get task or null by specified names.
         /// </summary>
         /// <param name="names">Task names to be searched.</param>
-        /// <param name="searchAllFolders">if set to true search all sub folders.</param>
+        /// <param name="searchAllFolders">If set to true search all sub folders.</param>
         IEnumerable<Task?> FindTaskOrDefault(string[] names, bool searchAllFolders = true);
+
+        /// <summary>
+        /// Get task or null by specified names.
+        /// </summary>
+        /// <param name="name">Task name to be searched.</param>
+        /// <param name="searchAllFolders">If set to true search all sub folders.</param>
+        Task? FindTaskOrDefault(string name, bool searchAllFolders = true);
 
         /// <summary>
         /// Gets the task or null with the specified path.

@@ -20,5 +20,10 @@ namespace SophiApp.Contracts.Services
         /// Sets the value of the "StateFlags1337" key in the <see cref="Registry"/> path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches".
         /// </summary>
         void SetVolumeCachesStateFlags();
+
+        /// <summary>
+        /// Instructs Windows to use the last installed CLR version.
+        /// </summary>
+        void UseLatestCLR();
     }
 }

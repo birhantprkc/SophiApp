@@ -5,7 +5,6 @@
 namespace SophiApp.Customizations
 {
     using Microsoft.Win32;
-    using Microsoft.Win32.TaskScheduler;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using SophiApp.Contracts.Services;
@@ -16,6 +15,7 @@ namespace SophiApp.Customizations
     using System.Runtime.InteropServices;
     using System.ServiceProcess;
     using System.Text;
+    using TaskScheduler = Microsoft.Win32.TaskScheduler;
 
     /// <summary>
     /// Set the OS settings.
@@ -24,7 +24,7 @@ namespace SophiApp.Customizations
     {
         private static readonly IAppNotificationService AppNotificationService = App.GetService<IAppNotificationService>();
         private static readonly IAppxPackagesService AppxPackagesService = App.GetService<IAppxPackagesService>();
-        private static readonly ICommonDataService CommonDataService = App.GetService<ICommonDataService>();
+        private static readonly ICommonDataService DataService = App.GetService<ICommonDataService>();
         private static readonly ICursorsService CursorsService = App.GetService<ICursorsService>();
         private static readonly IRedistributablePackageService RedistributablePackageService = App.GetService<IRedistributablePackageService>();
         private static readonly IFileService FileService = App.GetService<IFileService>();
@@ -53,7 +53,7 @@ namespace SophiApp.Customizations
 
             if (enable)
             {
-                OsService.SetServiceStartMode(diagTrackService, ServiceStartMode.Automatic);
+                OsService.SetStartMode(diagTrackService, ServiceStartMode.Automatic);
                 diagTrackService.TryStart();
 
                 // Allow connection for the Unified Telemetry Client Outbound Traffic
@@ -64,7 +64,7 @@ namespace SophiApp.Customizations
             }
 
             diagTrackService.TryStop();
-            OsService.SetServiceStartMode(diagTrackService, ServiceStartMode.Disabled);
+            OsService.SetStartMode(diagTrackService, ServiceStartMode.Disabled);
 
             // Block connection for the Unified Telemetry Client Outbound Traffic
             firewallRule.Enabled = true;
@@ -79,7 +79,7 @@ namespace SophiApp.Customizations
         {
             if (state.Equals(2))
             {
-                var osEdition = CommonDataService.OsProperties.Edition;
+                var osEdition = DataService.OsProperties.Edition;
                 var isEnterpriseOrEducation = osEdition.Contains("Enterprise") || osEdition.Contains("Education");
 
                 // 0 — Diagnostic data off
@@ -122,7 +122,7 @@ namespace SophiApp.Customizations
             {
                 Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting", true)?.DeleteValue("Disabled", false);
 
-                OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
+                OsService.SetStartMode(werService, ServiceStartMode.Manual);
                 werService.TryStart();
 
                 return;
@@ -130,7 +130,7 @@ namespace SophiApp.Customizations
 
             Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting", true)?.SetValue("Disabled", 1, RegistryValueKind.DWord);
 
-            OsService.SetServiceStartMode(werService, ServiceStartMode.Disabled);
+            OsService.SetStartMode(werService, ServiceStartMode.Disabled);
             werService.TryStop();
         }
 
@@ -160,7 +160,7 @@ namespace SophiApp.Customizations
         /// <param name="enable">Scheduled tasks state.</param>
         public static void ScheduledTasks(bool enable)
         {
-            new List<Task?>()
+            new List<TaskScheduler.Task?>()
              {
                 // Gathers Win32 application data for App Backup scenario
                 ScheduledTaskService.GetTaskOrDefault("\\Microsoft\\Windows\\Application Experience\\MareBackup"),
@@ -628,7 +628,7 @@ namespace SophiApp.Customizations
         /// <param name="enable">Taskbar task view button state.</param>
         public static void TaskViewButton(bool enable)
         {
-            if (CommonDataService.IsWindows11)
+            if (DataService.IsWindows11)
             {
                 GroupPolicyService.DeleteRegistryValue("Software\\Policies\\Microsoft\\Windows\\Explorer", "HideTaskViewButton", Registry.CurrentUser, Registry.LocalMachine);
                 GroupPolicyService.ClearPolicyCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "HideTaskViewButton", LGPOScope.User, LGPOScope.Computer);
@@ -987,7 +987,7 @@ namespace SophiApp.Customizations
         /// <param name="enable">Start menu used apps state.</param>
         public static void MostUsedStartApps(bool enable)
         {
-            if (CommonDataService.IsWindows11)
+            if (DataService.IsWindows11)
             {
                 GroupPolicyService.DeleteRegistryValue("Software\\Policies\\Microsoft\\Windows\\Explorer", "ShowOrHideMostUsedApps", Registry.CurrentUser, Registry.LocalMachine);
                 // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
@@ -1362,7 +1362,7 @@ namespace SophiApp.Customizations
             GroupPolicyService.ClearPolicyCache("Software\\Microsoft\\Windows\\Windows Error Reporting", "Disabled", LGPOScope.User, LGPOScope.Computer);
 
             using var werService = new System.ServiceProcess.ServiceController("WerSvc");
-            OsService.SetServiceStartMode(werService, ServiceStartMode.Manual);
+            OsService.SetStartMode(werService, ServiceStartMode.Manual);
             werService.TryStart();
 
             Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\WindowsMitigation").SetValue("UserPreference", state.Equals(1) ? 3 : 2, RegistryValueKind.DWord);
@@ -1538,6 +1538,9 @@ namespace SophiApp.Customizations
         /// <param name="enable">Registry backup state.</param>
         public static void RegistryBackup(bool enable)
         {
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Maintenance", true)?.DeleteValue("MaintenanceDisabled", false);
+            ScheduledTaskService.SetState(ScheduledTaskService.FindTaskOrDefault("RegIdleBackup"), true);
+
             if (enable)
             {
                 Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager", true)
@@ -1613,7 +1616,7 @@ namespace SophiApp.Customizations
         {
             if (enable)
             {
-                var latestRelease = CommonDataService.LatestReleaseNET8!;
+                var latestRelease = DataService.LatestReleaseNET8!;
                 var releaseVersion = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
                 var shellPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
                 var downloadFolder = Registry.CurrentUser.OpenSubKey(shellPath)?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
@@ -1634,7 +1637,7 @@ namespace SophiApp.Customizations
         {
             if (enable)
             {
-                var latestRelease = CommonDataService.LatestReleaseNET9!;
+                var latestRelease = DataService.LatestReleaseNET9!;
                 var releaseVersion = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
                 var offlineInstaller = Path.Combine(downloadFolder!, releaseVersion);
@@ -1681,6 +1684,27 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Set Windows AI state.
+        /// </summary>
+        /// <param name="enable">Windows AI state.</param>
+        public static void RemoveWindowsAI(bool enable)
+        {
+            Registry.LocalMachine.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows", true)?.DeleteSubKeyTree("WindowsAI", false);
+            Registry.LocalMachine.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows", true)?.DeleteSubKeyTree("WindowsCopilot", false);
+            Registry.CurrentUser.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows", true)?.DeleteSubKeyTree("WindowsAI", false);
+            Registry.CurrentUser.OpenSubKey("SOFTWARE\\Policies\\Microsoft\\Windows", true)?.DeleteSubKeyTree("WindowsCopilot", false);
+
+            if (enable)
+            {
+                _ = PowerShellService.Invoke("Enable-WindowsOptionalFeature -Online -FeatureName Recall;Start-Process -FilePath \"ms-windows-store://pdp/?ProductId=9NHT9RB2F4HD\"");
+                return;
+            }
+
+            _ = PowerShellService.Invoke("Disable-WindowsOptionalFeature -Online -FeatureName Recall");
+            AppxPackagesService.RemovePackage("Microsoft.Copilot");
+        }
+
+        /// <summary>
         /// Set HEVC state.
         /// </summary>
         /// <param name="enable">HEVC state.</param>
@@ -1691,15 +1715,16 @@ namespace SophiApp.Customizations
                 var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")
                     ?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string ?? Environment.GetEnvironmentVariable("TEMP");
                 var appxFile = $"{downloadFolder}\\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx";
-
-                HttpService.DownloadHEVCAppxAsync(appxFile).Wait();
-                AppxPackagesService.InstallFromFileAsync(appxFile).Wait();
+                _ = Task.Run(async () =>
+                {
+                    await HttpService.DownloadHEVCAppxAsync(appxFile);
+                    await AppxPackagesService.InstallFromFileAsync(appxFile);
+                });
                 File.Delete(appxFile);
-
                 return;
             }
 
-            AppxPackagesService.RemovePackage(packageName: "Microsoft.HEVCVideoExtension", forAllUsers: false);
+            AppxPackagesService.RemovePackage(packageId: "Microsoft.HEVCVideoExtension", allUsers: false);
         }
 
         /// <summary>
@@ -1871,7 +1896,7 @@ namespace SophiApp.Customizations
                 return;
             }
 
-            if (!CommonDataService.IsWindows11)
+            if (!DataService.IsWindows11)
             {
                 _ = PowerShellService.Invoke($"auditpol / set / subcategory:\"{viewerGuid}\" / success:disable / failure:disable");
             }

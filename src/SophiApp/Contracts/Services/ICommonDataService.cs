@@ -6,6 +6,7 @@ namespace SophiApp.Contracts.Services
 {
     using CSharpFunctionalExtensions;
     using SophiApp.Helpers;
+    using Windows.ApplicationModel;
 
     /// <summary>
     /// A service for transferring app data between DI layers.
@@ -53,22 +54,27 @@ namespace SophiApp.Contracts.Services
         Version AppVersion { get; }
 
         /// <summary>
-        /// Gets latest app release from GitHub repository.
+        /// Gets app latest release from GitHub repository.
         /// </summary>
         AppVersion? LatestAppRelease { get; }
 
         /// <summary>
-        /// Gets latest .NET 8 release.
+        /// Gets Microsoft HEVC video extension latest release from GitHub repository.
+        /// </summary>
+        PackageVersion? LatestHEVCRelease { get; }
+
+        /// <summary>
+        /// Gets .NET 8 latest release.
         /// </summary>
         NetRelease? LatestReleaseNET8 { get; }
 
         /// <summary>
-        /// Gets latest .NET 9 release.
+        /// Gets .NET 9 latest release.
         /// </summary>
         NetRelease? LatestReleaseNET9 { get; }
 
         /// <summary>
-        /// Gets latest Visual C++ release.
+        /// Gets Visual C++ latest release.
         /// </summary>
         VCRelease? LatestReleaseVC { get; }
 

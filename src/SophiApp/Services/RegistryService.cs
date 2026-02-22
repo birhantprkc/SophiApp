@@ -42,5 +42,12 @@ namespace SophiApp.Services
             }
             .ForEach(subKey => volumeCaches?.OpenOrCreateSubKey(subKey).SetValue("StateFlags1337", 2, RegistryValueKind.DWord));
         }
+
+        /// <inheritdoc/>
+        public void UseLatestCLR()
+        {
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\.NETFramework", true)?.DeleteValue("OnlyUseLatestCLR", false);
+            Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\.NETFramework", true)?.DeleteValue("OnlyUseLatestCLR", false);
+        }
     }
 }

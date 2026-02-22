@@ -25,27 +25,34 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool PackageExist(string packageIdName, bool forAllUser = false)
+        public bool PackageExist(string packageId, bool allUsers = false)
         {
-            if (forAllUser)
+            if (allUsers)
             {
                 return packageManager.FindPackages()
-                    .Any(package => package.Id.Name.Equals(packageIdName));
+                    .Any(package => package.Id.Name.Equals(packageId));
             }
 
             return packageManager.FindPackagesForUser(string.Empty)
-                .Any(package => package.Id.Name.Equals(packageIdName));
+                .Any(package => package.Id.Name.Equals(packageId));
         }
 
         /// <inheritdoc/>
-        public List<Package> GetPackages(bool forAllUsers = false)
+        public Package? GetPackageOrDefault(string packageId, bool allUsers = false)
+        {
+            var packages = allUsers ? packageManager.FindPackages() : packageManager.FindPackagesForUser(string.Empty);
+            return packages?.FirstOrDefault(package => package.Id.Name.Equals(packageId));
+        }
+
+        /// <inheritdoc/>
+        public List<Package> GetPackages(bool allUsers = false)
         {
             var appxPackages = new List<Package>();
             var packages = new List<Package>();
             var allUsersScript = "Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Select-Object -ExpandProperty Name";
             var currentUserScript = "Get-AppxPackage -PackageTypeFilter Bundle | Select-Object -ExpandProperty Name";
-            var bundles = powerShellService.Invoke(forAllUsers ? allUsersScript : currentUserScript);
-            packages = [.. forAllUsers ? packageManager.FindPackages() : packageManager.FindPackagesForUser(string.Empty)];
+            var bundles = powerShellService.Invoke(allUsers ? allUsersScript : currentUserScript);
+            packages = [.. allUsers ? packageManager.FindPackages() : packageManager.FindPackagesForUser(string.Empty)];
 
             for (int i = 0; i < packages.Count; i++)
             {
@@ -62,17 +69,14 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void RemovePackage(string packageName, bool forAllUsers)
+        public void RemovePackage(string packageId, bool allUsers = false)
         {
-            var allUsersScript = $"Get-AppxPackage -Name *{packageName}* -PackageTypeFilter Bundle -AllUsers | Remove-AppxPackage -AllUsers";
-            var currentUserScript = $"Get-AppxPackage -Name *{packageName}* -PackageTypeFilter Bundle | Remove-AppxPackage";
-            _ = powerShellService.Invoke(forAllUsers ? allUsersScript : currentUserScript);
+            var allUsersScript = $"Get-AppxPackage -Name *{packageId}* -PackageTypeFilter Bundle -AllUsers | Remove-AppxPackage -AllUsers";
+            var currentUserScript = $"Get-AppxPackage -Name *{packageId}* -PackageTypeFilter Bundle | Remove-AppxPackage";
+            _ = powerShellService.Invoke(allUsers ? allUsersScript : currentUserScript);
         }
 
         /// <inheritdoc/>
-        public async Task InstallFromFileAsync(string appxPath)
-        {
-            await packageManager.AddPackageAsync(new Uri(appxPath), null, DeploymentOptions.None);
-        }
+        public async Task InstallFromFileAsync(string appxPath) => await packageManager.AddPackageAsync(new Uri(appxPath), null, DeploymentOptions.None);
     }
 }

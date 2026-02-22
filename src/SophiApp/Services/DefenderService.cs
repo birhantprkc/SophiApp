@@ -141,6 +141,7 @@ namespace SophiApp.Services
         {
             try
             {
+                osService.TryStart("SecurityHealthService");
                 var healthState = osService.GetStatus("SecurityHealthService");
                 App.Logger.LogDefenderSecurityHealthStatus(healthState);
                 return healthState == ServiceControllerStatus.Running ? Result.Success() : Result.Failure(nameof(RequirementsFailure.DefenderSecurityHealthFailure));

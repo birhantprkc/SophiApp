@@ -465,6 +465,9 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         }
 
         /// <inheritdoc/>
+        public Task? FindTaskOrDefault(string name, bool searchAllFolders = true) => taskScheduler.FindTask(name, searchAllFolders);
+
+        /// <inheritdoc/>
         public Task? GetTaskOrDefault(string taskPath) => taskScheduler.GetTask(taskPath);
 
         /// <inheritdoc/>

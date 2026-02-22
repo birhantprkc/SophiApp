@@ -37,7 +37,10 @@ namespace SophiApp.Services
         {
             try
             {
-                return new ManagementObjectSearcher(scope: "root\\CIMV2\\mdm\\dmmap", queryString: "SELECT * FROM MDM_EnterpriseModernAppManagement_AppManagement01").Get().Cast<ManagementObject>().First();
+                return new ManagementObjectSearcher(scope: "root\\CIMV2\\mdm\\dmmap", queryString: "SELECT * FROM MDM_EnterpriseModernAppManagement_AppManagement01")
+                    .Get()
+                    .Cast<ManagementObject>()
+                    .First();
             }
             catch (Exception ex)
             {
@@ -101,7 +104,7 @@ namespace SophiApp.Services
             using var managementObject = new ManagementObjectSearcher("Select * from Win32_UserAccount")
                 .Get()
                 .Cast<ManagementObject>()
-                .FirstOrDefault(obj => (string)obj.GetPropertyValue("Name") == name);
+                .FirstOrDefault(o => o.GetPropertyValue("Name") as string == name);
 
             return managementObject?.GetPropertyValue("Sid") as string ?? throw new InvalidOperationException($"Failed to obtain user SID API in the {nameof(IInstrumentationService)}");
         }
@@ -129,7 +132,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool? HypervisorIsPresent()
+        public bool? HypervisorPresent()
         {
             using var managementObject = new ManagementObjectSearcher("Select * from CIM_ComputerSystem")
                 .Get()
@@ -164,6 +167,16 @@ namespace SophiApp.Services
 
             var model = managementObject?.GetPropertyValue("Model") as string ?? string.Empty;
             return Array.Exists(vmTokens, token => model.Contains(token, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <inheritdoc/>
+        public bool WindowsAIPresent()
+        {
+            var managementObject = new ManagementObjectSearcher("Select ClassGuid, PNPClass from Win32_PnPEntity")
+                .Get()
+                .Cast<ManagementObject>()
+                .FirstOrDefault(e => e.GetPropertyValue("ClassGuid") is not null && e.GetPropertyValue("PNPClass").Equals("ComputeAccelerator"));
+            return managementObject is not null;
         }
     }
 }

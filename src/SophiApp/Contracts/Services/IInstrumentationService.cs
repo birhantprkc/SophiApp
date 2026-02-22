@@ -68,6 +68,11 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Get Windows Hyper-V present state.
         /// </summary>
-        bool? HypervisorIsPresent();
+        bool? HypervisorPresent();
+
+        /// <summary>
+        /// Get Windows AI present state.
+        /// </summary>
+        bool WindowsAIPresent();
     }
 }

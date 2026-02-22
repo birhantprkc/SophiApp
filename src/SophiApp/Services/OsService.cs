@@ -35,7 +35,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void SetServiceStartMode(ServiceController service, ServiceStartMode mode)
+        public void SetStartMode(ServiceController service, ServiceStartMode mode)
         {
             var scManagerHandle = OpenSCManager(null, null, 0x000F003F);
             if (scManagerHandle == IntPtr.Zero)
@@ -83,6 +83,20 @@ namespace SophiApp.Services
         {
             var vbsPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\CapabilityIndex\\VBSCRIPT";
             return Registry.LocalMachine.OpenSubKey(vbsPath) is not null;
+        }
+
+        /// <inheritdoc/>
+        public void TryStart(string name)
+        {
+            try
+            {
+                using var service = new ServiceController(name);
+                service.Start();
+            }
+            catch
+            {
+                // Do nothing.
+            }
         }
 
         [DllImport("advapi32.dll", EntryPoint = "CloseServiceHandle")]

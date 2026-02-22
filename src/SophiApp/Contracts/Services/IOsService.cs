@@ -28,7 +28,7 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="service">Represents a Windows service and allows you to connect to a running or stopped.</param>
         /// <param name="mode">Indicates the start mode of the service.</param>
-        void SetServiceStartMode(ServiceController service, ServiceStartMode mode);
+        void SetStartMode(ServiceController service, ServiceStartMode mode);
 
         /// <summary>
         /// Returns true if the service exists.
@@ -40,5 +40,11 @@ namespace SophiApp.Contracts.Services
         /// Determines that VBSCRIPT component is installed.
         /// </summary>
         bool VBSIsInstalled();
+
+        /// <summary>
+        /// Try start, without any exceptions, Windows service.
+        /// </summary>
+        /// <param name="name">Service name.</param>
+        void TryStart(string name);
     }
 }
