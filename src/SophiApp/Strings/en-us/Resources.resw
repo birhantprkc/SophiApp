@@ -225,19 +225,19 @@
     <value>SophiApp supports 64-bit Windows only.</value>
   </data>
   <data name="OsRequirementsFailure_Win10UnsupportedBuild" xml:space="preserve">
-    <value>Your Windows 10 build: {0}.{1}. Supported builds: 19045.3448+. Run Windows Update and try again.</value>
+    <value>You're using Windows 10 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.</value>
   </data>
   <data name="OsRequirementsFailure_Win10EnterpriseSVersion" xml:space="preserve">
-    <value>SophiApp 2.0 supports Windows 10 22H2+ and Windows 11 23H2+</value>
+    <value>SophiApp 2.0 supports Windows 10 22H2 and Windows 11 24H2 and higher. You're using {0} {1}.</value>
   </data>
   <data name="OsRequirementsFailure_Win11UnsupportedBuild" xml:space="preserve">
-    <value>Your Windows 11 build: {0}.{1}. Supported builds: 22621.2283+. Run Windows Update and try again.</value>
+    <value>You're using Windows 10 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.</value>
   </data>
   <data name="OsRequirementsFailure_WmiBroken" xml:space="preserve">
     <value>WMI service is broken.</value>
   </data>
   <data name="OsRequirementsFailure_RunByNotLoggedUser" xml:space="preserve">
-    <value>The logged-on user doesn't have admin rights.</value>
+    <value>The logged-in user {0} doesn't have admin rights. Script was ran on behalf of {1}. Please log into account which has admin rights and run script again.</value>
   </data>
   <data name="OsRequirements_AppRunFromLoggedUser" xml:space="preserve">
     <value>Checking whether the logged-in user is an admin</value>
@@ -282,10 +282,10 @@
     <value>File "{0}" broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_RebootRequired" xml:space="preserve">
-    <value>PC is waiting to be restarted.</value>
+    <value>Your PC is waiting to be restarted.</value>
   </data>
   <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
-    <value>Checking a pending reboot</value>
+    <value>Checking pending reboot state</value>
   </data>
   <data name="OsRequirements_UpdateDetection" xml:space="preserve">
     <value>Checking if the current SophiApp build is the latest one</value>
@@ -914,6 +914,12 @@
   <data name="UIModel_InstallDotNetRuntime_9_Description" xml:space="preserve">
     <value>.NET is a successor to .NET Framework. You need to install .NET 9 if an app was developed within this framework, even if you already installed any other .NET versions. NET 9 is a rapid branch version. Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
+  <data name="UIModel_RemoveWindowsAI_Title" xml:space="preserve">
+    <value>Remove Windows AI</value>
+  </data>
+  <data name="UIModel_RemoveWindowsAI_Description" xml:space="preserve">
+    <value>Disable Windows AI functions. If your CPU has no a built-in NPU, it doesn't support any Windows AI functions. None of GPO policies will be applied except removing Recall function and Copilot application.</value>
+  </data>
   <data name="UIModel_RKNBypass_Title" xml:space="preserve">
     <value>Enable proxy by ProstoVPN.AntiZapret</value>
   </data>
@@ -1303,11 +1309,5 @@
   </data>
   <data name="OsRequirementsFailure_DefenderSecurityHealthFailure" xml:space="preserve">
     <value>Microsoft Defender Security Health service is broken.</value>
-  </data>
-  <data name="UIModel_RemoveWindowsAI_Title" xml:space="preserve">
-    <value>Remove Windows AI</value>
-  </data>
-  <data name="UIModel_RemoveWindowsAI_Description" xml:space="preserve">
-    <value>Windows AI description.</value>
   </data>
 </root>

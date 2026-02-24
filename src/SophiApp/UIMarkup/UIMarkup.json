@@ -336,10 +336,18 @@
         "Windows11Support": "True"
     },
     {
+        "Name": "ShowClockInNotificationCenter",
+        "Type": "CheckBox",
+        "Tag": "System",
+        "ViewId": 227,
+        "Windows10Support": "False",
+        "Windows11Support": "True"
+    },
+    {
         "Name": "TaskbarCombine",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 227,
+        "ViewId": 228,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -347,7 +355,7 @@
         "Name": "TaskbarEndTask",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 228,
+        "ViewId": 229,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -355,7 +363,7 @@
         "Name": "ControlPanelView",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 229,
+        "ViewId": 230,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -363,7 +371,7 @@
         "Name": "WindowsColorMode",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 230,
+        "ViewId": 231,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -371,7 +379,7 @@
         "Name": "AppColorMode",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 231,
+        "ViewId": 232,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -379,7 +387,7 @@
         "Name": "NewAppInstalledNotification",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 232,
+        "ViewId": 233,
         "Windows10Support": "True",
         "Windows11Support": "False"
     },
@@ -387,7 +395,7 @@
         "Name": "FirstLogonAnimation",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 233,
+        "ViewId": 234,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -395,7 +403,7 @@
         "Name": "JPEGWallpapersQuality",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 234,
+        "ViewId": 235,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -403,7 +411,7 @@
         "Name": "ShortcutsSuffix",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 235,
+        "ViewId": 236,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -411,7 +419,7 @@
         "Name": "PrtScnSnippingTool",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 236,
+        "ViewId": 237,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -419,7 +427,7 @@
         "Name": "AppsLanguageSwitch",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 237,
+        "ViewId": 238,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -427,7 +435,7 @@
         "Name": "AeroShaking",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 238,
+        "ViewId": 239,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -435,7 +443,7 @@
         "Name": "Cursors",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 239,
+        "ViewId": 240,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -443,7 +451,7 @@
         "Name": "FolderGroupBy",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 240,
+        "ViewId": 241,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -451,7 +459,7 @@
         "Name": "NavigationPaneExpand",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 241,
+        "ViewId": 242,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -459,7 +467,7 @@
         "Name": "RecentlyAddedStartApps",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 242,
+        "ViewId": 243,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -467,7 +475,7 @@
         "Name": "MostUsedStartApps",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 243,
+        "ViewId": 244,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -475,7 +483,7 @@
         "Name": "StartRecommendedSection",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 244,
+        "ViewId": 245,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -483,7 +491,7 @@
         "Name": "StartRecommendationsTips",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 245,
+        "ViewId": 246,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -491,7 +499,7 @@
         "Name": "StartAccountNotifications",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 246,
+        "ViewId": 247,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -499,7 +507,7 @@
         "Name": "StartLayout",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 247,
+        "ViewId": 248,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -507,7 +515,7 @@
         "Name": "AppSuggestions",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 248,
+        "ViewId": 249,
         "Windows10Support": "True",
         "Windows11Support": "False"
     },
@@ -728,15 +736,15 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "NetworkDiscovery",
+        "Name": "RestorePreviousFolders",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 327,
-        "Windows10Support": "True",
+        "Windows10Support": "False",
         "Windows11Support": "True"
     },
     {
-        "Name": "RKNBypass",
+        "Name": "NetworkDiscovery",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 328,
@@ -744,34 +752,10 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "RegistryBackup",
-        "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 329,
-        "Windows10Support": "True",
-        "Windows11Support": "True"
-    },
-    {
-        "Name": "RestorePreviousFolders",
-        "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 330,
-        "Windows10Support": "False",
-        "Windows11Support": "True"
-    },
-    {
         "Name": "DefaultTerminalApp",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
-        "ViewId": 331,
-        "Windows10Support": "False",
-        "Windows11Support": "True"
-    },
-    {
-        "Name": "ShowClockInNotificationCenter",
-        "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 332,
+        "ViewId": 329,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
@@ -779,7 +763,7 @@
         "Name": "InstallDotNetRuntime_8",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 333,
+        "ViewId": 330,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -787,7 +771,7 @@
         "Name": "InstallDotNetRuntime_9",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 334,
+        "ViewId": 331,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -795,7 +779,7 @@
         "Name": "InstallVisualC_x86",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 335,
+        "ViewId": 332,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -803,7 +787,23 @@
         "Name": "InstallVisualC_x64",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 336,
+        "ViewId": 333,
+        "Windows10Support": "True",
+        "Windows11Support": "True"
+    },
+    {
+        "Name": "RKNBypass",
+        "Type": "CheckBox",
+        "Tag": "System",
+        "ViewId": 334,
+        "Windows10Support": "True",
+        "Windows11Support": "True"
+    },
+    {
+        "Name": "RegistryBackup",
+        "Type": "CheckBox",
+        "Tag": "System",
+        "ViewId": 335,
         "Windows10Support": "True",
         "Windows11Support": "True"
     },
@@ -811,7 +811,7 @@
         "Name": "RemoveWindowsAI",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 337,
+        "ViewId": 336,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },
