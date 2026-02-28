@@ -10,9 +10,9 @@ namespace SophiApp.Contracts.Services
     public interface IOneDriveService
     {
         /// <summary>
-        /// Get OneDrive uninstall string.
+        /// Get OneDriveSetup.exe file path or default.
         /// </summary>
-        string GetUninstallStringOrDefault();
+        string GetSetupFileOrDefault();
 
         /// <summary>
         /// Get OneDrive user data folder path.
@@ -28,11 +28,6 @@ namespace SophiApp.Contracts.Services
         /// Determines whether OneDrive is installed.
         /// </summary>
         bool IsInstalled();
-
-        /// <summary>
-        /// Determines whether OneDriveSetup.exe file exist.
-        /// </summary>
-        bool SetupFileExist();
 
         /// <summary>
         /// Uninstall OneDrive.

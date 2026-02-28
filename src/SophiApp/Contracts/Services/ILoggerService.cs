@@ -61,13 +61,7 @@ namespace SophiApp.Contracts.Services
         /// Write OneDrive setup file path in the log.
         /// </summary>
         /// <param name="path">OneDrive setup file path.</param>
-        /// <param name="exist">Exist OneDrive setup file.</param>
-        void LogOneDriveSetupFileFound(string path, bool exist);
-
-        /// <summary>
-        /// Write a message to the log if the OneDrive setup file not found.
-        /// </summary>
-        void LogOneDriveSetupFileNotFound();
+        void LogOneDriveSetupFile(string path);
 
         /// <summary>
         /// Write the number of user files remaining after uninstall OneDrive in the log.

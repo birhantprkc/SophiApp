@@ -97,18 +97,17 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogOneDriveSetupFileFound(string path, bool exist)
+        public void LogOneDriveSetupFile(string path)
         {
-            Log.Information("OneDrive setup file path: {Path}", path);
-            Log.Information("OneDrive setup file exist: {Exist:l}", exist);
-            shellViewModel.LoggedActions.AddRange($"OneDrive setup file path: \"{path}\"", $"OneDrive setup file exist: {exist}");
-        }
+            if (string.IsNullOrEmpty(path))
+            {
+                Log.Information("OneDrive setup file not found in PC");
+                shellViewModel.LoggedActions.Add("OneDrive setup file not found in PC");
+                return;
+            }
 
-        /// <inheritdoc/>
-        public void LogOneDriveSetupFileNotFound()
-        {
-            Log.Information("OneDrive setup file not found in PC");
-            shellViewModel.LoggedActions.Add("OneDrive setup file not found in PC");
+            Log.Information("OneDrive setup file found: {Path}", path);
+            shellViewModel.LoggedActions.Add($"OneDrive setup file found: \"{path}\"");
         }
 
         /// <inheritdoc/>

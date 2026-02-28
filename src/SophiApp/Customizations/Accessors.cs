@@ -768,7 +768,10 @@ namespace SophiApp.Customizations
             }
             else
             {
-                if (OneDriveService.SetupFileExist() || HttpService.UrlIsAvailable("https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"))
+                var setupFile = OneDriveService.GetSetupFileOrDefault();
+                App.Logger.LogOneDriveSetupFile(setupFile);
+
+                if (!string.IsNullOrEmpty(setupFile) || HttpService.UrlIsAvailable("https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"))
                 {
                     return false;
                 }
@@ -1173,13 +1176,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool RemoveWindowsAI()
         {
-            if (InstrumentationService.WindowsAIPresent())
-            {
-                var recall = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\Notifications\\OptionalFeatures\\Recall")?.GetValue("Selection") as int? ?? -1;
-                return recall.Equals(0) && !AppxPackagesService.PackageExist("Microsoft.Copilot");
-            }
-
-            throw new InvalidOperationException("You CPU has no a built-in NPU, so it doesn't support any Windows AI functions. No need to disable anything using GPO policies. Recall function and Copilot application were removed.");
+            // TODO: InstrumentationService.WindowsAIPresent() - reserved for future use.
+            var recall = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\Notifications\\OptionalFeatures\\Recall")?.GetValue("Selection") as int? ?? -1;
+            return recall.Equals(0) && !AppxPackagesService.PackageExist("Microsoft.Copilot");
         }
 
         /// <summary>
