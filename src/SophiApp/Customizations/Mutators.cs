@@ -1696,11 +1696,11 @@ namespace SophiApp.Customizations
 
             if (enable)
             {
-                _ = PowerShellService.Invoke("Enable-WindowsOptionalFeature -Online -FeatureName Recall;Start-Process -FilePath \"ms-windows-store://pdp/?ProductId=9NHT9RB2F4HD\"");
+                _ = PowerShellService.Invoke("Enable-WindowsOptionalFeature -Online -FeatureName Recall -All -NoRestart; Start-Process -FilePath 'ms-windows-store://pdp/?ProductId=9NHT9RB2F4HD'");
                 return;
             }
 
-            _ = PowerShellService.Invoke("Disable-WindowsOptionalFeature -Online -FeatureName Recall");
+            _ = PowerShellService.Invoke("Disable-WindowsOptionalFeature -Online -FeatureName Recall -NoRestart");
             AppxPackagesService.RemovePackage("Microsoft.Copilot");
         }
 
