@@ -1178,7 +1178,7 @@ namespace SophiApp.Customizations
         {
             // TODO: InstrumentationService.WindowsAIPresent() - reserved for future use.
             var recall = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\Notifications\\OptionalFeatures\\Recall")?.GetValue("Selection") as int? ?? -1;
-            return recall.Equals(0) && !AppxPackagesService.PackageExist("Microsoft.Copilot");
+            return recall.Equals(0) && AppxPackagesService.PackageExist("Microsoft.Copilot");
         }
 
         /// <summary>

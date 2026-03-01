@@ -231,7 +231,7 @@
     <value>SophiApp 2.0 supports Windows 10 22H2 and Windows 11 24H2 and higher. You're using {0} {1}.</value>
   </data>
   <data name="OsRequirementsFailure_Win11UnsupportedBuild" xml:space="preserve">
-    <value>You're using Windows 10 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.</value>
+    <value>You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.</value>
   </data>
   <data name="OsRequirementsFailure_WmiBroken" xml:space="preserve">
     <value>WMI service is broken.</value>
