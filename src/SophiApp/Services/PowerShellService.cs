@@ -12,7 +12,7 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class PowerShellService : IPowerShellService
     {
-        private const string SetExecutionPolicy = "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force;";
+        private const string SetExecutionPolicy = "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; ";
         private readonly IProcessService processService;
 
         /// <summary>

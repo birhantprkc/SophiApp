@@ -6,7 +6,7 @@
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="FontFamily" Value="XamlAutoFontFamily" />
         <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
-        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
 
     <Style x:Key="NavigationItemTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">

@@ -170,7 +170,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool WindowsAIPresent()
+        public bool WindowsAIPresent() // TODO: WindowsAIPresent reserved for future use.
         {
             var managementObject = new ManagementObjectSearcher("Select ClassGuid, PNPClass from Win32_PnPEntity")
                 .Get()
