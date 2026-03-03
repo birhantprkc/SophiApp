@@ -125,9 +125,9 @@ namespace SophiApp.Services
 
         private Result GetMpPreference()
         {
-            var folderAccess = powerShellService.Invoke("(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess")[0];
+            var script = "(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess";
 
-            if (folderAccess is null)
+            if (powerShellService.InvokeOrDefault<byte>(script) is null)
             {
                 dataService.DefenderMpPreferenceBroken = true;
                 App.Logger.LogDefenderMpPreferenceIsNull();
@@ -171,9 +171,9 @@ namespace SophiApp.Services
         {
             try
             {
-                var folderState = powerShellService.Invoke("(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess")[0].BaseObject.Equals(1);
+                var folderState = powerShellService.Invoke<byte>("(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess");
                 App.Logger.LogDefenderControlledFolderState(folderState);
-                return folderState ? Result.Failure(nameof(RequirementsFailure.DefenderControlledFolderEnable)) : Result.Success();
+                return folderState.Equals(1) ? Result.Failure(nameof(RequirementsFailure.DefenderControlledFolderEnable)) : Result.Success();
             }
             catch (Exception e)
             {

@@ -12,7 +12,6 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class PowerShellService : IPowerShellService
     {
-        private const string SetExecutionPolicy = "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; ";
         private readonly IProcessService processService;
 
         /// <summary>
@@ -47,36 +46,34 @@ $AllowTurnOffDevice";
 
         /// <inheritdoc/>
         public T? InvokeOrDefault<T>(string script)
-            where T : struct
-        {
-            return (T?)Invoke(script.Insert(0, SetExecutionPolicy))[0]?.BaseObject ?? null;
-        }
+            where T : struct => (T?)Invoke(script)[0]?.BaseObject ?? null;
 
         /// <inheritdoc/>
         public T Invoke<T>(string script)
-            where T : struct
-        {
-            return (T)Invoke(script.Insert(0, SetExecutionPolicy))[0].BaseObject;
-        }
+            where T : struct => (T)Invoke(script)[0].BaseObject;
 
         /// <inheritdoc/>
         public List<PSObject> Invoke(string script)
         {
-            using var runSpace = RunspaceFactory.CreateOutOfProcessRunspace(new TypeTable(Array.Empty<string>()), new PowerShellProcessInstance(new Version(5, 1), null, null, false));
+            using var psInstance = new PowerShellProcessInstance(new Version(5, 1), null, ScriptBlock.Create("Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force"), false);
+            using var runSpace = RunspaceFactory.CreateOutOfProcessRunspace(new TypeTable(Array.Empty<string>()), psInstance);
             runSpace.Open();
-            using var instance = PowerShell.Create(runSpace).AddScript(script.Insert(0, SetExecutionPolicy));
-            return [.. instance.Invoke()];
+            var invokeResult = PowerShell.Create(runSpace).AddScript(script).Invoke();
+            runSpace.Close();
+            runSpace.Dispose();
+            psInstance.Dispose();
+            return [..invokeResult];
         }
 
         /// <inheritdoc/>
         public void InvokeCommandBypassUCPD(string command)
         {
             var systemRoot = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            var powershell = Path.Combine(systemRoot, "WindowsPowerShell\\v1.0\\powershell.exe");
-            var powershellTemp = Path.Combine(systemRoot, "WindowsPowerShell\\v1.0\\powershell_temp.exe");
-            File.Copy(powershell, powershellTemp, true);
-            _ = processService.WaitForExit(name: powershellTemp, arguments: command);
-            File.Delete(powershellTemp);
+            var powerShell = Path.Combine(systemRoot, "WindowsPowerShell\\v1.0\\powershell.exe");
+            var powerShellTemp = Path.Combine(systemRoot, "WindowsPowerShell\\v1.0\\powershell_temp.exe");
+            File.Copy(powerShell, powerShellTemp, true);
+            _ = processService.WaitForExit(name: powerShellTemp, arguments: command);
+            File.Delete(powerShellTemp);
         }
 
         /// <inheritdoc/>

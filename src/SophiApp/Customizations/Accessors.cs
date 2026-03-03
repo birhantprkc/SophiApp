@@ -1450,7 +1450,7 @@ else
         /// </summary>
         public static bool WindowsSandbox()
         {
-            bool WindowsSandboxIsEnabled()
+            bool GetSandboxEnabled()
             {
                 // Checking whether x86 virtualization is enabled in the firmware
                 var sandboxScript = "Get-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online";
@@ -1466,11 +1466,11 @@ else
 
                 if (virtualizationIsEnabled)
                 {
-                    return WindowsSandboxIsEnabled();
+                    return GetSandboxEnabled();
                 }
                 else if (hypervisorPresent)
                 {
-                    return WindowsSandboxIsEnabled();
+                    return GetSandboxEnabled();
                 }
 
                 throw new InvalidOperationException("This PC does not support Windows Sandbox feature");

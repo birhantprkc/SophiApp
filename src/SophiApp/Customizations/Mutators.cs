@@ -1838,7 +1838,7 @@ namespace SophiApp.Customizations
         /// <param name="enable">Network protection state.</param>
         public static void NetworkProtection(bool enable)
         {
-            _ = PowerShellService.Invoke($"Set-MpPreference -EnableNetworkProtection {(enable ? "enable" : "Disabled")}");
+            _ = PowerShellService.Invoke($"Set-MpPreference -EnableNetworkProtection {(enable ? "Enabled" : "Disabled")}");
         }
 
         /// <summary>

@@ -407,10 +407,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderControlledFolderState(bool state)
+        public void LogDefenderControlledFolderState(byte state)
         {
-            Log.Information("Microsoft Defender controlled folder access is enabled: {State}", state);
-            shellViewModel.LoggedActions.Add($"Microsoft Defender controlled folder access is enabled: {state}");
+            Log.Information("Microsoft Defender controlled folder access state: {State}", state);
+            shellViewModel.LoggedActions.Add($"Microsoft Defender controlled folder access state: {state}");
         }
 
         /// <inheritdoc/>

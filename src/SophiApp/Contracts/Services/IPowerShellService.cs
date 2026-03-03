@@ -22,7 +22,7 @@ namespace SophiApp.Contracts.Services
         bool? TurnOffDeviceNetworkAdapterExist();
 
         /// <summary>
-        /// Return script execute or default result using version 5.1 of PowerShell.
+        /// Return <paramref name="script"/> execute result or default.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="script">Script to execute.</param>

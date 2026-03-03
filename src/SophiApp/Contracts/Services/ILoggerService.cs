@@ -328,7 +328,7 @@ namespace SophiApp.Contracts.Services
         /// Write Microsoft Defender control folder state in the log.
         /// </summary>
         /// <param name="state">Microsoft Defender control folder state.</param>
-        void LogDefenderControlledFolderState(bool state);
+        void LogDefenderControlledFolderState(byte state);
 
         /// <summary>
         /// Write Microsoft Defender is default AV in the log.
