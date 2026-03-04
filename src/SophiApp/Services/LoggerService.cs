@@ -451,8 +451,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogModelGetStateException(string name, Exception exception)
         {
-            Log.Error("[WRN] An error occurred while get state in {Model:l}: {Message}", name, exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] An error occurred while get state in {name}: {exception.Message}");
+            Log.Error("[WRN] An error occurred while getting state in {Model:l}: {Message}", name, exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] An error occurred while getting state in {name}: {exception.Message}");
         }
 
         /// <inheritdoc/>
