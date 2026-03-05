@@ -1053,7 +1053,7 @@ namespace SophiApp.Customizations
                 return isEnabled.Equals("https://p.thenewone.lol:8443/proxy.pac");
             }
 
-            throw new InvalidOperationException("Due to your Windows GeoId, this function is not applicable for your ");
+            throw new InvalidOperationException("Due to your Windows GeoId, this function is not applicable for you");
         }
 
         /// <summary>
