@@ -1310,4 +1310,10 @@
   <data name="OsRequirementsFailure_DefenderSecurityHealthFailure" xml:space="preserve">
     <value>Microsoft Defender Security Health service is broken.</value>
   </data>
+  <data name="UIModel_InstallDotNetRuntime_10_Description" xml:space="preserve">
+    <value>.NET is a successor to .NET Framework. You need to install .NET 10 if an app was developed within this framework, even if you already installed any other .NET versions. NET 10 is a rapid branch version. Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
+  </data>
+  <data name="UIModel_InstallDotNetRuntime_10_Title" xml:space="preserve">
+    <value>Install latest .NET Desktop Runtime 10 x64</value>
+  </data>
 </root>

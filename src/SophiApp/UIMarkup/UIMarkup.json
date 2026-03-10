@@ -776,7 +776,7 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "InstallVisualC_x86",
+        "Name": "InstallDotNetRuntime_10",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 332,
@@ -784,7 +784,7 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "InstallVisualC_x64",
+        "Name": "InstallVisualC_x86",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 333,
@@ -792,7 +792,7 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "RKNBypass",
+        "Name": "InstallVisualC_x64",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 334,
@@ -800,7 +800,7 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "RegistryBackup",
+        "Name": "RKNBypass",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 335,
@@ -808,10 +808,18 @@
         "Windows11Support": "True"
     },
     {
-        "Name": "RemoveWindowsAI",
+        "Name": "RegistryBackup",
         "Type": "CheckBox",
         "Tag": "System",
         "ViewId": 336,
+        "Windows10Support": "True",
+        "Windows11Support": "True"
+    },
+    {
+        "Name": "RemoveWindowsAI",
+        "Type": "CheckBox",
+        "Tag": "System",
+        "ViewId": 337,
         "Windows10Support": "False",
         "Windows11Support": "True"
     },

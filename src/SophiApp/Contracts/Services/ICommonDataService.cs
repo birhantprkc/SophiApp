@@ -74,6 +74,11 @@ namespace SophiApp.Contracts.Services
         NetRelease? LatestReleaseNET9 { get; }
 
         /// <summary>
+        /// Gets .NET 10 latest release.
+        /// </summary>
+        NetRelease? LatestReleaseNET10 { get; }
+
+        /// <summary>
         /// Gets Visual C++ latest release.
         /// </summary>
         VCRelease? LatestReleaseVC { get; }

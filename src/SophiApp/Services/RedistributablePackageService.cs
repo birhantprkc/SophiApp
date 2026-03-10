@@ -14,18 +14,22 @@ namespace SophiApp.Services
     {
         /// <inheritdoc/>
         public void DeleteInstallerLogs(string logPattern)
-        {
-            Directory.GetFileSystemEntries(Path.GetTempPath(), logPattern, SearchOption.TopDirectoryOnly).ForEach(File.Delete);
-        }
+            => Directory.GetFileSystemEntries(Path.GetTempPath(), logPattern, SearchOption.TopDirectoryOnly).ForEach(File.Delete);
 
         /// <inheritdoc/>
         public Version GetInstalledPackageVersionOrDefault(string name)
         {
             // Checking whether VC_redist builds installed
             var packageCache = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Package Cache");
-            // Choose the first item if user has more than one package installed
-            var installer = Directory.GetFileSystemEntries(packageCache, name, SearchOption.AllDirectories).FirstOrDefault();
-            return installer is null ? new Version("0.0.0") : Version.Parse(FileVersionInfo.GetVersionInfo(installer).FileVersion!);
+
+            if (Directory.Exists(packageCache))
+            {
+                // Choose the first item if user has more than one package installed
+                var installer = Directory.GetFileSystemEntries(packageCache, name, SearchOption.AllDirectories).FirstOrDefault();
+                return installer is null ? new Version("0.0.0") : Version.Parse(FileVersionInfo.GetVersionInfo(installer).FileVersion!);
+            }
+
+            return new Version("0.0.0");
         }
     }
 }

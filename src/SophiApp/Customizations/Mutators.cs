@@ -1650,6 +1650,26 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Download and install latest version .NET 10 desktop runtime from the Microsoft resources.
+        /// </summary>
+        /// <param name="enable">.NET Desktop install state.</param>
+        public static void InstallDotNetRuntime_10(bool enable)
+        {
+            if (enable)
+            {
+                var latestRelease = DataService.LatestReleaseNET10!;
+                var releaseVersion = $"windowsdesktop-runtime-{latestRelease.Version}-win-x64.exe";
+                var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string;
+                var offlineInstaller = Path.Combine(downloadFolder!, releaseVersion);
+                var downloadUrl = $"https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/{latestRelease.Version}/{releaseVersion}";
+                HttpService.DownloadFile(downloadUrl, offlineInstaller);
+                ProcessService.WaitForExit(offlineInstaller, "/install /passive /norestart");
+                File.Delete(offlineInstaller);
+                RedistributablePackageService.DeleteInstallerLogs("Microsoft_Windows_Desktop_Runtime*.log");
+            }
+        }
+
+        /// <summary>
         /// Download and install latest version Visual C++ x86 from the Microsoft resources.
         /// </summary>
         /// <param name="enable">Visual C++ install state.</param>

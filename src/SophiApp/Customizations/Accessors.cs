@@ -1152,6 +1152,16 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Get .NET 10 desktop runtime version.
+        /// </summary>
+        public static bool InstallDotNetRuntime_10()
+        {
+            var latestVersion = DataService.LatestReleaseNET10?.Version ?? throw new InvalidOperationException("Url https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json is not available");
+            var installedVersion = RedistributablePackageService.GetInstalledPackageVersionOrDefault($"windowsdesktop-runtime-{latestVersion}-win-x64.exe");
+            return latestVersion > installedVersion ? false : throw new InvalidOperationException("Latest .NET version is installed");
+        }
+
+        /// <summary>
         /// Get Microsoft Visual C++ x86 redistributable package version.
         /// </summary>
         public static bool InstallVisualC_x86()

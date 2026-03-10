@@ -91,6 +91,9 @@ namespace SophiApp.Services
         public NetRelease? LatestReleaseNET9 { get; private set; }
 
         /// <inheritdoc/>
+        public NetRelease? LatestReleaseNET10 { get; private set; }
+
+        /// <inheritdoc/>
         public VCRelease? LatestReleaseVC { get; private set; }
 
         /// <inheritdoc/>
@@ -108,7 +111,7 @@ namespace SophiApp.Services
         {
             try
             {
-                await Task.WhenAll(SetLatestAppReleaseAsync(), SetNet8ReleaseAsync(), SetNet9ReleaseAsync(), SetVCReleaseAsync(), SetLatestHEVCReleaseAsync());
+                await Task.WhenAll(SetLatestAppReleaseAsync(), SetNet8ReleaseAsync(), SetNet9ReleaseAsync(), SetNet10ReleaseAsync(), SetVCReleaseAsync(), SetLatestHEVCReleaseAsync());
                 return Result.Success();
             }
             catch
@@ -155,6 +158,18 @@ namespace SophiApp.Services
             try
             {
                 LatestReleaseNET9 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json", 5);
+            }
+            catch
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task SetNet10ReleaseAsync()
+        {
+            try
+            {
+                LatestReleaseNET10 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json", 5);
             }
             catch
             {
