@@ -12,7 +12,7 @@ namespace SophiApp.Contracts.Services
     public interface IRequirementsService
     {
         /// <summary>
-        /// Get os bitness.
+        /// Get OS bitness.
         /// </summary>
         Result GetOsBitness();
 
@@ -22,7 +22,7 @@ namespace SophiApp.Contracts.Services
         Result GetWmiState();
 
         /// <summary>
-        /// Get os version.
+        /// Get OS version.
         /// </summary>
         Result GetOsVersion();
 
@@ -57,8 +57,8 @@ namespace SophiApp.Contracts.Services
         Result GetPendingRebootState();
 
         /// <summary>
-        /// Detect latest version of the app.
+        /// Get app latest version.
         /// </summary>
-        Result AppUpdateDetection();
+        Result GetAppUpdate();
     }
 }

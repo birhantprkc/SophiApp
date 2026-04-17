@@ -20,19 +20,19 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class ModelService : IModelService
     {
-        private readonly ICommonDataService commonDataService;
+        private readonly ICommonDataService dataService;
         private readonly ResourceMap resourceMap = ResourceManager.Current.MainResourceMap.GetSubtree("Resources");
-        private readonly IAppxPackagesService appxPackagesService;
+        private readonly IAppxPackagesService packagesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelService"/> class.
         /// </summary>
-        /// <param name="appxPackagesService">A service for working with appx packages API.</param>
-        /// <param name="commonDataService">A service for transferring app data between layers of DI.</param>
-        public ModelService(IAppxPackagesService appxPackagesService, ICommonDataService commonDataService)
+        /// <param name="packagesService">A service for working with appx packages API.</param>
+        /// <param name="dataService">A service for transferring app data between layers of DI.</param>
+        public ModelService(IAppxPackagesService packagesService, ICommonDataService dataService)
         {
-            this.appxPackagesService = appxPackagesService;
-            this.commonDataService = commonDataService;
+            this.packagesService = packagesService;
+            this.dataService = dataService;
         }
 
         /// <inheritdoc/>
@@ -42,15 +42,15 @@ namespace SophiApp.Services
             {
                 var json = Encoding.UTF8.GetString(Properties.Resources.UIMarkup);
                 var jsonModels = Json.ToObject<IEnumerable<UIModelDto>>(json)
-                    .Where(dto => commonDataService.IsWindows11 ? dto.Windows11Support : dto.Windows10Support)
+                    .Where(dto => dataService.OsProperties.IsLTSC ? dto.Windows11LTSC : dto.Windows11)
                     .Select(dto =>
                     {
                         return dto.Type switch
                         {
                             UIModelType.CheckBox => BuildCheckBoxModel(dto),
-                            UIModelType.RadioButtonsGroup2 => BuildRadioButtons2Group(dto),
-                            UIModelType.RadioButtonsGroup3 => BuildRadioButtons3Group(dto),
-                            UIModelType.RadioButtonsGroup4 => BuildRadioButtons4Group(dto),
+                            UIModelType.RadioButtonsGroup2 => BuildRadioButtonsGroup2(dto),
+                            UIModelType.RadioButtonsGroup3 => BuildRadioButtonsGroup3(dto),
+                            UIModelType.RadioButtonsGroup4 => BuildRadioButtonsGroup4(dto),
                             _ => throw new TypeAccessException($"An invalid type is specified: {dto.Type}"),
                         };
                     })
@@ -68,7 +68,7 @@ namespace SophiApp.Services
             {
                 var models = new List<UIModel>();
                 var viewId = 400;
-                var packages = appxPackagesService.GetPackages(forAllUsers);
+                var packages = packagesService.GetPackages(forAllUsers);
                 var excludedAppx = new List<string>()
             {
                 // Dolby Access
@@ -160,7 +160,7 @@ namespace SophiApp.Services
                 {
                     if (!excludedAppx.Contains(packages[i].Id.Name) && File.Exists(packages[i].Logo.LocalPath) && packages[i].DisplayName != string.Empty)
                     {
-                        var dto = new UIModelDto(name: packages[i].DisplayName, type: UIModelType.UwpApp, tag: UICategoryTag.UWP, viewId: viewId + i, windows10Support: true, windows11Support: true, numberOfItems: 0);
+                        var dto = new UIModelDto(name: packages[i].DisplayName, type: UIModelType.UwpApp, tag: UICategoryTag.UWP, viewId: viewId + i, windows11LTSC: true, windows11: true);
                         models.Add(new UIUwpAppModel(dto, packages[i].Id.Name, packages[i].Logo));
                     }
                 }
@@ -244,7 +244,7 @@ namespace SophiApp.Services
             return new UICheckBoxModel(dto, title, description, accessor, mutator);
         }
 
-        private UIModel BuildRadioButtons2Group(UIModelDto dto)
+        private UIModel BuildRadioButtonsGroup2(UIModelDto dto)
         {
             var title = GetTitle(dto.Name);
             var description = GetDescription(dto.Name);
@@ -255,7 +255,7 @@ namespace SophiApp.Services
             return new UIRadioButtonsGroup2Model(dto, title, description, title_1, title_2, accessor, mutator);
         }
 
-        private UIModel BuildRadioButtons3Group(UIModelDto dto)
+        private UIModel BuildRadioButtonsGroup3(UIModelDto dto)
         {
             var title = GetTitle(dto.Name);
             var description = GetDescription(dto.Name);
@@ -267,7 +267,7 @@ namespace SophiApp.Services
             return new UIRadioButtonsGroup3Model(dto, title, description, title_1, title_2, title_3, accessor, mutator);
         }
 
-        private UIModel BuildRadioButtons4Group(UIModelDto dto)
+        private UIModel BuildRadioButtonsGroup4(UIModelDto dto)
         {
             var title = GetTitle(dto.Name);
             var description = GetDescription(dto.Name);

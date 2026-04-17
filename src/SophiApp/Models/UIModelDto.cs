@@ -18,18 +18,16 @@ namespace SophiApp.Models
         /// <param name="type">Model type.</param>
         /// <param name="tag">Model tag.</param>
         /// <param name="viewId">Model view id.</param>
-        /// <param name="windows10Support">Model supported Windows 10.</param>
-        /// <param name="windows11Support">Model supported Windows 11.</param>
-        /// <param name="numberOfItems">Number of child items.</param>
-        public UIModelDto(string name, UIModelType type, UICategoryTag tag, int viewId, bool windows10Support, bool windows11Support, int numberOfItems)
+        /// <param name="windows11LTSC">Model supported Windows 11 LTSC.</param>
+        /// <param name="windows11">Model supported Windows 11.</param>
+        public UIModelDto(string name, UIModelType type, UICategoryTag tag, int viewId, bool windows11LTSC, bool windows11)
         {
             Name = name;
             Type = type;
             Tag = tag;
             ViewId = viewId;
-            Windows10Support = windows10Support;
-            Windows11Support = windows11Support;
-            NumberOfItems = numberOfItems;
+            Windows11LTSC = windows11LTSC;
+            Windows11 = windows11;
         }
 
         /// <summary>
@@ -53,18 +51,13 @@ namespace SophiApp.Models
         public int ViewId { get; init; }
 
         /// <summary>
-        /// Gets a value indicating whether Windows 10 support.
+        /// Gets a value indicating whether Windows 11 LTSC support.
         /// </summary>
-        public bool Windows10Support { get; init; }
+        public bool Windows11LTSC { get; init; }
 
         /// <summary>
         /// Gets a value indicating whether Windows 11 support.
         /// </summary>
-        public bool Windows11Support { get; init; }
-
-        /// <summary>
-        /// Gets a number of child items.
-        /// </summary>
-        public int NumberOfItems { get; init; }
+        public bool Windows11 { get; init; }
     }
 }

@@ -12,12 +12,6 @@ namespace SophiApp.Contracts.Services
     public interface IOsService
     {
         /// <summary>
-        /// Get the hash for the change of state "News and Interests" widget on the taskbar.
-        /// </summary>
-        /// <param name="enable">Enable or disable widget.</param>
-        uint GetNewsAndInterestsHash(bool enable);
-
-        /// <summary>
         /// Get service <paramref name="name"/> state.
         /// </summary>
         /// <param name="name">Service name.</param>
@@ -39,7 +33,7 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Determines that VBSCRIPT component is installed.
         /// </summary>
-        bool VBSIsInstalled();
+        bool VBSInstalled();
 
         /// <summary>
         /// Try start, without any exceptions, Windows service.

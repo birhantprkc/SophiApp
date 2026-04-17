@@ -4,11 +4,12 @@
 
 namespace SophiApp.Services
 {
+    using SophiApp.Contracts.Services;
+    using SophiApp.Helpers;
     using System;
     using System.Diagnostics;
     using System.Management;
-    using SophiApp.Contracts.Services;
-    using SophiApp.Helpers;
+    using System.Runtime.InteropServices;
 
     /// <inheritdoc/>
     public class InstrumentationService : IInstrumentationService
@@ -19,9 +20,12 @@ namespace SophiApp.Services
             try
             {
                 using var managementObject = new ManagementObjectSearcher(scope: "root\\CIMV2", queryString: "SELECT * FROM Win32_OperatingSystem")
-                    .Get().Cast<ManagementBaseObject>().First();
+                    .Get()
+                    .Cast<ManagementBaseObject>()
+                    .First();
 
-                var osProperties = new OsProperties(managementObject.Properties);
+                var osCaption = BrandingFormatString("%WINDOWS_LONG%");
+                var osProperties = new OsProperties(managementObject.Properties, osCaption);
                 App.Logger.LogOsProperties(osProperties);
                 return osProperties;
             }
@@ -29,23 +33,6 @@ namespace SophiApp.Services
             {
                 App.Logger.LogOsPropertiesException(ex);
                 return new OsProperties();
-            }
-        }
-
-        /// <inheritdoc/>
-        public ManagementObject? GetUwpAppsManagementOrDefault()
-        {
-            try
-            {
-                return new ManagementObjectSearcher(scope: "root\\CIMV2\\mdm\\dmmap", queryString: "SELECT * FROM MDM_EnterpriseModernAppManagement_AppManagement01")
-                    .Get()
-                    .Cast<ManagementObject>()
-                    .First();
-            }
-            catch (Exception ex)
-            {
-                App.Logger.LogUwpAppsManagementException(ex);
-                return null;
             }
         }
 
@@ -178,5 +165,8 @@ namespace SophiApp.Services
                 .FirstOrDefault(e => e.GetPropertyValue("ClassGuid") is not null && e.GetPropertyValue("PNPClass").Equals("ComputeAccelerator"));
             return managementObject is not null;
         }
+
+        [DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
+        private static extern string BrandingFormatString(string sFormat);
     }
 }

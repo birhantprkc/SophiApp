@@ -14,7 +14,6 @@ namespace SophiApp.ViewModels
     /// </summary>
     public partial class RequirementsFailureViewModel : ObservableRecipient
     {
-        private readonly IUpdateService updateService;
         private readonly ICommonDataService dataService;
 
         [ObservableProperty]
@@ -26,79 +25,75 @@ namespace SophiApp.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RequirementsFailureViewModel"/> class.
         /// </summary>
-        /// <param name="updateService">A service for dealing with OS updates.</param>
         /// <param name="dataService">A service for transferring app data between layers of DI.</param>
-        public RequirementsFailureViewModel(IUpdateService updateService, ICommonDataService dataService)
+        public RequirementsFailureViewModel(ICommonDataService dataService)
         {
-            this.updateService = updateService;
             this.dataService = dataService;
         }
 
         /// <summary>
-        /// Prepares the ViewModel for display in UI.
+        /// Localize <see cref="RequirementsFailure"/> reason text.
         /// </summary>
         /// <param name="reason">Reason for failure requirements.</param>
-        public void PrepareForNavigation(RequirementsFailure reason)
-        {
-            TitleText = LocalizeTitleText(reason);
-            DescriptionText = LocalizeDescriptionText(reason);
-        }
-
-        /// <summary>
-        /// Start receiving OS updates.
-        /// </summary>
-        /// <param name="reason">Reasons for failure requirements.</param>
-        public void RunOsUpdate(RequirementsFailure reason)
+        public void LocalizeFailureReason(RequirementsFailure reason)
         {
             switch (reason)
             {
-                case RequirementsFailure.Win11BuildLess22631:
-                case RequirementsFailure.Win11UbrLess2283:
-                case RequirementsFailure.Win10UnsupportedBuild:
-                    updateService.RunOsUpdate();
+                case RequirementsFailure.DefenderControlledFolderEnable:
+                    TitleText = "OsRequirementsFailure_DefenderControlledFolderEnable".GetLocalized();
                     break;
-
-                default:
+                case RequirementsFailure.DefenderFileMissing:
+                    TitleText = string.Format("OsRequirementsFailure_DefenderFilesMissing".GetLocalized(), dataService.DefenderFileMissing);
                     break;
-            }
-        }
-
-        private string LocalizeTitleText(RequirementsFailure reason)
-        {
-            return reason switch
-            {
-                RequirementsFailure.DefenderControlledFolderEnable => "OsRequirementsFailure_DefenderControlledFolderEnable".GetLocalized(),
-                RequirementsFailure.DefenderFileMissing => string.Format("OsRequirementsFailure_DefenderFilesMissing".GetLocalized(), dataService.DefenderFileMissing),
-                RequirementsFailure.DefenderIsBroken => "OsRequirementsFailure_DefenderIsBroken".GetLocalized(),
-                RequirementsFailure.DefenderSecurityHealthFailure => "OsRequirementsFailure_DefenderSecurityHealthFailure".GetLocalized(),
-                RequirementsFailure.DefenderServiceFailure => string.Format("OsRequirementsFailure_DefenderServiceBroken".GetLocalized(), dataService.DefenderServiceBroken),
-                RequirementsFailure.DefenderSettingsPageHidden => "OsRequirementsFailure_DefenderSettingsPageHidden".GetLocalized(),
-                RequirementsFailure.EventLogBroken => "OsRequirementsFailure_EventLogStopped".GetLocalized(),
-                RequirementsFailure.FeatureExperiencePackRemoved => "OsRequirementsFailure_FeatureExperiencePackRemoved".GetLocalized(),
-                RequirementsFailure.Is32BitOs => "OsRequirementsFailure_Is32BitOs".GetLocalized(),
-                RequirementsFailure.MalwareDetected => string.Format("OsRequirementsFailure_MalwareDetected".GetLocalized(), dataService.DetectedMalware),
-                RequirementsFailure.MsStoreRemoved => "OsRequirementsFailure_MsStoreRemoved".GetLocalized(),
-                RequirementsFailure.RebootRequired => "OsRequirementsFailure_RebootRequired".GetLocalized(),
-                RequirementsFailure.RunByNotLoggedUser => "OsRequirementsFailure_RunByNotLoggedUser".GetLocalized(),
-                RequirementsFailure.Win10EnterpriseSVersion => "OsRequirementsFailure_Win10EnterpriseSVersion".GetLocalized(),
-                RequirementsFailure.Win10UnsupportedBuild => string.Format("OsRequirementsFailure_Win10UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.Win10UpdateBuildRevisionLess3448 => string.Format("OsRequirementsFailure_Win10UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.Win11BuildLess22631 => string.Format("OsRequirementsFailure_Win11UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.Win11UbrLess2283 => string.Format("OsRequirementsFailure_Win11UnsupportedBuild".GetLocalized(), dataService.OsProperties.BuildNumber, dataService.OsProperties.UpdateBuildRevision),
-                RequirementsFailure.WMIBroken => "OsRequirementsFailure_WmiBroken".GetLocalized(),
-                _ => throw new ArgumentOutOfRangeException(paramName: nameof(reason), message: $"Value: {reason} is not found in {typeof(RequirementsFailure).FullName} enumeration.")
-            };
-        }
-
-        private string LocalizeDescriptionText(RequirementsFailure reason)
-        {
-            switch (reason)
-            {
+                case RequirementsFailure.DefenderIsBroken:
+                    TitleText = "OsRequirementsFailure_DefenderIsBroken".GetLocalized();
+                    break;
+                case RequirementsFailure.DefenderSecurityHealthFailure:
+                    TitleText = "OsRequirementsFailure_DefenderSecurityHealthFailure".GetLocalized();
+                    break;
+                case RequirementsFailure.DefenderServiceFailure:
+                    TitleText = string.Format("OsRequirementsFailure_DefenderServiceBroken".GetLocalized(), dataService.DefenderServiceBroken);
+                    break;
+                case RequirementsFailure.DefenderSettingsPageHidden:
+                    TitleText = "OsRequirementsFailure_DefenderSettingsPageHidden".GetLocalized();
+                    break;
+                case RequirementsFailure.EventLogBroken:
+                    TitleText = "OsRequirementsFailure_EventLogStopped".GetLocalized();
+                    break;
+                case RequirementsFailure.FeatureExperiencePackRemoved:
+                    TitleText = "OsRequirementsFailure_FeatureExperiencePackRemoved".GetLocalized();
+                    break;
+                case RequirementsFailure.Is32BitOs:
+                    TitleText = "OsRequirementsFailure_Is32BitOs".GetLocalized();
+                    break;
                 case RequirementsFailure.MalwareDetected:
-                    return "OsRequirementsFailure_ReinstallWindows".GetLocalized();
-
+                    TitleText = string.Format("OsRequirementsFailure_MalwareDetected".GetLocalized(), dataService.DetectedMalware);
+                    DescriptionText = "OsRequirementsFailure_ReinstallWindows".GetLocalized();
+                    break;
+                case RequirementsFailure.MsStoreRemoved:
+                    TitleText = "OsRequirementsFailure_MsStoreRemoved".GetLocalized();
+                    break;
+                case RequirementsFailure.RebootRequired:
+                    TitleText = "OsRequirementsFailure_RebootRequired".GetLocalized();
+                    break;
+                case RequirementsFailure.RunByNotLoggedUser:
+                    TitleText = "OsRequirementsFailure_RunByNotLoggedUser".GetLocalized();
+                    DescriptionText = "OsRequirementsFailure_RunByAdmin".GetLocalized();
+                    break;
+                case RequirementsFailure.WinUnsupportedBuild:
+                    TitleText = "OsRequirementsFailure_UnsupportedBuild".GetLocalized();
+                    DescriptionText = string.Format("OsRequirementsFailure_UsingBuild".GetLocalized(), dataService.OsProperties.Caption, dataService.OsProperties.DisplayVersion);
+                    break;
+                case RequirementsFailure.WinUnsupportedUBR:
+                    var supportedUBR = dataService.OsProperties.IsLTSC ? dataService.SupportedUBR.Win11LTSC : dataService.SupportedUBR.Win11;
+                    TitleText = string.Format("OsRequirementsFailure_UnsupportedUBR".GetLocalized(), dataService.OsProperties.Build, dataService.OsProperties.UBR, supportedUBR);
+                    DescriptionText = "OsRequirementsFailure_RunWinUpdate".GetLocalized();
+                    break;
+                case RequirementsFailure.WMIBroken:
+                    TitleText = "OsRequirementsFailure_WmiBroken".GetLocalized();
+                    break;
                 default:
-                    return string.Empty;
+                    throw new ArgumentOutOfRangeException(paramName: nameof(reason), message: $"Value: {reason} is not found in {typeof(RequirementsFailure).FullName} enumeration.");
             }
         }
     }

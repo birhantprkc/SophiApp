@@ -171,7 +171,7 @@
         "Name": "FileExplorerCompactMode",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 207,
+        "ViewId": 206,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -179,7 +179,7 @@
         "Name": "OneDriveFileExplorerAd",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 208,
+        "ViewId": 207,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -187,7 +187,7 @@
         "Name": "SnapAssist",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 209,
+        "ViewId": 208,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -195,7 +195,7 @@
         "Name": "FileTransferDialog",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 210,
+        "ViewId": 209,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -203,7 +203,7 @@
         "Name": "RecycleBinDeleteConfirmation",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 211,
+        "ViewId": 210,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -211,7 +211,7 @@
         "Name": "QuickAccessRecentFiles",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 212,
+        "ViewId": 211,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -219,7 +219,7 @@
         "Name": "QuickAccessFrequentFolders",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 213,
+        "ViewId": 212,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -227,7 +227,7 @@
         "Name": "TaskbarAlignment",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 214,
+        "ViewId": 213,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -235,7 +235,7 @@
         "Name": "TaskbarWidgets",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 215,
+        "ViewId": 214,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -243,7 +243,7 @@
         "Name": "TaskbarSearch",
         "Type": "RadioButtonsGroup4",
         "Tag": "Personalization",
-        "ViewId": 217,
+        "ViewId": 215,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -251,7 +251,7 @@
         "Name": "SearchHighlights",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 219,
+        "ViewId": 216,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -259,7 +259,7 @@
         "Name": "TaskViewButton",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 221,
+        "ViewId": 217,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -267,15 +267,15 @@
         "Name": "SecondsInSystemClock",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 226,
+        "ViewId": 218,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
     {
         "Name": "ShowClockInNotificationCenter",
         "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 227,
+        "Tag": "Personalization",
+        "ViewId": 219,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -283,7 +283,7 @@
         "Name": "TaskbarCombine",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 228,
+        "ViewId": 220,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -291,7 +291,7 @@
         "Name": "TaskbarEndTask",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 229,
+        "ViewId": 221,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -299,7 +299,7 @@
         "Name": "ControlPanelView",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 230,
+        "ViewId": 222,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -307,7 +307,7 @@
         "Name": "WindowsColorMode",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 231,
+        "ViewId": 223,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -315,7 +315,7 @@
         "Name": "AppColorMode",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 232,
+        "ViewId": 224,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -323,7 +323,7 @@
         "Name": "FirstLogonAnimation",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 234,
+        "ViewId": 225,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -331,7 +331,7 @@
         "Name": "JPEGWallpapersQuality",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 235,
+        "ViewId": 226,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -339,7 +339,7 @@
         "Name": "ShortcutsSuffix",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 236,
+        "ViewId": 227,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -347,7 +347,7 @@
         "Name": "PrtScnSnippingTool",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 237,
+        "ViewId": 228,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -355,7 +355,7 @@
         "Name": "AppsLanguageSwitch",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 238,
+        "ViewId": 229,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -363,7 +363,7 @@
         "Name": "AeroShaking",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 239,
+        "ViewId": 230,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -371,7 +371,7 @@
         "Name": "Cursors",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 240,
+        "ViewId": 231,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -379,7 +379,7 @@
         "Name": "FolderGroupBy",
         "Type": "RadioButtonsGroup2",
         "Tag": "Personalization",
-        "ViewId": 241,
+        "ViewId": 232,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -387,7 +387,7 @@
         "Name": "NavigationPaneExpand",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 242,
+        "ViewId": 233,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -395,7 +395,7 @@
         "Name": "RecentlyAddedStartApps",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 243,
+        "ViewId": 234,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -403,7 +403,7 @@
         "Name": "MostUsedStartApps",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 244,
+        "ViewId": 235,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -411,7 +411,7 @@
         "Name": "StartRecommendedSection",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 245,
+        "ViewId": 236,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -419,7 +419,7 @@
         "Name": "StartRecommendationsTips",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 246,
+        "ViewId": 237,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -427,7 +427,7 @@
         "Name": "StartAccountNotifications",
         "Type": "CheckBox",
         "Tag": "Personalization",
-        "ViewId": 247,
+        "ViewId": 238,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -435,7 +435,7 @@
         "Name": "StartLayout",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 248,
+        "ViewId": 239,
         "Windows11LTSC": "True",
         "Windows11": "False"
     },
@@ -587,7 +587,7 @@
         "Name": "ReservedStorage",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 319,
+        "ViewId": 318,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -595,7 +595,7 @@
         "Name": "F1HelpPage",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 320,
+        "ViewId": 319,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -603,7 +603,7 @@
         "Name": "NumLock",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 321,
+        "ViewId": 320,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -611,7 +611,7 @@
         "Name": "CapsLock",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 322,
+        "ViewId": 321,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -619,7 +619,7 @@
         "Name": "StickyShift",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 323,
+        "ViewId": 322,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -627,7 +627,7 @@
         "Name": "Autoplay",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 324,
+        "ViewId": 323,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -635,7 +635,7 @@
         "Name": "ThumbnailCacheRemoval",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 325,
+        "ViewId": 324,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -643,7 +643,7 @@
         "Name": "SaveRestartableApps",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 326,
+        "ViewId": 325,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -651,7 +651,7 @@
         "Name": "RestorePreviousFolders",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 327,
+        "ViewId": 326,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -659,7 +659,7 @@
         "Name": "NetworkDiscovery",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 328,
+        "ViewId": 327,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -667,7 +667,7 @@
         "Name": "DefaultTerminalApp",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
-        "ViewId": 329,
+        "ViewId": 328,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -675,7 +675,7 @@
         "Name": "InstallDotNetRuntime_8",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 330,
+        "ViewId": 329,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -683,7 +683,7 @@
         "Name": "InstallDotNetRuntime_9",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 331,
+        "ViewId": 330,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -691,7 +691,7 @@
         "Name": "InstallDotNetRuntime_10",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 332,
+        "ViewId": 331,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -699,7 +699,7 @@
         "Name": "InstallVisualC_x86",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 333,
+        "ViewId": 332,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -707,15 +707,7 @@
         "Name": "InstallVisualC_x64",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 334,
-        "Windows11LTSC": "True",
-        "Windows11": "True"
-    },
-    {
-        "Name": "RKNBypass",
-        "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 335,
+        "ViewId": 333,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -723,7 +715,7 @@
         "Name": "RegistryBackup",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 336,
+        "ViewId": 334,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -731,7 +723,7 @@
         "Name": "RemoveWindowsAI",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 337,
+        "ViewId": 335,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -739,7 +731,7 @@
         "Name": "XboxGameBar",
         "Type": "CheckBox",
         "Tag": "Gaming",
-        "ViewId": 403,
+        "ViewId": 400,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -747,7 +739,7 @@
         "Name": "XboxGameTips",
         "Type": "CheckBox",
         "Tag": "Gaming",
-        "ViewId": 404,
+        "ViewId": 401,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -755,7 +747,7 @@
         "Name": "GPUScheduling",
         "Type": "CheckBox",
         "Tag": "Gaming",
-        "ViewId": 405,
+        "ViewId": 402,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -883,7 +875,7 @@
         "Name": "EditWithClipchampContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 704,
+        "ViewId": 702,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -891,7 +883,7 @@
         "Name": "EditWithPhotosContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 705,
+        "ViewId": 703,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -899,7 +891,7 @@
         "Name": "EditWithPaintContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 706,
+        "ViewId": 704,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -907,7 +899,7 @@
         "Name": "PrintCMDContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 708,
+        "ViewId": 705,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -915,7 +907,7 @@
         "Name": "CompressedFolderNewContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 713,
+        "ViewId": 706,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -923,7 +915,7 @@
         "Name": "MultipleInvokeContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 714,
+        "ViewId": 707,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -931,7 +923,7 @@
         "Name": "UseStoreOpenWith",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 715,
+        "ViewId": 708,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -939,7 +931,7 @@
         "Name": "OpenWindowsTerminalContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 716,
+        "ViewId": 709,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -947,7 +939,7 @@
         "Name": "OpenWindowsTerminalAdminContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 717,
+        "ViewId": 710,
         "Windows11LTSC": "False",
         "Windows11": "True"
     }

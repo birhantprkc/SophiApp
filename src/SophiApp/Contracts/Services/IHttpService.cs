@@ -23,12 +23,6 @@ namespace SophiApp.Contracts.Services
         void DownloadOneDrive(string saveTo);
 
         /// <summary>
-        /// Downloads HEVC appx.
-        /// </summary>
-        /// <param name="fileName">Full path to save the file.</param>
-        Task DownloadHEVCAppxAsync(string fileName);
-
-        /// <summary>
         /// Sends a GET request to the specified url and returns deserialize value.
         /// </summary>
         /// <param name="url">A string that represents the request url.</param>
@@ -36,13 +30,6 @@ namespace SophiApp.Contracts.Services
         /// <typeparam name="T">Type of return value.</typeparam>
         Task<T> GetFromJsonAsync<T>(string url, double timeout)
             where T : class;
-
-        /// <summary>
-        /// Sends a GET request to the specified url and returns string value.
-        /// </summary>
-        /// <param name="url">A string that represents the request url.</param>
-        /// <param name="timeout"><see cref="HttpClient"/> timeout in seconds.</param>
-        Task<string?> GetUrlAsStringOrDefaultAsync(string url, double timeout);
 
         /// <summary>
         /// Opens a resource using an url.

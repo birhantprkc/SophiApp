@@ -6,18 +6,12 @@ namespace SophiApp.Contracts.Services
 {
     using CSharpFunctionalExtensions;
     using SophiApp.Helpers;
-    using Windows.ApplicationModel;
 
     /// <summary>
     /// A service for transferring app data between DI layers.
     /// </summary>
     public interface ICommonDataService
     {
-        /// <summary>
-        /// Gets a value indicating whether the OS is Windows 11.
-        /// </summary>
-        bool IsWindows11 { get; }
-
         /// <summary>
         /// Gets a values of OS properties.
         /// </summary>
@@ -59,29 +53,29 @@ namespace SophiApp.Contracts.Services
         AppVersion? LatestAppRelease { get; }
 
         /// <summary>
-        /// Gets Microsoft HEVC video extension latest release from GitHub repository.
-        /// </summary>
-        PackageVersion? LatestHEVCRelease { get; }
-
-        /// <summary>
         /// Gets .NET 8 latest release.
         /// </summary>
-        NetRelease? LatestReleaseNET8 { get; }
+        DotNetRelease? LatestReleaseNET8 { get; }
 
         /// <summary>
         /// Gets .NET 9 latest release.
         /// </summary>
-        NetRelease? LatestReleaseNET9 { get; }
+        DotNetRelease? LatestReleaseNET9 { get; }
 
         /// <summary>
         /// Gets .NET 10 latest release.
         /// </summary>
-        NetRelease? LatestReleaseNET10 { get; }
+        DotNetRelease? LatestReleaseNET10 { get; }
 
         /// <summary>
         /// Gets Visual C++ latest release.
         /// </summary>
         VCRelease? LatestReleaseVC { get; }
+
+        /// <summary>
+        /// Gets app supported OS builds version.
+        /// </summary>
+        SupportedUBR SupportedUBR { get; }
 
         /// <summary>
         /// Initialize <see cref="ICommonDataService"/> data.

@@ -51,8 +51,8 @@ namespace SophiApp.Services
 
             Log.Information("Windows version: {Caption:l}", properties.Caption);
             Log.Information("Windows edition: {Edition:l}", properties.Edition);
-            Log.Information("Windows build: {Build}.{Ubr}", properties.BuildNumber, properties.UpdateBuildRevision);
-            Log.Information("Computer name: {ComputerName:l}", properties.CSName);
+            Log.Information("Windows build: {Build}.{Ubr}", properties.Build, properties.UBR);
+            Log.Information("Computer name: {ComputerName:l}", properties.ComputerName);
             Log.Information("User name: {UserName:l}", Environment.UserName);
             Log.Information("User culture: {Culture:l}", CultureInfo.CurrentCulture.EnglishName);
             Log.Information("User region: {Region:l}", RegionInfo.CurrentRegion.EnglishName);
@@ -61,8 +61,8 @@ namespace SophiApp.Services
 
             shellViewModel.LoggedActions =
             [
-                $"Windows version: {properties.Caption}", $"Windows edition: {properties.Edition}", $"Windows build: {properties.BuildNumber}.{properties.UpdateBuildRevision}",
-                $"Computer name: {properties.CSName}", $"User name: {Environment.UserName}", $"User culture: {CultureInfo.CurrentCulture.EnglishName}",
+                $"Windows version: {properties.Caption}", $"Windows edition: {properties.Edition}", $"Windows build: {properties.Build}.{properties.UBR}",
+                $"Computer name: {properties.ComputerName}", $"User name: {Environment.UserName}", $"User culture: {CultureInfo.CurrentCulture.EnglishName}",
                 $"User region: {RegionInfo.CurrentRegion.EnglishName}", $"User date and time: {dateTime}", $"User time zone: {TimeZoneInfo.Local.DisplayName}",
             ];
         }
@@ -313,7 +313,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogNavigateToRequirementsFailure(RequirementsFailure failure)
+        public void LogFailureReason(RequirementsFailure failure)
         {
             Log.Information("Failure to meet {Service:l} requirements due to {Name}", nameof(IRequirementsService), failure);
             shellViewModel.LoggedActions.Add($"Failure to meet {nameof(IRequirementsService)} requirements due to {failure}");
@@ -324,13 +324,6 @@ namespace SophiApp.Services
         {
             Log.Error(exception, "[WRN] Failed to obtain the {Property:l} in the {Service:l}: {Message}", nameof(OsProperties), nameof(IInstrumentationService), exception.Message);
             shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain the {nameof(OsProperties)} in the {nameof(IInstrumentationService)}: {exception.Message}");
-        }
-
-        /// <inheritdoc/>
-        public void LogUwpAppsManagementException(Exception exception)
-        {
-            Log.Error(exception, "[WRN] Failed to obtain UWP apps API in the {Service:l}: {Message}", nameof(IInstrumentationService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain UWP apps API in the {nameof(IInstrumentationService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>
@@ -355,13 +348,6 @@ namespace SophiApp.Services
         {
             Log.Error(exception, "[WRN] Failed to obtain register as sender API in the {Service:l}: {Message}", nameof(IAppNotificationService), exception.Message);
             shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain register as sender API in the {nameof(IAppNotificationService)}: {exception.Message}");
-        }
-
-        /// <inheritdoc/>
-        public void LogOsUpdateException(Exception exception)
-        {
-            Log.Error(exception, "[WRN] Failed to obtain os update API in the {Service:l}: {Message}", nameof(IUpdateService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain os update API in the {nameof(IUpdateService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>

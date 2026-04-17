@@ -1,4 +1,4 @@
-﻿// <copyright file="MsTerminalSettingsDto.cs" company="Team Sophia">
+﻿// <copyright file="MsTerminalSettings.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace SophiApp.Helpers
     /// <summary>
     /// Data transfer object for Windows Terminal settings.
     /// </summary>
-    public class MsTerminalSettingsDto
+    public class MsTerminalSettings
     {
         /// <summary>
         /// Gets or sets profile settings.

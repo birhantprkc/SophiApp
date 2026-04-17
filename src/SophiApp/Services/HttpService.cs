@@ -7,20 +7,11 @@ namespace SophiApp.Services
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
     using System.Diagnostics;
-    using System.Text.RegularExpressions;
     using System.Xml;
 
     /// <inheritdoc/>
     public class HttpService : IHttpService
     {
-        private readonly Regex hrefPattern = new (@"(?inx)
-<a \s [^>]*
-    href \s* = \s*
-        (?<q> ['""] )
-            (?<url> [^""]+ )
-        \k<q>
-[^>]* >");
-
         /// <inheritdoc/>
         public void DownloadFile(string url, string saveTo)
         {
@@ -41,35 +32,9 @@ namespace SophiApp.Services
             var xml = new XmlDocument();
             xml.LoadXml(result);
             var url = xml?.DocumentElement?.SelectSingleNode("update/amd64binary")?.Attributes?.GetNamedItem("url")?.InnerText ?? string.Empty;
-
-            if (!string.IsNullOrWhiteSpace(url))
-            {
-                using var urlStream = client.GetStreamAsync(url).Result;
-                using var fileStream = new FileStream(saveTo, FileMode.Create);
-                urlStream.CopyTo(fileStream);
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task DownloadHEVCAppxAsync(string fileName)
-        {
-            #pragma warning disable S6608 // Prefer indexing instead of "Enumerable" methods on types implementing "IList"
-
-            var content = new List<KeyValuePair<string, string>>
-            {
-                new ("type", "url"), new ("url", "https://apps.microsoft.com/detail/9N4WGH0Z6VHQ"), new ("ring", "Retail"), new ("lang", "en-US"),
-            };
-            using var client = new HttpClient();
-            using var request = new HttpRequestMessage(HttpMethod.Post, "https://store.rg-adguard.net/api/GetFiles");
-            request.Content = new FormUrlEncodedContent(content);
-            using var response = await client.SendAsync(request);
-            var result = await response.Content.ReadAsStringAsync();
-            var appxLink = hrefPattern.Matches(result).Last().Value.Replace("<a href=\"", null).Replace("\" rel=\"noreferrer\">", null);
-            using var stream = await client.GetStreamAsync(appxLink);
-            using var file = File.Create(fileName);
-            await stream.CopyToAsync(file);
-
-            #pragma warning restore S6608 // Prefer indexing instead of "Enumerable" methods on types implementing "IList"
+            using var urlStream = client.GetStreamAsync(url).Result;
+            using var fileStream = new FileStream(saveTo, FileMode.Create);
+            urlStream.CopyTo(fileStream);
         }
 
         /// <inheritdoc/>
@@ -83,17 +48,6 @@ namespace SophiApp.Services
             var content = await response.Content.ReadAsStringAsync();
             var result = await Json.ToObjectAsync<T>(content);
             return result;
-        }
-
-        /// <inheritdoc/>
-        public async Task<string?> GetUrlAsStringOrDefaultAsync(string url, double timeout)
-        {
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(timeout);
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = await client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            return response.IsSuccessStatusCode ? content : null;
         }
 
         /// <inheritdoc/>

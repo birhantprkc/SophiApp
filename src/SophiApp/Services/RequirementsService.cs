@@ -60,7 +60,7 @@ namespace SophiApp.Services
                 using var verifyRepository = processService.WaitForExit(name: "cmd.exe", arguments: "/c winmgmt /verifyrepository");
                 var serviceIsRun = wmiService.Status == ServiceControllerStatus.Running;
                 var repoIsConsistent = verifyRepository.ExitCode.Equals(0);
-                var osPropertiesIsCorrect = dataService.OsProperties.BuildNumber != -1;
+                var osPropertiesIsCorrect = dataService.OsProperties.Build != -1;
                 App.Logger.LogWMIState(wmiService.Status, verifyRepository.ExitCode, repoIsConsistent);
                 return osPropertiesIsCorrect && serviceIsRun && repoIsConsistent ? Result.Success() : Result.Failure(nameof(RequirementsFailure.WMIBroken));
             }
@@ -74,13 +74,12 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public Result GetOsVersion()
         {
-            return dataService.OsProperties.BuildNumber switch
+            return dataService.OsProperties.Build switch
             {
-                var build when dataService.IsWindows11 && build < 22631 => Result.Failure(nameof(RequirementsFailure.Win11BuildLess22631)),
-                var build when dataService.IsWindows11 && build.Equals(22631) && dataService.OsProperties.UpdateBuildRevision < 2283 => Result.Failure(nameof(RequirementsFailure.Win11UbrLess2283)),
-                var build when !dataService.IsWindows11 && !build.Equals(19045) => Result.Failure(nameof(RequirementsFailure.Win10UnsupportedBuild)),
-                var build when !dataService.IsWindows11 && !build.Equals(19045) && dataService.OsProperties.Edition.Contains("EnterpriseS", StringComparison.InvariantCultureIgnoreCase) => Result.Failure(nameof(RequirementsFailure.Win10EnterpriseSVersion)),
-                var build when !dataService.IsWindows11 && build.Equals(19045) && dataService.OsProperties.UpdateBuildRevision < 3448 => Result.Failure(nameof(RequirementsFailure.Win10UpdateBuildRevisionLess3448)),
+                var build when dataService.OsProperties.IsLTSC && build < 26100 => Result.Failure(nameof(RequirementsFailure.WinUnsupportedBuild)),
+                var _ when dataService.OsProperties.IsLTSC && dataService.OsProperties.UBR < dataService.SupportedUBR.Win11LTSC => Result.Failure(nameof(RequirementsFailure.WinUnsupportedUBR)),
+                var build when !dataService.OsProperties.IsLTSC && build < 26200 => Result.Failure(nameof(RequirementsFailure.WinUnsupportedBuild)),
+                var _ when !dataService.OsProperties.IsLTSC && dataService.OsProperties.UBR < dataService.SupportedUBR.Win11 => Result.Failure(nameof(RequirementsFailure.WinUnsupportedUBR)),
                 _ => Result.Success()
             };
         }
@@ -155,7 +154,8 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public Result GetFeatureExperiencePackState() => packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.FeatureExperiencePackRemoved));
+        public Result GetFeatureExperiencePackState()
+            => packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.FeatureExperiencePackRemoved));
 
         /// <inheritdoc/>
         public Result GetEventLogState()
@@ -172,7 +172,8 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public Result GetMicrosoftStoreState() => packagesService.PackageExist("Microsoft.WindowsStore") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsStoreRemoved));
+        public Result GetMicrosoftStoreState()
+            => packagesService.PackageExist("Microsoft.WindowsStore") ? Result.Success() : Result.Failure(nameof(RequirementsFailure.MsStoreRemoved));
 
         /// <inheritdoc/>
         public Result GetPendingRebootState()
@@ -190,7 +191,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public Result AppUpdateDetection()
+        public Result GetAppUpdate()
         {
             var latestVersion = dataService.LatestAppRelease?.SophiApp_release ?? new Version(0, 0, 0);
 

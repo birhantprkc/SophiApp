@@ -8,25 +8,11 @@ namespace SophiApp.Services
     using System.Runtime.InteropServices;
     using System.ServiceProcess;
     using Microsoft.Win32;
-    using System.Text;
     using SophiApp.Contracts.Services;
 
     /// <inheritdoc/>
     public class OsService : IOsService
     {
-        /// <inheritdoc/>
-        public uint GetNewsAndInterestsHash(bool enable)
-        {
-            // https://forums.mydigitallife.net/threads/taskbarda-widgets-registry-change-is-now-blocked.88547/#post-1849006
-            var machineId = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\SQMClient")?.GetValue("MachineId") as string ?? string.Empty;
-            var combinedId = $"{machineId}_{(enable ? 0 : 2)}".ToCharArray();
-            Array.Reverse(combinedId);
-            var bytesIn = Encoding.Unicode.GetBytes(new string(combinedId));
-            var bytesOut = new byte[4];
-            _ = HashData(bytesIn, 0x53, bytesOut, bytesOut.Length);
-            return BitConverter.ToUInt32(bytesOut, 0);
-        }
-
         /// <inheritdoc/>
         public ServiceControllerStatus GetStatus(string name)
         {
@@ -79,7 +65,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool VBSIsInstalled()
+        public bool VBSInstalled()
         {
             var vbsPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\CapabilityIndex\\VBSCRIPT";
             return Registry.LocalMachine.OpenSubKey(vbsPath) is not null;

@@ -29,11 +29,6 @@ namespace SophiApp.Contracts.Services
         OsProperties GetOsPropertiesOrDefault();
 
         /// <summary>
-        /// Get UWP apps management.
-        /// </summary>
-        ManagementObject? GetUwpAppsManagementOrDefault();
-
-        /// <summary>
         /// Get the owner of the process.
         /// </summary>
         /// <param name="process">The process for which to find an owner.</param>

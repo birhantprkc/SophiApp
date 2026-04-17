@@ -11,7 +11,6 @@ namespace SophiApp.Customizations
     using SophiApp.Extensions;
     using SophiApp.Helpers;
     using System;
-    using System.Globalization;
     using System.ServiceProcess;
     using System.Text;
     using Windows.ApplicationModel;
@@ -286,15 +285,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Get File Explorer ribbon state.
-        /// </summary>
-        public static int FileExplorerRibbon()
-        {
-            var ribbonValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Ribbon")?.GetValue("MinimizedStateTabletModeOff") as int? ?? -1;
-            return ribbonValue.Equals(0) ? 1 : 2;
-        }
-
-        /// <summary>
         /// Get File Explorer compact mode state.
         /// </summary>
         public static bool FileExplorerCompactMode()
@@ -383,23 +373,7 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get Search on the taskbar state.
         /// </summary>
-        public static int TaskbarSearchWindows10()
-        {
-            var smallIconsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarSmallIcons") as int? ?? -1;
-            var searchModeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("SearchboxTaskbarMode") as int? ?? -1;
-
-            if (smallIconsValue.Equals(1))
-            {
-                throw new InvalidOperationException("Small taskbar icons mode is enabled");
-            }
-
-            return searchModeValue + 1;
-        }
-
-        /// <summary>
-        /// Get Search on the taskbar state.
-        /// </summary>
-        public static int TaskbarSearchWindows11()
+        public static int TaskbarSearch()
         {
             var smallIconsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("TaskbarSmallIcons") as int? ?? -1;
             var searchModeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("SearchboxTaskbarMode") as int? ?? -1;
@@ -421,17 +395,7 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get search highlights state.
         /// </summary>
-        public static bool SearchHighlightsWindows10()
-        {
-            var dynamicContent = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Feeds\\DSB")?.GetValue("ShowDynamicContent") as int? ?? -1;
-            var dynamicSearch = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings")?.GetValue("IsDynamicSearchBoxEnabled") as int? ?? -1;
-            return !(dynamicContent.Equals(0) && dynamicSearch.Equals(0));
-        }
-
-        /// <summary>
-        /// Get search highlights state.
-        /// </summary>
-        public static bool SearchHighlightsWindows11()
+        public static bool SearchHighlights()
         {
             var searchEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Search")?.GetValue("BingSearchEnabled") as int? ?? -1;
             var searchSuggestions = Registry.CurrentUser.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("DisableSearchBoxSuggestions") as int? ?? -1;
@@ -447,20 +411,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Get Cortana button taskbar state.
-        /// </summary>
-        public static bool CortanaButton()
-        {
-            if (AppxPackagesService.PackageExist("Microsoft.549981C3F5F10"))
-            {
-                var buttonValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("ShowCortanaButton") as int? ?? -1;
-                return !buttonValue.Equals(0);
-            }
-
-            throw new InvalidOperationException("AppX package Microsoft.549981C3F5F10 is not installed");
-        }
-
-        /// <summary>
         /// Get taskbar task view button state.
         /// </summary>
         public static bool TaskViewButton()
@@ -470,48 +420,12 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Get News and Interests state.
-        /// </summary>
-        public static bool NewsInterests()
-        {
-            var feedsValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Feeds")?.GetValue("ShellFeedsTaskbarViewMode") as int? ?? -1;
-            return !feedsValue.Equals(2);
-        }
-
-        /// <summary>
         /// Get taskbar people icon state.
         /// </summary>
         public static bool PeopleTaskbar()
         {
             var peopleValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People")?.GetValue("PeopleBand") as int? ?? -1;
             return !peopleValue.Equals(0);
-        }
-
-        /// <summary>
-        /// Get Meet Now icon state.
-        /// </summary>
-        public static bool MeetNow()
-        {
-            var meetValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3")?.GetValue("Settings") as byte[] ?? new byte[10];
-            return !meetValue[9].Equals(128);
-        }
-
-        /// <summary>
-        /// Get Windows Ink Workspace button state.
-        /// </summary>
-        public static bool WindowsInkWorkspace()
-        {
-            var workspaceValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\PenWorkspace")?.GetValue("PenWorkspaceButtonDesiredVisibility") as int? ?? -1;
-            return workspaceValue.Equals(1);
-        }
-
-        /// <summary>
-        /// Get notification area icons state.
-        /// </summary>
-        public static bool NotificationAreaIcons()
-        {
-            var trayValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("EnableAutoTray") as int? ?? -1;
-            return trayValue.Equals(0);
         }
 
         /// <summary>
@@ -573,15 +487,6 @@ namespace SophiApp.Customizations
         {
             var themeValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Feeds")?.GetValue("AppsUseLightTheme") as int? ?? -1;
             return themeValue.Equals(0) ? 1 : 2;
-        }
-
-        /// <summary>
-        /// Get "New App Installed" indicator state.
-        /// </summary>
-        public static bool NewAppInstalledNotification()
-        {
-            var alertValue = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer")?.GetValue("NoNewAppAlert") as int? ?? -1;
-            return !alertValue.Equals(1);
         }
 
         /// <summary>
@@ -694,19 +599,8 @@ namespace SophiApp.Customizations
                 throw new InvalidOperationException("A third-party Start Menu is installed");
             }
 
-            var startAppsPath = DataService.IsWindows11 ? "Software\\Microsoft\\Windows\\CurrentVersion\\Start" : "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer";
-            var startAppList = DataService.IsWindows11 ? "ShowFrequentList" : "NoStartMenuMFUprogramsList";
-            var usedStartApps = Registry.CurrentUser.OpenSubKey(startAppsPath)?.GetValue(startAppList) as int? ?? -1;
-            return !usedStartApps.Equals(DataService.IsWindows11 ? 0 : 1);
-        }
-
-        /// <summary>
-        /// Get Start menu app suggestions state.
-        /// </summary>
-        public static bool AppSuggestions()
-        {
-            var contentValue = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager")?.GetValue("SubscribedContent-338388Enabled") as int? ?? -1;
-            return !contentValue.Equals(0);
+            var usedStartApps = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start")?.GetValue("ShowFrequentList") as int? ?? -1;
+            return !usedStartApps.Equals(0);
         }
 
         /// <summary>
@@ -935,15 +829,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Get folders launch separate process state.
-        /// </summary>
-        public static bool FoldersLaunchSeparateProcess()
-        {
-            var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?.GetValue("SeparateProcess") as int? ?? -1;
-            return isEnabled.Equals(1);
-        }
-
-        /// <summary>
         /// Get reserved storage state.
         /// </summary>
         public static bool ReservedStorage()
@@ -1039,21 +924,6 @@ namespace SophiApp.Customizations
                 .First(plan => plan.IsActive);
 
             return activePlan.InstanceID.Contains("{8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c}") ? 1 : 2;
-        }
-
-        /// <summary>
-        /// Get RKN bypass state.
-        /// </summary>
-        public static bool RKNBypass()
-        {
-            // If current region is Russia
-            if (RegionInfo.CurrentRegion.GeoId.Equals(203))
-            {
-                var isEnabled = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings")?.GetValue("AutoConfigURL") as string ?? string.Empty;
-                return isEnabled.Equals("https://p.thenewone.lol:8443/proxy.pac");
-            }
-
-            throw new InvalidOperationException("Due to your Windows GeoId, this function is not applicable for you");
         }
 
         /// <summary>
@@ -1191,32 +1061,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Gets HEVC state.
-        /// </summary>
-        public static bool HEVC()
-        {
-            var appxVideoVersion = DataService.LatestHEVCRelease ?? throw new InvalidOperationException("Url https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/HEVC/HEVC_version.txt is not available");
-            var appxVideo = AppxPackagesService.GetPackageOrDefault("Microsoft.HEVCVideoExtension") ?? throw new InvalidOperationException("AppX package Microsoft.HEVCVideoExtension is not installed");
-            _ = AppxPackagesService.GetPackageOrDefault("Microsoft.Windows.Photos") ?? throw new InvalidOperationException("AppX package Microsoft.Windows.Photos is not installed");
-            return appxVideo.Id.Version.Major >= appxVideoVersion.Major && appxVideo.Id.Version.Minor >= appxVideoVersion.Minor && appxVideo.Id.Version.Build >= appxVideoVersion.Build;
-        }
-
-        /// <summary>
-        /// Gets Cortana auto start state.
-        /// </summary>
-        public static bool CortanaAutostart()
-        {
-            if (AppxPackagesService.PackageExist("Microsoft.549981C3F5F10"))
-            {
-                var pathCortana = "Local Settings\\Software\\Microsoft\\Windows\\CurrentVersion\\AppModel\\SystemAppData\\Microsoft.549981C3F5F10_8wekyb3d8bbwe\\CortanaStartupId";
-                var stateCortana = Registry.ClassesRoot.OpenSubKey(pathCortana)?.GetValue("State") as int? ?? -1;
-                return stateCortana != 1;
-            }
-
-            throw new InvalidOperationException("AppX package Cortana is not installed");
-        }
-
-        /// <summary>
         /// Gets Xbox game bar state.
         /// </summary>
         public static bool XboxGameBar()
@@ -1274,7 +1118,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool CleanupTask()
         {
-            if (DataService.IsWindows11 && !OsService.VBSIsInstalled())
+            if (!OsService.VBSInstalled())
             {
                 throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
@@ -1294,7 +1138,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool SoftwareDistributionTask()
         {
-            if (DataService.IsWindows11 && !OsService.VBSIsInstalled())
+            if (!OsService.VBSInstalled())
             {
                 throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
@@ -1314,7 +1158,7 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool TempTask()
         {
-            if (DataService.IsWindows11 && !OsService.VBSIsInstalled())
+            if (!OsService.VBSInstalled())
             {
                 throw new InvalidOperationException("VBSCRIPT component is not installed");
             }
@@ -1540,26 +1384,6 @@ else
         }
 
         /// <summary>
-        /// Get "Cast to Device" item in the media files and folders context menu state.
-        /// </summary>
-        public static bool CastToDeviceContext()
-        {
-            var userCastToDevice = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{7AD84985-87B4-4a16-BE58-8B72A5B390F7}") as string;
-            var machineCastToDevice = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{7AD84985-87B4-4a16-BE58-8B72A5B390F7}") as string;
-            return userCastToDevice is null && machineCastToDevice is null;
-        }
-
-        /// <summary>
-        /// Get "Share" context menu item state.
-        /// </summary>
-        public static bool ShareContext()
-        {
-            var userShareContext = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}") as string;
-            var machineShareContext = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{E2BF9676-5F8F-435C-97EB-11607A5BEDF7}") as string;
-            return userShareContext is null && machineShareContext is null;
-        }
-
-        /// <summary>
         /// Get "Edit With Clipchamp" item in the media files context menu state.
         /// </summary>
         public static bool EditWithClipchampContext()
@@ -1604,31 +1428,6 @@ else
         }
 
         /// <summary>
-        /// Get "Edit with Paint 3D" item in the media files context menu state.
-        /// </summary>
-        public static bool EditWithPaint3DContext()
-        {
-            if (AppxPackagesService.PackageExist("Microsoft.MSPaint"))
-            {
-                var accessValues = new List<object?>()
-                {
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.bmp\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.gif\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.jpe\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.jpeg\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.jpg\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.png\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.tif\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                    Registry.ClassesRoot.OpenSubKey("SystemFileAssociations\\.tiff\\Shell\\3D Edit")?.GetValue("ProgrammaticAccessOnly"),
-                };
-
-                return !accessValues.TrueForAll(value => value is not null);
-            }
-
-            throw new InvalidOperationException("AppX package Microsoft.MSPaint is not installed");
-        }
-
-        /// <summary>
         /// Get "Print" item in the .bat and .cmd files context menu state.
         /// </summary>
         public static bool PrintCMDContext()
@@ -1640,56 +1439,6 @@ else
             };
 
             return !accessOnlyValues.TrueForAll(value => value is not null);
-        }
-
-        /// <summary>
-        /// Get "Include in Library" item in the folders and drives context menu state.
-        /// </summary>
-        public static bool IncludeInLibraryContext()
-        {
-            var libraryContextValue = Registry.ClassesRoot.OpenSubKey("Folder\\ShellEx\\ContextMenuHandlers\\Library Location")?.GetValue(string.Empty) as string;
-            return !libraryContextValue?.Equals("-{3dad6c5d-2167-4cae-9914-f99e41c12cfa}") ?? true;
-        }
-
-        /// <summary>
-        /// Get Send to" item in the folders context menu state.
-        /// </summary>
-        public static bool SendToContext()
-        {
-            var sendToContext = Registry.ClassesRoot.OpenSubKey("AllFilesystemObjects\\shellex\\ContextMenuHandlers\\SendTo")?.GetValue(string.Empty) as string;
-            return !sendToContext?.Equals("-{7BA4C740-9E81-11CF-99D3-00AA004AE837}") ?? true;
-        }
-
-        /// <summary>
-        /// Get "Bitmap image" item in the "New" context menu state.
-        /// </summary>
-        public static bool BitmapImageNewContext()
-        {
-            var paintPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.System)}\\mspaint.exe";
-
-            if (File.Exists(paintPath))
-            {
-                var bmpShellNew = Registry.ClassesRoot.OpenSubKey(".bmp\\ShellNew");
-                return !(bmpShellNew is null);
-            }
-
-            throw new InvalidOperationException($"File {paintPath} does not exist");
-        }
-
-        /// <summary>
-        /// Get "Rich Text Document" item in the "New" context menu state.
-        /// </summary>
-        public static bool RichTextDocumentNewContext()
-        {
-            var wordpadPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)}\\Windows NT\\Accessories\\wordpad.exe";
-
-            if (File.Exists(wordpadPath))
-            {
-                var rtfShellNew = Registry.ClassesRoot.OpenSubKey(".rtf\\ShellNew");
-                return !(rtfShellNew is null);
-            }
-
-            throw new InvalidOperationException($"File {wordpadPath} does not exist");
         }
 
         /// <summary>
@@ -1754,7 +1503,7 @@ else
                     {
                         var terminalSettings = $@"{Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%")}\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json";
                         var jsonSettings = File.ReadAllText(terminalSettings, Encoding.UTF8);
-                        var jsonProfile = Json.ToObject<MsTerminalSettingsDto>(jsonSettings);
+                        var jsonProfile = Json.ToObject<MsTerminalSettings>(jsonSettings);
                         return jsonProfile?.Profiles?.Defaults?.Elevate ?? false;
                     }
                     catch (ArgumentException)
@@ -1767,23 +1516,6 @@ else
             }
 
             throw new InvalidOperationException($"AppX package {appxTerminal} is not installed");
-        }
-
-        /// <summary>
-        /// Get images edit from context menu state.
-        /// </summary>
-        public static bool ImagesEditContext()
-        {
-            var paintPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.System)}\\mspaint.exe";
-
-            if (File.Exists(paintPath))
-            {
-                var accessPath = "SystemFileAssociations\\image\\shell\\edit";
-                var accessValue = Registry.ClassesRoot.OpenSubKey(accessPath)?.GetValue("ProgrammaticAccessOnly") as string;
-                return accessValue is null;
-            }
-
-            throw new InvalidOperationException($"File {paintPath} does not exist");
         }
     }
 }

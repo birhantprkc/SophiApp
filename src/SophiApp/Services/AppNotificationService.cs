@@ -20,10 +20,7 @@ public class AppNotificationService : IAppNotificationService
     /// Initializes a new instance of the <see cref="AppNotificationService"/> class.
     /// </summary>
     /// <param name="groupPolicyService">A service for working with group policy API.</param>
-    public AppNotificationService(IGroupPolicyService groupPolicyService)
-    {
-        this.groupPolicyService = groupPolicyService;
-    }
+    public AppNotificationService(IGroupPolicyService groupPolicyService) => this.groupPolicyService = groupPolicyService;
 
     /// <inheritdoc/>
     public void EnableToastNotification()
@@ -81,13 +78,10 @@ public class AppNotificationService : IAppNotificationService
         var xml = new XmlDocument();
         xml.LoadXml(payload);
         var toast = new ToastNotification(xml);
-        ToastNotificationManager.CreateToastNotifier("SophiApp")
-            .Show(toast);
+        var toastNotifier = ToastNotificationManager.CreateToastNotifier("SophiApp");
+        toastNotifier.Show(toast);
     }
 
     /// <inheritdoc/>
-    public void UnregisterCleanupProtocol()
-    {
-        Registry.ClassesRoot.DeleteSubKeyTree("WindowsCleanup", false);
-    }
+    public void UnregisterCleanupProtocol() => Registry.ClassesRoot.DeleteSubKeyTree("WindowsCleanup", false);
 }

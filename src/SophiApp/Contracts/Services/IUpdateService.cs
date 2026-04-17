@@ -4,6 +4,8 @@
 
 namespace SophiApp.Contracts.Services
 {
+    using SophiApp.Helpers;
+
     /// <summary>
     /// A service for working with Windows and app updates.
     /// </summary>
@@ -17,7 +19,8 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Start receiving OS updates.
         /// </summary>
-        void RunOsUpdate();
+        /// <param name="reason">Update reasons.</param>
+        void RunOsUpdate(RequirementsFailure reason);
 
         /// <summary>
         /// Run receiving updates for other Microsoft products.

@@ -19,29 +19,13 @@ namespace SophiApp.Services
         /// Initializes a new instance of the <see cref="AppxPackagesService"/> class.
         /// </summary>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
-        public AppxPackagesService(IPowerShellService powerShellService)
-        {
-            this.powerShellService = powerShellService;
-        }
+        public AppxPackagesService(IPowerShellService powerShellService) => this.powerShellService = powerShellService;
 
         /// <inheritdoc/>
         public bool PackageExist(string packageId, bool allUsers = false)
         {
-            if (allUsers)
-            {
-                return packageManager.FindPackages()
-                    .Any(package => package.Id.Name.Equals(packageId));
-            }
-
-            return packageManager.FindPackagesForUser(string.Empty)
-                .Any(package => package.Id.Name.Equals(packageId));
-        }
-
-        /// <inheritdoc/>
-        public Package? GetPackageOrDefault(string packageId, bool allUsers = false)
-        {
             var packages = allUsers ? packageManager.FindPackages() : packageManager.FindPackagesForUser(string.Empty);
-            return packages?.FirstOrDefault(package => package.Id.Name.Equals(packageId));
+            return packages.Any(package => package.Id.Name.Equals(packageId));
         }
 
         /// <inheritdoc/>
@@ -75,8 +59,5 @@ namespace SophiApp.Services
             var currentUserScript = $"Get-AppxPackage -Name *{packageId}* -PackageTypeFilter Bundle | Remove-AppxPackage";
             _ = powerShellService.Invoke(allUsers ? allUsersScript : currentUserScript);
         }
-
-        /// <inheritdoc/>
-        public async Task InstallFromFileAsync(string appxPath) => await packageManager.AddPackageAsync(new Uri(appxPath), null, DeploymentOptions.None);
     }
 }

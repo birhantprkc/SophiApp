@@ -11,7 +11,6 @@ namespace SophiApp.Services
     using System;
     using System.Reflection;
     using System.Threading.Tasks;
-    using Windows.ApplicationModel;
 
     /// <inheritdoc/>
     public class CommonDataService : ICommonDataService
@@ -32,6 +31,7 @@ namespace SophiApp.Services
             this.instrumentationService = instrumentationService;
             this.httpService = httpService;
             OsProperties = new ();
+            SupportedUBR = new ();
         }
 
         /// <summary>
@@ -53,9 +53,6 @@ namespace SophiApp.Services
         /// Gets url hovering cursor.
         /// </summary>
         public static InputCursor UrlCursor => HandCursor;
-
-        /// <inheritdoc/>
-        public bool IsWindows11 { get => OsProperties.Caption.Contains("11"); }
 
         /// <inheritdoc/>
         public OsProperties OsProperties { get; private set; }
@@ -82,19 +79,19 @@ namespace SophiApp.Services
         public AppVersion? LatestAppRelease { get; private set; }
 
         /// <inheritdoc/>
-        public PackageVersion? LatestHEVCRelease { get; private set; }
+        public DotNetRelease? LatestReleaseNET8 { get; private set; }
 
         /// <inheritdoc/>
-        public NetRelease? LatestReleaseNET8 { get; private set; }
+        public DotNetRelease? LatestReleaseNET9 { get; private set; }
 
         /// <inheritdoc/>
-        public NetRelease? LatestReleaseNET9 { get; private set; }
-
-        /// <inheritdoc/>
-        public NetRelease? LatestReleaseNET10 { get; private set; }
+        public DotNetRelease? LatestReleaseNET10 { get; private set; }
 
         /// <inheritdoc/>
         public VCRelease? LatestReleaseVC { get; private set; }
+
+        /// <inheritdoc/>
+        public SupportedUBR SupportedUBR { get; private set; }
 
         /// <inheritdoc/>
         public async Task InitializeAsync()
@@ -102,6 +99,7 @@ namespace SophiApp.Services
             await Task.Run(() =>
             {
                 OsProperties = instrumentationService.GetOsPropertiesOrDefault();
+                OsProperties.IsLTSC = OsProperties.Caption.Contains("LTSC");
                 App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
             });
         }
@@ -111,7 +109,14 @@ namespace SophiApp.Services
         {
             try
             {
-                await Task.WhenAll(SetLatestAppReleaseAsync(), SetNet8ReleaseAsync(), SetNet9ReleaseAsync(), SetNet10ReleaseAsync(), SetVCReleaseAsync(), SetLatestHEVCReleaseAsync());
+                await Task.WhenAll(
+                        SetLatestAppReleaseAsync(),
+                        SetNet8ReleaseAsync(),
+                        SetNet9ReleaseAsync(),
+                        SetNet10ReleaseAsync(),
+                        SetVCReleaseAsync(),
+                        SetSupportedBuildsAsync());
+
                 return Result.Success();
             }
             catch
@@ -145,7 +150,7 @@ namespace SophiApp.Services
         {
             try
             {
-                LatestReleaseNET8 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json", 5);
+                LatestReleaseNET8 = await httpService.GetFromJsonAsync<DotNetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json", 5);
             }
             catch
             {
@@ -157,7 +162,7 @@ namespace SophiApp.Services
         {
             try
             {
-                LatestReleaseNET9 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json", 5);
+                LatestReleaseNET9 = await httpService.GetFromJsonAsync<DotNetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json", 5);
             }
             catch
             {
@@ -169,7 +174,7 @@ namespace SophiApp.Services
         {
             try
             {
-                LatestReleaseNET10 = await httpService.GetFromJsonAsync<NetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json", 5);
+                LatestReleaseNET10 = await httpService.GetFromJsonAsync<DotNetRelease>("https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json", 5);
             }
             catch
             {
@@ -189,17 +194,16 @@ namespace SophiApp.Services
             }
         }
 
-        private async Task SetLatestHEVCReleaseAsync()
+        private async Task SetSupportedBuildsAsync()
         {
-            var release = await httpService.GetUrlAsStringOrDefaultAsync("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/HEVC/HEVC_version.txt", 5);
-
-            if (release is null)
+            try
             {
-                return;
+                SupportedUBR = await httpService.GetFromJsonAsync<SupportedUBR>("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/supported_windows_builds.json", 5);
             }
-
-            var version = release.Replace("\n", null).Split('.');
-            LatestHEVCRelease = new PackageVersion(Convert.ToUInt16(version[0]), Convert.ToUInt16(version[1]), Convert.ToUInt16(version[2]), Convert.ToUInt16(version[3]));
+            catch
+            {
+                await Task.CompletedTask;
+            }
         }
     }
 }

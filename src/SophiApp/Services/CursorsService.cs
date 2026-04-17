@@ -29,7 +29,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void ReloadCursors() => _ = SystemParametersInfo(0x0057, 0, 0, 0);
+        public void ReloadCursors() => SystemParametersInfo(0x0057, 0, 0, 0);
 
         /// <inheritdoc/>
         public void SetDefaultCursors()

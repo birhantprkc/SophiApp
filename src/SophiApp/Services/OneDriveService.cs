@@ -12,7 +12,6 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class OneDriveService : IOneDriveService
     {
-        private readonly ICommonDataService dataService;
         private readonly IHttpService httpService;
         private readonly IPowerShellService powerShellService;
         private readonly IProcessService processService;
@@ -21,19 +20,16 @@ namespace SophiApp.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="OneDriveService"/> class.
         /// </summary>
-        /// <param name="dataService">A service for transferring app data between DI layers.</param>
         /// <param name="httpService">A service for working with HTTP API.</param>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
         /// <param name="processService">A service for working with Windows <see cref="System.Diagnostics.Process"/> API.</param>
         /// <param name="scheduledTaskService">A service for working with Scheduled Task API.</param>
         public OneDriveService(
-            ICommonDataService dataService,
             IHttpService httpService,
             IPowerShellService powerShellService,
             IProcessService processService,
             IScheduledTaskService scheduledTaskService)
         {
-            this.dataService = dataService;
             this.httpService = httpService;
             this.powerShellService = powerShellService;
             this.processService = processService;
@@ -43,7 +39,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public string GetSetupFileOrDefault()
         {
-            var setupFile = dataService.IsWindows11 ? Path.Combine(SystemDirectory, "OneDriveSetup.exe") : Path.Combine(GetFolderPath(SpecialFolder.Windows), "SysWOW64", "OneDriveSetup.exe");
+            var setupFile = Path.Combine(SystemDirectory, "OneDriveSetup.exe");
             return File.Exists(setupFile) ? setupFile : string.Empty;
         }
 

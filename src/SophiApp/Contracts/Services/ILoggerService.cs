@@ -243,22 +243,16 @@ namespace SophiApp.Contracts.Services
         void LogUrlIsAvailable(string url, bool state);
 
         /// <summary>
-        /// Write <see cref="RequirementsFailure"/> reason in the <see cref="IRequirementsService"/> in the log.
+        /// Write <see cref="RequirementsFailure"/> reason in the log.
         /// </summary>
         /// <param name="failure">A failure reason.</param>
-        void LogNavigateToRequirementsFailure(RequirementsFailure failure);
+        void LogFailureReason(RequirementsFailure failure);
 
         /// <summary>
         /// Handles an exception when accessing to <see cref="OsProperties"/> in the <see cref="IInstrumentationService"/>.
         /// </summary>
         /// <param name="exception">Represents errors that occur during <see cref="OsProperties"/> are retrieved.</param>
         void LogOsPropertiesException(Exception exception);
-
-        /// <summary>
-        /// Handles an exception when accessing to UWP apps update API in the <see cref="IInstrumentationService"/>.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogUwpAppsManagementException(Exception exception);
 
         /// <summary>
         /// Handles an exception when accessing to process owner in the <see cref="IInstrumentationService"/>.
@@ -283,12 +277,6 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="exception">Represents errors that occur during app executing.</param>
         void LogRegisterNotificationSenderException(Exception exception);
-
-        /// <summary>
-        /// Handles an exception when accessing to os update in the <see cref="IUpdateService"/>.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogOsUpdateException(Exception exception);
 
         /// <summary>
         /// Handles an exception when accessing to WMI API in the <see cref="IRequirementsService"/>.

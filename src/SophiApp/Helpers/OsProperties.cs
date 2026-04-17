@@ -8,7 +8,7 @@ namespace SophiApp.Helpers
     using Microsoft.Win32;
 
     /// <summary>
-    /// Data transfer object for os properties.
+    /// Data transfer object for OS properties.
     /// </summary>
     public class OsProperties
     {
@@ -17,49 +17,62 @@ namespace SophiApp.Helpers
         /// </summary>
         public OsProperties()
         {
-            Caption = "n/a";
-            BuildNumber = -1;
-            UpdateBuildRevision = -1;
-            Edition = "n/a";
-            CSName = "n/a";
+            Caption = "N/A";
+            Build = -1;
+            DisplayVersion = "N/A";
+            UBR = -1;
+            Edition = "N/A";
+            ComputerName = "N/A";
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OsProperties"/> class.
         /// </summary>
-        /// <param name="properties">A collection of os properties.</param>
-        public OsProperties(PropertyDataCollection properties)
+        /// <param name="properties">A collection of OS properties.</param>
+        /// <param name="caption">OS caption version.</param>
+        public OsProperties(PropertyDataCollection properties, string caption)
         {
-            Caption = (string?)properties[nameof(Caption)]?.Value ?? "n/a";
-            BuildNumber = int.Parse((string?)properties[nameof(BuildNumber)]?.Value ?? "-1");
-            UpdateBuildRevision = (int?)RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion")?.GetValue("UBR") ?? -1;
-            Edition = (string?)RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion")?.GetValue("EditionID") ?? "n/a";
-            CSName = (string?)properties[nameof(CSName)]?.Value ?? "n/a";
+            Caption = caption ?? "N/A";
+            Build = int.Parse((string?)properties["BuildNumber"]?.Value ?? "-1");
+            DisplayVersion = (string?)RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion")?.GetValue("DisplayVersion") ?? "N/A";
+            UBR = (int?)RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion")?.GetValue("UBR") ?? -1;
+            Edition = (string?)RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("Software\\Microsoft\\Windows NT\\CurrentVersion")?.GetValue("EditionID") ?? "N/A";
+            ComputerName = (string?)properties["CSName"]?.Value ?? "N/A";
         }
 
         /// <summary>
-        /// Gets os caption version.
+        /// Gets OS caption version.
         /// </summary>
         public string Caption { get; init; }
 
         /// <summary>
-        /// Gets os build version.
+        /// Gets OS build version.
         /// </summary>
-        public int BuildNumber { get; init; }
+        public int Build { get; init; }
 
         /// <summary>
-        /// Gets os UBR version.
+        /// Gets OS display version e.g. 25H2.
         /// </summary>
-        public int UpdateBuildRevision { get; init; }
+        public string DisplayVersion { get; init; }
 
         /// <summary>
-        /// Gets os edition.
+        /// Gets OS update build revision version.
+        /// </summary>
+        public int UBR { get; init; }
+
+        /// <summary>
+        /// Gets OS edition.
         /// </summary>
         public string Edition { get; init; }
 
         /// <summary>
         /// Gets PC name.
         /// </summary>
-        public string CSName { get; init; }
+        public string ComputerName { get; init; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the OS is LTSC version.
+        /// </summary>
+        public bool IsLTSC { get; set; } = false;
     }
 }

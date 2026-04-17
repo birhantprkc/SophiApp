@@ -22,11 +22,8 @@ namespace SophiApp.Helpers
         MsStoreRemoved,
         RebootRequired,
         RunByNotLoggedUser,
-        Win10EnterpriseSVersion,
-        Win10UnsupportedBuild,
-        Win10UpdateBuildRevisionLess3448,
-        Win11BuildLess22631,
-        Win11UbrLess2283,
+        WinUnsupportedBuild,
+        WinUnsupportedUBR,
         WMIBroken,
     }
 }

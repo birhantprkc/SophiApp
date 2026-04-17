@@ -27,8 +27,8 @@ namespace SophiApp.Models
             Type = dto.Type;
             Tag = dto.Tag;
             ViewId = dto.ViewId;
-            Windows10Support = dto.Windows10Support;
-            Windows11Support = dto.Windows11Support;
+            Windows11LTSC = dto.Windows11LTSC;
+            Windows11 = dto.Windows11;
         }
 
         /// <summary>
@@ -57,14 +57,14 @@ namespace SophiApp.Models
         public int ViewId { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether model supported windows 10.
+        /// Gets a value indicating whether model supported Windows 11 LTSC.
         /// </summary>
-        public bool Windows10Support { get; private set; }
+        public bool Windows11LTSC { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether model supported windows 11.
+        /// Gets a value indicating whether model supported Windows 11.
         /// </summary>
-        public bool Windows11Support { get; private set; }
+        public bool Windows11 { get; private set; }
 
         /// <summary>
         /// Gets model title.
@@ -105,8 +105,6 @@ namespace SophiApp.Models
         /// </summary>
         /// <param name="name">Property name.</param>
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
-        {
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
-        }
+            => App.MainWindow.DispatcherQueue.TryEnqueue(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
     }
 }
