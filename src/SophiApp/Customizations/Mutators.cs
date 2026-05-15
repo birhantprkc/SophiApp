@@ -208,7 +208,7 @@ namespace SophiApp.Customizations
                 return;
             }
 
-            Registry.LocalMachine.OpenOrCreateSubKey(userArsoPath).SetValue("OptOut", 1, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenOrCreateSubKey(userArsoPath).SetValue("OptOut", 0, RegistryValueKind.DWord);
         }
 
         /// <summary>

@@ -44,7 +44,6 @@ namespace SophiApp.Services
             .Bind(GetServiceState)
             .Bind(GetMpComputerStatus)
             .Bind(GetAntivirusProducts)
-            .Bind(GetMpPreference)
             .Bind(GetSecurityHealthState)
             .TapIf(IsDefaultAntivirus(), SetDataServiceDefenderEnable)
             .Bind(GetControlledFolderState);
@@ -123,20 +122,6 @@ namespace SophiApp.Services
             return Result.Failure(nameof(RequirementsFailure.DefenderIsBroken));
         }
 
-        private Result GetMpPreference()
-        {
-            var script = "(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess";
-
-            if (powerShellService.InvokeOrDefault<byte>(script) is null)
-            {
-                dataService.DefenderMpPreferenceBroken = true;
-                App.Logger.LogDefenderMpPreferenceIsNull();
-                return Result.Failure(nameof(RequirementsFailure.DefenderIsBroken));
-            }
-
-            return Result.Success();
-        }
-
         private Result GetSecurityHealthState()
         {
             try
@@ -171,7 +156,7 @@ namespace SophiApp.Services
         {
             try
             {
-                var folderState = powerShellService.Invoke<byte>("(Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess");
+                var folderState = powerShellService.Invoke<byte>("(Get-MpPreference).EnableControlledFolderAccess");
                 App.Logger.LogDefenderControlledFolderState(folderState);
                 return folderState.Equals(1) ? Result.Failure(nameof(RequirementsFailure.DefenderControlledFolderEnable)) : Result.Success();
             }

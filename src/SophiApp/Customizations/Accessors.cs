@@ -112,7 +112,7 @@ namespace SophiApp.Customizations
         {
             var userSid = InstrumentationService.GetUserSid(Environment.UserName);
             var userArso = Registry.LocalMachine.OpenSubKey($"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\UserARSO\\{userSid}")?.GetValue("OptOut") ?? -1;
-            return !userArso.Equals(1);
+            return !userArso.Equals(0);
         }
 
         /// <summary>
