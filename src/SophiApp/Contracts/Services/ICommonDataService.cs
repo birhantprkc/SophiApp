@@ -4,7 +4,6 @@
 
 namespace SophiApp.Contracts.Services
 {
-    using CSharpFunctionalExtensions;
     using SophiApp.Helpers;
 
     /// <summary>
@@ -85,7 +84,7 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Receiving data from external services.
         /// </summary>
-        Task<Result> GetExternalServicesDataAsync();
+        Task GetExternalServicesDataAsync();
 
         /// <summary>
         /// Gets app name and version.

@@ -598,6 +598,19 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         }
 
         /// <inheritdoc/>
+        public void TryStop(Task? task)
+        {
+            try
+            {
+                task?.Stop();
+            }
+            catch
+            {
+                // Do nothing.
+            }
+        }
+
+        /// <inheritdoc/>
         public void DeleteTaskFolders(string[] folders)
         {
             Array.ForEach(folders, folder =>

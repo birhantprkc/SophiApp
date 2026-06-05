@@ -18,7 +18,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPublishable>True</IsPublishable>
-    <Version>2.0417.0</Version>
+    <Version>2.0605.0</Version>
     <UseWinUI>true</UseWinUI>
     <StartupObject>SophiApp.Program</StartupObject>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -41,6 +41,25 @@
     <None Remove="ControlTemplates\TeamMateLink.xaml" />
     <None Remove="ControlTemplates\TextCheckBox.xaml" />
     <None Remove="ControlTemplates\UwpAppCheckBox.xaml" />
+    <None Remove="RequirementsViews\AntiSpywareDisabledPage.xaml" />
+    <None Remove="RequirementsViews\BitLockerEncryptOrDecryptPage.xaml" />
+    <None Remove="RequirementsViews\BitLockerProtectionStatusPage.xaml" />
+    <None Remove="RequirementsViews\DefenderControlledFolderEnablePage.xaml" />
+    <None Remove="RequirementsViews\DefenderFileMissingPage.xaml" />
+    <None Remove="RequirementsViews\DefenderSecurityHealthFailurePage.xaml" />
+    <None Remove="RequirementsViews\DefenderServiceFailurePage.xaml" />
+    <None Remove="RequirementsViews\DefenderSettingsPageHiddenPage.xaml" />
+    <None Remove="RequirementsViews\DetectHostFileEntriesPage.xaml" />
+    <None Remove="RequirementsViews\EventLogBrokenPage.xaml" />
+    <None Remove="RequirementsViews\FeatureExperiencePackRemovedPage.xaml" />
+    <None Remove="RequirementsViews\Is32BitOsPage.xaml" />
+    <None Remove="RequirementsViews\MalwareDetectedPage.xaml" />
+    <None Remove="RequirementsViews\MsStoreRemovedPage.xaml" />
+    <None Remove="RequirementsViews\RebootRequiredPage.xaml" />
+    <None Remove="RequirementsViews\RunByNotLoggedUserPage.xaml" />
+    <None Remove="RequirementsViews\WinUnsupportedBuildPage.xaml" />
+    <None Remove="RequirementsViews\WinUnsupportedUbrPage.xaml" />
+    <None Remove="RequirementsViews\WmiBrokenPage.xaml" />
     <None Remove="stylecop.json" />
     <None Remove="Styles\Border.xaml" />
     <None Remove="Styles\Button.xaml" />
@@ -52,7 +71,7 @@
     <None Remove="ControlTemplates\MadeForWindows.xaml" />
     <None Remove="Views\FatalErrorPage.xaml" />
     <None Remove="Views\LogPage.xaml" />
-    <None Remove="Views\RequirementsFailurePage.xaml" />
+    <None Remove="Views\RequirementsDetectHostFileEntriesPage.xaml" />
     <None Remove="Views\SearchPage.xaml" />
     <None Remove="Views\StartupPage.xaml" />
   </ItemGroup>
@@ -80,7 +99,6 @@
     <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.2.250402" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.2.250402" />
     <PackageReference Include="CommunityToolkit.WinUI.Lottie" Version="8.1.240821" />
-    <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
     <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.4" />
     <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.4.6" />
@@ -175,6 +193,66 @@
     <None Update="Binaries\LGPO.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="RequirementsViews\BitLockerProtectionStatusPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\BitLockerEncryptOrDecryptPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\WmiBrokenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\WinUnsupportedUbrPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\WinUnsupportedBuildPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\RunByNotLoggedUserPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\RebootRequiredPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\MsStoreRemovedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\MalwareDetectedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\Is32BitOsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\FeatureExperiencePackRemovedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\EventLogBrokenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\DefenderSettingsPageHiddenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\DefenderServiceFailurePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\DefenderSecurityHealthFailurePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\AntiSpywareDisabledPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\DefenderFileMissingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\DefenderControlledFolderEnablePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="RequirementsViews\DetectHostFileEntriesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\RequirementsDetectHostFileEntriesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="ControlTemplates\RadioButtonsGroup4.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,9 +287,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="ControlTemplates\TextCheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\RequirementsFailurePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\StartupPage.xaml">

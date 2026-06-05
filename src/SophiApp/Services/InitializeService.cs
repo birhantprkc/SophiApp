@@ -42,13 +42,14 @@ public class InitializeService : IInitializeService
     }
 
     /// <inheritdoc/>
-    public async Task InitializeServicesAsync(object args)
+    public async Task InitializeServicesDataAsync(object args)
     {
-        await settingsService.InitializeAsync();
+        settingsService.Initialize();
         await viewModel.FontOptions.InitializeAsync();
         await themesService.InitializeAsync();
         await themesService.SetRequestedThemeAsync();
         await dataService.InitializeAsync();
+        viewModel.LogPageVisibility = await settingsService.ReadLogPageVisibilityAsync();
     }
 
     /// <inheritdoc/>
@@ -63,15 +64,15 @@ public class InitializeService : IInitializeService
         var windowHeight = await settingsService.ReadAppWindowHeightAsync();
         var windowWidth = await settingsService.ReadAppWindowWidthAsync();
         var displayArea = await displayService.GetDisplayAreaAsync();
-        var positionIsValid = windowPosition.X > 0 && windowPosition.Y > 0;
-        var heightIsValid = windowPosition.Y + windowHeight <= (displayArea?.WorkArea.Height ?? -1);
-        var widthIsValid = windowPosition.X + windowWidth <= (displayArea?.WorkArea.Width ?? -1);
+        var hasCorrectPosition = windowPosition.X > 0 && windowPosition.Y > 0;
+        var hasCorrectHeight = windowPosition.Y + windowHeight <= (displayArea?.WorkArea.Height ?? -1);
+        var hasCorrectWidth = windowPosition.X + windowWidth <= (displayArea?.WorkArea.Width ?? -1);
 
         if (windowState == WindowState.Maximized)
         {
             App.MainWindow.WindowState = WindowState.Maximized;
         }
-        else if (positionIsValid && heightIsValid && widthIsValid)
+        else if (hasCorrectPosition && hasCorrectHeight && hasCorrectWidth)
         {
             App.MainWindow.MoveAndResize(x: windowPosition.X, y: windowPosition.Y, width: windowWidth, height: windowHeight);
         }
@@ -82,8 +83,10 @@ public class InitializeService : IInitializeService
             App.MainWindow.CenterOnScreen();
         }
 
+        await themesService.SetRequestedThemeAsync();
         TitleBarHelper.ApplySystemThemeToCaptionButtons();
         App.MainWindow.Activate();
         viewModel.NavigationService.NavigateTo(typeof(StartupViewModel).FullName!);
+        await viewModel.ExecuteAsync();
     }
 }

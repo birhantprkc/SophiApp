@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using SophiApp.Contracts.Services;
+using SophiApp.RequirementsViewModels;
+using SophiApp.RequirementsViews;
 using SophiApp.Services;
 using SophiApp.ViewModels;
 using SophiApp.Views;
@@ -43,9 +45,7 @@ public partial class App : Application
                 _ = services.AddTransient<IAppNotificationService, AppNotificationService>();
                 _ = services.AddTransient<IAppxPackagesService, AppxPackagesService>();
                 _ = services.AddTransient<ICursorsService, CursorsService>();
-                _ = services.AddTransient<IDefenderService, DefenderService>();
                 _ = services.AddTransient<IDisplayService, DisplayService>();
-                _ = services.AddTransient<IRedistributablePackageService, RedistributablePackageService>();
                 _ = services.AddTransient<IGroupPolicyService, GroupPolicyService>();
                 _ = services.AddTransient<IHttpService, HttpService>();
                 _ = services.AddTransient<INavigationViewService, NavigationViewService>();
@@ -53,6 +53,7 @@ public partial class App : Application
                 _ = services.AddTransient<IOsService, OsService>();
                 _ = services.AddTransient<IPowerShellService, PowerShellService>();
                 _ = services.AddTransient<IProcessService, ProcessService>();
+                _ = services.AddTransient<IRedistributablePackageService, RedistributablePackageService>();
                 _ = services.AddTransient<IRegistryService, RegistryService>();
                 _ = services.AddTransient<IRequirementsService, RequirementsService>();
                 _ = services.AddTransient<IScheduledTaskService, ScheduledTaskService>();
@@ -60,30 +61,63 @@ public partial class App : Application
                 _ = services.AddTransient<IXmlService, XmlService>();
 
                 // ViewModels
-                _ = services.AddScoped<RequirementsFailureViewModel>();
-                _ = services.AddScoped<StartupViewModel>();
                 _ = services.AddSingleton<ShellViewModel>();
+                _ = services.AddScoped<StartupViewModel>();
+                _ = services.AddTransient<AntiSpywareDisabledViewModel>();
+                _ = services.AddTransient<BitLockerEncryptOrDecryptViewModel>();
+                _ = services.AddTransient<BitLockerProtectionStatusViewModel>();
                 _ = services.AddTransient<ContextMenuViewModel>();
+                _ = services.AddTransient<DefenderControlledFolderEnableViewModel>();
+                _ = services.AddTransient<DefenderFileMissingViewModel>();
+                _ = services.AddTransient<DefenderSecurityHealthFailureViewModel>();
+                _ = services.AddTransient<DefenderServiceFailureViewModel>();
+                _ = services.AddTransient<DefenderSettingsPageHiddenViewModel>();
+                _ = services.AddTransient<DetectHostFileEntriesViewModel>();
+                _ = services.AddTransient<EventLogBrokenViewModel>();
                 _ = services.AddTransient<FatalErrorViewModel>();
+                _ = services.AddTransient<FeatureExperiencePackRemovedViewModel>();
+                _ = services.AddTransient<Is32BitOsViewModel>();
                 _ = services.AddTransient<LogViewModel>();
+                _ = services.AddTransient<MalwareDetectedViewModel>();
+                _ = services.AddTransient<MsStoreRemovedViewModel>();
                 _ = services.AddTransient<PersonalizationViewModel>();
                 _ = services.AddTransient<PrivacyViewModel>();
                 _ = services.AddTransient<ProVersionViewModel>();
+                _ = services.AddTransient<RebootRequiredViewModel>();
+                _ = services.AddTransient<RunByNotLoggedUserViewModel>();
                 _ = services.AddTransient<SearchViewModel>();
                 _ = services.AddTransient<SecurityViewModel>();
                 _ = services.AddTransient<SettingsViewModel>();
                 _ = services.AddTransient<SystemViewModel>();
                 _ = services.AddTransient<TaskSchedulerViewModel>();
                 _ = services.AddTransient<UwpViewModel>();
+                _ = services.AddTransient<WinUnsupportedBuildViewModel>();
+                _ = services.AddTransient<WinUnsupportedUbrViewModel>();
+                _ = services.AddTransient<WmiBrokenViewModel>();
 
                 // Views
+                _ = services.AddTransient<AntiSpywareDisabledPage>();
+                _ = services.AddTransient<BitLockerEncryptOrDecryptPage>();
+                _ = services.AddTransient<BitLockerProtectionStatusPage>();
                 _ = services.AddTransient<ContextMenuPage>();
+                _ = services.AddTransient<DefenderControlledFolderEnablePage>();
+                _ = services.AddTransient<DefenderFileMissingPage>();
+                _ = services.AddTransient<DefenderSecurityHealthFailurePage>();
+                _ = services.AddTransient<DefenderServiceFailurePage>();
+                _ = services.AddTransient<DefenderSettingsPageHiddenPage>();
+                _ = services.AddTransient<DetectHostFileEntriesPage>();
+                _ = services.AddTransient<EventLogBrokenPage>();
                 _ = services.AddTransient<FatalErrorPage>();
+                _ = services.AddTransient<FeatureExperiencePackRemovedPage>();
+                _ = services.AddTransient<Is32BitOsPage>();
                 _ = services.AddTransient<LogPage>();
+                _ = services.AddTransient<MalwareDetectedPage>();
+                _ = services.AddTransient<MsStoreRemovedPage>();
                 _ = services.AddTransient<PersonalizationPage>();
                 _ = services.AddTransient<PrivacyPage>();
                 _ = services.AddTransient<ProVersionPage>();
-                _ = services.AddTransient<RequirementsFailurePage>();
+                _ = services.AddTransient<RebootRequiredPage>();
+                _ = services.AddTransient<RunByNotLoggedUserPage>();
                 _ = services.AddTransient<SearchPage>();
                 _ = services.AddTransient<SecurityPage>();
                 _ = services.AddTransient<SettingsPage>();
@@ -92,6 +126,9 @@ public partial class App : Application
                 _ = services.AddTransient<SystemPage>();
                 _ = services.AddTransient<TaskSchedulerPage>();
                 _ = services.AddTransient<UwpPage>();
+                _ = services.AddTransient<WinUnsupportedBuildPage>();
+                _ = services.AddTransient<WinUnsupportedUbrPage>();
+                _ = services.AddTransient<WmiBrokenPage>();
             })
             .Build();
 
@@ -138,8 +175,7 @@ public partial class App : Application
     /// </summary>
     public static void SetSingleInstance()
     {
-        var appSingletonKey = "2e340960-5e58-4e2d-b0c1-0a1b54145345";
-        var keyInstance = AppInstance.FindOrRegisterForKey(appSingletonKey);
+        var keyInstance = AppInstance.FindOrRegisterForKey("2e340960-5e58-4e2d-b0c1-0a1b54145345");
 
         if (!keyInstance.IsCurrent)
         {
@@ -153,9 +189,8 @@ public partial class App : Application
         base.OnLaunched(args);
         GetService<IAppNotificationService>().RegisterAsToastSender("SophiApp");
         var initializeService = GetService<IInitializeService>();
-        await initializeService.InitializeServicesAsync(args);
+        await initializeService.InitializeServicesDataAsync(args);
         await initializeService.InitializeMainWindowAsync();
-        await GetService<ShellViewModel>().ExecuteAsync();
     }
 
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -60,6 +60,12 @@ namespace SophiApp.Contracts.Services
         void SetState(Task? task, bool enabled);
 
         /// <summary>
+        /// Try stop all instances of the task.
+        /// </summary>
+        /// <param name="task">The <see cref="Task"/> instance.</param>
+        void TryStop(Task? task);
+
+        /// <summary>
         /// Unregisters the "Windows Cleanup Notification" task in the Task Scheduler and remove task files.
         /// </summary>
         void UnregisterCleanupNotificationTask();

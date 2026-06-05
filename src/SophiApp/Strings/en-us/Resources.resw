@@ -221,13 +221,13 @@
   <data name="OsRequirements_GetOsBitness" xml:space="preserve">
     <value>Checking Windows bitness</value>
   </data>
-  <data name="OsRequirementsFailure_Is32BitOs" xml:space="preserve">
+  <data name="OsRequirementsFailure_Is32BitOs.Text" xml:space="preserve">
     <value>SophiApp supports 64-bit Windows only.</value>
   </data>
-  <data name="OsRequirementsFailure_WmiBroken" xml:space="preserve">
+  <data name="OsRequirementsFailure_WmiBroken.Text" xml:space="preserve">
     <value>WMI service is broken.</value>
   </data>
-  <data name="OsRequirementsFailure_RunByNotLoggedUser" xml:space="preserve">
+  <data name="OsRequirementsFailure_RunByNotLoggedUser.Text" xml:space="preserve">
     <value>The logged-in user doesn't have admin rights.</value>
   </data>
   <data name="OsRequirements_AppRunFromLoggedUser" xml:space="preserve">
@@ -266,13 +266,13 @@
   <data name="OsRequirements_GetFeatureExperiencePackState" xml:space="preserve">
     <value>Check whether Windows Feature Experience Pack was removed by harmful tweakers</value>
   </data>
-  <data name="OsRequirementsFailure_FeatureExperiencePackRemoved" xml:space="preserve">
+  <data name="OsRequirementsFailure_FeatureExperiencePackRemoved.Text" xml:space="preserve">
     <value>Windows Feature Experience Pack broken or removed from Windows.</value>
   </data>
   <data name="OsRequirementsFailure_DefenderFilesMissing" xml:space="preserve">
     <value>File "{0}" broken or removed from Windows.</value>
   </data>
-  <data name="OsRequirementsFailure_RebootRequired" xml:space="preserve">
+  <data name="OsRequirementsFailure_RebootRequired.Text" xml:space="preserve">
     <value>Your PC is waiting to be restarted.</value>
   </data>
   <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
@@ -281,7 +281,7 @@
   <data name="OsRequirements_UpdateDetection" xml:space="preserve">
     <value>Checking if the current SophiApp build is the latest one</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderIsBroken" xml:space="preserve">
+  <data name="OsRequirementsFailure_AntiSpywareDisabled.Text" xml:space="preserve">
     <value>Microsoft Defender broken or removed from Windows.</value>
   </data>
   <data name="OsRequirements_GetMsDefenderState" xml:space="preserve">
@@ -1043,10 +1043,10 @@
   <data name="Panel_SetupCustomizations_Applying" xml:space="preserve">
     <value>Applying customizations</value>
   </data>
-  <data name="OsRequirementsFailure_EventLogStopped" xml:space="preserve">
+  <data name="OsRequirementsFailure_EventLogStopped.Text" xml:space="preserve">
     <value>The Event Viewer is broken or removed from Windows.</value>
   </data>
-  <data name="OsRequirementsFailure_MsStoreRemoved" xml:space="preserve">
+  <data name="OsRequirementsFailure_MsStoreRemoved.Text" xml:space="preserve">
     <value>Microsoft Store broken or removed from Windows.</value>
   </data>
   <data name="OsRequirements_GetEventLogState" xml:space="preserve">
@@ -1055,7 +1055,7 @@
   <data name="OsRequirements_GetMicrosoftStoreState" xml:space="preserve">
     <value>Get Microsoft Store state</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderSettingsPageHidden" xml:space="preserve">
+  <data name="OsRequirementsFailure_DefenderSettingsPageHidden.Text" xml:space="preserve">
     <value>Microsoft Defender settings page was hidden from UI.</value>
   </data>
   <data name="OsRequirements_GeneratingUserInterface" xml:space="preserve">
@@ -1118,7 +1118,7 @@
   <data name="OsRequirements_Malware_Tron" xml:space="preserve">
     <value>Tron</value>
   </data>
-  <data name="OsRequirementsFailure_ReinstallWindows" xml:space="preserve">
+  <data name="OsRequirementsFailure_ReinstallWindows.Text" xml:space="preserve">
     <value>Reinstall Windows using only a genuine ISO image.</value>
   </data>
   <data name="UIModel_ContextMenu_CopyDescription.Label" xml:space="preserve">
@@ -1193,10 +1193,10 @@
   <data name="OsRequirements_Malware_RemoveWindowsAI" xml:space="preserve">
     <value>RemoveWindowsAI</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderControlledFolderEnable" xml:space="preserve">
+  <data name="OsRequirementsFailure_DefenderControlledFolderEnable.Text" xml:space="preserve">
     <value>Microsoft Defender controlled folder access is enabled.</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderSecurityHealthFailure" xml:space="preserve">
+  <data name="OsRequirementsFailure_DefenderSecurityHealthFailure.Text" xml:space="preserve">
     <value>Microsoft Defender Security Health service is broken.</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_10_Description" xml:space="preserve">
@@ -1205,19 +1205,49 @@
   <data name="UIModel_InstallDotNetRuntime_10_Title" xml:space="preserve">
     <value>Install latest .NET Desktop Runtime 10 x64</value>
   </data>
-  <data name="OsRequirementsFailure_UnsupportedBuild" xml:space="preserve">
+  <data name="OsRequirementsFailure_UnsupportedBuild.Text" xml:space="preserve">
     <value>The app supports Windows 11 25H2+ and Windows 11 Enterprise LTSC.</value>
   </data>
   <data name="OsRequirementsFailure_UnsupportedUBR" xml:space="preserve">
     <value>You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher.</value>
   </data>
-  <data name="OsRequirementsFailure_RunByAdmin" xml:space="preserve">
+  <data name="OsRequirementsFailure_RunByAdmin.Text" xml:space="preserve">
     <value>Please log into account which has admin rights and run app again.</value>
   </data>
   <data name="OsRequirementsFailure_UsingBuild" xml:space="preserve">
     <value>You're using {0} {1}.</value>
   </data>
-  <data name="OsRequirementsFailure_RunWinUpdate" xml:space="preserve">
+  <data name="OsRequirementsFailure_RunWinUpdate.Text" xml:space="preserve">
     <value>Run Windows Update and try again.</value>
+  </data>
+  <data name="OsRequirements_DetectHostFileEntries" xml:space="preserve">
+    <value>Detect third-party host file entries</value>
+  </data>
+  <data name="OsRequirementsFailure_DetectHostFileEntries.Text" xml:space="preserve">
+    <value>Third-party entries found in the %SystemRoot%\System32\drivers\etc\hosts file. They may block connection to resources used in the script. Do you want to continue?</value>
+  </data>
+  <data name="Button_OpenHostFileFolder.Content" xml:space="preserve">
+    <value>Open host file folder</value>
+  </data>
+  <data name="Button_Continue.Content" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="OsRequirements_GetBitLockerState" xml:space="preserve">
+    <value>Get BitLocker state</value>
+  </data>
+  <data name="OsRequirementsFailure_BitLockerEncryptOrDecryptState" xml:space="preserve">
+    <value>BitLocker is in action. Your C drive is {0}% encrypted. Complete BitLocker drive configuration and try again.</value>
+  </data>
+  <data name="Button_OpenBitLockerSettings.Content" xml:space="preserve">
+    <value>Open BitLocker settings</value>
+  </data>
+  <data name="OsRequirementsFailure_BitLockerProtectionState.Text" xml:space="preserve">
+    <value>C drive is encrypted, although BitLocker is turned off. Do you want to decrypt your drive?</value>
+  </data>
+  <data name="Button_Yes.Content" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Button_No.Content" xml:space="preserve">
+    <value>No</value>
   </data>
 </root>

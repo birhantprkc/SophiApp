@@ -55,10 +55,10 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int DiagnosticDataLevel()
         {
-            var allowTelemetry = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection")?.GetValue("AllowTelemetry") as int? ?? -1;
-            var maxTelemetryAllowed = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection")?.GetValue("MaxTelemetryAllowed") as int? ?? -1;
-            var showedToastLevel = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack")?.GetValue("ShowedToastAtLevel") as int? ?? -1;
-            return allowTelemetry.Equals(1) && maxTelemetryAllowed.Equals(1) && showedToastLevel.Equals(1) ? 2 : 1;
+            var allowTelemetry = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection")?.GetValue("AllowTelemetry") as int? ?? -1;
+            var telemetryAllowed = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection")?.GetValue("MaxTelemetryAllowed") as int? ?? -1;
+            var toastLevel = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack")?.GetValue("ShowedToastAtLevel") as int? ?? -1;
+            return allowTelemetry.Equals(1) && telemetryAllowed.Equals(1) && toastLevel.Equals(1) ? 2 : 1;
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool ErrorReporting()
         {
-            var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException("Failed to find a QueueReporting scheduled task");
-            var disableErrorReporting = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting")?.GetValue("Disabled") as int? ?? -1;
-            return !(queueReportingTask.State == TaskState.Disabled && disableErrorReporting.Equals(1) && new System.ServiceProcess.ServiceController("WerSvc").StartType == ServiceStartMode.Disabled);
+            var reportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting") ?? throw new InvalidOperationException("Failed to find a QueueReporting scheduled task");
+            using var werService = new System.ServiceProcess.ServiceController("WerSvc");
+            return !(reportingTask.State == TaskState.Disabled && werService.StartType == ServiceStartMode.Disabled);
         }
 
         /// <summary>
@@ -111,8 +111,9 @@ namespace SophiApp.Customizations
         public static bool SigninInfo()
         {
             var userSid = InstrumentationService.GetUserSid(Environment.UserName);
-            var userArso = Registry.LocalMachine.OpenSubKey($"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\UserARSO\\{userSid}")?.GetValue("OptOut") ?? -1;
-            return !userArso.Equals(0);
+            var arsoPath = $"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\UserARSO\\{userSid}";
+            var optOut = Registry.LocalMachine.OpenSubKey(arsoPath)?.GetValue("OptOut") as int? ?? -1;
+            return !optOut.Equals(0);
         }
 
         /// <summary>
@@ -528,10 +529,7 @@ namespace SophiApp.Customizations
         /// <summary>
         /// Get input method for app window state.
         /// </summary>
-        public static bool AppsLanguageSwitch()
-        {
-            return PowerShellService.Invoke<bool>("$((Get-WinLanguageBarOption).IsLegacySwitchingMode)");
-        }
+        public static bool AppsLanguageSwitch() => PowerShellService.Invoke<bool>("$((Get-WinLanguageBarOption).IsLegacySwitchingMode)");
 
         /// <summary>
         /// Get Aero Shake state.
@@ -824,8 +822,8 @@ namespace SophiApp.Customizations
         /// </summary>
         public static int RecommendedTroubleshooting()
         {
-            var isEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsMitigation")?.GetValue("UserPreference") as int? ?? -1;
-            return isEnabled.Equals(3) ? 1 : 2;
+            var userPreference = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\WindowsMitigation")?.GetValue("UserPreference") as int? ?? -1;
+            return userPreference.Equals(3) ? 1 : 2;
         }
 
         /// <summary>

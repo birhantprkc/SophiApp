@@ -38,6 +38,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public async Task<ObservableCollection<UIModel>> BuildJsonModelsAsync()
         {
+            var timer = Stopwatch.StartNew();
             var models = await Task.Run(() =>
             {
                 var json = Encoding.UTF8.GetString(Properties.Resources.UIMarkup);
@@ -57,7 +58,8 @@ namespace SophiApp.Services
                     .OrderBy(model => model.ViewId);
                 return jsonModels;
             });
-            App.Logger.LogAllModelsBuilt(models.Count());
+            timer.Stop();
+            App.Logger.LogJsonModelsBuilt(timer, models.Count());
             return new ObservableCollection<UIModel>(models);
         }
 
@@ -207,7 +209,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task SetModelsStateAsync(ObservableCollection<UIModel> models, Action callback)
+        public async Task SetModelsStateAsync(ObservableCollection<UIModel> models)
         {
             await Task.Run(() =>
             {
@@ -217,10 +219,7 @@ namespace SophiApp.Services
                     model.SetState();
                     timer.Stop();
                     App.Logger.LogModelSetState(model.Name, timer);
-                    callback?.Invoke();
                 }
-
-                return Task.CompletedTask;
             });
         }
 

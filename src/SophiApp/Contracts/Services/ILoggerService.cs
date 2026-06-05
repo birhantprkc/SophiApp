@@ -6,7 +6,7 @@ namespace SophiApp.Contracts.Services
 {
     using Microsoft.UI.Xaml;
     using SophiApp.Helpers;
-    using SophiApp.ViewModels;
+    using SophiApp.Views;
     using System;
     using System.Diagnostics;
     using System.ServiceProcess;
@@ -97,10 +97,11 @@ namespace SophiApp.Contracts.Services
         void LogAppUpdate(Version version);
 
         /// <summary>
-        /// Write number of models built in the log.
+        /// Write the spent time taken by parse json models in the log.
         /// </summary>
+        /// <param name="timer">Time spent on built.</param>
         /// <param name="count">Number of models built.</param>
-        void LogAllModelsBuilt(int count);
+        void LogJsonModelsBuilt(Stopwatch timer, int count);
 
         /// <summary>
         /// Write the start of all models state in the log.
@@ -183,11 +184,10 @@ namespace SophiApp.Contracts.Services
             where T : struct;
 
         /// <summary>
-        /// Write Microsoft Defender services state.
+        /// Write Microsoft Defender services state in the log.
         /// </summary>
-        /// <param name="service">Microsoft Defender service name.</param>
-        /// <param name="exists">Service exists.</param>
-        void LogDefenderServiceState(string service, bool exists);
+        /// <param name="state">Microsoft Defender services state.</param>
+        void LogDefenderServiceState(string state);
 
         /// <summary>
         /// Write information about state a "For all users" checkbox in the UWP page.
@@ -202,10 +202,10 @@ namespace SophiApp.Contracts.Services
         void LogDescriptionTextSizeChanged(int size);
 
         /// <summary>
-        /// Write Log page visibility state.
+        /// Write <see cref="LogPage"/> visibility in the log.
         /// </summary>
-        /// <param name="isVisible">A log page visibility state.</param>
-        void LogPageVisibility(bool isVisible);
+        /// <param name="visible">Log page visibility state.</param>
+        void LogPageVisibility(bool visible);
 
         /// <summary>
         /// Write information about the resizing of UI elements title text.
@@ -220,12 +220,6 @@ namespace SophiApp.Contracts.Services
         /// <param name="timer">Time spent on search.</param>
         /// <param name="count">Number of found models.</param>
         void LogStopTextSearch(string text, Stopwatch timer, int count);
-
-        /// <summary>
-        /// Write the spent time taken by <see cref="ShellViewModel"/> execute.
-        /// </summary>
-        /// <param name="timer">Time spent on execute.</param>
-        void LogViewModelExecute(Stopwatch timer);
 
         /// <summary>
         /// Write the spent time taken by UWP models built in the log.
@@ -243,10 +237,17 @@ namespace SophiApp.Contracts.Services
         void LogUrlIsAvailable(string url, bool state);
 
         /// <summary>
-        /// Write <see cref="RequirementsFailure"/> reason in the log.
+        /// Write the spent time taken by <see cref="RequirementAction"/> execute in the log.
         /// </summary>
-        /// <param name="failure">A failure reason.</param>
-        void LogFailureReason(RequirementsFailure failure);
+        /// <param name="name">Requirements action name.</param>
+        /// <param name="timer">Time spent on execute.</param>
+        void LogRequirementsActionExecute(string name, Stopwatch timer);
+
+        /// <summary>
+        /// Write requirements failure result in the log.
+        /// </summary>
+        /// <param name="result">Result of requirements action execution.</param>
+        void LogRequirementsFailureResult(RequirementsResult result);
 
         /// <summary>
         /// Handles an exception when accessing to <see cref="OsProperties"/> in the <see cref="IInstrumentationService"/>.
@@ -297,11 +298,6 @@ namespace SophiApp.Contracts.Services
         void LogDefenderFileMissing(string file);
 
         /// <summary>
-        /// Handles occur when execution of the Get-MpPreference cmdlet return null value.
-        /// </summary>
-        void LogDefenderMpPreferenceIsNull();
-
-        /// <summary>
         /// Handles occur when AntiVirusProduct class return null.
         /// </summary>
         void LogDefenderAntivirusProductsIsNull();
@@ -310,7 +306,7 @@ namespace SophiApp.Contracts.Services
         /// Handles occur during the Microsoft Defender services not found.
         /// </summary>
         /// <param name="service">Microsoft Defender service name.</param>
-        void LogDefenderServiceBroken(string service);
+        void LogDefenderServiceNotFound(string service);
 
         /// <summary>
         /// Write Microsoft Defender control folder state in the log.
@@ -331,7 +327,7 @@ namespace SophiApp.Contracts.Services
         void LogDefenderSecurityHealthStatus(ServiceControllerStatus status);
 
         /// <summary>
-        /// Handles an exception when accessing to Security Health service status in the <see cref="IDefenderService"/>.
+        /// Handles an exception when accessing to Security Health service status in the <see cref="IRequirementsService"/>.
         /// </summary>
         /// <param name="exception">Represents errors that occur during app executing.</param>
         void LogDefenderSecurityHealthException(Exception exception);

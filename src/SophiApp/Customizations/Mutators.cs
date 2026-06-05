@@ -76,30 +76,32 @@ namespace SophiApp.Customizations
         /// <param name="state">Diagnostic data level state.</param>
         public static void DiagnosticDataLevel(int state)
         {
+            // Remove all policies in order to make changes visible in UI
+            GroupPolicyService.DeleteRegistryValue(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry");
+            GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry");
+
             if (state.Equals(2))
             {
-                var osEdition = DataService.OsProperties.Edition;
-                var isEnterpriseOrEducation = osEdition.Contains("Enterprise") || osEdition.Contains("Education");
+                if (DataService.OsProperties.Edition.Contains("Enterprise") || DataService.OsProperties.Edition.Contains("Education"))
+                {
+                    // 0 — Diagnostic data off
+                    Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection").SetValue("AllowTelemetry", 0, RegistryValueKind.DWord);
+                }
+                else
+                {
+                    // 1 — Send required diagnostic data
+                    Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection").SetValue("AllowTelemetry", 1, RegistryValueKind.DWord);
+                }
 
-                // 0 — Diagnostic data off
-                // 1 — Send required diagnostic data
-                // 2 — Optional diagnostic data
-                Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection").SetValue("AllowTelemetry", isEnterpriseOrEducation ? 0 : 1, RegistryValueKind.DWord);
-                Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection").SetValue("MaxTelemetryAllowed", 1, RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", true)?.SetValue("MaxTelemetryAllowed", 1, RegistryValueKind.DWord);
                 Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack").SetValue("ShowedToastAtLevel", 1, RegistryValueKind.DWord);
-
-                // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
-                GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry", "DWORD", isEnterpriseOrEducation ? "0" : "1");
-
                 return;
             }
 
+            // 3 — Send optional diagnostic data
             Registry.LocalMachine.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection").SetValue("MaxTelemetryAllowed", 3, RegistryValueKind.DWord);
             Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack").SetValue("ShowedToastAtLevel", 3, RegistryValueKind.DWord);
-            Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection", true)?.DeleteValue("AllowTelemetry", false);
-
-            // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
-            GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry");
+            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", true)?.SetValue("AllowTelemetry", 3, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -108,29 +110,26 @@ namespace SophiApp.Customizations
         /// <param name="enable">Feature state.</param>
         public static void ErrorReporting(bool enable)
         {
-            using var werService = new System.ServiceProcess.ServiceController("WerSvc");
-
+            // Remove all policies in order to make changes visible in UI
             GroupPolicyService.DeleteRegistryValue("Software\\Policies\\Microsoft\\Windows\\Windows Error Reporting", "Disabled", Registry.LocalMachine, Registry.CurrentUser);
-            // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
+            GroupPolicyService.DeleteRegistryValue(Registry.LocalMachine, "Software\\Policies\\Microsoft\\PCHealth\\ErrorReporting", "DoReport");
             GroupPolicyService.ClearPolicyCache("Software\\Policies\\Microsoft\\Windows\\Windows Error Reporting", "Disabled", LGPOScope.Computer, LGPOScope.User);
-
+            GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\PCHealth\\ErrorReporting", "DoReport");
             var reportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting");
-            ScheduledTaskService.SetState(reportingTask, enable);
+            using var werService = new System.ServiceProcess.ServiceController("WerSvc");
 
             if (enable)
             {
-                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting", true)?.DeleteValue("Disabled", false);
-
+                ScheduledTaskService.SetState(task: reportingTask, enabled: true);
                 OsService.SetStartMode(werService, ServiceStartMode.Manual);
                 werService.TryStart();
-
                 return;
             }
 
-            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting", true)?.SetValue("Disabled", 1, RegistryValueKind.DWord);
-
-            OsService.SetStartMode(werService, ServiceStartMode.Disabled);
+            ScheduledTaskService.TryStop(task: reportingTask);
+            ScheduledTaskService.SetState(task: reportingTask, enabled: false);
             werService.TryStop();
+            OsService.SetStartMode(werService, ServiceStartMode.Disabled);
         }
 
         /// <summary>
@@ -195,20 +194,19 @@ namespace SophiApp.Customizations
         /// <param name="enable">Sign-in info state.</param>
         public static void SigninInfo(bool enable)
         {
-            var userSid = InstrumentationService.GetUserSid(Environment.UserName);
-            var userArsoPath = $"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\UserARSO\\{userSid}";
-
+            // Remove all policies in order to make changes visible in UI
             GroupPolicyService.DeleteRegistryValue(Registry.LocalMachine, "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "DisableAutomaticRestartSignOn");
-            // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
             GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "DisableAutomaticRestartSignOn");
+            var userSid = InstrumentationService.GetUserSid(Environment.UserName);
+            var arsoPath = $"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\UserARSO\\{userSid}";
 
             if (enable)
             {
-                Registry.LocalMachine.OpenSubKey(userArsoPath, true)?.DeleteValue("OptOut", false);
+                Registry.LocalMachine.OpenSubKey(arsoPath, true)?.DeleteValue("OptOut", false);
                 return;
             }
 
-            Registry.LocalMachine.OpenOrCreateSubKey(userArsoPath).SetValue("OptOut", 0, RegistryValueKind.DWord);
+            Registry.LocalMachine.OpenOrCreateSubKey(arsoPath).SetValue("OptOut", 0, RegistryValueKind.DWord);
         }
 
         /// <summary>
@@ -1179,21 +1177,19 @@ namespace SophiApp.Customizations
         /// <param name="state">Recommended troubleshooting state.</param>
         public static void RecommendedTroubleshooting(int state)
         {
-            Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\DataCollection", true)?.DeleteValue("AllowTelemetry", false);
-            // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
+            // Remove all policies in order to make changes visible in UI
+            GroupPolicyService.DeleteRegistryValue(Registry.LocalMachine, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry");
+            GroupPolicyService.DeleteRegistryValue(Registry.LocalMachine, "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", "MaxTelemetryAllowed");
+            GroupPolicyService.DeleteRegistryValue(Registry.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack", "ShowedToastAtLevel");
             GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\DataCollection", "AllowTelemetry");
-            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", true)?.DeleteValue("MaxTelemetryAllowed", false);
-            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack", true)?.DeleteValue("ShowedToastAtLevel", false);
 
             // Turn on Windows Error Reporting
-            using var queueReportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting");
-            ScheduledTaskService.SetState(queueReportingTask, true);
-
-            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting", true)?.DeleteValue("Disabled", false);
-            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\Windows Error Reporting", true)?.DeleteValue("Disabled", false);
-            // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
-            GroupPolicyService.ClearPolicyCache("Software\\Microsoft\\Windows\\Windows Error Reporting", "Disabled", LGPOScope.User, LGPOScope.Computer);
-
+            GroupPolicyService.DeleteRegistryValue("Software\\Policies\\Microsoft\\Windows\\Windows Error Reporting", "Disabled", Registry.LocalMachine, Registry.CurrentUser);
+            GroupPolicyService.DeleteRegistryValue(Registry.LocalMachine, "Software\\Policies\\Microsoft\\PCHealth\\ErrorReporting", "DoReport");
+            GroupPolicyService.ClearPolicyCache("Software\\Policies\\Microsoft\\Windows\\Windows Error Reporting", "Disabled", LGPOScope.Computer, LGPOScope.User);
+            GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\PCHealth\\ErrorReporting", "DoReport");
+            var reportingTask = ScheduledTaskService.GetTaskOrDefault("Microsoft\\Windows\\Windows Error Reporting\\QueueReporting");
+            ScheduledTaskService.SetState(task: reportingTask, enabled: true);
             using var werService = new System.ServiceProcess.ServiceController("WerSvc");
             OsService.SetStartMode(werService, ServiceStartMode.Manual);
             werService.TryStart();

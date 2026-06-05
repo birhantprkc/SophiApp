@@ -1,20 +1,24 @@
-﻿// <copyright file="RequirementsFailure.cs" company="Team Sophia">
+﻿// <copyright file="RequirementsResult.cs" company="Team Sophia">
 // Copyright (c) Team Sophia. All rights reserved.
 // </copyright>
 
 namespace SophiApp.Helpers
 {
     /// <summary>
-    /// Reasons for failure requirements.
+    /// Result of requirements execution.
     /// </summary>
-    public enum RequirementsFailure
+    public enum RequirementsResult
     {
+        AllCorrect,
+        BitLockerEncryptOrDecryptState,
+        BitLockerProtectionStatus,
         DefenderControlledFolderEnable,
         DefenderFileMissing,
-        DefenderIsBroken,
+        AntiSpywareDisabled,
         DefenderSecurityHealthFailure,
         DefenderServiceFailure,
         DefenderSettingsPageHidden,
+        DetectHostFileEntries,
         EventLogBroken,
         FeatureExperiencePackRemoved,
         Is32BitOs,

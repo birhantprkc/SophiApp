@@ -55,7 +55,7 @@ public interface ISettingsService
     /// <summary>
     /// Initialize <see cref="ISettingsService"/> data.
     /// </summary>
-    Task InitializeAsync();
+    void Initialize();
 
     /// <summary>
     /// Read app <see cref="MainWindow"/> position from a settings file.
@@ -80,7 +80,12 @@ public interface ISettingsService
     /// <summary>
     /// Read navigation menu item log page visibility from a settings file.
     /// </summary>
-    bool ReadLogPageVisibility();
+    Task<bool> ReadLogPageVisibilityAsync();
+
+    /// <summary>
+    /// Read requirement action name from a settings file for debug.
+    /// </summary>
+    string? ReadDebugRequirementAction();
 
     /// <summary>
     /// Read UI elements descriptions size from a settings file.
@@ -121,6 +126,12 @@ public interface ISettingsService
     /// </summary>
     /// <param name="isVisible">Log page visibility.</param>
     void SaveLogPageVisibility(bool isVisible);
+
+    /// <summary>
+    /// Write requirement action name to a settings file for debug.
+    /// </summary>
+    /// <param name="action">Requirement action name or empty string.</param>
+    Task SaveDebugRequirementActionAsync(string action);
 
     /// <summary>
     /// Write UI elements description size to a settings file.

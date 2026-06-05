@@ -41,7 +41,7 @@ public static class Json
     {
         return await Task.Run(() =>
         {
-            return JsonConvert.SerializeObject(value);
+            return JsonConvert.SerializeObject(value, Formatting.Indented);
         });
     }
 }

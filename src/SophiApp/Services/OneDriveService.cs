@@ -102,7 +102,7 @@ namespace SophiApp.Services
                 // Uses PowerShell to avoid the "Access Denied" error, not to go through all the files and folders, of which there may be many, to set the Normal attribute.
                 // See https://stackoverflow.com/questions/1701457/directory-delete-doesnt-work-access-denied-error-but-under-windows-explorer-it
                 _ = powerShellService.Invoke($"Remove-Item -Path \"{uninstallFolder}\" -Force -Recurse -ErrorAction Ignore");
-                _ = processService.StartProcessByName("explorer");
+                _ = processService.StartProcessByName("explorer.exe");
                 Thread.Sleep(3000);
                 Registry.CurrentUser.OpenSubKey("Environment", true)?.DeleteValue("OneDrive", false);
                 Registry.CurrentUser.OpenSubKey("Environment", true)?.DeleteValue("OneDriveConsumer", false);

@@ -4,7 +4,7 @@
 
 namespace SophiApp.Contracts.Services
 {
-    using CSharpFunctionalExtensions;
+    using SophiApp.Helpers;
 
     /// <summary>
     /// A service for working with app requirements.
@@ -12,53 +12,13 @@ namespace SophiApp.Contracts.Services
     public interface IRequirementsService
     {
         /// <summary>
-        /// Get OS bitness.
+        /// Gets <see cref="RequirementAction"/> collection.
         /// </summary>
-        Result GetOsBitness();
+        List<RequirementAction> Actions { get; }
 
         /// <summary>
-        /// Get the Windows Management Instrumentation state.
+        /// Gets or sets <see cref="RequirementAction"/> for debug.
         /// </summary>
-        Result GetWmiState();
-
-        /// <summary>
-        /// Get OS version.
-        /// </summary>
-        Result GetOsVersion();
-
-        /// <summary>
-        /// Detect that the app is run by a logged-in user.
-        /// </summary>
-        Result AppRunFromLoggedUser();
-
-        /// <summary>
-        /// Detect 3rd party harmful tweakers and trojans.
-        /// </summary>
-        Result MalwareDetection();
-
-        /// <summary>
-        /// Get the Windows Feature Experience Pack state.
-        /// </summary>
-        Result GetFeatureExperiencePackState();
-
-        /// <summary>
-        /// Get the Windows EventLog state.
-        /// </summary>
-        Result GetEventLogState();
-
-        /// <summary>
-        /// Get the Microsoft Store state.
-        /// </summary>
-        Result GetMicrosoftStoreState();
-
-        /// <summary>
-        /// Get a pending reboot state.
-        /// </summary>
-        Result GetPendingRebootState();
-
-        /// <summary>
-        /// Get app latest version.
-        /// </summary>
-        Result GetAppUpdate();
+        string? ActionForDebug { get; set; }
     }
 }

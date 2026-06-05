@@ -13,10 +13,10 @@ public interface IInitializeService
     /// Initializes the app services data.
     /// </summary>
     /// <param name="args">App launch arguments.</param>
-    Task InitializeServicesAsync(object args);
+    Task InitializeServicesDataAsync(object args);
 
     /// <summary>
-    /// Initializes the <see cref="MainWindow"/> data.
+    /// Initialize and show <see cref="MainWindow"/>.
     /// </summary>
     Task InitializeMainWindowAsync();
 }

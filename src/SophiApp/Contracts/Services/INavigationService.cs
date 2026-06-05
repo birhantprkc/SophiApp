@@ -5,6 +5,7 @@
 namespace SophiApp.Contracts.Services;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using SophiApp.Helpers;
 
 /// <summary>
 /// A service for working with app <see cref="Page"/> navigation.
@@ -40,9 +41,16 @@ public interface INavigationService
     /// <summary>
     /// Causes the <see cref="Frame"/> to load content represented by the specified <see cref="Page"/> derived data type.
     /// </summary>
-    /// <param name="pageKey">Page to navigate.</param>
+    /// <param name="page">Page to navigate.</param>
     /// <param name="parameter">Parameter passed to the navigation page.</param>
+    /// <param name="clearHistory">Clear navigation history.</param>
+    /// <param name="disablePageAnimation">Disable page transition animation.</param>
+    bool NavigateTo(string page, object? parameter = null, bool clearHistory = false, bool disablePageAnimation = false);
+
+    /// <summary>
+    /// Causes the <see cref="Frame"/> to load content using <see cref="RequirementsResult"/>.
+    /// </summary>
+    /// <param name="result">Result of requirements execution.</param>
     /// <param name="clearNavigation">Clears the navigation history.</param>
-    /// <param name="ignorePageType">Allow to refresh active page.</param>
-    bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false, bool ignorePageType = false);
+    bool NavigateTo(RequirementsResult result, bool clearNavigation = true);
 }

@@ -20,12 +20,12 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void RunOsUpdate(RequirementsFailure reason)
+        public void RunUpdateByReason(RequirementsResult reason)
         {
             switch (reason)
             {
-                case RequirementsFailure.WinUnsupportedBuild:
-                case RequirementsFailure.WinUnsupportedUBR:
+                case RequirementsResult.WinUnsupportedBuild:
+                case RequirementsResult.WinUnsupportedUBR:
                     RunMicrosoftProductsUpdate();
                     RunOsUpdates();
                     break;

@@ -6,7 +6,6 @@ namespace SophiApp.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CSharpFunctionalExtensions;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using SophiApp.Contracts.Services;
@@ -14,6 +13,7 @@ using SophiApp.ControlTemplates;
 using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
+using SophiApp.RequirementsViews;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -25,28 +25,25 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly IAppNotificationService notificationService;
     private readonly IAppxPackagesService packagesService;
     private readonly ICommonDataService dataService;
-    private readonly IDefenderService defenderService;
     private readonly IGroupPolicyService groupPolicyService;
     private readonly IModelService modelService;
+    private readonly IPowerShellService powerShellService;
     private readonly IProcessService processService;
     private readonly IRegistryService registryService;
     private readonly IRequirementsService requirementsService;
     private readonly ISettingsService settingsService;
     private readonly IUpdateService updateService;
-    private readonly RequirementsFailureViewModel failureViewModel;
     private readonly StartupViewModel startupModel;
-    private bool logPageVisible;
+    private bool logPageVisibility;
+    private bool navigationViewHitTestVisible = false;
+    private TaskCompletionSource<bool>? taskContinueSource;
 
     [ObservableProperty]
     private bool isBackEnabled;
     [ObservableProperty]
-    private bool navigationViewHitTestVisible = false;
-    [ObservableProperty]
     private bool setUpCustomizationsPanelIsVisible = false;
     [ObservableProperty]
     private bool uwpForAllUsersState = true;
-    [ObservableProperty]
-    private int progressBarValue = 0;
     [ObservableProperty]
     private List<string> loggedActions = [];
     private List<UIModel> uwpAllUsersModels = [];
@@ -66,16 +63,15 @@ public partial class ShellViewModel : ObservableRecipient
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
     /// <param name="dataService">A service for working with common app data.</param>
-    /// <param name="defenderService">A service for working with Microsoft Defender API.</param>
     /// <param name="groupPolicyService">A service for working with group policy API.</param>
     /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="navigationService">Page navigation service.</param>
     /// <param name="navigationViewService">A service for navigating to View.</param>
+    /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
     /// <param name="notificationService">A service for working with toast notifications API.</param>
     /// <param name="packagesService">A service for working with appx packages API.</param>
     /// <param name="processService">A service for working with Windows process API.</param>
     /// <param name="registryService">A service for working with Windows registry API.</param>
-    /// <param name="requirementsFailureViewModel">Implements the <see cref="RequirementsFailureViewModel"/> class.</param>
     /// <param name="requirementsService">Service for working with OS requirements.</param>
     /// <param name="settingsService">A service for working with app settings.</param>
     /// <param name="updateService">Determines whether the Windows Update API is used to obtain updates for other Microsoft products.</param>
@@ -84,25 +80,24 @@ public partial class ShellViewModel : ObservableRecipient
         IAppNotificationService notificationService,
         IAppxPackagesService packagesService,
         ICommonDataService dataService,
-        IDefenderService defenderService,
         IGroupPolicyService groupPolicyService,
         IModelService modelService,
         INavigationService navigationService,
         INavigationViewService navigationViewService,
+        IPowerShellService powerShellService,
         IProcessService processService,
         IRegistryService registryService,
         IRequirementsService requirementsService,
         ISettingsService settingsService,
         IUpdateService updateService,
-        RequirementsFailureViewModel requirementsFailureViewModel,
         StartupViewModel startupViewModel)
     {
         this.dataService = dataService;
-        this.defenderService = defenderService;
         this.groupPolicyService = groupPolicyService;
         this.modelService = modelService;
         this.notificationService = notificationService;
         this.packagesService = packagesService;
+        this.powerShellService = powerShellService;
         this.processService = processService;
         this.registryService = registryService;
         this.requirementsService = requirementsService;
@@ -112,23 +107,25 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationViewService = navigationViewService;
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
-        failureViewModel = requirementsFailureViewModel;
         delimiter = this.dataService.GetDelimiter();
 
         ApplicableModelsApply_Command = new AsyncRelayCommand(ApplicableModelsApplyAsync);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
+        BitLockerProtectionStatus_Command = new RelayCommand<bool>(SetBitLockerProtectionStatus);
+        ContinueRequirementActionsExecute_Command = new RelayCommand(ContinueRequirementActionsExecute);
         DeleteLGPOFile_Command = new RelayCommand(() => DebugOptions.DeleteLGPOFile = !DebugOptions.DeleteLGPOFile);
+        OpenBitLockerSettingsCommand = new RelayCommand(() => processService.StartProcessByName("control.exe", "/name Microsoft.BitLockerDriveEncryption"));
+        OpenHostsFolder_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers\\etc")));
+        OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
         RadioButtonsGroup2Clicked_Command = new RelayCommand<UIRadioButtonsGroup2Model>(group => RadioButtonsGroup2Clicked(group!));
         RadioButtonsGroup3Clicked_Command = new RelayCommand<UIRadioButtonsGroup3Model>(group => RadioButtonsGroup3Clicked(group!));
         RadioButtonsGroup4Clicked_Command = new RelayCommand<UIRadioButtonsGroup4Model>(group => RadioButtonsGroup4Clicked(group!));
-        SetShowFunctionsInfo_Command = new RelayCommand(() => DebugOptions.ShowFunctionsInfo = !DebugOptions.ShowFunctionsInfo);
         SetLogPageVisibility_Command = new RelayCommand<bool>(SetLogPageVisibility);
-        OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
+        SetShowFunctionsInfo_Command = new RelayCommand(() => DebugOptions.ShowFunctionsInfo = !DebugOptions.ShowFunctionsInfo);
         SearchBoxQuerySubmitted_Command = new AsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args => SearchBoxQuerySubmittedAsync(args!));
         UIModelClicked_Command = new RelayCommand<UIModel>(model => UIModelClicked(model!));
         UIUwpAppModelClicked_Command = new RelayCommand<UIUwpAppModel>(model => UIUwpAppModelClicked(model!));
         UwpForAllUsersClicked_Command = new RelayCommand(UwpForAllUsersClicked);
-        LogPageVisible = settingsService.ReadLogPageVisibility();
     }
 
     /// <summary>
@@ -142,26 +139,34 @@ public partial class ShellViewModel : ObservableRecipient
     public IAsyncRelayCommand ApplicableModelsClear_Command { get; }
 
     /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to click <see cref="BitLockerProtectionStatusPage"/> button.
+    /// </summary>
+    public IRelayCommand<bool> BitLockerProtectionStatus_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to continue performing <see cref="RequirementAction"/> after fail result.
+    /// </summary>
+    public IRelayCommand ContinueRequirementActionsExecute_Command { get; }
+
+    /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Delete LGPO.txt file" CheckBox in Settings page.
     /// </summary>
     public IRelayCommand DeleteLGPOFile_Command { get; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether log page visibility.
+    /// Gets <see cref="IRelayCommand"/> to open BitLocker settings.
     /// </summary>
-    public bool LogPageVisible
-    {
-        get => logPageVisible;
-        set
-        {
-            if (logPageVisible != value)
-            {
-                logPageVisible = value;
-                settingsService.SaveLogPageVisibility(value);
-                OnPropertyChanged(nameof(LogPageVisible));
-            }
-        }
-    }
+    public IRelayCommand OpenBitLockerSettingsCommand { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open hosts file folder in explorer.
+    /// </summary>
+    public IRelayCommand OpenHostsFolder_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IAsyncRelayCommand"/> to click an "Open" button in the Task Scheduler page.
+    /// </summary>
+    public IAsyncRelayCommand OpenTaskScheduler_Command { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup2"/> clicked.
@@ -194,11 +199,6 @@ public partial class ShellViewModel : ObservableRecipient
     public IAsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs> SearchBoxQuerySubmitted_Command { get; }
 
     /// <summary>
-    /// Gets <see cref="IAsyncRelayCommand"/> to click an "Open" button in the Task Scheduler page.
-    /// </summary>
-    public IAsyncRelayCommand OpenTaskScheduler_Command { get; }
-
-    /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an element in the interface.
     /// </summary>
     public IRelayCommand<UIModel> UIModelClicked_Command { get; }
@@ -222,6 +222,33 @@ public partial class ShellViewModel : ObservableRecipient
     /// Gets and saves the app font sizes to a setting file.
     /// </summary>
     public FontOptions FontOptions { get; } = new ();
+
+    /// <summary>
+    /// Gets or sets a value indicating whether log page visibility.
+    /// </summary>
+    public bool LogPageVisibility
+    {
+        get => logPageVisibility;
+        set
+        {
+            if (logPageVisibility != value)
+            {
+                logPageVisibility = value;
+                App.Logger.LogPageVisibility(value);
+                settingsService.SaveLogPageVisibility(value);
+                OnPropertyChanged(nameof(LogPageVisibility));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether NavigationView items hit test visible property.
+    /// </summary>
+    public bool NavigationViewHitTestVisible
+    {
+        get => navigationViewHitTestVisible;
+        private set => SetProperty(ref navigationViewHitTestVisible, value, nameof(NavigationViewHitTestVisible));
+    }
 
     /// <summary>
     /// Gets <see cref="INavigationService"/>.
@@ -248,122 +275,9 @@ public partial class ShellViewModel : ObservableRecipient
     /// </summary>
     public async Task ExecuteAsync()
     {
-        var steps = 12;
-        await Task.Run(() =>
-        {
-            var timer = Stopwatch.StartNew();
-            Result.Try(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => startupModel.StatusText = "OsRequirements_GetOsBitness".GetLocalized()))
-            .Bind(_ => requirementsService.GetOsBitness())
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetWmiState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetWmiState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetOsVersion".GetLocalized();
-            }))
-            .Bind(requirementsService.GetOsVersion)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_AppRunFromLoggedUser".GetLocalized();
-            }))
-            .Bind(requirementsService.AppRunFromLoggedUser)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetExternalServicesData".GetLocalized();
-            }))
-            .Bind(async () => await dataService.GetExternalServicesDataAsync())
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_MalwareDetection".GetLocalized();
-            }))
-            .Bind(requirementsService.MalwareDetection)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetFeatureExperiencePackState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetFeatureExperiencePackState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetEventLogState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetEventLogState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetMicrosoftStoreState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetMicrosoftStoreState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetPendingRebootState".GetLocalized();
-            }))
-            .Bind(requirementsService.GetPendingRebootState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_UpdateDetection".GetLocalized();
-            }))
-            .Bind(requirementsService.GetAppUpdate)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GetMsDefenderState".GetLocalized();
-            }))
-            .Bind(defenderService.GetState)
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_ReadWindowsSettings".GetLocalized();
-            }))
-            .Tap(async () =>
-            {
-                JsonModels = await modelService.BuildJsonModelsAsync();
-                await modelService.GetModelsState(JsonModels);
-            })
-            .Tap(() => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                startupModel.ProgressBarValue = startupModel.ProgressBarValue.Increase(steps);
-                startupModel.StatusText = "OsRequirements_GeneratingUserInterface".GetLocalized();
-            }))
-            .Tap(async () =>
-            {
-                uwpAllUsersModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: true);
-                uwpCurrentUserModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: false);
-                UwpAppsModels = new (uwpAllUsersModels);
-            })
-            .Match(
-                onSuccess: () =>
-                {
-                    timer.Stop();
-                    App.Logger.LogViewModelExecute(timer);
-                    registryService.UseLatestCLR();
-                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-                    {
-                        NavigationViewHitTestVisible = true;
-                        NavigationService.NavigateTo(pageKey: typeof(PrivacyViewModel).FullName!, clearNavigation: true);
-                    });
-                },
-                onFailure: failure =>
-                {
-                    timer.Stop();
-                    App.Logger.LogViewModelExecute(timer);
-                    var reason = failure.ToEnum<RequirementsFailure>();
-                    App.Logger.LogFailureReason(reason);
-                    failureViewModel.LocalizeFailureReason(reason);
-                    App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(pageKey: typeof(RequirementsFailureViewModel).FullName!, clearNavigation: true));
-                    updateService.RunOsUpdate(reason);
-                });
-        });
+        requirementsService.ActionForDebug = settingsService.ReadDebugRequirementAction();
+        await RunRequirementActionsAsync();
+        await GenerateUIAsync();
     }
 
     /// <summary>
@@ -374,6 +288,81 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationViewHitTestVisible = false;
         _ = NavigationService.NavigateTo(typeof(FatalErrorViewModel).FullName!);
     }
+
+    private async Task ApplicableModelsApplyAsync()
+    {
+        NavigationViewHitTestVisible = false;
+        SetUpCustomizationsPanelText = ApplicableModels.Count == 1 ? "Panel_SetupCustomization_Applying".GetLocalized() : "Panel_SetupCustomizations_Applying".GetLocalized();
+        SetUpCustomizationsPanelIsVisible = true;
+        App.Logger.LogStartApplicableModelsSetState();
+        await modelService.SetModelsStateAsync(ApplicableModels);
+        SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
+        await modelService.GetModelsStateAsync(ApplicableModels);
+        ApplicableModels.Clear();
+        App.Logger.LogApplicableModelsClear();
+        groupPolicyService.UpdatePolicy(deleteConfig: DebugOptions.DeleteLGPOFile);
+        EnvironmentHelper.RefreshUserDesktop();
+        EnvironmentHelper.ForcedRefresh();
+        processService.KillProcessByName("StartMenuExperienceHost");
+        processService.KillProcessByName("explorer");
+        notificationService.EnableToastNotification();
+        SetUpCustomizationsPanelIsVisible = false;
+        NavigationViewHitTestVisible = true;
+    }
+
+    private async Task ApplicableModelsClearAsync()
+    {
+        NavigationViewHitTestVisible = false;
+        App.Logger.LogApplicableModelsCanceled();
+        SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
+        SetUpCustomizationsPanelIsVisible = true;
+        await modelService.GetModelsStateAsync(ApplicableModels);
+        ApplicableModels.Clear();
+        App.Logger.LogApplicableModelsClear();
+        SetUpCustomizationsPanelIsVisible = false;
+        NavigationViewHitTestVisible = true;
+    }
+
+    private void ContinueRequirementActionsExecute()
+    {
+        Task.Delay(80).Wait();
+        taskContinueSource?.SetResult(true);
+        App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(page: typeof(StartupViewModel).FullName!, clearHistory: true, disablePageAnimation: true));
+    }
+
+    private async Task GenerateUIAsync()
+    {
+        _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => startupModel.StatusText = "OsRequirements_ReadWindowsSettings".GetLocalized());
+        JsonModels = await modelService.BuildJsonModelsAsync();
+        await modelService.GetModelsState(JsonModels);
+        _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => startupModel.StatusText = "OsRequirements_GeneratingUserInterface".GetLocalized());
+        uwpAllUsersModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: true);
+        uwpCurrentUserModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: false);
+        UwpAppsModels = new (uwpAllUsersModels);
+        registryService.UseLatestCLR();
+        _ = App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            NavigationViewHitTestVisible = true;
+            NavigationService.NavigateTo(page: typeof(PrivacyViewModel).FullName!, clearHistory: true);
+        });
+    }
+
+    /// <summary>
+    /// Handles the navigation event of a menu item.
+    /// </summary>
+    /// <param name="sender">An object is the source of an event.</param>
+    /// <param name="e">Provides data for navigation methods and event handlers that cannot cancel the navigation request.</param>
+    private void OnNavigated(object sender, NavigationEventArgs e)
+    {
+        IsBackEnabled = NavigationService.CanGoBack;
+        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
+        if (selectedItem != null)
+        {
+            SelectedNavigationViewItem = selectedItem;
+        }
+    }
+
+    private async Task OpenTaskSchedulerAsync() => await Task.Run(() => processService.StartProcessByName(name: "control.exe", arguments: "schedtasks"));
 
     private void RadioButtonsGroup2Clicked(UIRadioButtonsGroup2Model group)
     {
@@ -436,64 +425,39 @@ public partial class ShellViewModel : ObservableRecipient
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
-    private void SetLogPageVisibility(bool isVisible)
+    private async Task RunRequirementActionsAsync()
     {
-        LogPageVisible = isVisible;
-        App.Logger.LogPageVisibility(isVisible);
-    }
-
-    /// <summary>
-    /// Handles the navigation event of a menu item.
-    /// </summary>
-    /// <param name="sender">An object is the source of an event.</param>
-    /// <param name="e">Provides data for navigation methods and event handlers that cannot cancel the navigation request.</param>
-    private void OnNavigated(object sender, NavigationEventArgs e)
-    {
-        IsBackEnabled = NavigationService.CanGoBack;
-        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        if (selectedItem != null)
+        foreach (var action in requirementsService.Actions)
         {
-            SelectedNavigationViewItem = selectedItem;
+            _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => startupModel.StatusText = action.DisplayText!);
+            await Task.Delay(100);
+            var timer = Stopwatch.StartNew();
+            var result = action.Execute();
+            timer.Stop();
+            App.Logger.LogRequirementsActionExecute(action.Execute.Method.Name, timer);
+
+            if (result != RequirementsResult.AllCorrect)
+            {
+                App.Logger.LogRequirementsFailureResult(result);
+                _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(result));
+                updateService.RunUpdateByReason(result);
+                taskContinueSource = new ();
+                await taskContinueSource.Task;
+            }
         }
     }
 
-    private async Task ApplicableModelsApplyAsync()
+    private void SetBitLockerProtectionStatus(bool runDecrypt)
     {
-        NavigationViewHitTestVisible = false;
-        ProgressBarValue = 0;
-        SetUpCustomizationsPanelText = ApplicableModels.Count == 1 ? "Panel_SetupCustomization_Applying".GetLocalized() : "Panel_SetupCustomizations_Applying".GetLocalized();
-        SetUpCustomizationsPanelIsVisible = true;
-        var callback = new Action(() => App.MainWindow.DispatcherQueue.TryEnqueue(() => ProgressBarValue = ProgressBarValue.Increase(ApplicableModels.Count)));
-        App.Logger.LogStartApplicableModelsSetState();
-        await modelService.SetModelsStateAsync(ApplicableModels, callback);
-        ProgressBarValue = 0;
-        SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
-        await modelService.GetModelsStateAsync(ApplicableModels);
-        ApplicableModels.Clear();
-        App.Logger.LogApplicableModelsClear();
-        groupPolicyService.UpdatePolicy(deleteConfig: DebugOptions.DeleteLGPOFile);
-        EnvironmentHelper.RefreshUserDesktop();
-        EnvironmentHelper.ForcedRefresh();
-        processService.KillProcessByName("StartMenuExperienceHost");
-        processService.KillProcessByName("explorer");
-        notificationService.EnableToastNotification();
-        SetUpCustomizationsPanelIsVisible = false;
-        NavigationViewHitTestVisible = true;
+        if (runDecrypt)
+        {
+            powerShellService.Invoke("Disable-BitLocker -MountPoint $env:SystemDrive");
+        }
+
+        ContinueRequirementActionsExecute();
     }
 
-    private async Task ApplicableModelsClearAsync()
-    {
-        NavigationViewHitTestVisible = false;
-        App.Logger.LogApplicableModelsCanceled();
-        ProgressBarValue = 0;
-        SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
-        SetUpCustomizationsPanelIsVisible = true;
-        await modelService.GetModelsStateAsync(ApplicableModels);
-        ApplicableModels.Clear();
-        App.Logger.LogApplicableModelsClear();
-        SetUpCustomizationsPanelIsVisible = false;
-        NavigationViewHitTestVisible = true;
-    }
+    private void SetLogPageVisibility(bool visible) => LogPageVisibility = visible;
 
     private async Task SearchBoxQuerySubmittedAsync(AutoSuggestBoxQuerySubmittedEventArgs args)
     {
@@ -501,14 +465,9 @@ public partial class ShellViewModel : ObservableRecipient
         {
             NavigationViewHitTestVisible = false;
             FoundModels = await modelService.GetModelsContainsTextAsync(JsonModels, args.QueryText);
-            _ = NavigationService.NavigateTo(pageKey: typeof(SearchViewModel).FullName!, ignorePageType: true);
+            _ = NavigationService.NavigateTo(page: typeof(SearchViewModel).FullName!, disablePageAnimation: true);
             NavigationViewHitTestVisible = true;
         }
-    }
-
-    private async Task OpenTaskSchedulerAsync()
-    {
-        await Task.Run(() => processService.StartProcessByName(name: "control.exe", arguments: "schedtasks"));
     }
 
     private void UIModelClicked(UIModel model)

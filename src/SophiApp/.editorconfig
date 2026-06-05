@@ -91,7 +91,7 @@ dotnet_diagnostic.SA1028.severity = error
 dotnet_diagnostic.CS1591.severity = silent
 
 # SA1101: Prefix local calls with this
-dotnet_diagnostic.SA1101.severity = suggestion
+dotnet_diagnostic.SA1101.severity = none
 
 # SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = warning

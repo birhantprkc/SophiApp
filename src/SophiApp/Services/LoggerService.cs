@@ -127,17 +127,15 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogWMIState(ServiceControllerStatus serviceState, int repositoryExitCode, bool repositoryIsConsistent)
         {
-            Log.Information("WMI service state: {ServiceState}", serviceState);
-            Log.Information("WMI verify repository exit code: {ExitCode}", repositoryExitCode);
-            Log.Information("WMI repository is consistent: {RepositoryIsConsistent}", repositoryIsConsistent);
-            shellViewModel.LoggedActions.AddRange([$"WMI service state: {serviceState}", $"WMI verify repository exit code: {repositoryExitCode}", $"WMI repository is consistent: {repositoryIsConsistent}"]);
+            Log.Information("WMI service state: {ServiceState}, verify repository exit code: {ExitCode}, repository is consistent: {RepositoryIsConsistent}", serviceState, repositoryExitCode, repositoryIsConsistent);
+            shellViewModel.LoggedActions.Add($"WMI service state: {serviceState}, verify repository exit code: {repositoryExitCode}, repository is consistent: {repositoryIsConsistent}");
         }
 
         /// <inheritdoc/>
         public void LogMalwareDetected(string name)
         {
-            Log.Warning("Malware detected: {Malware:l} in the {Service:l}", name, nameof(IRequirementsService));
-            shellViewModel.LoggedActions.Add($"Malware detected: {name} in the {nameof(IRequirementsService)}");
+            Log.Warning("[WRN] {Service:l} detect malware: {Malware:l}", nameof(IRequirementsService), name);
+            shellViewModel.LoggedActions.Add($"[WRN] {nameof(IRequirementsService)} detect malware: {name}");
         }
 
         /// <inheritdoc/>
@@ -148,17 +146,17 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogAllModelsBuilt(int count)
+        public void LogJsonModelsBuilt(Stopwatch timer, int count)
         {
-            Log.Information("{Service:l} built {Count} models", nameof(IModelService), count);
-            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} built {count} models");
+            Log.Information("{Service:l} took {TimeSpent} to built {Count} models", nameof(IModelService), timer.Elapsed, count);
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} took {timer.Elapsed} to built {count} models");
         }
 
         /// <inheritdoc/>
         public void LogStartModelsGetState()
         {
-            Log.Information("{Service:l} has started initialization of models", nameof(IModelService));
-            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} has started initialization of models");
+            Log.Information("{Service:l} has started model initialization", nameof(IModelService));
+            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} has started model initialization");
         }
 
         /// <inheritdoc/>
@@ -242,10 +240,11 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderServiceState(string service, bool exists)
+        public void LogDefenderServiceState(string state)
         {
-            Log.Information("Service {Service:l} exists: {Exists:l}", service, exists);
-            shellViewModel.LoggedActions.Add($"Service {service} exists: {exists}");
+            state = state[..state.LastIndexOf(',')];
+            Log.Information("Microsoft Defender services exist {State:l}", state);
+            shellViewModel.LoggedActions.Add($"Microsoft Defender services exist {state}");
         }
 
         /// <inheritdoc/>
@@ -263,10 +262,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogPageVisibility(bool isVisible)
+        public void LogPageVisibility(bool visible)
         {
-            Log.Information("The log page visibility set to: {IsVisible}", isVisible);
-            shellViewModel.LoggedActions.Add($"The log page visibility set to: {isVisible}");
+            Log.Information("Log page is visible: {IsVisible}", visible);
+            shellViewModel.LoggedActions.Add($"Log page is visible: {visible}");
         }
 
         /// <inheritdoc/>
@@ -281,13 +280,6 @@ namespace SophiApp.Services
         {
             Log.Information("A search for the text {Text} took {Seconds} seconds and return {Count} customization(s)", text, timer.Elapsed.TotalSeconds, count);
             shellViewModel.LoggedActions.Add($"A search for the text \"{text}\" took {timer.Elapsed.TotalSeconds} seconds and return {count} customization(s)");
-        }
-
-        /// <inheritdoc/>
-        public void LogViewModelExecute(Stopwatch timer)
-        {
-            Log.Information("{ViewModel:l} took time to execute: {TimeSpent}", nameof(ShellViewModel), timer.Elapsed);
-            shellViewModel.LoggedActions.Add($"{nameof(ShellViewModel)} took time to execute: {timer.Elapsed}");
         }
 
         /// <inheritdoc/>
@@ -313,10 +305,17 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogFailureReason(RequirementsFailure failure)
+        public void LogRequirementsActionExecute(string name, Stopwatch timer)
         {
-            Log.Information("Failure to meet {Service:l} requirements due to {Name}", nameof(IRequirementsService), failure);
-            shellViewModel.LoggedActions.Add($"Failure to meet {nameof(IRequirementsService)} requirements due to {failure}");
+            Log.Information("{Service:l} took {TimeSpent} to execute {Action:l} action", nameof(IRequirementsService), timer.Elapsed, name);
+            shellViewModel.LoggedActions.Add($"{nameof(IRequirementsService)} took {timer.Elapsed} to execute {name} action");
+        }
+
+        /// <inheritdoc/>
+        public void LogRequirementsFailureResult(RequirementsResult result)
+        {
+            Log.Information("[WRN] Failure to meet {Service:l} requirements due to {Name}", nameof(IRequirementsService), result);
+            shellViewModel.LoggedActions.Add($"[WRN] Failure to meet {nameof(IRequirementsService)} requirements due to {result}");
         }
 
         /// <inheritdoc/>
@@ -372,13 +371,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderMpPreferenceIsNull()
-        {
-            Log.Error("[WRN] Executing cmdlet (Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess return null");
-            shellViewModel.LoggedActions.Add($"[WRN] Executing cmdlet (Get-MpPreference -ErrorAction Stop).EnableControlledFolderAccess return null");
-        }
-
-        /// <inheritdoc/>
         public void LogDefenderAntivirusProductsIsNull()
         {
             Log.Error("[WRN] Class AntiVirusProduct from root/SecurityCenter2 namespace return null");
@@ -386,10 +378,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderServiceBroken(string service)
+        public void LogDefenderServiceNotFound(string service)
         {
-            Log.Error("[WRN] Microsoft Defender service broken: {Service:l}", service);
-            shellViewModel.LoggedActions.Add($"[WRN] Microsoft Defender service broken: {service}");
+            Log.Error("[WRN] Microsoft Defender service not found: {Service:l}", service);
+            shellViewModel.LoggedActions.Add($"[WRN] Microsoft Defender service not found: {service}");
         }
 
         /// <inheritdoc/>
@@ -416,22 +408,22 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogDefenderSecurityHealthException(Exception exception)
         {
-            Log.Error("[WRN] Failed to obtain Microsoft Defender Security Health service status in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender Security Health service status in the {nameof(IDefenderService)}: {exception.Message}");
+            Log.Error("[WRN] Failed to obtain Microsoft Defender Security Health service status in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender Security Health service status in the {nameof(IRequirementsService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>
         public void LogDefenderAntiSpywareEnabledException(Exception exception)
         {
-            Log.Error("[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {nameof(IDefenderService)}: {exception.Message}");
+            Log.Error("[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {nameof(IRequirementsService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>
         public void LogDefenderControlledFolderException(Exception exception)
         {
-            Log.Error("[WRN] Failed to obtain Microsoft Defender EnableControlledFolderAccess value in the {Service:l}: {Message}", nameof(IDefenderService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender EnableControlledFolderAccess value in the {nameof(IDefenderService)}: {exception.Message}");
+            Log.Error("[WRN] Failed to obtain Microsoft Defender EnableControlledFolderAccess value in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
+            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender EnableControlledFolderAccess value in the {nameof(IRequirementsService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>

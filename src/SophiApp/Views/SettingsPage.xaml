@@ -11,6 +11,16 @@
       mc:Ignorable="d"
       SizeChanged="PageSettings_SizeChanged">
 
+    <Page.Resources>
+        <DataTemplate x:Key="RequirementActionTemplate">
+            <StackPanel Orientation="Horizontal"
+                Margin="0, 0, 10, 10">
+                <RadioButton Content="{Binding Execute.Method.Name}"
+                     GroupName="RequirementActionsGroup"/>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
     <ScrollView>
         <StackPanel IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
             <StackPanel Orientation="Horizontal">
@@ -67,8 +77,8 @@
                                 <CheckBox x:Name="ShowLogPageCheckBox"
                                           Grid.Column="0"
                                           VerticalAlignment="Center"
-                                          IsChecked="{x:Bind ViewModel.LogPageVisible, Mode=OneWay}"
-                                          Command="{x:Bind ViewModel.LogPageVisibleCommand, Mode=OneWay}"
+                                          IsChecked="{x:Bind ViewModel.LogPageVisibility, Mode=OneWay}"
+                                          Command="{x:Bind ViewModel.LogPageVisibilityCommand, Mode=OneWay}"
                                           CommandParameter="{Binding Path=IsChecked, ElementName=ShowLogPageCheckBox}"/>
                                 <TextBlock x:Uid="SettingsPage_ShowLogPage"
                                            Grid.Column="1"
@@ -78,7 +88,7 @@
                         </controls:ContentBlock.Content>
                     </controls:ContentBlock>
 
-                    <controls:ContentBlock Title="Debug"
+                    <controls:ContentBlock Title="Debug options"
                                            Height="140"
                                            Margin="0, 0, 10, 10">
                         <controls:ContentBlock.Content>
@@ -120,9 +130,33 @@
                             </Grid>
                         </controls:ContentBlock.Content>
                     </controls:ContentBlock>
+
+                    <controls:ContentBlock Title="Debug requirement actions"
+                                           HorizontalAlignment="Left"
+                                           Margin="0, 0, 10, 10">
+                        <controls:ContentBlock.Content>
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.RequirementActions, Mode=OneWay}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0, 0, 10, 10">
+                                            <RadioButton Content="{Binding Execute.Method.Name}"
+                                                         GroupName="RequirementActionsGroup"
+                                                         Checked="RequirementActionsRadioButton_Checked"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </controls:ContentBlock.Content>
+                    </controls:ContentBlock>
+                    <TeachingTip x:Name="DebugRequirementActionsTip"
+                                 IsLightDismissEnabled="False"
+                                 PreferredPlacement="Auto"
+                                 Subtitle="To apply selected action restart the app"
+                                 HorizontalContentAlignment="Center">
+                    </TeachingTip>
                 </StackPanel>
-                <StackPanel x:Name="InfoPanel"
-                            Grid.Column="1">
+                <StackPanel x:Name="InfoPanel" Grid.Column="1">
                     <controls:ContentBlock x:Uid="SettingsPage_AboutApp"
                                            Height="120"
                                            Margin="0, 0, 10, 10">

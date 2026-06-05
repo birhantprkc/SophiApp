@@ -3,14 +3,17 @@
 // </copyright>
 
 namespace SophiApp.Services;
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using SophiApp.Contracts.Services;
 using SophiApp.Contracts.ViewModels;
 using SophiApp.Extensions;
+using SophiApp.Helpers;
+using SophiApp.RequirementsViewModels;
 using SophiApp.Views;
+using System.Diagnostics.CodeAnalysis;
 
 /// <inheritdoc/>
 public class NavigationService : INavigationService
@@ -76,15 +79,15 @@ public class NavigationService : INavigationService
     }
 
     /// <inheritdoc/>
-    public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false, bool ignorePageType = false)
+    public bool NavigateTo(string page, object? parameter = null, bool clearHistory = false, bool disablePageAnimation = false)
     {
-        var pageType = pageService.GetPageType(pageKey);
+        var pageType = pageService.GetPageType(page);
 
-        if (frame != null && (ignorePageType || frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(lastParameterUsed))))
+        if (frame != null && (disablePageAnimation || frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(lastParameterUsed))))
         {
-            frame.Tag = clearNavigation;
+            frame.Tag = clearHistory;
             var vmBeforeNavigation = frame.GetPageViewModel();
-            var navigateAnimation = ignorePageType ? new SuppressNavigationTransitionInfo() : null;
+            var navigateAnimation = disablePageAnimation ? new SuppressNavigationTransitionInfo() : null;
             var navigated = frame.Navigate(pageType, parameter, navigateAnimation);
             if (navigated)
             {
@@ -99,6 +102,36 @@ public class NavigationService : INavigationService
         }
 
         return false;
+    }
+
+    /// <inheritdoc/>
+    public bool NavigateTo(RequirementsResult result, bool clearNavigation = true)
+    {
+        var viewModel = result switch
+        {
+            RequirementsResult.BitLockerEncryptOrDecryptState => typeof(BitLockerEncryptOrDecryptViewModel).FullName,
+            RequirementsResult.BitLockerProtectionStatus => typeof(BitLockerProtectionStatusViewModel).FullName,
+            RequirementsResult.DefenderControlledFolderEnable => typeof(DefenderControlledFolderEnableViewModel).FullName,
+            RequirementsResult.DefenderFileMissing => typeof(DefenderFileMissingViewModel).FullName,
+            RequirementsResult.AntiSpywareDisabled => typeof(AntiSpywareDisabledViewModel).FullName,
+            RequirementsResult.DefenderSecurityHealthFailure => typeof(DefenderSecurityHealthFailureViewModel).FullName,
+            RequirementsResult.DefenderServiceFailure => typeof(DefenderServiceFailureViewModel).FullName,
+            RequirementsResult.DefenderSettingsPageHidden => typeof(DefenderSettingsPageHiddenViewModel).FullName,
+            RequirementsResult.DetectHostFileEntries => typeof(DetectHostFileEntriesViewModel).FullName,
+            RequirementsResult.EventLogBroken => typeof(EventLogBrokenViewModel).FullName,
+            RequirementsResult.FeatureExperiencePackRemoved => typeof(FeatureExperiencePackRemovedViewModel).FullName,
+            RequirementsResult.Is32BitOs => typeof(Is32BitOsViewModel).FullName,
+            RequirementsResult.MalwareDetected => typeof(MalwareDetectedViewModel).FullName,
+            RequirementsResult.MsStoreRemoved => typeof(MsStoreRemovedViewModel).FullName,
+            RequirementsResult.RebootRequired => typeof(RebootRequiredViewModel).FullName,
+            RequirementsResult.RunByNotLoggedUser => typeof(RunByNotLoggedUserViewModel).FullName,
+            RequirementsResult.WinUnsupportedBuild => typeof(WinUnsupportedBuildViewModel).FullName,
+            RequirementsResult.WinUnsupportedUBR => typeof(WinUnsupportedUbrViewModel).FullName,
+            RequirementsResult.WMIBroken => typeof(WmiBrokenViewModel).FullName,
+            _ => throw new TypeAccessException($"Not defined enum constant \"{nameof(result)}\" in {nameof(RequirementsResult)}")
+        };
+
+        return NavigateTo(page: viewModel!, clearHistory: clearNavigation);
     }
 
     private void RegisterFrameEvents()

@@ -44,9 +44,11 @@ public sealed partial class MainWindow : WindowEx
     /// </summary>
     /// <param name="sender">Contains a set of common app user interface settings and operations.</param>
     /// <param name="args">Arguments passed to the method.</param>
-    private void Settings_ColorValuesChanged(UISettings sender, object args) => dispatcherQueue.TryEnqueue(TitleBarHelper.ApplySystemThemeToCaptionButtons);
+    private void Settings_ColorValuesChanged(UISettings sender, object args)
+        => dispatcherQueue.TryEnqueue(TitleBarHelper.ApplySystemThemeToCaptionButtons);
 
-    private void MainWindow_StateChanged(object sender, WindowState e) => Task.Run(async () => await settingsService.SaveAppWindowStateAsync(WindowState));
+    private void MainWindow_StateChanged(object sender, WindowState e)
+        => Task.Run(async () => await settingsService.SaveAppWindowStateAsync(WindowState));
 
     private void MainWindow_PositionChanged(object sender, PointInt32 e)
     {

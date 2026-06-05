@@ -4,7 +4,6 @@
 
 namespace SophiApp.Services
 {
-    using CSharpFunctionalExtensions;
     using Microsoft.UI.Input;
     using SophiApp.Contracts.Services;
     using SophiApp.Helpers;
@@ -105,24 +104,15 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Result> GetExternalServicesDataAsync()
+        public async Task GetExternalServicesDataAsync()
         {
-            try
-            {
-                await Task.WhenAll(
+            await Task.WhenAll(
                         SetLatestAppReleaseAsync(),
                         SetNet8ReleaseAsync(),
                         SetNet9ReleaseAsync(),
                         SetNet10ReleaseAsync(),
                         SetVCReleaseAsync(),
                         SetSupportedBuildsAsync());
-
-                return Result.Success();
-            }
-            catch
-            {
-                return Result.Success();
-            }
         }
 
         /// <inheritdoc/>

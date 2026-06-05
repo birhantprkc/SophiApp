@@ -1,12 +1,14 @@
 <Page
-    x:Class="SophiApp.Views.RequirementsFailurePage"
+    x:Class="SophiApp.RequirementsViews.DefenderControlledFolderEnablePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SophiApp.RequirementsViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Grid VerticalAlignment="Center"
+          HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -20,11 +22,7 @@
                Height="103"/>
 
         <StackPanel Grid.Row="1">
-            <TextBlock Text="{x:Bind ViewModel.TitleText, Mode=OneWay}"
-                       Style="{StaticResource RequirementsFailurePageTextStyle}"
-                       Foreground="{ThemeResource WindowForeground}"/>
-
-            <TextBlock Text="{x:Bind ViewModel.DescriptionText, Mode=OneWay}"
+            <TextBlock x:Uid="OsRequirementsFailure_DefenderControlledFolderEnable"
                        Style="{StaticResource RequirementsFailurePageTextStyle}"
                        Foreground="{ThemeResource WindowForeground}"/>
         </StackPanel>

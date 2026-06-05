@@ -20,7 +20,7 @@ namespace SophiApp.Contracts.Services
         /// Start receiving OS updates.
         /// </summary>
         /// <param name="reason">Update reasons.</param>
-        void RunOsUpdate(RequirementsFailure reason);
+        void RunUpdateByReason(RequirementsResult reason);
 
         /// <summary>
         /// Run receiving updates for other Microsoft products.

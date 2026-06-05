@@ -58,15 +58,13 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void SetJepriCreationsCursors(JepriCursorsTheme theme)
         {
-            var downloadFolder = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders")
-                ?.GetValue("{374DE290-123F-4565-9164-39C4925E467B}") as string ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var cursorsZip = Path.Combine(downloadFolder, "Windows11Cursors.zip");
+            var cursorsZip = Path.Combine(Environment.ExpandEnvironmentVariables("%SYSTEMDRIVE%"), "Windows11Cursors.zip");
             var cursorsTheme = theme == JepriCursorsTheme.Light ? "W11 Cursor Light Free by Jepri Creations" : "W11 Cursor Dark Free by Jepri Creations";
             var extractPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), theme == JepriCursorsTheme.Light ? "Cursors\\W11 Cursor Light Free" : "Cursors\\W11 Cursor Dark Free");
             var extractArguments = $"-xvf \"{cursorsZip}\" -C \"{extractPath}\" --strip-components=1 {(theme == JepriCursorsTheme.Light ? "light" : "dark")}/";
             var systemRootPath = extractPath.Replace(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "%SystemRoot%");
             _ = Directory.CreateDirectory(extractPath);
-            httpService.DownloadFile("https://github.com/farag2/Sophia-Script-for-Windows/raw/refs/heads/master/Cursors/Windows11Cursors.zip", cursorsZip);
+            httpService.DownloadFile("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/Windows11Cursors.zip", cursorsZip);
 
             // Extract archive
             _ = processService.WaitForExit(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe"), extractArguments);

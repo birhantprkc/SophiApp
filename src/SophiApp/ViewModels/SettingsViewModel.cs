@@ -48,21 +48,29 @@ public partial class SettingsViewModel : ObservableRecipient
     /// <param name="dataService">A service for transferring app data between layers of DI.</param>
     /// <param name="httpService">A service for working with HTTP.</param>
     /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
-    public SettingsViewModel(IThemesService themesService, ICommonDataService dataService, IHttpService httpService, ShellViewModel shellViewModel)
+    /// <param name="settingsService">A service for working with app settings.</param>
+    public SettingsViewModel(
+        IThemesService themesService,
+        ICommonDataService dataService,
+        IHttpService httpService,
+        ShellViewModel shellViewModel,
+        ISettingsService settingsService)
     {
         build = dataService.GetBuildName();
         delimiter = dataService.GetDelimiter();
         DebugOptions = shellViewModel.DebugOptions;
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
-        LogPageVisible = shellViewModel.LogPageVisible;
+        LogPageVisibility = shellViewModel.LogPageVisibility;
         DeleteLGPOFileCommand = shellViewModel.DeleteLGPOFile_Command;
-        LogPageVisibleCommand = shellViewModel.SetLogPageVisibility_Command;
+        LogPageVisibilityCommand = shellViewModel.SetLogPageVisibility_Command;
         OpenLinkCommand = new AsyncRelayCommand<string>(httpService.OpenUrlAsync);
         SetShowFunctionsInfoCommand = shellViewModel.SetShowFunctionsInfo_Command;
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
         version = dataService.GetFullName();
+        RequirementActions = App.GetService<IRequirementsService>().Actions;
+        SaveDebugRequirementActionCommand = new AsyncRelayCommand<string>(s => settingsService.SaveDebugRequirementActionAsync(s!));
     }
 
     /// <summary>
@@ -94,7 +102,12 @@ public partial class SettingsViewModel : ObservableRecipient
     /// <summary>
     /// Gets or sets a value indicating whether <see cref="LogPage"/> is visible.
     /// </summary>
-    public bool LogPageVisible { get; set; }
+    public bool LogPageVisibility { get; set; }
+
+    /// <summary>
+    /// Gets <see cref="RequirementAction"/> collections.
+    /// </summary>
+    public List<RequirementAction> RequirementActions { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Delete LGPO.txt file" CheckBox in Settings page.
@@ -112,7 +125,12 @@ public partial class SettingsViewModel : ObservableRecipient
     public IRelayCommand SetShowFunctionsInfoCommand { get; }
 
     /// <summary>
+    /// Gets <see cref="IAsyncRelayCommand"/> to write requirement action name a settings file for debug.
+    /// </summary>
+    public IRelayCommand<string> SaveDebugRequirementActionCommand { get; }
+
+    /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.
     /// </summary>
-    public IRelayCommand<bool> LogPageVisibleCommand { get; }
+    public IRelayCommand<bool> LogPageVisibilityCommand { get; }
 }

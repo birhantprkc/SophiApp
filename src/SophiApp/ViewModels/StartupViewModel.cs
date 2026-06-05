@@ -11,10 +11,29 @@ namespace SophiApp.ViewModels
     /// </summary>
     public partial class StartupViewModel : ObservableRecipient
     {
-        [ObservableProperty]
-        private string statusText = string.Empty;
+        private string? statusText;
 
-        [ObservableProperty]
-        private int progressBarValue = 0;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StartupViewModel"/> class.
+        /// </summary>
+        public StartupViewModel()
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets <see cref="StartupViewModel"/> status text.
+        /// </summary>
+        public string StatusText
+        {
+            get => statusText!;
+            set
+            {
+                if (value is not null && statusText != value)
+                {
+                    statusText = value;
+                    OnPropertyChanged(nameof(StatusText));
+                }
+            }
+        }
     }
 }
