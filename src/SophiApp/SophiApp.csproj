@@ -69,6 +69,7 @@
     <None Remove="Styles\Themes.xaml" />
     <None Remove="ControlTemplates\ContentBlock.xaml" />
     <None Remove="ControlTemplates\MadeForWindows.xaml" />
+    <None Remove="Views\DebugPage.xaml" />
     <None Remove="Views\FatalErrorPage.xaml" />
     <None Remove="Views\LogPage.xaml" />
     <None Remove="Views\RequirementsDetectHostFileEntriesPage.xaml" />
@@ -193,6 +194,9 @@
     <None Update="Binaries\LGPO.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\DebugPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="RequirementsViews\BitLockerProtectionStatusPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

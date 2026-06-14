@@ -97,13 +97,6 @@ namespace SophiApp.Contracts.Services
         void LogAppUpdate(Version version);
 
         /// <summary>
-        /// Write the spent time taken by parse json models in the log.
-        /// </summary>
-        /// <param name="timer">Time spent on built.</param>
-        /// <param name="count">Number of models built.</param>
-        void LogJsonModelsBuilt(Stopwatch timer, int count);
-
-        /// <summary>
         /// Write the start of all models state in the log.
         /// </summary>
         void LogStartModelsGetState();
@@ -220,14 +213,6 @@ namespace SophiApp.Contracts.Services
         /// <param name="timer">Time spent on search.</param>
         /// <param name="count">Number of found models.</param>
         void LogStopTextSearch(string text, Stopwatch timer, int count);
-
-        /// <summary>
-        /// Write the spent time taken by UWP models built in the log.
-        /// </summary>
-        /// <param name="timer">Time spent on built.</param>
-        /// <param name="count">Number of models.</param>
-        /// <param name="forAllUsers">Is for all users built.</param>
-        void LogUwpModelsBuilt(Stopwatch timer, int count, bool forAllUsers);
 
         /// <summary>
         /// Write url available state in the log.

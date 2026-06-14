@@ -25,6 +25,7 @@ public class PageService : IPageService
         Configure<BitLockerEncryptOrDecryptViewModel, BitLockerEncryptOrDecryptPage>();
         Configure<BitLockerProtectionStatusViewModel, BitLockerProtectionStatusPage>();
         Configure<ContextMenuViewModel, ContextMenuPage>();
+        Configure<DebugViewModel, DebugPage>();
         Configure<DefenderControlledFolderEnableViewModel, DefenderControlledFolderEnablePage>();
         Configure<DefenderFileMissingViewModel, DefenderFileMissingPage>();
         Configure<DefenderSecurityHealthFailureViewModel, DefenderSecurityHealthFailurePage>();

@@ -5,6 +5,8 @@
 namespace SophiApp.RequirementsViewModels
 {
     using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Input;
+    using SophiApp.ViewModels;
 
     /// <summary>
     /// Implements the <see cref="DefenderControlledFolderEnableViewModel"/> class.
@@ -16,6 +18,13 @@ namespace SophiApp.RequirementsViewModels
         /// </summary>
         public DefenderControlledFolderEnableViewModel()
         {
+            var shellViewModel = App.GetService<ShellViewModel>();
+            OpenDefenderControlledFolderCommand = shellViewModel.OpenDefenderControlledFolder_Command;
         }
+
+        /// <summary>
+        /// Gets <see cref="IRelayCommand"/> to open Microsoft Defender controlled folder settings.
+        /// </summary>
+        public IRelayCommand OpenDefenderControlledFolderCommand { get; }
     }
 }

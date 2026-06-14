@@ -8,8 +8,6 @@ using Microsoft.Win32;
 using SophiApp.Contracts.Services;
 using SophiApp.Extensions;
 using SophiApp.Helpers;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
 
 /// <inheritdoc/>
 public class AppNotificationService : IAppNotificationService
@@ -70,16 +68,6 @@ public class AppNotificationService : IAppNotificationService
         Registry.ClassesRoot.OpenSubKey("WindowsCleanup", true)?.SetValue(string.Empty, "URL:WindowsCleanup", RegistryValueKind.String);
         Registry.ClassesRoot.OpenSubKey("WindowsCleanup", true)?.SetValue("URL Protocol", string.Empty, RegistryValueKind.String);
         Registry.ClassesRoot.OpenSubKey("WindowsCleanup", true)?.SetValue("EditFlags", 2162688, RegistryValueKind.DWord);
-    }
-
-    /// <inheritdoc/>
-    public void Show(string payload)
-    {
-        var xml = new XmlDocument();
-        xml.LoadXml(payload);
-        var toast = new ToastNotification(xml);
-        var toastNotifier = ToastNotificationManager.CreateToastNotifier("SophiApp");
-        toastNotifier.Show(toast);
     }
 
     /// <inheritdoc/>

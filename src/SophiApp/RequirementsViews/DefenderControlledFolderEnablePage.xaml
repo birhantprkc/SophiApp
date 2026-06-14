@@ -25,6 +25,12 @@
             <TextBlock x:Uid="OsRequirementsFailure_DefenderControlledFolderEnable"
                        Style="{StaticResource RequirementsFailurePageTextStyle}"
                        Foreground="{ThemeResource WindowForeground}"/>
+
+            <Button x:Uid="Button_OpenDefenderControlledFolderSettings"
+                    Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Margin="0, 20, 0, 0"
+                    Command="{x:Bind ViewModel.OpenDefenderControlledFolderCommand, Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </Page>

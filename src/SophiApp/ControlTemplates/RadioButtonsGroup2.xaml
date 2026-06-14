@@ -46,7 +46,7 @@
             BorderBrush="{StaticResource UIControlBorderBackground}"
             SizeChanged="Border_SizeChanged">
         <Expander Style="{StaticResource UIControlExpanderStyle}"
-                  Background="{ThemeResource UIControlBackground}"
+                  Background="{ThemeResource NavigationViewContentBackground}"
                   ContextRequested="ExpandingRadioGroup_ContextRequested">
             <Expander.Header>
                 <StackPanel>

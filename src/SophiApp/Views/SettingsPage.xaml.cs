@@ -51,11 +51,4 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     private void PageSettings_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e) => CurrentWidth = ActualWidth;
 
     private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-    private void RequirementActionsRadioButton_Checked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        DebugRequirementActionsTip.IsOpen = true;
-        var button = sender as RadioButton;
-        ViewModel.SaveDebugRequirementActionCommand.Execute(button!.Content as string);
-    }
 }

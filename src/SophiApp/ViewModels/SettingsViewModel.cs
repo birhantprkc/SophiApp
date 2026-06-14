@@ -48,35 +48,23 @@ public partial class SettingsViewModel : ObservableRecipient
     /// <param name="dataService">A service for transferring app data between layers of DI.</param>
     /// <param name="httpService">A service for working with HTTP.</param>
     /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
-    /// <param name="settingsService">A service for working with app settings.</param>
     public SettingsViewModel(
         IThemesService themesService,
         ICommonDataService dataService,
         IHttpService httpService,
-        ShellViewModel shellViewModel,
-        ISettingsService settingsService)
+        ShellViewModel shellViewModel)
     {
         build = dataService.GetBuildName();
         delimiter = dataService.GetDelimiter();
-        DebugOptions = shellViewModel.DebugOptions;
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
         LogPageVisibility = shellViewModel.LogPageVisibility;
-        DeleteLGPOFileCommand = shellViewModel.DeleteLGPOFile_Command;
         LogPageVisibilityCommand = shellViewModel.SetLogPageVisibility_Command;
         OpenLinkCommand = new AsyncRelayCommand<string>(httpService.OpenUrlAsync);
-        SetShowFunctionsInfoCommand = shellViewModel.SetShowFunctionsInfo_Command;
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
         version = dataService.GetFullName();
-        RequirementActions = App.GetService<IRequirementsService>().Actions;
-        SaveDebugRequirementActionCommand = new AsyncRelayCommand<string>(s => settingsService.SaveDebugRequirementActionAsync(s!));
     }
-
-    /// <summary>
-    /// Gets app debug mode options.
-    /// </summary>
-    public DebugOptions DebugOptions { get; }
 
     /// <summary>
     /// Gets or saves the app font sizes to a setting file.
@@ -105,29 +93,9 @@ public partial class SettingsViewModel : ObservableRecipient
     public bool LogPageVisibility { get; set; }
 
     /// <summary>
-    /// Gets <see cref="RequirementAction"/> collections.
-    /// </summary>
-    public List<RequirementAction> RequirementActions { get; }
-
-    /// <summary>
-    /// Gets <see cref="IRelayCommand"/> to click an "Delete LGPO.txt file" CheckBox in Settings page.
-    /// </summary>
-    public IRelayCommand DeleteLGPOFileCommand { get; }
-
-    /// <summary>
     /// Gets a resource using an identifier.
     /// </summary>
     public IRelayCommand OpenLinkCommand { get; }
-
-    /// <summary>
-    /// Gets <see cref="IRelayCommand"/> to click an "Show functions name and ID" CheckBox in Settings page.
-    /// </summary>
-    public IRelayCommand SetShowFunctionsInfoCommand { get; }
-
-    /// <summary>
-    /// Gets <see cref="IAsyncRelayCommand"/> to write requirement action name a settings file for debug.
-    /// </summary>
-    public IRelayCommand<string> SaveDebugRequirementActionCommand { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.

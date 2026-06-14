@@ -11,16 +11,6 @@
       mc:Ignorable="d"
       SizeChanged="PageSettings_SizeChanged">
 
-    <Page.Resources>
-        <DataTemplate x:Key="RequirementActionTemplate">
-            <StackPanel Orientation="Horizontal"
-                Margin="0, 0, 10, 10">
-                <RadioButton Content="{Binding Execute.Method.Name}"
-                     GroupName="RequirementActionsGroup"/>
-            </StackPanel>
-        </DataTemplate>
-    </Page.Resources>
-
     <ScrollView>
         <StackPanel IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
             <StackPanel Orientation="Horizontal">
@@ -87,74 +77,6 @@
                             </Grid>
                         </controls:ContentBlock.Content>
                     </controls:ContentBlock>
-
-                    <controls:ContentBlock Title="Debug options"
-                                           Height="140"
-                                           Margin="0, 0, 10, 10">
-                        <controls:ContentBlock.Content>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0"
-                                      Margin="0, 0, 15, 5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{x:Bind ViewModel.DebugOptions.ShowFunctionsInfo, Mode=OneWay}"
-                                              Command="{x:Bind ViewModel.SetShowFunctionsInfoCommand, Mode=OneWay}"/>
-                                    <TextBlock Text="Show functions name and ID"
-                                               Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               Margin="0, 0, 5, 1"/>
-                                </Grid>
-                                <Grid Grid.Row="1"
-                                      Margin="0, 0, 15, 5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{x:Bind ViewModel.DebugOptions.DeleteLGPOFile, Mode=OneWay}"
-                                              Command="{x:Bind ViewModel.DeleteLGPOFileCommand, Mode=OneWay}"/>
-                                    <TextBlock Text="Delete LGPO.txt file"
-                                               Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               Margin="0, 0, 5, 1"/>
-                                </Grid>
-                            </Grid>
-                        </controls:ContentBlock.Content>
-                    </controls:ContentBlock>
-
-                    <controls:ContentBlock Title="Debug requirement actions"
-                                           HorizontalAlignment="Left"
-                                           Margin="0, 0, 10, 10">
-                        <controls:ContentBlock.Content>
-                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.RequirementActions, Mode=OneWay}">
-                                <ItemsRepeater.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Margin="0, 0, 10, 10">
-                                            <RadioButton Content="{Binding Execute.Method.Name}"
-                                                         GroupName="RequirementActionsGroup"
-                                                         Checked="RequirementActionsRadioButton_Checked"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsRepeater.ItemTemplate>
-                            </ItemsRepeater>
-                        </controls:ContentBlock.Content>
-                    </controls:ContentBlock>
-                    <TeachingTip x:Name="DebugRequirementActionsTip"
-                                 IsLightDismissEnabled="False"
-                                 PreferredPlacement="Auto"
-                                 Subtitle="To apply selected action restart the app"
-                                 HorizontalContentAlignment="Center">
-                    </TeachingTip>
                 </StackPanel>
                 <StackPanel x:Name="InfoPanel" Grid.Column="1">
                     <controls:ContentBlock x:Uid="SettingsPage_AboutApp"

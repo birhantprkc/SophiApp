@@ -33,7 +33,7 @@ namespace SophiApp.RequirementsViewModels
             var command = "[int](Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @(\"FullyEncrypted\", \"FullyDecrypted\")}).EncryptionPercentage";
             Text = string.Format("OsRequirementsFailure_BitLockerEncryptOrDecryptState".GetLocalized(), powerShellService.Invoke<int>(command));
             IsHomeEdition = dataService.OsProperties.Edition.Contains("Core");
-            OpenBitLockerSettingsCommand = shellViewModel.OpenBitLockerSettingsCommand;
+            OpenBitLockerSettingsCommand = shellViewModel.OpenBitLockerSettings_Command;
         }
     }
 }

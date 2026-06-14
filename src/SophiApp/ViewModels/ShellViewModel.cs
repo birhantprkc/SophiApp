@@ -114,7 +114,8 @@ public partial class ShellViewModel : ObservableRecipient
         BitLockerProtectionStatus_Command = new RelayCommand<bool>(SetBitLockerProtectionStatus);
         ContinueRequirementActionsExecute_Command = new RelayCommand(ContinueRequirementActionsExecute);
         DeleteLGPOFile_Command = new RelayCommand(() => DebugOptions.DeleteLGPOFile = !DebugOptions.DeleteLGPOFile);
-        OpenBitLockerSettingsCommand = new RelayCommand(() => processService.StartProcessByName("control.exe", "/name Microsoft.BitLockerDriveEncryption"));
+        OpenBitLockerSettings_Command = new RelayCommand(() => processService.StartProcessByName("control.exe", "/name Microsoft.BitLockerDriveEncryption"));
+        OpenDefenderControlledFolder_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", "windowsdefender://RansomwareProtection"));
         OpenHostsFolder_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers\\etc")));
         OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
         RadioButtonsGroup2Clicked_Command = new RelayCommand<UIRadioButtonsGroup2Model>(group => RadioButtonsGroup2Clicked(group!));
@@ -156,7 +157,12 @@ public partial class ShellViewModel : ObservableRecipient
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to open BitLocker settings.
     /// </summary>
-    public IRelayCommand OpenBitLockerSettingsCommand { get; }
+    public IRelayCommand OpenBitLockerSettings_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open Microsoft Defender controlled folder settings.
+    /// </summary>
+    public IRelayCommand OpenDefenderControlledFolder_Command { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to open hosts file folder in explorer.

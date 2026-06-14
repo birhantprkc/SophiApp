@@ -38,11 +38,10 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public async Task<ObservableCollection<UIModel>> BuildJsonModelsAsync()
         {
-            var timer = Stopwatch.StartNew();
-            var models = await Task.Run(() =>
+            return new ObservableCollection<UIModel>(await Task.Run(() =>
             {
                 var json = Encoding.UTF8.GetString(Properties.Resources.UIMarkup);
-                var jsonModels = Json.ToObject<IEnumerable<UIModelDto>>(json)
+                var models = Json.ToObject<IEnumerable<UIModelDto>>(json)
                     .Where(dto => dataService.OsProperties.IsLTSC ? dto.Windows11LTSC : dto.Windows11)
                     .Select(dto =>
                     {
@@ -56,11 +55,8 @@ namespace SophiApp.Services
                         };
                     })
                     .OrderBy(model => model.ViewId);
-                return jsonModels;
-            });
-            timer.Stop();
-            App.Logger.LogJsonModelsBuilt(timer, models.Count());
-            return new ObservableCollection<UIModel>(models);
+                return models;
+            }));
         }
 
         /// <inheritdoc/>
@@ -156,8 +152,6 @@ namespace SophiApp.Services
                 "ELANMicroelectronicsCorpo.ELANTrackPointforThinkpa",
                 "ELANMicroelectronicsCorpo.TrackPoint",
             };
-                var timer = Stopwatch.StartNew();
-
                 for (int i = 0; i < packages.Count; i++)
                 {
                     if (!excludedAppx.Contains(packages[i].Id.Name) && File.Exists(packages[i].Logo.LocalPath) && packages[i].DisplayName != string.Empty)
@@ -167,8 +161,6 @@ namespace SophiApp.Services
                     }
                 }
 
-                timer.Stop();
-                App.Logger.LogUwpModelsBuilt(timer, models.Count, forAllUsers);
                 return models;
             });
         }

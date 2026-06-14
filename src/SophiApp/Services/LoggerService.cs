@@ -146,13 +146,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogJsonModelsBuilt(Stopwatch timer, int count)
-        {
-            Log.Information("{Service:l} took {TimeSpent} to built {Count} models", nameof(IModelService), timer.Elapsed, count);
-            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} took {timer.Elapsed} to built {count} models");
-        }
-
-        /// <inheritdoc/>
         public void LogStartModelsGetState()
         {
             Log.Information("{Service:l} has started model initialization", nameof(IModelService));
@@ -290,21 +283,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogUwpModelsBuilt(Stopwatch timer, int count, bool forAllUsers)
-        {
-            if (forAllUsers)
-            {
-                Log.Information("{Service:l} took {TimeSpent} to built {Count} UWP models for all users", nameof(IModelService), timer.Elapsed, count);
-            }
-            else
-            {
-                Log.Information("{Service:l} took {TimeSpent} to built {Count} UWP models for current user", nameof(IModelService), timer.Elapsed, count);
-            }
-
-            shellViewModel.LoggedActions.Add($"{nameof(IModelService)} took {timer.Elapsed} to built {count} UWP models for {(forAllUsers ? "all users" : "current user")}");
-        }
-
-        /// <inheritdoc/>
         public void LogRequirementsActionExecute(string name, Stopwatch timer)
         {
             Log.Information("{Service:l} took {TimeSpent} to execute {Action:l} action", nameof(IRequirementsService), timer.Elapsed, name);
@@ -314,8 +292,8 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void LogRequirementsFailureResult(RequirementsResult result)
         {
-            Log.Information("[WRN] Failure to meet {Service:l} requirements due to {Name}", nameof(IRequirementsService), result);
-            shellViewModel.LoggedActions.Add($"[WRN] Failure to meet {nameof(IRequirementsService)} requirements due to {result}");
+            Log.Information("[WRN] Failure to meet {Service:l} requirements due to {Name} action", nameof(IRequirementsService), result);
+            shellViewModel.LoggedActions.Add($"[WRN] Failure to meet {nameof(IRequirementsService)} requirements due to {result} action");
         }
 
         /// <inheritdoc/>

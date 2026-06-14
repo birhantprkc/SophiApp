@@ -26,12 +26,6 @@ public interface IAppNotificationService
     void RegisterCleanupProtocolAsToastSender();
 
     /// <summary>
-    /// Show the toast notification.
-    /// </summary>
-    /// <param name="payload">Toast payload.</param>
-    void Show(string payload);
-
-    /// <summary>
     /// Unregister Windows cleanup protocol to run via toast notification.
     /// </summary>
     void UnregisterCleanupProtocol();

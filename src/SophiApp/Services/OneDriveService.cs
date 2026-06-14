@@ -7,6 +7,7 @@ namespace SophiApp.Services
     using Microsoft.Win32;
     using SophiApp.Contracts.Services;
     using SophiApp.Extensions;
+    using System.Diagnostics;
     using static System.Environment;
 
     /// <inheritdoc/>
@@ -22,7 +23,7 @@ namespace SophiApp.Services
         /// </summary>
         /// <param name="httpService">A service for working with HTTP API.</param>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
-        /// <param name="processService">A service for working with Windows <see cref="System.Diagnostics.Process"/> API.</param>
+        /// <param name="processService">A service for working with Windows <see cref="Process"/> API.</param>
         /// <param name="scheduledTaskService">A service for working with Scheduled Task API.</param>
         public OneDriveService(
             IHttpService httpService,

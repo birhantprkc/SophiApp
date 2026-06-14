@@ -12,7 +12,7 @@ namespace SophiApp.Contracts.Services
     public interface IAppxPackagesService
     {
         /// <summary>
-        /// Checks by ID that the package is installed.
+        /// Gets by ID the package if installed.
         /// </summary>
         /// <param name="packageId">The ID of the package being checked, not to be confused with the package Display name.</param>
         /// <param name="allUsers">Search in installed packages for all users or only for the current user.</param>

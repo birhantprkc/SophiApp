@@ -67,6 +67,7 @@ public partial class App : Application
                 _ = services.AddTransient<BitLockerEncryptOrDecryptViewModel>();
                 _ = services.AddTransient<BitLockerProtectionStatusViewModel>();
                 _ = services.AddTransient<ContextMenuViewModel>();
+                _ = services.AddTransient<DebugViewModel>();
                 _ = services.AddTransient<DefenderControlledFolderEnableViewModel>();
                 _ = services.AddTransient<DefenderFileMissingViewModel>();
                 _ = services.AddTransient<DefenderSecurityHealthFailureViewModel>();
@@ -100,6 +101,7 @@ public partial class App : Application
                 _ = services.AddTransient<BitLockerEncryptOrDecryptPage>();
                 _ = services.AddTransient<BitLockerProtectionStatusPage>();
                 _ = services.AddTransient<ContextMenuPage>();
+                _ = services.AddTransient<DebugPage>();
                 _ = services.AddTransient<DefenderControlledFolderEnablePage>();
                 _ = services.AddTransient<DefenderFileMissingPage>();
                 _ = services.AddTransient<DefenderSecurityHealthFailurePage>();

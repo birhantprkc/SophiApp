@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Dark">
+            <Color x:Key="AcrylicFallbackColor">#181F31</Color>
             <SolidColorBrush x:Key="AccentButtonBackground" Color="#60CDFF" />
             <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="#60CDFF" />
             <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="#454545" />
@@ -14,7 +15,10 @@
             <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2A2A2A" />
             <SolidColorBrush x:Key="ContentBlockBackground" Color="#000000" Opacity="0.24" />
             <SolidColorBrush x:Key="ContentBlockBorder" Color="#FFFFFF" Opacity="0.10" />
-            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#232735" Opacity="0.85" />
+            <SolidColorBrush x:Key="ExpanderHeaderBackground" Color="#000000" Opacity="0.24" />
+            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#232735"/>
+            <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent" />
             <SolidColorBrush x:Key="ProgressBarBackground" Color="#000000" Opacity="0.44" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelBackground" Color="#E3E3E3" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelForeground" Color="#404040" />
@@ -23,11 +27,12 @@
             <SolidColorBrush x:Key="UIControlDescriptionForeground" Color="#F5F5F5" />
             <SolidColorBrush x:Key="WindowAccent" Color="#4CC2FF" />
             <SolidColorBrush x:Key="WindowAccentHight" Color="#E20036" />
-            <SolidColorBrush x:Key="WindowBackground" Color="#232735" Opacity="0.40" />
+            <SolidColorBrush x:Key="WindowBackground" Color="#1F2A40" />
             <SolidColorBrush x:Key="WindowForeground" Color="#F5F5F5" />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Light">
+            <Color x:Key="AcrylicFallbackColor">#FCFDFD</Color>
             <SolidColorBrush x:Key="AccentButtonBackground" Color="#0078D4" />
             <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="#0078D4" />
             <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="#454545" />
@@ -35,11 +40,14 @@
             <SolidColorBrush x:Key="ApplyCustomizationsPanelForeground" Color="#404040" />
             <SolidColorBrush x:Key="ButtonBackground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#454545" />
-            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#454545" />
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ContentBlockBackground" Color="#FFFFFF" Opacity="0.70" />
             <SolidColorBrush x:Key="ContentBlockBorder" Color="#000000" Opacity="0.06" />
-            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#FCFCFC" Opacity="0.85" />
+            <SolidColorBrush x:Key="ExpanderHeaderBackground" Color="#FFFFFF" Opacity="0.70" />
+            <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#FCFCFC"/>
+            <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent" />
             <SolidColorBrush x:Key="ProgressBarBackground" Color="#000000" Opacity="0.44" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelBackground" Color="#E3E3E3" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelForeground" Color="#404040" />
@@ -48,7 +56,7 @@
             <SolidColorBrush x:Key="UIControlDescriptionForeground" Color="#4B4B4B" />
             <SolidColorBrush x:Key="WindowAccent" Color="#0078D4" />
             <SolidColorBrush x:Key="WindowAccentHight" Color="#E20036" />
-            <SolidColorBrush x:Key="WindowBackground" Color="#FCFCFC" Opacity="0.40" />
+            <SolidColorBrush x:Key="WindowBackground" Color="#EBF3F8"/>
             <SolidColorBrush x:Key="WindowForeground" Color="#4B4B4B" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>

@@ -19,7 +19,6 @@ namespace SophiApp.Services
     {
         private readonly ICommonDataService dataService;
         private readonly IInstrumentationService instrumentationService;
-        private readonly IAppNotificationService notificationService;
         private readonly IOsService osService;
         private readonly IAppxPackagesService packagesService;
         private readonly IPowerShellService powerShellService;
@@ -31,7 +30,6 @@ namespace SophiApp.Services
         /// </summary>
         /// <param name="dataService">A service for transferring app data between DI layers.</param>
         /// <param name="instrumentationService">A service for working with WMI API.</param>
-        /// <param name="notificationService">A service for working with toast notifications API.</param>
         /// <param name="osService">A service for working with Windows services API.</param>
         /// <param name="packagesService">A service for working with appx packages API.</param>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
@@ -40,7 +38,6 @@ namespace SophiApp.Services
         public RequirementsService(
             ICommonDataService dataService,
             IInstrumentationService instrumentationService,
-            IAppNotificationService notificationService,
             IOsService osService,
             IAppxPackagesService packagesService,
             IPowerShellService powerShellService,
@@ -49,7 +46,6 @@ namespace SophiApp.Services
         {
             this.dataService = dataService;
             this.instrumentationService = instrumentationService;
-            this.notificationService = notificationService;
             this.osService = osService;
             this.packagesService = packagesService;
             this.powerShellService = powerShellService;
@@ -281,15 +277,14 @@ namespace SophiApp.Services
 
         private RequirementsResult GetAppUpdate()
         {
-            var latestVersion = dataService.LatestAppRelease?.SophiApp_release ?? new Version(0, 0, 0);
-
-            if (latestVersion > dataService.AppVersion)
-            {
-                App.Logger.LogAppUpdate(latestVersion);
-                var payload = string.Format("AppUpdateNotification".GetLocalized(), latestVersion.ToString(3), "https://github.com/Sophia-Community/SophiApp/releases");
-                notificationService.Show(payload);
-            }
-
+            // TODO: Refactoring app update.
+            // var latestVersion = dataService.LatestAppRelease?.SophiApp_release ?? new Version(0, 0, 0);
+            // if (latestVersion > dataService.AppVersion)
+            // {
+            //    App.Logger.LogAppUpdate(latestVersion);
+            //    var payload = string.Format("AppUpdateNotification".GetLocalized(), latestVersion.ToString(3), "https://github.com/Sophia-Community/SophiApp/releases");
+            //    notificationService.Show(payload);
+            // }
             return RequirementsResult.AllCorrect;
         }
 

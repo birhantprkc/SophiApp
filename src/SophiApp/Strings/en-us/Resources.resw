@@ -141,20 +141,6 @@
   <data name="NavigationItem_ProVersion.Text" xml:space="preserve">
     <value>PRO version</value>
   </data>
-  <data name="AppUpdateNotification" xml:space="preserve">
-    <value>&lt;toast duration="Long" scenario="reminder"&gt;
-&lt;visual&gt;
-	&lt;binding template="ToastGeneric"&gt;
-		&lt;text&gt;Version {0} is available&lt;/text&gt;
-	&lt;/binding&gt;
-&lt;/visual&gt;
-&lt;audio src="ms-winsoundevent:notification.default" /&gt;
-&lt;actions&gt;
-	&lt;action content="Download" arguments="{1}" activationType="protocol"/&gt;
-	&lt;action content="" arguments="dismiss" activationType="system"/&gt;
-&lt;/actions&gt;
-&lt;/toast&gt;</value>
-  </data>
   <data name="NavigationItem_Settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -1194,7 +1180,7 @@
     <value>RemoveWindowsAI</value>
   </data>
   <data name="OsRequirementsFailure_DefenderControlledFolderEnable.Text" xml:space="preserve">
-    <value>Microsoft Defender controlled folder access is enabled.</value>
+    <value>You have Windows Defender controlled folder access enabled. Please disable it and run app again.</value>
   </data>
   <data name="OsRequirementsFailure_DefenderSecurityHealthFailure.Text" xml:space="preserve">
     <value>Microsoft Defender Security Health service is broken.</value>
@@ -1249,5 +1235,8 @@
   </data>
   <data name="Button_No.Content" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Button_OpenDefenderControlledFolderSettings.Content" xml:space="preserve">
+    <value>Open controlled folder settings</value>
   </data>
 </root>
