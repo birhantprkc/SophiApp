@@ -214,10 +214,10 @@
     <value>WMI service is broken.</value>
   </data>
   <data name="OsRequirementsFailure_RunByNotLoggedUser.Text" xml:space="preserve">
-    <value>The logged-in user doesn't have admin rights.</value>
+    <value>The logged-in user "{0}" doesn't have admin rights. SophiApp 2 was ran on behalf of "{1}". Please log into account which has admin rights and run app again.</value>
   </data>
   <data name="OsRequirements_AppRunFromLoggedUser" xml:space="preserve">
-    <value>Checking whether the logged-in user is an admin</value>
+    <value>Checking current user's rights</value>
   </data>
   <data name="OsRequirements_MalwareDetection" xml:space="preserve">
     <value>Checking whether Windows was broken by 3rd party harmful tweakers and trojans</value>
@@ -229,7 +229,7 @@
     <value>Ghost Toolbox</value>
   </data>
   <data name="OsRequirements_Malware_Win10Tweaker" xml:space="preserve">
-    <value>Win 10 Tweaker backdoor</value>
+    <value>Win 10 Tweaker</value>
   </data>
   <data name="OsRequirements_Malware_BoosterX" xml:space="preserve">
     <value>BoosterX</value>
@@ -253,10 +253,10 @@
     <value>Check whether Windows Feature Experience Pack was removed by harmful tweakers</value>
   </data>
   <data name="OsRequirementsFailure_FeatureExperiencePackRemoved.Text" xml:space="preserve">
-    <value>Windows Feature Experience Pack broken or removed from Windows.</value>
+    <value>Windows Feature Experience Pack is broken or removed.</value>
   </data>
   <data name="OsRequirementsFailure_DefenderFilesMissing" xml:space="preserve">
-    <value>File "{0}" broken or removed from Windows.</value>
+    <value>"{0}" is broken or removed.</value>
   </data>
   <data name="OsRequirementsFailure_RebootRequired.Text" xml:space="preserve">
     <value>Your PC is waiting to be restarted.</value>
@@ -268,7 +268,7 @@
     <value>Checking if the current SophiApp build is the latest one</value>
   </data>
   <data name="OsRequirementsFailure_AntiSpywareDisabled.Text" xml:space="preserve">
-    <value>Microsoft Defender broken or removed from Windows.</value>
+    <value>Microsoft Defender is broken or removed.</value>
   </data>
   <data name="OsRequirements_GetMsDefenderState" xml:space="preserve">
     <value>Checking Microsoft Defender state</value>
@@ -1030,16 +1030,16 @@
     <value>Applying customizations</value>
   </data>
   <data name="OsRequirementsFailure_EventLogStopped.Text" xml:space="preserve">
-    <value>The Event Viewer is broken or removed from Windows.</value>
+    <value>The Event Viewer is broken or removed.</value>
   </data>
   <data name="OsRequirementsFailure_MsStoreRemoved.Text" xml:space="preserve">
-    <value>Microsoft Store broken or removed from Windows.</value>
+    <value>Microsoft Store is broken or removed.</value>
   </data>
   <data name="OsRequirements_GetEventLogState" xml:space="preserve">
-    <value>Get Eventlog state</value>
+    <value>Getting Eventlog state</value>
   </data>
   <data name="OsRequirements_GetMicrosoftStoreState" xml:space="preserve">
-    <value>Get Microsoft Store state</value>
+    <value>Getting Microsoft Store state</value>
   </data>
   <data name="OsRequirementsFailure_DefenderSettingsPageHidden.Text" xml:space="preserve">
     <value>Microsoft Defender settings page was hidden from UI.</value>
@@ -1180,10 +1180,10 @@
     <value>RemoveWindowsAI</value>
   </data>
   <data name="OsRequirementsFailure_DefenderControlledFolderEnable.Text" xml:space="preserve">
-    <value>You have Windows Defender controlled folder access enabled. Please disable it and run app again.</value>
+    <value>Controlled folder access is enabled in Microsoft Defender. Please disable it and run app again.</value>
   </data>
   <data name="OsRequirementsFailure_DefenderSecurityHealthFailure.Text" xml:space="preserve">
-    <value>Microsoft Defender Security Health service is broken.</value>
+    <value>Security Health service of Microsoft Defender (SecurityHealthService) is broken.</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_10_Description" xml:space="preserve">
     <value>.NET is a successor to .NET Framework. You need to install .NET 10 if an app was developed within this framework, even if you already installed any other .NET versions. NET 10 is a rapid branch version. Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
@@ -1192,7 +1192,7 @@
     <value>Install latest .NET Desktop Runtime 10 x64</value>
   </data>
   <data name="OsRequirementsFailure_UnsupportedBuild.Text" xml:space="preserve">
-    <value>The app supports Windows 11 25H2+ and Windows 11 Enterprise LTSC.</value>
+    <value>SophiApp supports Windows 11 25H2+ and Windows 11 Enterprise LTSC 2024.</value>
   </data>
   <data name="OsRequirementsFailure_UnsupportedUBR" xml:space="preserve">
     <value>You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher.</value>
@@ -1219,7 +1219,7 @@
     <value>Continue</value>
   </data>
   <data name="OsRequirements_GetBitLockerState" xml:space="preserve">
-    <value>Get BitLocker state</value>
+    <value>Getting BitLocker state</value>
   </data>
   <data name="OsRequirementsFailure_BitLockerEncryptOrDecryptState" xml:space="preserve">
     <value>BitLocker is in action. Your C drive is {0}% encrypted. Complete BitLocker drive configuration and try again.</value>
@@ -1237,6 +1237,6 @@
     <value>No</value>
   </data>
   <data name="Button_OpenDefenderControlledFolderSettings.Content" xml:space="preserve">
-    <value>Open controlled folder settings</value>
+    <value>Open Controlled folder access settings</value>
   </data>
 </root>

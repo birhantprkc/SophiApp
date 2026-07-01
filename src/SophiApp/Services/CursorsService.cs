@@ -64,7 +64,7 @@ namespace SophiApp.Services
             var extractArguments = $"-xvf \"{cursorsZip}\" -C \"{extractPath}\" --strip-components=1 {(theme == JepriCursorsTheme.Light ? "light" : "dark")}/";
             var systemRootPath = extractPath.Replace(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "%SystemRoot%");
             _ = Directory.CreateDirectory(extractPath);
-            httpService.DownloadFile("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/Windows11Cursors.zip", cursorsZip);
+            httpService.DownloadFile("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip", cursorsZip);
 
             // Extract archive
             _ = processService.WaitForExit(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "tar.exe"), extractArguments);
