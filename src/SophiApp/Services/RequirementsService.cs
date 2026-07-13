@@ -62,7 +62,7 @@ namespace SophiApp.Services
             new (action: GetMicrosoftStoreState, displayText: "OsRequirements_GetMicrosoftStoreState".GetLocalized()), new (action: GetPendingRebootState, displayText: "OsRequirements_GetPendingRebootState".GetLocalized()),
             new (action: GetAppUpdate, displayText: "OsRequirements_UpdateDetection".GetLocalized()), new (action: GetDefenderFilesExist, displayText: "OsRequirements_GetMsDefenderState".GetLocalized()),
             new (action: GetDefenderSettingsPageVisibility), new (action: GetDefenderServiceState), new (action: GetAntiSpywareEnabled), new (action: GetAntivirusProducts), new (action: GetSecurityHealthState),
-            new (action: SetCommonDataServiceDefenderState), new (action: GetDefenderControlledFolderState), new (action: DetectHostFileEntries, displayText: "OsRequirements_DetectHostFileEntries".GetLocalized()),
+            new (action: GetDefenderControlledFolderState), new (action: DetectHostFileEntries, displayText: "OsRequirements_DetectHostFileEntries".GetLocalized()),
             new (action: GetBitLockerEncryptOrDecryptState, displayText: "OsRequirements_GetBitLockerState".GetLocalized()), new (action: GetBitLockerProtectionState)];
 
         /// <inheritdoc/>
@@ -278,13 +278,6 @@ namespace SophiApp.Services
         private RequirementsResult GetAppUpdate()
         {
             // TODO: Refactoring app update.
-            // var latestVersion = dataService.LatestAppRelease?.SophiApp_release ?? new Version(0, 0, 0);
-            // if (latestVersion > dataService.AppVersion)
-            // {
-            //    App.Logger.LogAppUpdate(latestVersion);
-            //    var payload = string.Format("AppUpdateNotification".GetLocalized(), latestVersion.ToString(3), "https://github.com/Sophia-Community/SophiApp/releases");
-            //    notificationService.Show(payload);
-            // }
             return RequirementsResult.AllCorrect;
         }
 
@@ -421,19 +414,6 @@ namespace SophiApp.Services
                 App.Logger.LogDefenderSecurityHealthException(e);
                 return RequirementsResult.DefenderSecurityHealthFailure;
             }
-        }
-
-        private RequirementsResult SetCommonDataServiceDefenderState()
-        {
-            var productState = instrumentationService.GetAntivirusProductsOrDefault()
-                .Find(product => product.GetPropertyValue("instanceGuid")
-                .Equals("{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"))
-                ?.GetPropertyValue("productState");
-            var defenderState = productState is null ? "00" : string.Format("0x{0:x}", productState).Substring(3, 2);
-            var defenderDefaultAV = !(defenderState.Equals("00") || defenderState.Equals("01"));
-            App.Logger.LogDefenderIsDefault(defenderDefaultAV);
-            dataService.DefenderEnabled = defenderDefaultAV;
-            return RequirementsResult.AllCorrect;
         }
 
         private RequirementsResult GetDefenderControlledFolderState()

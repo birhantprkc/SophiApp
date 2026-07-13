@@ -104,16 +104,14 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task GetExternalServicesDataAsync()
-        {
-            await Task.WhenAll(
-                        SetLatestAppReleaseAsync(),
-                        SetNet8ReleaseAsync(),
-                        SetNet9ReleaseAsync(),
-                        SetNet10ReleaseAsync(),
-                        SetVCReleaseAsync(),
-                        SetSupportedBuildsAsync());
-        }
+        public async Task GetExternalServicesDataAsync() => await Task.WhenAll(
+            SetDefenderStateAsync(),
+            SetLatestAppReleaseAsync(),
+            SetNet8ReleaseAsync(),
+            SetNet9ReleaseAsync(),
+            SetNet10ReleaseAsync(),
+            SetVCReleaseAsync(),
+            SetSupportedBuildsAsync());
 
         /// <inheritdoc/>
         public string GetBuildName() => "Daria";
@@ -123,6 +121,21 @@ namespace SophiApp.Services
 
         /// <inheritdoc/>
         public string GetFullName() => $"{assembly.Name} {assembly.Version!.Major}.{assembly.Version.Minor}.{assembly.Version.Build}";
+
+        private async Task SetDefenderStateAsync()
+        {
+            await Task.Run(() =>
+            {
+                var productState = instrumentationService.GetAntivirusProductsOrDefault()
+                .Find(product => product.GetPropertyValue("instanceGuid")
+                .Equals("{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"))
+                ?.GetPropertyValue("productState");
+                var defenderState = productState is null ? "00" : string.Format("0x{0:x}", productState).Substring(3, 2);
+                var defenderDefaultAV = !(defenderState.Equals("00") || defenderState.Equals("01"));
+                App.Logger.LogDefenderIsDefault(defenderDefaultAV);
+                DefenderEnabled = defenderDefaultAV;
+            });
+        }
 
         private async Task SetLatestAppReleaseAsync()
         {
