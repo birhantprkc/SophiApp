@@ -13,15 +13,7 @@
     Loaded="OnLoaded"
     SizeChanged="PageShell_SizeChanged">
 
-    <Page.Resources>
-        <AcrylicBrush x:Key="PageAcrylicBrush"
-                      TintColor="#4CC2FF"
-                      TintOpacity="0.6"
-                      TintLuminosityOpacity="0.8"
-                      FallbackColor="{ThemeResource AcrylicFallbackColor}"/>
-    </Page.Resources>
-
-    <Grid Background="{StaticResource PageAcrylicBrush}">
+    <Grid Background="{ThemeResource WindowBackground}">
         <Grid x:Name="AppTitleBar"
               Canvas.ZIndex="1"
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
@@ -47,8 +39,7 @@
                         Foreground="{ThemeResource WindowForeground}"
                         PaneDisplayMode="Auto"
                         OpenPaneLength="250"
-                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                        Padding="0">
+                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem helpers:NavigationHelper.NavigateTo="SophiApp.ViewModels.PrivacyViewModel"
                                     IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
@@ -97,7 +88,7 @@
                             <PathIcon Data="M6.416 2.36c-.055.034-.36.306-.676.603-.316.298-.591.541-.61.541-.02 0-.104-.065-.187-.146-.247-.239-.414-.28-.666-.167a.448.448 0 0 0-.233.607c.025.056.227.268.448.47.328.302.425.373.532.392.264.046.318.01 1.246-.862.75-.705.872-.832.892-.936a.51.51 0 0 0-.195-.47c-.147-.098-.416-.113-.55-.032Zm1.802.961c-.134.073-.262.27-.262.405 0 .138.128.332.268.406l.133.07 1.946-.01c1.905-.008 1.948-.01 2.04-.073.167-.117.228-.222.228-.393s-.06-.277-.229-.394c-.091-.064-.133-.065-2.045-.073l-1.952-.007-.127.07Zm-2.43 3.017c.487-.456.662-.6.75-.619.405-.086.764.3.592.637-.03.06-.431.459-.892.887-.69.642-.86.785-.971.813-.242.06-.358.005-.771-.37-.204-.187-.4-.391-.435-.456a.456.456 0 0 1 .328-.676c.208-.036.339.01.557.2l.206.177.636-.593Zm2.43.146c-.134.073-.262.271-.262.405 0 .138.128.332.268.406l.133.07 1.946-.009c1.905-.008 1.948-.01 2.04-.074.167-.117.228-.222.228-.393s-.06-.276-.229-.394c-.091-.064-.133-.065-2.045-.072l-1.952-.008-.127.07Z"
                                       Foreground="{ThemeResource WindowAccent}"/>
                             <PathIcon Data="M1.13.03A1.443 1.443 0 0 0 .032 1.15c-.044.232-.044 9.652 0 9.884.106.561.56 1.015 1.12 1.121.105.02.963.032 2.245.032 1.962 0 2.074.003 2.058.055l-.31.93-.291.875-.841.015c-.727.014-.855.024-.943.071a.528.528 0 0 0-.227.398c0 .155.11.335.25.406C3.216 15 3.268 15 8 15s4.784 0 4.906-.063c.14-.07.25-.25.25-.406 0-.14-.11-.334-.227-.398-.088-.047-.216-.057-.943-.07l-.84-.016-.292-.876-.31-.93c-.016-.051.096-.054 2.058-.054 1.282 0 2.14-.012 2.244-.032a1.423 1.423 0 0 0 1.121-1.121c.044-.232.044-9.652 0-9.884a1.423 1.423 0 0 0-1.12-1.121C14.636-.011 1.331-.01 1.128.03Zm13.932 10.564c0 .348-.063.497-.25.592-.122.063-.17.063-6.812.063s-6.69 0-6.812-.063c-.187-.095-.25-.244-.25-.592v-.282h14.124v.282Zm-5.229 2.484.31.93c.016.051-.1.054-2.14.054-1.188 0-2.159-.003-2.159-.008 0-.009.583-1.76.608-1.828.012-.031.34-.038 1.552-.032l1.537.009.292.875Zm4.98-12.08a.43.43 0 0 1 .186.186c.062.122.063.176.063 4.157v4.033H.938V5.34c0-3.98.001-4.035.063-4.157a.454.454 0 0 1 .18-.185c.115-.06.208-.062 6.812-.063 6.65-.001 6.697 0 6.82.062Z"
-                                      Foreground="{StaticResource WindowAccent}"/>
+                                      Foreground="{ThemeResource WindowAccent}"/>
                         </Canvas>
                         <TextBlock x:Uid="NavigationItem_TaskScheduler"
                                    Style="{StaticResource NavigationItemTextStyle}"
@@ -108,7 +99,8 @@
                                     IsHitTestVisible="{x:Bind ViewModel.NavigationViewHitTestVisible, Mode=OneWay}">
                     <StackPanel Orientation="Horizontal">
                         <PathIcon Data="M3.247 1.15.012 2.3l-.01 2.957c-.01 3.305 0 3.505.212 4.31.145.549.275.893.526 1.391a6.988 6.988 0 0 0 1.864 2.284C2.992 13.547 6.458 16 6.5 16c.066 0 3.833-2.694 4.148-2.967a6.945 6.945 0 0 0 2.217-3.807c.13-.643.141-.97.131-4.004l-.01-2.925-3.235-1.149A471.904 471.904 0 0 0 6.499 0C6.49 0 5.027.518 3.247 1.15Zm5.869.901 2.71.963.094.032v2.56c0 1.592-.014 2.682-.036 2.882a5.858 5.858 0 0 1-1.006 2.685c-.193.283-.376.495-.718.828-.423.414-.584.537-2.06 1.582l-1.6 1.133-1.601-1.132c-1.479-1.047-1.636-1.168-2.06-1.582-.79-.772-1.288-1.614-1.559-2.638-.192-.73-.2-.89-.2-3.726V3.05l1.176-.418a4614.989 4614.989 0 0 0 4.235-1.507c.004-.001 1.185.416 2.625.927ZM7.321 6.817 5.822 8.28l-.83-.81-.83-.81-.381.372-.381.372 1.21 1.182 1.212 1.182L7.71 7.925 9.6 6.082l-.372-.364c-.205-.2-.38-.364-.39-.364-.01 0-.692.658-1.516 1.463Z"
-                                  Foreground="{ThemeResource WindowAccent}" Margin="0, 2, 0, 0"/>
+                                  Foreground="{ThemeResource WindowAccent}"
+                                  Margin="0, 2, 0, 0"/>
                         <TextBlock x:Uid="NavigationItem_Security"
                                    Style="{StaticResource NavigationItemTextStyle}"
                                    Margin="19, 0, 5, 2"/>
@@ -176,7 +168,7 @@
                        Grid.Row="0"
                        Margin="30, 10, 0, 10"/>
                 <Grid x:Name="Panel_ApplyCustomizations"
-                      Background="{StaticResource ApplyCustomizationsPanelBackground}"
+                      Background="{ThemeResource ApplyCustomizationsPanelBackground}"
                       Grid.Row="1"
                       Height="45">
                     <Image Source="/Assets/Info.svg"
@@ -211,7 +203,7 @@
                     </i:Interaction.Behaviors>
                 </Grid>
                 <Grid x:Name="Panel_SetUpCustomizations"
-                      Background="{StaticResource SetUpCustomizationsPanelBackground}"
+                      Background="{ThemeResource SetUpCustomizationsPanelBackground}"
                       Grid.Row="1"
                       Height="45">
                     <Grid.ColumnDefinitions>
