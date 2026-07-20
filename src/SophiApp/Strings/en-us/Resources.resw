@@ -847,7 +847,7 @@
     <value>Choose UWP app to uninstall. UWP apps list is rendered in real-time with their native icon logos taken from Windows. That means that the UWP apps list is not pre-prepared like in other similar apps.</value>
   </data>
   <data name="UwpPage_UwpAppsNotFound.Text" xml:space="preserve">
-    <value>No data to display, or necessary packages were removed</value>
+    <value>No data to display, or necessary packages were removed!</value>
   </data>
   <data name="UwpPage_ForAllUsers.Text" xml:space="preserve">
     <value>Show packages for all users</value>

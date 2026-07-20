@@ -277,7 +277,6 @@ namespace SophiApp.Services
 
         private RequirementsResult GetAppUpdate()
         {
-            // TODO: Refactoring app update.
             return RequirementsResult.AllCorrect;
         }
 

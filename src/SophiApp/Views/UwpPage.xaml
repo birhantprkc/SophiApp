@@ -9,14 +9,10 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:interaction="using:Microsoft.Xaml.Interactivity"
     xmlns:helpers="using:SophiApp.Helpers"
+    xmlns:views="using:SophiApp.Views"
+    d:DataContext="{d:DesignInstance Type=views:UwpPage}"
     mc:Ignorable="d"
     SizeChanged="PageUwp_SizeChanged">
-
-    <Page.Resources>
-        <DataTemplate x:Key="TextCheckBoxTemplate">
-            <controls:TextCheckBox Command="{Binding ElementName=PageUwp, Path=ViewModel.UIModelClicked_Command}"/>
-        </DataTemplate>
-    </Page.Resources>
 
     <ScrollView>
         <StackPanel Margin="{StaticResource UIControlsPageRightMargin}"
@@ -24,91 +20,66 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Uid="Page_UWP" Style="{StaticResource PageTitleTextStyle}"/>
             </StackPanel>
-            <Border x:Name="UwpTitleBorder"
-                    BorderBrush="{ThemeResource UIControlBorderBackground}"
-                    Background="{ThemeResource UIControlBackground}"
-                    Style="{StaticResource UIControlBorderStyle}"
-                    Height="64">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="60"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="UwpAppsNotFoundTextBlock"
-                               Grid.Column="0"
-                               Style="{StaticResource UIControlTitleTextStyle}"
-                               Margin="17, 0, 0, 0">
-                        <Run x:Uid="UwpPage_UwpAppsNotFound"
-                             FontSize="{Binding Path=ViewModel.FontOptions.TitleTextSize, ElementName=PageUwp}"/>
-                    </TextBlock>
-                    <TextBlock x:Name="ForAllUsersTextBlock"
-                               Grid.Column="0"
-                               Style="{StaticResource UIControlTitleTextStyle}"
-                               Margin="17, 0, 0, 0">
-                        <Run x:Uid="UwpPage_ForAllUsers"
-                             FontSize="{Binding Path=ViewModel.FontOptions.TitleTextSize, ElementName=PageUwp}"/>
-                    </TextBlock>
-                    <CheckBox x:Name="ForAllUsersCheckBox"
-                              Grid.Column="1"
-                              Style="{StaticResource UIControlCheckBoxStyle}"
-                              IsChecked="{x:Bind ViewModel.UwpForAllUsersState, Mode=OneWay}"
-                              Command="{x:Bind ViewModel.UwpForAllUsersClicked_Command}"/>
-                </Grid>
-            </Border>
-            <Border x:Name="UwpItemsBorder"
-                    Margin="0, 10, 0, 10"
-                    BorderThickness="1, 0, 1, 1"
-                    BorderBrush="{ThemeResource UIControlBorderBackground}"
-                    Background="{ThemeResource UIControlBackground}"
-                    Style="{StaticResource UIControlBorderStyle}">
+            <Grid x:Name="UwpAppsNotFoundGrid">
+                <controls:IconContentBlock Margin="0, 0, 0, 10">
+                    <controls:IconContentBlock.Content>
+                        <TextBlock x:Uid="UwpPage_UwpAppsNotFound"
+                                   Style="{StaticResource IconContentBlockTextStyle}"
+                                   Foreground="{ThemeResource WindowAccent}"
+                                   FontSize="{x:Bind ViewModel.FontOptions.TitleTextSize, Mode=OneWay}"/>
+                    </controls:IconContentBlock.Content>
+                </controls:IconContentBlock>
+            </Grid>
+            <Grid x:Name="UwpAppsFoundGrid">
                 <StackPanel>
-                    <ScrollView>
-                        <Grid x:Name="UwpItemsContainerGrid">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="AboutAppIconTextBlock"
-                                       Grid.Row="0"
-                                       Style="{StaticResource UwpPageDescriptionTextStyle}"
-                                       Foreground="{ThemeResource WindowAccent}">
-                                <Run x:Uid="UwpPage_AboutAppIcon"
-                                     FontSize="{Binding Path=ViewModel.FontOptions.DescriptionTextSize, ElementName=PageUwp}"/>
-                            </TextBlock>
-                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.UwpAppsModels, Mode=OneWay}"
-                                           VerticalCacheLength="{x:Bind ViewModel.UwpAppsModels.Count, Mode=OneWay}"
-                                           Grid.Row="1"
-                                           HorizontalAlignment="Left">
-                                <ItemsRepeater.ItemTemplate>
-                                    <DataTemplate>
-                                        <ItemContainer>
-                                            <controls:UwpAppCheckBox Command="{Binding ElementName=PageUwp, Path=ViewModel.UIUwpAppModelClicked_Command}"
-                                                                     CommandParameter="{Binding}"/>
-                                        </ItemContainer>
-                                    </DataTemplate>
-                                </ItemsRepeater.ItemTemplate>
-                                <ItemsRepeater.Layout>
-                                    <UniformGridLayout x:Name="UwpItemsContainerLayoutGrid"
-                                                       ItemsStretch="Fill"
-                                                       MinRowSpacing="10"
-                                                       MinColumnSpacing="10"
-                                                       MaximumRowsOrColumns="3"/>
-                                </ItemsRepeater.Layout>
-                            </ItemsRepeater>
-                        </Grid>
-                    </ScrollView>
+                    <controls:IconContentBlock Margin="0, 0, 0, 10">
+                        <controls:IconContentBlock.Content>
+                            <TextBlock x:Uid="UwpPage_AboutAppIcon"
+                                       Style="{StaticResource IconContentBlockTextStyle}"
+                                       Foreground="{ThemeResource WindowAccent}"
+                                       FontSize="{x:Bind ViewModel.FontOptions.DescriptionTextSize, Mode=OneWay}"/>
+                        </controls:IconContentBlock.Content>
+                    </controls:IconContentBlock>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0, 0, 0, 10">
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource UIControlTitleTextStyle}">
+                            <Run x:Uid="UwpPage_ForAllUsers"
+                                 FontSize="{Binding Path=ViewModel.FontOptions.TitleTextSize, ElementName=PageUwp}"/>
+                        </TextBlock>
+                        <ToggleSwitch IsOn="{x:Bind ViewModel.UwpForAllUsersState, Mode=OneWay}"
+                                      OnContent="{x:Null}"
+                                      OffContent="{x:Null}"
+                                      Margin="10, 0, 10, -3">
+                            <interaction:Interaction.Behaviors>
+                                <interaction:EventTriggerBehavior EventName="Toggled">
+                                    <interaction:InvokeCommandAction Command="{x:Bind ViewModel.UwpForAllUsersClicked_Command}"/>
+                                </interaction:EventTriggerBehavior>
+                            </interaction:Interaction.Behaviors>
+                        </ToggleSwitch>
+                    </StackPanel>
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.UwpAppsModels, Mode=OneWay}"
+                                   VerticalCacheLength="{x:Bind ViewModel.UwpAppsModels.Count, Mode=OneWay}"
+                                   HorizontalAlignment="Left"
+                                   Margin="0, 0, 0, 10">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <controls:UwpAppCheckBox Command="{Binding ElementName=PageUwp, Path=ViewModel.UIUwpAppModelClicked_Command}"
+                                                         CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                        <ItemsRepeater.Layout>
+                            <UniformGridLayout x:Name="UwpItemsContainerLayoutGrid"
+                                               ItemsStretch="Fill"
+                                               MinRowSpacing="10"
+                                               MinColumnSpacing="10"
+                                               MaximumRowsOrColumns="5"
+                                               MinItemHeight="60"
+                                               MinItemWidth="300"/>
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
                 </StackPanel>
-            </Border>
-            <ItemsRepeater ItemsSource="{Binding ElementName=PageUwp, Path=UWPModels}"
-                           VerticalCacheLength="{Binding ElementName=PageUwp, Path=UWPModels.Count}"
-                           Margin="0, 0, 0, 20">
-                <ItemsRepeater.Layout>
-                    <StackLayout Spacing="10"/>
-                </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
-                    <helpers:UIDataTemplateSelector TextCheckBox="{StaticResource TextCheckBoxTemplate}"/>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
+            </Grid>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Uid="Page_UWP_Gaming" Style="{StaticResource PageTitleTextStyle}"/>
             </StackPanel>
@@ -119,30 +90,20 @@
                     <StackLayout Spacing="10"/>
                 </ItemsRepeater.Layout>
                 <ItemsRepeater.ItemTemplate>
-                    <helpers:UIDataTemplateSelector TextCheckBox="{StaticResource TextCheckBoxTemplate}"/>
+                    <DataTemplate>
+                        <controls:TextCheckBox Command="{Binding ElementName=PageUwp, Path=ViewModel.UIModelClicked_Command}"/>
+                    </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
         </StackPanel>
         <interactivity:Interaction.Behaviors>
             <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.UwpAppsModels.Count, Mode=OneWay}" ComparisonCondition="Equal" Value="0">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpAppsNotFoundTextBlock}" PropertyName="Visibility" Value="Visible"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=ForAllUsersTextBlock}" PropertyName="Visibility" Value="Collapsed"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=ForAllUsersCheckBox}" PropertyName="Visibility" Value="Collapsed"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsBorder}" PropertyName="Visibility" Value="Collapsed"/>
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpAppsNotFoundGrid}" PropertyName="Visibility" Value="Visible"/>
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpAppsFoundGrid}" PropertyName="Visibility" Value="Collapsed"/>
             </interaction:DataTriggerBehavior>
             <interaction:DataTriggerBehavior Binding="{x:Bind ViewModel.UwpAppsModels.Count, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpAppsNotFoundTextBlock}" PropertyName="Visibility" Value="Collapsed"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=ForAllUsersTextBlock}" PropertyName="Visibility" Value="Visible"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=ForAllUsersCheckBox}" PropertyName="Visibility" Value="Visible"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsBorder}" PropertyName="Visibility" Value="Visible"/>
-            </interaction:DataTriggerBehavior>
-            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="1008">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsContainerLayoutGrid}" PropertyName="MaximumRowsOrColumns" Value="2"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=AboutAppIconTextBlock}" PropertyName="HorizontalAlignment" Value="Left"/>
-            </interaction:DataTriggerBehavior>
-            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageUwp, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="1008">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpItemsContainerLayoutGrid}" PropertyName="MaximumRowsOrColumns" Value="3"/>
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=AboutAppIconTextBlock}" PropertyName="HorizontalAlignment" Value="Center"/>
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpAppsFoundGrid}" PropertyName="Visibility" Value="Visible"/>
+                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=UwpAppsNotFoundGrid}" PropertyName="Visibility" Value="Collapsed"/>
             </interaction:DataTriggerBehavior>
         </interactivity:Interaction.Behaviors>
     </ScrollView>

@@ -230,6 +230,11 @@ public partial class ShellViewModel : ObservableRecipient
     public FontOptions FontOptions { get; } = new ();
 
     /// <summary>
+    /// Gets the info badges counters state by <see cref="UICategoryTag"/>.
+    /// </summary>
+    public InfoBadgeCounters InfoBadgeCounters { get; } = new ();
+
+    /// <summary>
     /// Gets or sets a value indicating whether log page visibility.
     /// </summary>
     public bool LogPageVisibility
@@ -305,6 +310,7 @@ public partial class ShellViewModel : ObservableRecipient
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
         await modelService.GetModelsStateAsync(ApplicableModels);
         ApplicableModels.Clear();
+        InfoBadgeCounters.ResetAll();
         App.Logger.LogApplicableModelsClear();
         groupPolicyService.UpdatePolicy(deleteConfig: DebugOptions.DeleteLGPOFile);
         EnvironmentHelper.RefreshUserDesktop();
@@ -324,6 +330,7 @@ public partial class ShellViewModel : ObservableRecipient
         SetUpCustomizationsPanelIsVisible = true;
         await modelService.GetModelsStateAsync(ApplicableModels);
         ApplicableModels.Clear();
+        InfoBadgeCounters.ResetAll();
         App.Logger.LogApplicableModelsClear();
         SetUpCustomizationsPanelIsVisible = false;
         NavigationViewHitTestVisible = true;
@@ -377,11 +384,13 @@ public partial class ShellViewModel : ObservableRecipient
         if (ApplicableModels.Contains(group) && group.DefaultId == selectedId)
         {
             ApplicableModels.Remove(group);
+            InfoBadgeCounters.DecrementCategory(group.Tag);
             App.Logger.LogApplicableModelRemoved(group.Name);
             return;
         }
 
         ApplicableModels.Add(group);
+        InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
@@ -394,6 +403,7 @@ public partial class ShellViewModel : ObservableRecipient
             if (group.DefaultId == selectedId)
             {
                 ApplicableModels.Remove(group);
+                InfoBadgeCounters.DecrementCategory(group.Tag);
                 App.Logger.LogApplicableModelRemoved(group.Name);
                 return;
             }
@@ -405,6 +415,7 @@ public partial class ShellViewModel : ObservableRecipient
         }
 
         ApplicableModels.Add(group);
+        InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
@@ -417,6 +428,7 @@ public partial class ShellViewModel : ObservableRecipient
             if (group.DefaultId == selectedId)
             {
                 ApplicableModels.Remove(group);
+                InfoBadgeCounters.DecrementCategory(group.Tag);
                 App.Logger.LogApplicableModelRemoved(group.Name);
                 return;
             }
@@ -428,6 +440,7 @@ public partial class ShellViewModel : ObservableRecipient
         }
 
         ApplicableModels.Add(group);
+        InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
@@ -481,11 +494,13 @@ public partial class ShellViewModel : ObservableRecipient
         if (ApplicableModels.Contains(model))
         {
             ApplicableModels.Remove(model);
+            InfoBadgeCounters.DecrementCategory(model.Tag);
             App.Logger.LogApplicableModelRemoved(model.Name);
             return;
         }
 
         ApplicableModels.Add(model);
+        InfoBadgeCounters.IncrementCategory(model.Tag);
         App.Logger.LogApplicableModelAdded(model.Name);
     }
 

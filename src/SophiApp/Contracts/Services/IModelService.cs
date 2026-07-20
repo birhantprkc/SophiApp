@@ -36,7 +36,7 @@ namespace SophiApp.Contracts.Services
         Task GetModelsStateAsync(ObservableCollection<UIModel> models);
 
         /// <summary>
-        /// Set <see cref="UIModel"/> state.
+        /// Set <see cref="UIModel"/> collection state.
         /// </summary>
         /// <param name="models">Models collection.</param>
         Task SetModelsStateAsync(ObservableCollection<UIModel> models);

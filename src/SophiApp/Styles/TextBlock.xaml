@@ -56,6 +56,13 @@
         <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="IconContentBlockTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
     <Style x:Key="RequirementsFailurePageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
         <Setter Property="FontSize" Value="{StaticResource LargeFontSize}" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -68,7 +75,7 @@
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="0, 15, 10, 5" />
+        <Setter Property="Margin" Value="0, 10, 0, 10" />
     </Style>
 
     <Style x:Key="UIControlDescriptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
@@ -76,7 +83,7 @@
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="0, 0, 10, 15" />
+        <Setter Property="Margin" Value="0, 0, 0, 15" />
     </Style>
 
     <Style x:Key="UIControlLogPageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
@@ -101,23 +108,5 @@
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-
-    <Style x:Key="TaskSchedulerTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="TextAlignment" Value="Left" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-
-    <Style x:Key="TaskSchedulerDescriptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="0, 0, 20, 20"/>
-    </Style>
-
-    <Style x:Key="UwpPageDescriptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="20"/>
     </Style>
 </ResourceDictionary>

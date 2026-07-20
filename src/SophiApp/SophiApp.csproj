@@ -18,7 +18,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPublishable>True</IsPublishable>
-    <Version>2.0614.0</Version>
+    <Version>2.716.0</Version>
     <UseWinUI>true</UseWinUI>
     <StartupObject>SophiApp.Program</StartupObject>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -34,6 +34,8 @@
     <None Remove="Assets\GitHub.svg" />
     <None Remove="Assets\Info.svg" />
     <None Remove="Assets\Telegram.svg" />
+    <None Remove="ControlTemplates\IconCheckBox.xaml" />
+    <None Remove="ControlTemplates\IconContentBlock.xaml" />
     <None Remove="ControlTemplates\IconHyperlink.xaml" />
     <None Remove="ControlTemplates\RadioButtonsGroup2.xaml" />
     <None Remove="ControlTemplates\RadioButtonsGroup3.xaml" />
@@ -65,6 +67,7 @@
     <None Remove="Styles\Button.xaml" />
     <None Remove="Styles\CheckBox.xaml" />
     <None Remove="Styles\Expander.xaml" />
+    <None Remove="Styles\InfoBadge.xaml" />
     <None Remove="Styles\ScrollView.xaml" />
     <None Remove="Styles\Themes.xaml" />
     <None Remove="ControlTemplates\ContentBlock.xaml" />
@@ -145,6 +148,9 @@
     <Content Update="Assets\Discord.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\Folder.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\GitHub.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -178,6 +184,9 @@
     <Content Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\Windows11.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -194,6 +203,15 @@
     <None Update="Binaries\LGPO.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="ControlTemplates\IconContentBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Styles\InfoBadge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ControlTemplates\IconCheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\DebugPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -18,7 +18,6 @@
             <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#232735" Opacity="0.85"/>
             <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent" />
-            <SolidColorBrush x:Key="ProgressBarBackground" Color="#000000" Opacity="0.44" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelBackground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelForeground" Color="#404040" />
             <SolidColorBrush x:Key="UIControlBackground" Color="#000000" Opacity="0.24" />
@@ -39,14 +38,12 @@
             <SolidColorBrush x:Key="ButtonBackground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#454545" />
             <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#454545" />
-            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ContentBlockBackground" Color="#FFFFFF" Opacity="0.70" />
             <SolidColorBrush x:Key="ContentBlockBorder" Color="#000000" Opacity="0.06" />
             <SolidColorBrush x:Key="ExpanderHeaderBackground" Color="#FFFFFF" Opacity="0.70" />
             <SolidColorBrush x:Key="NavigationViewContentBackground" Color="#FCFCFC" Opacity="0.85"/>
             <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
             <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent" />
-            <SolidColorBrush x:Key="ProgressBarBackground" Color="#000000" Opacity="0.44" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelBackground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="SetUpCustomizationsPanelForeground" Color="#404040" />
             <SolidColorBrush x:Key="UIControlBackground" Color="#FFFFFF" Opacity="0.70" />

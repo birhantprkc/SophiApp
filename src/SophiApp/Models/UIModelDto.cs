@@ -20,11 +20,13 @@ namespace SophiApp.Models
         /// <param name="viewId">Model view id.</param>
         /// <param name="windows11LTSC">Model supported Windows 11 LTSC.</param>
         /// <param name="windows11">Model supported Windows 11.</param>
-        public UIModelDto(string name, UIModelType type, UICategoryTag tag, int viewId, bool windows11LTSC, bool windows11)
+        /// <param name="iconIndex">Icon index for <see cref="UIIconCheckBoxModel"/>.</param>
+        public UIModelDto(string name, UIModelType type, UICategoryTag tag, int viewId, bool windows11LTSC, bool windows11, int iconIndex = 0)
         {
             Name = name;
             Type = type;
             Tag = tag;
+            IconIndex = iconIndex;
             ViewId = viewId;
             Windows11LTSC = windows11LTSC;
             Windows11 = windows11;
@@ -44,6 +46,11 @@ namespace SophiApp.Models
         /// Gets category tag.
         /// </summary>
         public UICategoryTag Tag { get; init; }
+
+        /// <summary>
+        /// Gets icon index for <see cref="UIIconCheckBoxModel"/>.
+        /// </summary>
+        public int IconIndex { get; init; }
 
         /// <summary>
         /// Gets a model view id.

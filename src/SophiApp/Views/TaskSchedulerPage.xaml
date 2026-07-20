@@ -5,11 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="using:SophiApp.ControlTemplates"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:interaction="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:SophiApp.ViewModels"
-    d:DataContext="{d:DesignInstance Type=vm:TaskSchedulerViewModel}"
+    xmlns:views="using:SophiApp.Views"
+    d:DataContext="{d:DesignInstance Type=views:TaskSchedulerPage}"
     mc:Ignorable="d"
     SizeChanged="PageTaskScheduler_SizeChanged">
 
@@ -19,45 +18,33 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Uid="Page_TaskScheduler" Style="{StaticResource PageTitleTextStyle}"/>
             </StackPanel>
-            <Grid x:Name="ItemsContainerGrid">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock x:Name="TaskSchedulerDescriptionTextBlock"
-                           Style="{StaticResource TaskSchedulerDescriptionTextStyle}"
-                           Foreground="{ThemeResource WindowAccent}"
-                           Grid.Row="0">
-                    <Run x:Uid="TaskSchedulerPage_AboutTasks"
-                         FontSize="{Binding Path=ViewModel.FontOptions.DescriptionTextSize, ElementName=PageTaskScheduler}"/>
-                </TextBlock>
-                <ItemsRepeater ItemsSource="{x:Bind Models, Mode=OneWay}"
-                               VerticalCacheLength="{x:Bind Models.Count, Mode=OneWay}"
-                               Grid.Row="1">
+            <controls:IconContentBlock Margin="0, 0, 26, 10">
+                <controls:IconContentBlock.Content>
+                    <TextBlock x:Uid="TaskSchedulerPage_AboutTasks"
+                               Style="{StaticResource IconContentBlockTextStyle}"
+                               Foreground="{ThemeResource WindowAccent}"
+                               FontSize="{x:Bind ViewModel.FontOptions.DescriptionTextSize, Mode=OneWay}"/>
+                </controls:IconContentBlock.Content>
+            </controls:IconContentBlock>
+            <ItemsRepeater ItemsSource="{x:Bind Models, Mode=OneWay}"
+                           VerticalCacheLength="{x:Bind Models.Count, Mode=OneWay}"
+                           Grid.Row="1">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="10"/>
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate>
-                            <controls:TextCheckBox Margin="{StaticResource UIControlsPageRightMargin}"
+                            <controls:IconCheckBox Margin="{StaticResource UIControlsPageRightMargin}"
+                                                   IconIndex="{Binding IconIndex}"
                                                    Command="{Binding ElementName=PageTaskScheduler, Path=ViewModel.UIModelClicked_Command}"/>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
-            </Grid>
             <Button x:Uid="TaskSchedulerPage_OpenTaskScheduler"
                     Style="{StaticResource AccentButtonStyle}"
                     Margin="0, 20 , 0, 20"
                     HorizontalAlignment="Center"
                     Command="{x:Bind ViewModel.OpenTaskScheduler_Command, Mode=OneWay}"/>
         </StackPanel>
-        <interactivity:Interaction.Behaviors>
-            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageTaskScheduler, Path=CurrentWidth}" ComparisonCondition="LessThanOrEqual" Value="1100">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=TaskSchedulerDescriptionTextBlock}" PropertyName="HorizontalAlignment" Value="Left"/>
-            </interaction:DataTriggerBehavior>
-            <interaction:DataTriggerBehavior Binding="{Binding ElementName=PageTaskScheduler, Path=CurrentWidth}" ComparisonCondition="GreaterThan" Value="1100">
-                <interaction:ChangePropertyAction TargetObject="{Binding ElementName=TaskSchedulerDescriptionTextBlock}" PropertyName="HorizontalAlignment" Value="Center"/>
-            </interaction:DataTriggerBehavior>
-        </interactivity:Interaction.Behaviors>
     </ScrollView>
 </Page>

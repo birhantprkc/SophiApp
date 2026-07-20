@@ -48,6 +48,7 @@ namespace SophiApp.Services
                         return dto.Type switch
                         {
                             UIModelType.CheckBox => BuildCheckBoxModel(dto),
+                            UIModelType.IconCheckBox => BuildIconCheckBoxModel(dto),
                             UIModelType.RadioButtonsGroup2 => BuildRadioButtonsGroup2(dto),
                             UIModelType.RadioButtonsGroup3 => BuildRadioButtonsGroup3(dto),
                             UIModelType.RadioButtonsGroup4 => BuildRadioButtonsGroup4(dto),
@@ -233,6 +234,15 @@ namespace SophiApp.Services
             var accessor = GetAccessor<bool>(dto.Name);
             var mutator = GetMutator<bool>(dto.Name);
             return new UICheckBoxModel(dto, title, description, accessor, mutator);
+        }
+
+        private UIModel BuildIconCheckBoxModel(UIModelDto dto)
+        {
+            var title = GetTitle(dto.Name);
+            var description = GetDescription(dto.Name);
+            var accessor = GetAccessor<bool>(dto.Name);
+            var mutator = GetMutator<bool>(dto.Name);
+            return new UIIconCheckBoxModel(dto, title, description, accessor, mutator);
         }
 
         private UIModel BuildRadioButtonsGroup2(UIModelDto dto)
