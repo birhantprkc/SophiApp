@@ -17,29 +17,14 @@ namespace SophiApp.Contracts.Services
         OsProperties OsProperties { get; }
 
         /// <summary>
-        /// Gets or sets malware name detected by <see cref="IRequirementsService"/>.
+        /// Gets a value indicating whether Microsoft Defender preference state.
         /// </summary>
-        string DetectedMalware { get; set; }
+        bool DefenderMpPreferenceBroken { get; }
 
         /// <summary>
-        /// Gets or sets Microsoft Defender missing files name.
+        /// Gets a value indicating whether Microsoft Defender enabled state.
         /// </summary>
-        string DefenderFileMissing { get; set; }
-
-        /// <summary>
-        /// Gets or sets Microsoft Defender broken service name.
-        /// </summary>
-        string DefenderServiceBroken { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether Microsoft Defender preference state.
-        /// </summary>
-        bool DefenderMpPreferenceBroken { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether Microsoft Defender enabled state.
-        /// </summary>
-        bool DefenderEnabled { get; set; }
+        bool DefenderEnabled { get; }
 
         /// <summary>
         /// Gets app version.
@@ -72,6 +57,16 @@ namespace SophiApp.Contracts.Services
         VCRelease? LatestReleaseVC { get; }
 
         /// <summary>
+        /// Gets or sets first localized description string for <see cref="IRequirementsService"/> actions result.
+        /// </summary>
+        string RequirementsResult_1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets second localized description string for <see cref="IRequirementsService"/> actions result.
+        /// </summary>
+        string RequirementsResult_2 { get; set; }
+
+        /// <summary>
         /// Gets app supported OS builds version.
         /// </summary>
         SupportedUBR SupportedUBR { get; }
@@ -82,7 +77,7 @@ namespace SophiApp.Contracts.Services
         Task InitializeAsync();
 
         /// <summary>
-        /// Receiving data from external services.
+        /// Get external services data.
         /// </summary>
         Task GetExternalServicesDataAsync();
 

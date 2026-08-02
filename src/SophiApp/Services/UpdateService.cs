@@ -24,8 +24,7 @@ namespace SophiApp.Services
         {
             switch (reason)
             {
-                case RequirementsResult.WinUnsupportedBuild:
-                case RequirementsResult.WinUnsupportedUBR:
+                case RequirementsResult.UpdateWindowsBuild:
                     RunMicrosoftProductsUpdate();
                     RunOsUpdates();
                     break;

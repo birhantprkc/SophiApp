@@ -9,21 +9,20 @@ namespace SophiApp.Services
     using SophiApp.Extensions;
     using SophiApp.Helpers;
     using System;
+    using System.Diagnostics;
     using System.Security.Principal;
-    using System.ServiceProcess;
     using RegistryKey = Microsoft.Win32.RegistryKey;
-    using ServiceController = System.ServiceProcess.ServiceController;
 
     /// <inheritdoc/>
     public class RequirementsService : IRequirementsService
     {
+        private readonly IAppxPackagesService packagesService;
         private readonly ICommonDataService dataService;
         private readonly IInstrumentationService instrumentationService;
         private readonly IOsService osService;
-        private readonly IAppxPackagesService packagesService;
         private readonly IPowerShellService powerShellService;
-        private readonly IProcessService processService;
         private readonly ISettingsService settingsService;
+        private string actionToDebug = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequirementsService"/> class.
@@ -33,7 +32,6 @@ namespace SophiApp.Services
         /// <param name="osService">A service for working with Windows services API.</param>
         /// <param name="packagesService">A service for working with appx packages API.</param>
         /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
-        /// <param name="processService">A service for working with Windows process API.</param>
         /// <param name="settingsService">A service for working with app settings.</param>
         public RequirementsService(
             ICommonDataService dataService,
@@ -41,7 +39,6 @@ namespace SophiApp.Services
             IOsService osService,
             IAppxPackagesService packagesService,
             IPowerShellService powerShellService,
-            IProcessService processService,
             ISettingsService settingsService)
         {
             this.dataService = dataService;
@@ -49,93 +46,28 @@ namespace SophiApp.Services
             this.osService = osService;
             this.packagesService = packagesService;
             this.powerShellService = powerShellService;
-            this.processService = processService;
             this.settingsService = settingsService;
         }
 
         /// <inheritdoc/>
-        public List<RequirementAction> Actions => [
-            new (action: GetOsBitness, displayText: "OsRequirements_GetOsBitness".GetLocalized()), new (action: GetWMIState, displayText: "OsRequirements_GetWmiState".GetLocalized()),
-            new (action: GetExternalServicesData, displayText: "OsRequirements_GetExternalServicesData".GetLocalized()), new (action: GetOsVersion, displayText: "OsRequirements_GetOsVersion".GetLocalized()),
-            new (action: AppRunFromLoggedUser, displayText: "OsRequirements_AppRunFromLoggedUser".GetLocalized()), new (action: DetectMalware, displayText: "OsRequirements_MalwareDetection".GetLocalized()),
-            new (action: GetFeatureExperiencePackState, displayText: "OsRequirements_GetFeatureExperiencePackState".GetLocalized()), new (action: GetEventLogState, displayText: "OsRequirements_GetEventLogState".GetLocalized()),
-            new (action: GetMicrosoftStoreState, displayText: "OsRequirements_GetMicrosoftStoreState".GetLocalized()), new (action: GetPendingRebootState, displayText: "OsRequirements_GetPendingRebootState".GetLocalized()),
-            new (action: GetAppUpdate, displayText: "OsRequirements_UpdateDetection".GetLocalized()), new (action: GetDefenderFilesExist, displayText: "OsRequirements_GetMsDefenderState".GetLocalized()),
-            new (action: GetDefenderSettingsPageVisibility), new (action: GetDefenderServiceState), new (action: GetAntiSpywareEnabled), new (action: GetAntivirusProducts), new (action: GetSecurityHealthState),
-            new (action: GetDefenderControlledFolderState), new (action: DetectHostFileEntries, displayText: "OsRequirements_DetectHostFileEntries".GetLocalized()),
-            new (action: GetBitLockerEncryptOrDecryptState, displayText: "OsRequirements_GetBitLockerState".GetLocalized()), new (action: GetBitLockerProtectionState)];
+        public List<RequirementAction> GetActions() => [new (action: GetExternalServicesData, displayText: "OsRequirements_GetExternalServicesData".GetLocalized()),
+            new (action: GetSupportedArchitecture, displayText: "OsRequirements_GetSupportedArchitecture".GetLocalized()),
+            new (action: GetAppNewVersion, displayText: "OsRequirements_GetAppNewVersion".GetLocalized()),
+            new (action: GetAppRunFromLoggedUser, displayText: "OsRequirements_GetAppRunFromLoggedUser".GetLocalized()),
+            new (action: GetHarmfulTweakers, displayText: "OsRequirements_GetHarmfulTweaker".GetLocalized()),
+            new (action: GetHostFileEntries, displayText: "OsRequirements_GetHostFileEntries".GetLocalized()),
+            new (action: GetUWPComponents, displayText: "OsRequirements_GetUWPComponents".GetLocalized()),
+            new (action:GetDefenderComponents, displayText: "OsRequirements_GetDefenderComponents".GetLocalized()),
+            new (action: GetDefenderProperties, displayText: "OsRequirements_GetDefenderProperties".GetLocalized()),
+            new (action: GetControlledFolderAccess, displayText: "OsRequirements_GetControlledFolderAccess".GetLocalized()),
+            new (action: GetRebootPending, displayText: "OsRequirements_GetRebootPending".GetLocalized()),
+            new (action: GetSystemDriveEncryptedBitLocker, displayText: "OsRequirements_GetSystemDriveEncryptedBitLocker".GetLocalized()),
+            new (action: GetUEFICertificates, displayText: "OsRequirements_GetUEFICertificates".GetLocalized()),
+            new (action: GetWindowsVersion, displayText: "OsRequirements_GetWindowsVersion".GetLocalized()),
+            new (action: GetWindowsBuild, displayText: "OsRequirements_GetWindowsBuild".GetLocalized())];
 
         /// <inheritdoc/>
-        public string? ActionForDebug { get; set; }
-
-        private RequirementsResult GetOsBitness()
-        {
-            App.Logger.LogOsBitness(Environment.Is64BitOperatingSystem);
-
-            if (ActionForDebug?.Equals(nameof(GetOsBitness)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.Is32BitOs;
-            }
-
-            return Environment.Is64BitOperatingSystem ? RequirementsResult.AllCorrect : RequirementsResult.Is32BitOs;
-        }
-
-        private RequirementsResult GetWMIState()
-        {
-            if (ActionForDebug?.Equals(nameof(GetWMIState)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.WMIBroken;
-            }
-
-            try
-            {
-                var service = new ServiceController("Winmgmt");
-                using var verifyRepository = processService.WaitForExit(name: "cmd.exe", arguments: "/c winmgmt /verifyrepository");
-                var serviceRunning = service.Status == ServiceControllerStatus.Running;
-                var repositoryConsistent = verifyRepository.ExitCode.Equals(0);
-                var buildCorrect = dataService.OsProperties.Build != -1;
-                App.Logger.LogWMIState(service.Status, verifyRepository.ExitCode, repositoryConsistent);
-                return buildCorrect && serviceRunning && repositoryConsistent ? RequirementsResult.AllCorrect : RequirementsResult.WMIBroken;
-            }
-            catch (Exception ex)
-            {
-                App.Logger.LogWMIStateException(ex);
-                return RequirementsResult.WMIBroken;
-            }
-        }
-
-        private RequirementsResult GetOsVersion()
-        {
-            if (ActionForDebug?.Equals(nameof(GetOsVersion)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.WinUnsupportedBuild;
-            }
-
-            return dataService.OsProperties.Build switch
-            {
-                var build when dataService.OsProperties.IsLTSC && build < 26100 => RequirementsResult.WinUnsupportedBuild,
-                var build when !dataService.OsProperties.IsLTSC && build < 26200 => RequirementsResult.WinUnsupportedBuild,
-                var _ when dataService.OsProperties.IsLTSC && dataService.OsProperties.UBR < dataService.SupportedUBR.Win11LTSC => RequirementsResult.WinUnsupportedUBR,
-                var _ when !dataService.OsProperties.IsLTSC && dataService.OsProperties.UBR < dataService.SupportedUBR.Win11 => RequirementsResult.WinUnsupportedUBR,
-                _ => RequirementsResult.AllCorrect
-            };
-        }
-
-        private RequirementsResult AppRunFromLoggedUser()
-        {
-            if (ActionForDebug?.Equals(nameof(AppRunFromLoggedUser)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.RunByNotLoggedUser;
-            }
-
-            var currentUserName = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-            var loggedUserProcess = Array.Find(array: System.Diagnostics.Process.GetProcesses(), match: p => p.ProcessName.Equals("explorer") && p.SessionId.Equals(System.Diagnostics.Process.GetCurrentProcess().SessionId));
-            return instrumentationService.GetProcessOwnerOrDefault(loggedUserProcess).Equals(currentUserName) ? RequirementsResult.AllCorrect : RequirementsResult.RunByNotLoggedUser;
-        }
+        public void Initialize() => actionToDebug = settingsService.ReadDebugRequirementAction();
 
         private RequirementsResult GetExternalServicesData()
         {
@@ -143,13 +75,74 @@ namespace SophiApp.Services
             return RequirementsResult.AllCorrect;
         }
 
-        private RequirementsResult DetectMalware()
+        private RequirementsResult GetSupportedArchitecture()
         {
-            if (ActionForDebug?.Equals(nameof(DetectMalware)) ?? false)
+            var caption = instrumentationService.GetProcessorCaption();
+            dataService.RequirementsResult_1 = string.Format("OsRequirements_UnsupportedArchitecture_1".GetLocalized(), caption);
+
+            if (RunToDebug(nameof(GetSupportedArchitecture)))
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                dataService.DetectedMalware = "OsRequirements_Malware_Win10Tweaker".GetLocalized();
-                return RequirementsResult.MalwareDetected;
+                return RequirementsResult.UnsupportedArchitecture;
+            }
+
+            if (caption.Contains("AMD64") || caption.Contains("Intel64"))
+            {
+                return RequirementsResult.AllCorrect;
+            }
+
+            return RequirementsResult.UnsupportedArchitecture;
+        }
+
+        private RequirementsResult GetAppNewVersion()
+        {
+            var latestVersion = dataService.LatestAppRelease?.SophiApp_release ?? new Version(0, 0, 0);
+
+            if (RunToDebug(nameof(GetAppNewVersion)))
+            {
+                dataService.RequirementsResult_1 = latestVersion.ToString();
+                return RequirementsResult.NewAppVersionFound;
+            }
+
+            if (latestVersion > dataService.AppVersion)
+            {
+                App.Logger.LogAppNewVersionFound(latestVersion);
+                dataService.RequirementsResult_1 = latestVersion.ToString();
+                return RequirementsResult.NewAppVersionFound;
+            }
+
+            return RequirementsResult.AllCorrect;
+        }
+
+        private RequirementsResult GetAppRunFromLoggedUser()
+        {
+            var appUser = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
+            var appUserSessionId = Process.GetCurrentProcess().SessionId;
+            var explorerUser = Array.Find(array: Process.GetProcesses(), match: p => p.ProcessName.Equals("explorer") && p.SessionId.Equals(appUserSessionId));
+            var processOwner = instrumentationService.GetProcessOwnerName(explorerUser);
+
+            if (RunToDebug(nameof(GetAppRunFromLoggedUser)))
+            {
+                dataService.RequirementsResult_1 = processOwner;
+                dataService.RequirementsResult_2 = appUser;
+                return RequirementsResult.LoggedInUserNotAdmin;
+            }
+
+            if (processOwner.Equals(appUser))
+            {
+                return RequirementsResult.AllCorrect;
+            }
+
+            dataService.RequirementsResult_1 = processOwner;
+            dataService.RequirementsResult_2 = appUser;
+            return RequirementsResult.LoggedInUserNotAdmin;
+        }
+
+        private RequirementsResult GetHarmfulTweakers()
+        {
+            if (RunToDebug(nameof(GetHarmfulTweakers)))
+            {
+                dataService.RequirementsResult_1 = "OsRequirements_Malware_Win10Tweaker".GetLocalized();
+                return RequirementsResult.HarmfulTweakerFound;
             }
 
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
@@ -199,95 +192,65 @@ namespace SophiApp.Services
             {
                 if (m.Value())
                 {
-                    dataService.DetectedMalware = m.Key.GetLocalized();
-                    App.Logger.LogMalwareDetected(dataService.DetectedMalware);
+                    var detectedMalware = m.Key.GetLocalized();
+                    dataService.RequirementsResult_1 = detectedMalware;
+                    App.Logger.LogMalwareDetected(detectedMalware);
                     return true;
                 }
 
                 return false;
-            }) ? RequirementsResult.MalwareDetected : RequirementsResult.AllCorrect;
+            }) ? RequirementsResult.HarmfulTweakerFound : RequirementsResult.AllCorrect;
         }
 
-        private RequirementsResult GetFeatureExperiencePackState()
+        private RequirementsResult GetHostFileEntries()
         {
-            if (ActionForDebug?.Equals(nameof(GetFeatureExperiencePackState)) ?? false)
+            if (RunToDebug(nameof(GetHostFileEntries)))
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.FeatureExperiencePackRemoved;
+                return RequirementsResult.HostsEntriesFound;
             }
 
-            return packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? RequirementsResult.AllCorrect : RequirementsResult.FeatureExperiencePackRemoved;
+            var hostFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers\\etc\\hosts");
+            var hostFileEntries = File.ReadAllLines(hostFilePath);
+            return hostFileEntries.Any(e => !(string.IsNullOrEmpty(e) || e.StartsWith('#'))) ? RequirementsResult.HostsEntriesFound : RequirementsResult.AllCorrect;
         }
 
-        private RequirementsResult GetEventLogState()
+        private RequirementsResult GetUWPComponents()
         {
-            if (ActionForDebug?.Equals(nameof(GetEventLogState)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.EventLogBroken;
-            }
+            var clientCBSExist = packagesService.PackageExist("MicrosoftWindows.Client.CBS");
+            var windowsStoreExist = packagesService.PackageExist("Microsoft.WindowsStore");
 
-            try
+            if (RunToDebug(nameof(GetUWPComponents)))
             {
-                var service = new ServiceController("EventLog");
-                return service.Status == ServiceControllerStatus.Running ? RequirementsResult.AllCorrect : RequirementsResult.EventLogBroken;
-            }
-            catch (Exception e)
-            {
-                App.Logger.LogEventLogException(e);
-                return RequirementsResult.EventLogBroken;
-            }
-        }
-
-        private RequirementsResult GetMicrosoftStoreState()
-        {
-            if (ActionForDebug?.Equals(nameof(GetMicrosoftStoreState)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.MsStoreRemoved;
+                dataService.RequirementsResult_1 = "MicrosoftWindows.Client.CBS";
+                return RequirementsResult.UWPComponentsMissing;
             }
 
             if (dataService.OsProperties.IsLTSC)
             {
-                return packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? RequirementsResult.AllCorrect : RequirementsResult.MsStoreRemoved;
+                if (clientCBSExist)
+                {
+                    return RequirementsResult.AllCorrect;
+                }
+
+                dataService.RequirementsResult_1 = "MicrosoftWindows.Client.CBS";
+                return RequirementsResult.UWPComponentsMissing;
             }
 
-            return packagesService.PackageExist("Microsoft.WindowsStore") && packagesService.PackageExist("MicrosoftWindows.Client.CBS") ? RequirementsResult.AllCorrect : RequirementsResult.MsStoreRemoved;
-        }
-
-        private RequirementsResult GetPendingRebootState()
-        {
-            if (ActionForDebug?.Equals(nameof(GetPendingRebootState)) ?? false)
+            if (windowsStoreExist && clientCBSExist)
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.RebootRequired;
+                return RequirementsResult.AllCorrect;
             }
 
-            var parameters = new List<RegistryKey?>()
-            {
-                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\RebootPending"),
-                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\RebootInProgress"),
-                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\PackagesPending"),
-                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Auto Update\\PostRebootReporting"),
-                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Auto Update\\RebootRequired"),
-            };
-
-            return parameters.Exists(k => k is not null) ? RequirementsResult.RebootRequired : RequirementsResult.AllCorrect;
+            dataService.RequirementsResult_1 = windowsStoreExist ? "MicrosoftWindows.Client.CBS" : "Microsoft.WindowsStore";
+            return RequirementsResult.UWPComponentsMissing;
         }
 
-        private RequirementsResult GetAppUpdate()
+        private RequirementsResult GetDefenderComponents()
         {
-            // TODO: Refactoring app update.
-            return RequirementsResult.AllCorrect;
-        }
-
-        private RequirementsResult GetDefenderFilesExist()
-        {
-            if (ActionForDebug?.Equals(nameof(GetDefenderFilesExist)) ?? false)
+            if (RunToDebug(nameof(GetDefenderComponents)))
             {
-                dataService.DefenderFileMissing = "SecurityHealthSystray.exe";
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.DefenderFileMissing;
+                dataService.RequirementsResult_1 = "SecurityHealthSystray.exe";
+                return RequirementsResult.DefenderComponentsMissing;
             }
 
             var systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
@@ -305,173 +268,180 @@ namespace SophiApp.Services
                 }
 
                 App.Logger.LogDefenderFileMissing(f);
-                dataService.DefenderFileMissing = f;
+                dataService.RequirementsResult_1 = f;
                 return false;
-            }) ? RequirementsResult.AllCorrect : RequirementsResult.DefenderFileMissing;
+            }) ? RequirementsResult.AllCorrect : RequirementsResult.DefenderComponentsMissing;
         }
 
-        private RequirementsResult GetDefenderSettingsPageVisibility()
+        private RequirementsResult GetDefenderProperties()
         {
-            if (ActionForDebug?.Equals(nameof(GetDefenderSettingsPageVisibility)) ?? false)
+            if (RunToDebug(nameof(GetDefenderProperties)))
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.DefenderSettingsPageHidden;
+                return RequirementsResult.WindowsComponentStabilityDisrupted;
             }
 
-            var visibility = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer")?.GetValue("SettingsPageVisibility") as string ?? string.Empty;
-            return visibility.Contains("hide:windowsdefender") ? RequirementsResult.DefenderSettingsPageHidden : RequirementsResult.AllCorrect;
+            var properties = new List<Func<bool>>
+            {
+                GetDefenderServices, TryStartSecurityHealthService, GetMSFTMpComputerStatus, GetAntiVirusProduct, GetMpPreference,
+            };
+
+            return properties.TrueForAll(p => p()) ? RequirementsResult.AllCorrect : RequirementsResult.WindowsComponentStabilityDisrupted;
         }
 
-        private RequirementsResult GetDefenderServiceState()
+        private bool GetDefenderServices()
         {
-            if (ActionForDebug?.Equals(nameof(GetDefenderServiceState)) ?? false)
-            {
-                dataService.DefenderServiceBroken = "SecurityHealthService";
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.DefenderServiceFailure;
-            }
-
-            var logEntry = string.Empty;
             var services = new List<string>() { "Windefend", "SecurityHealthService", "wscsvc", "wdFilter" };
-            var servicesState = services.TrueForAll(s =>
+            return services.TrueForAll(s =>
             {
-                if (osService.Exist(s))
-                {
-                    logEntry = logEntry.Insert(logEntry.Length, $"{s}:True, ");
-                    return true;
-                }
-
-                App.Logger.LogDefenderServiceNotFound(s);
-                dataService.DefenderServiceBroken = s;
-                return false;
+                var isExist = osService.Exist(s);
+                App.Logger.LogDefenderServiceExist(s, isExist);
+                return isExist;
             });
-
-            if (servicesState)
-            {
-                App.Logger.LogDefenderServiceState(logEntry);
-                return RequirementsResult.AllCorrect;
-            }
-
-            return RequirementsResult.DefenderServiceFailure;
         }
 
-        private RequirementsResult GetAntiSpywareEnabled()
-        {
-            if (ActionForDebug?.Equals(nameof(GetAntiSpywareEnabled)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.AntiSpywareDisabled;
-            }
+        private bool TryStartSecurityHealthService() => osService.TryStart("SecurityHealthService");
 
+        private bool GetMSFTMpComputerStatus()
+        {
             try
             {
-                _ = instrumentationService.GetAntiSpywareEnabled();
-                return RequirementsResult.AllCorrect;
+                return instrumentationService.GetAntiSpywareEnabled();
             }
-            catch (Exception e)
+            catch
             {
-                App.Logger.LogDefenderAntiSpywareEnabledException(e);
-                return RequirementsResult.AntiSpywareDisabled;
+                return false;
             }
         }
 
-        private RequirementsResult GetAntivirusProducts()
+        private bool GetAntiVirusProduct()
         {
-            if (ActionForDebug?.Equals(nameof(GetAntivirusProducts)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.AntiSpywareDisabled;
-            }
-
-            var antivirusProducts = instrumentationService.GetAntivirusProductsOrDefault();
-
-            if (antivirusProducts.Count > 0)
-            {
-                return RequirementsResult.AllCorrect;
-            }
-
-            App.Logger.LogDefenderAntivirusProductsIsNull();
-            return RequirementsResult.AntiSpywareDisabled;
+            var properties = instrumentationService.GetAntivirusProducts();
+            return properties.Count > 0;
         }
 
-        private RequirementsResult GetSecurityHealthState()
+        private bool GetMpPreference()
         {
-            if (ActionForDebug?.Equals(nameof(GetSecurityHealthState)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.DefenderSecurityHealthFailure;
-            }
-
-            try
-            {
-                osService.TryStart("SecurityHealthService");
-                var healthState = osService.GetStatus("SecurityHealthService");
-                App.Logger.LogDefenderSecurityHealthStatus(healthState);
-                return healthState == ServiceControllerStatus.Running ? RequirementsResult.AllCorrect : RequirementsResult.DefenderSecurityHealthFailure;
-            }
-            catch (Exception e)
-            {
-                App.Logger.LogDefenderSecurityHealthException(e);
-                return RequirementsResult.DefenderSecurityHealthFailure;
-            }
+            var preference = powerShellService.Invoke("Get-MpPreference");
+            return preference.Count > 0;
         }
 
-        private RequirementsResult GetDefenderControlledFolderState()
+        private RequirementsResult GetControlledFolderAccess()
         {
-            if (ActionForDebug?.Equals(nameof(GetDefenderControlledFolderState)) ?? false)
+            if (RunToDebug(nameof(GetControlledFolderAccess)))
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.DefenderControlledFolderEnable;
+                return RequirementsResult.DisableControlledFolderAccess;
             }
 
             try
             {
                 var folderState = powerShellService.Invoke<byte>("(Get-MpPreference).EnableControlledFolderAccess");
                 App.Logger.LogDefenderControlledFolderState(folderState);
-                return folderState.Equals(1) ? RequirementsResult.DefenderControlledFolderEnable : RequirementsResult.AllCorrect;
+                return folderState.Equals(1) ? RequirementsResult.DisableControlledFolderAccess : RequirementsResult.AllCorrect;
             }
             catch (Exception e)
             {
                 App.Logger.LogDefenderControlledFolderException(e);
-                return RequirementsResult.DefenderControlledFolderEnable;
+                return RequirementsResult.DisableControlledFolderAccess;
             }
         }
 
-        private RequirementsResult DetectHostFileEntries()
+        private RequirementsResult GetRebootPending()
         {
-            if (ActionForDebug?.Equals(nameof(DetectHostFileEntries)) ?? false)
+            if (RunToDebug(nameof(GetRebootPending)))
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.DetectHostFileEntries;
+                return RequirementsResult.RebootPending;
             }
 
-            var host = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers\\etc\\hosts");
-            var entries = File.ReadAllLines(host);
-            return entries.Any(e => !(string.IsNullOrEmpty(e) || e.StartsWith('#'))) ? RequirementsResult.DetectHostFileEntries : RequirementsResult.AllCorrect;
+            var parameters = new List<RegistryKey?>()
+            {
+                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\RebootPending"),
+                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\RebootInProgress"),
+                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\PackagesPending"),
+                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Auto Update\\PostRebootReporting"),
+                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Auto Update\\RebootRequired"),
+            };
+
+            return parameters.Exists(k => k is not null) ? RequirementsResult.RebootPending : RequirementsResult.AllCorrect;
         }
 
-        private RequirementsResult GetBitLockerEncryptOrDecryptState()
+        private RequirementsResult GetSystemDriveEncryptedBitLocker()
         {
-            if (ActionForDebug?.Equals(nameof(GetBitLockerEncryptOrDecryptState)) ?? false)
+            if (RunToDebug(nameof(GetSystemDriveEncryptedBitLocker)))
             {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.BitLockerEncryptOrDecryptState;
-            }
-
-            var systemDriveState = powerShellService.Invoke("Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @(\"FullyEncrypted\", \"FullyDecrypted\")}");
-            return systemDriveState.Count == 0 ? RequirementsResult.AllCorrect : RequirementsResult.BitLockerEncryptOrDecryptState;
-        }
-
-        private RequirementsResult GetBitLockerProtectionState()
-        {
-            if (ActionForDebug?.Equals(nameof(GetBitLockerProtectionState)) ?? false)
-            {
-                settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                return RequirementsResult.BitLockerProtectionStatus;
+                return RequirementsResult.SystemDriveEncryptedBitLockerDisabled;
             }
 
             var protectionState = powerShellService.Invoke("Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq \"Off\") -and ($_.VolumeStatus -eq \"FullyEncrypted\")}");
-            return protectionState.Count == 0 ? RequirementsResult.AllCorrect : RequirementsResult.BitLockerProtectionStatus;
+            return protectionState.Count == 0 ? RequirementsResult.AllCorrect : RequirementsResult.SystemDriveEncryptedBitLockerDisabled;
+        }
+
+        private RequirementsResult GetUEFICertificates()
+        {
+            if (RunToDebug(nameof(GetUEFICertificates)))
+            {
+                return RequirementsResult.UpdateUEFICertificates;
+            }
+
+            var secureBootSupported = powerShellService.Invoke<bool>("try{Confirm-SecureBootUEFI -ErrorAction Stop}catch{$false}");
+            var certificatesExpired = powerShellService.Invoke<bool>("[System.Text.Encoding]::ASCII.GetString((Get-SecureBootUEFI -Name db).Bytes) -notmatch \"Windows UEFI CA 2023\"");
+            return secureBootSupported && certificatesExpired ? RequirementsResult.UpdateUEFICertificates : RequirementsResult.AllCorrect;
+        }
+
+        private RequirementsResult GetWindowsVersion()
+        {
+            if (RunToDebug(nameof(GetWindowsVersion)))
+            {
+                dataService.RequirementsResult_1 = dataService.OsProperties.IsLTSC ? "OsRequirements_WrongWindowsVersion_LTSC".GetLocalized() : "OsRequirements_WrongWindowsVersion_1".GetLocalized();
+                dataService.RequirementsResult_2 = $"{dataService.OsProperties.Caption} {dataService.OsProperties.DisplayVersion}";
+                return RequirementsResult.WrongWindowsVersion;
+            }
+
+            if (dataService.OsProperties.Caption.Contains("Windows 11"))
+            {
+                return RequirementsResult.AllCorrect;
+            }
+
+            dataService.RequirementsResult_1 = dataService.OsProperties.IsLTSC ? "OsRequirements_WrongWindowsVersion_LTSC".GetLocalized() : "OsRequirements_WrongWindowsVersion_1".GetLocalized();
+            dataService.RequirementsResult_2 = $"{dataService.OsProperties.Caption} {dataService.OsProperties.DisplayVersion}";
+            return RequirementsResult.WrongWindowsVersion;
+        }
+
+        private RequirementsResult GetWindowsBuild()
+        {
+            if (RunToDebug(nameof(GetWindowsBuild)))
+            {
+                settingsService.SaveDebugRequirementActionAsync(string.Empty);
+                dataService.RequirementsResult_1 = $"{dataService.OsProperties.Build}.{dataService.OsProperties.UBR}";
+                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                return RequirementsResult.UpdateWindowsBuild;
+            }
+
+            if (dataService.OsProperties.Build < 26200)
+            {
+                dataService.RequirementsResult_1 = $"{dataService.OsProperties.Build}.{dataService.OsProperties.UBR}";
+                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                return RequirementsResult.UpdateWindowsBuild;
+            }
+
+            if (dataService.OsProperties.Build == 26200 && dataService.OsProperties.UBR < dataService.SupportedUBR.Win11)
+            {
+                dataService.RequirementsResult_1 = $"{dataService.OsProperties.Build}.{dataService.OsProperties.UBR}";
+                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                return RequirementsResult.UpdateWindowsBuild;
+            }
+
+            return RequirementsResult.AllCorrect;
+        }
+
+        private bool RunToDebug(string name)
+        {
+            if (actionToDebug == name)
+            {
+                settingsService.DeleteDebugRequirementAction();
+                return true;
+            }
+
+            return false;
         }
     }
 }

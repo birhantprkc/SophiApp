@@ -39,6 +39,6 @@ namespace SophiApp.Contracts.Services
         /// Try start, without any exceptions, Windows service.
         /// </summary>
         /// <param name="name">Service name.</param>
-        void TryStart(string name);
+        bool TryStart(string name);
     }
 }

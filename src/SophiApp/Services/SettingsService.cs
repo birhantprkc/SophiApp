@@ -49,7 +49,7 @@ public class SettingsService : ISettingsService
     public double AppWindowMinHeight => 486;
 
     /// <inheritdoc/>
-    public double AppWindowMinWidth => 665;
+    public double AppWindowMinWidth => 686;
 
     /// <inheritdoc/>
     public int DescriptionTextMinSize => 14;
@@ -65,6 +65,9 @@ public class SettingsService : ISettingsService
 
     /// <inheritdoc/>
     public void Initialize() => settings = fileService.ReadFromJson<IDictionary<string, object>>(settingsFolder, SettingsFile) ?? new Dictionary<string, object>();
+
+    /// <inheritdoc/>
+    public void DeleteDebugRequirementAction() => DeleteSetting(DebugRequirementAction);
 
     /// <inheritdoc/>
     public async Task<PointInt32> ReadAppWindowPositionAsync()
@@ -95,7 +98,7 @@ public class SettingsService : ISettingsService
     public async Task<bool> ReadLogPageVisibilityAsync() => await ReadSettingAsync<bool>(LogPageVisibility);
 
     /// <inheritdoc/>
-    public string? ReadDebugRequirementAction() => ReadSetting<string>(DebugRequirementAction);
+    public string ReadDebugRequirementAction() => ReadSetting<string>(DebugRequirementAction) ?? string.Empty;
 
     /// <inheritdoc/>
     public async Task<int> ReadTextDescriptionSizeAsync()
@@ -145,6 +148,15 @@ public class SettingsService : ISettingsService
 
     /// <inheritdoc/>
     public async Task SaveThemeAsync(ElementTheme theme) => await SaveSettingAsync(AppTheme, theme);
+
+    private void DeleteSetting(string name)
+    {
+        if (settings?.ContainsKey(name) ?? false)
+        {
+            settings.Remove(name);
+            fileService.SaveToJson(settingsFolder, SettingsFile, settings);
+        }
+    }
 
     private async Task<T?> ReadSettingAsync<T>(string key)
     {

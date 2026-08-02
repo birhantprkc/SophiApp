@@ -15,7 +15,7 @@ namespace SophiApp.Services
     public class InstrumentationService : IInstrumentationService
     {
         /// <inheritdoc/>
-        public OsProperties GetOsPropertiesOrDefault()
+        public OsProperties GetOsProperties()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public string GetProcessOwnerOrDefault(Process? process)
+        public string GetProcessOwnerName(Process? process)
         {
             if (process is null)
             {
@@ -70,7 +70,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public List<ManagementObject> GetAntivirusProductsOrDefault()
+        public List<ManagementObject> GetAntivirusProducts()
         {
             try
             {
@@ -83,6 +83,17 @@ namespace SophiApp.Services
                 App.Logger.LogAntivirusProductsException(ex);
                 return [];
             }
+        }
+
+        /// <inheritdoc/>
+        public string GetProcessorCaption()
+        {
+            using var managementObject = new ManagementObjectSearcher("Select * from CIM_Processor")
+                .Get()
+                .Cast<ManagementObject>()
+                .First();
+
+            return (managementObject.GetPropertyValue("Caption") as string) !;
         }
 
         /// <inheritdoc/>
@@ -119,7 +130,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool? HypervisorPresent()
+        public bool? HypervisorIsPresent()
         {
             using var managementObject = new ManagementObjectSearcher("Select * from CIM_ComputerSystem")
                 .Get()
@@ -130,7 +141,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool IsExternalDACType()
+        public bool DetectDACType()
         {
             // Determining whether PC has an external graphics card
             using var managementObject = new ManagementObjectSearcher("Select * from CIM_VideoController")
@@ -143,7 +154,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool IsVirtualMachine()
+        public bool DetectVM()
         {
             // Determining whether an OS is not installed on a virtual machine
             var vmTokens = new[] { "Virtual", "VMware" };
@@ -157,7 +168,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public bool WindowsAIPresent() // TODO: WindowsAIPresent reserved for future use.
+        public bool WindowsAIPresent()
         {
             var managementObject = new ManagementObjectSearcher("Select ClassGuid, PNPClass from Win32_PnPEntity")
                 .Get()

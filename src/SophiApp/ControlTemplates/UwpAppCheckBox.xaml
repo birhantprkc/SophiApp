@@ -21,32 +21,36 @@
     <UserControl.Resources>
         <CommandBarFlyout x:Name="TextCommandsFlyout">
             <CommandBarFlyout.SecondaryCommands>
-                <AppBarButton x:Uid="ContextMenu_CopyTitle"
+                <AppBarButton x:Uid="UIModel_ContextMenu_CopyTitle"
                               Icon="Copy"
                               Click="TextCommandsFlyoutCopyTitle_Click"/>
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
     </UserControl.Resources>
 
-    <Grid Background="Transparent"
-          ContextRequested="UwpAppCheckBox_ContextRequested">
-        <CheckBox Style="{StaticResource UIControlCheckBoxStyle}"
-                  HorizontalAlignment="Left"
-                  Margin="20, 0, 20, 0"
-                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                  Command="{Binding Command, ElementName=UwpAppCheckBoxControl}"
-                  CommandParameter="{Binding CommandParameter, ElementName=UwpAppCheckBoxControl}"/>
-        <Image Source="{Binding Image, Mode=OneWay}"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Left"
-               Margin="60, 0, 0, 0"
-               Height="40"
-               Width="40"/>
-        <TextBlock x:Name="UwpNameTextBlock"
-                   Style="{StaticResource UIControlTitleTextStyle}"
-                   Margin="110, 0, 10, 0">
-            <Run Text="{Binding Name}"
-                 FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=UwpAppCheckBoxControl}"/>
-        </TextBlock>
-    </Grid>
+    <Border BorderBrush="{ThemeResource UIControlBorderBackground}"
+            Background="{ThemeResource UIControlBackground}"
+            Style="{StaticResource UIControlBorderStyle}"
+            ContextRequested="UwpAppCheckBox_ContextRequested">
+        <Grid>
+            <CheckBox Style="{StaticResource UIControlCheckBoxStyle}"
+                      HorizontalAlignment="Left"
+                      Margin="20, 0, 20, 0"
+                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                      Command="{Binding Command, ElementName=UwpAppCheckBoxControl}"
+                      CommandParameter="{Binding CommandParameter, ElementName=UwpAppCheckBoxControl}"/>
+            <Image Source="{Binding Image, Mode=OneWay}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="60, 0, 0, 0"
+                   Height="40"
+                   Width="40"/>
+            <TextBlock x:Name="UwpNameTextBlock"
+                       Style="{StaticResource UIControlTitleTextStyle}"
+                       Margin="110, 0, 10, 0">
+                <Run Text="{Binding Name}"
+                     FontSize="{Binding Path=FontOptions.TitleTextSize, ElementName=UwpAppCheckBoxControl}"/>
+            </TextBlock>
+        </Grid>
+    </Border>
 </UserControl>

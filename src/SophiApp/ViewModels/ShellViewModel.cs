@@ -13,7 +13,6 @@ using SophiApp.ControlTemplates;
 using SophiApp.Extensions;
 using SophiApp.Helpers;
 using SophiApp.Models;
-using SophiApp.RequirementsViews;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -27,7 +26,6 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly ICommonDataService dataService;
     private readonly IGroupPolicyService groupPolicyService;
     private readonly IModelService modelService;
-    private readonly IPowerShellService powerShellService;
     private readonly IProcessService processService;
     private readonly IRegistryService registryService;
     private readonly IRequirementsService requirementsService;
@@ -36,6 +34,8 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly StartupViewModel startupModel;
     private bool logPageVisibility;
     private bool navigationViewHitTestVisible = false;
+    private List<UIModel> uwpAllUsersModels = [];
+    private List<UIModel> uwpCurrentUserModels = [];
     private TaskCompletionSource<bool>? taskContinueSource;
 
     [ObservableProperty]
@@ -46,14 +46,15 @@ public partial class ShellViewModel : ObservableRecipient
     private bool uwpForAllUsersState = true;
     [ObservableProperty]
     private List<string> loggedActions = [];
-    private List<UIModel> uwpAllUsersModels = [];
-    private List<UIModel> uwpCurrentUserModels = [];
+
     [ObservableProperty]
     private object? selectedNavigationViewItem;
     [ObservableProperty]
     private ObservableCollection<UIModel> applicableModels = [];
     [ObservableProperty]
     private ObservableCollection<UIModel> uwpAppsModels = [];
+    [ObservableProperty]
+    private RequirementsResult requirementsResult;
     [ObservableProperty]
     private string delimiter;
     [ObservableProperty]
@@ -67,7 +68,6 @@ public partial class ShellViewModel : ObservableRecipient
     /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="navigationService">Page navigation service.</param>
     /// <param name="navigationViewService">A service for navigating to View.</param>
-    /// <param name="powerShellService">A service for working with Windows PowerShell API.</param>
     /// <param name="notificationService">A service for working with toast notifications API.</param>
     /// <param name="packagesService">A service for working with appx packages API.</param>
     /// <param name="processService">A service for working with Windows process API.</param>
@@ -84,7 +84,6 @@ public partial class ShellViewModel : ObservableRecipient
         IModelService modelService,
         INavigationService navigationService,
         INavigationViewService navigationViewService,
-        IPowerShellService powerShellService,
         IProcessService processService,
         IRegistryService registryService,
         IRequirementsService requirementsService,
@@ -97,7 +96,6 @@ public partial class ShellViewModel : ObservableRecipient
         this.modelService = modelService;
         this.notificationService = notificationService;
         this.packagesService = packagesService;
-        this.powerShellService = powerShellService;
         this.processService = processService;
         this.registryService = registryService;
         this.requirementsService = requirementsService;
@@ -111,7 +109,7 @@ public partial class ShellViewModel : ObservableRecipient
 
         ApplicableModelsApply_Command = new AsyncRelayCommand(ApplicableModelsApplyAsync);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
-        BitLockerProtectionStatus_Command = new RelayCommand<bool>(SetBitLockerProtectionStatus);
+        AppUpdate_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", "https://github.com/Sophia-Community/SophiApp/releases/latest"));
         ContinueRequirementActionsExecute_Command = new RelayCommand(ContinueRequirementActionsExecute);
         DeleteLGPOFile_Command = new RelayCommand(() => DebugOptions.DeleteLGPOFile = !DebugOptions.DeleteLGPOFile);
         OpenBitLockerSettings_Command = new RelayCommand(() => processService.StartProcessByName("control.exe", "/name Microsoft.BitLockerDriveEncryption"));
@@ -126,6 +124,7 @@ public partial class ShellViewModel : ObservableRecipient
         SearchBoxQuerySubmitted_Command = new AsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args => SearchBoxQuerySubmittedAsync(args!));
         UIModelClicked_Command = new RelayCommand<UIModel>(model => UIModelClicked(model!));
         UIUwpAppModelClicked_Command = new RelayCommand<UIUwpAppModel>(model => UIUwpAppModelClicked(model!));
+        UpdateUEFICertificates_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"));
         UwpForAllUsersClicked_Command = new RelayCommand(UwpForAllUsersClicked);
     }
 
@@ -140,9 +139,9 @@ public partial class ShellViewModel : ObservableRecipient
     public IAsyncRelayCommand ApplicableModelsClear_Command { get; }
 
     /// <summary>
-    /// Gets <see cref="IRelayCommand"/> to click <see cref="BitLockerProtectionStatusPage"/> button.
+    /// Gets <see cref="IRelayCommand"/> to click an "Update" button in the RequirementsFailurePage.
     /// </summary>
-    public IRelayCommand<bool> BitLockerProtectionStatus_Command { get; }
+    public IRelayCommand AppUpdate_Command { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to continue performing <see cref="RequirementAction"/> after fail result.
@@ -215,6 +214,11 @@ public partial class ShellViewModel : ObservableRecipient
     public IRelayCommand<UIUwpAppModel> UIUwpAppModelClicked_Command { get; }
 
     /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open update UEFI certificates manual url.
+    /// </summary>
+    public IRelayCommand UpdateUEFICertificates_Command { get; }
+
+    /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "For all users" checkbox in the UWP page.
     /// </summary>
     public IRelayCommand UwpForAllUsersClicked_Command { get; }
@@ -228,6 +232,11 @@ public partial class ShellViewModel : ObservableRecipient
     /// Gets and saves the app font sizes to a setting file.
     /// </summary>
     public FontOptions FontOptions { get; } = new ();
+
+    /// <summary>
+    /// Gets the info badges counters state by <see cref="UICategoryTag"/>.
+    /// </summary>
+    public InfoBadgeCounters InfoBadgeCounters { get; } = new ();
 
     /// <summary>
     /// Gets or sets a value indicating whether log page visibility.
@@ -281,7 +290,6 @@ public partial class ShellViewModel : ObservableRecipient
     /// </summary>
     public async Task ExecuteAsync()
     {
-        requirementsService.ActionForDebug = settingsService.ReadDebugRequirementAction();
         await RunRequirementActionsAsync();
         await GenerateUIAsync();
     }
@@ -305,6 +313,7 @@ public partial class ShellViewModel : ObservableRecipient
         SetUpCustomizationsPanelText = "OsRequirements_ReadWindowsSettings".GetLocalized();
         await modelService.GetModelsStateAsync(ApplicableModels);
         ApplicableModels.Clear();
+        InfoBadgeCounters.ResetAll();
         App.Logger.LogApplicableModelsClear();
         groupPolicyService.UpdatePolicy(deleteConfig: DebugOptions.DeleteLGPOFile);
         EnvironmentHelper.RefreshUserDesktop();
@@ -324,6 +333,7 @@ public partial class ShellViewModel : ObservableRecipient
         SetUpCustomizationsPanelIsVisible = true;
         await modelService.GetModelsStateAsync(ApplicableModels);
         ApplicableModels.Clear();
+        InfoBadgeCounters.ResetAll();
         App.Logger.LogApplicableModelsClear();
         SetUpCustomizationsPanelIsVisible = false;
         NavigationViewHitTestVisible = true;
@@ -377,11 +387,13 @@ public partial class ShellViewModel : ObservableRecipient
         if (ApplicableModels.Contains(group) && group.DefaultId == selectedId)
         {
             ApplicableModels.Remove(group);
+            InfoBadgeCounters.DecrementCategory(group.Tag);
             App.Logger.LogApplicableModelRemoved(group.Name);
             return;
         }
 
         ApplicableModels.Add(group);
+        InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
@@ -394,6 +406,7 @@ public partial class ShellViewModel : ObservableRecipient
             if (group.DefaultId == selectedId)
             {
                 ApplicableModels.Remove(group);
+                InfoBadgeCounters.DecrementCategory(group.Tag);
                 App.Logger.LogApplicableModelRemoved(group.Name);
                 return;
             }
@@ -405,6 +418,7 @@ public partial class ShellViewModel : ObservableRecipient
         }
 
         ApplicableModels.Add(group);
+        InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
@@ -417,6 +431,7 @@ public partial class ShellViewModel : ObservableRecipient
             if (group.DefaultId == selectedId)
             {
                 ApplicableModels.Remove(group);
+                InfoBadgeCounters.DecrementCategory(group.Tag);
                 App.Logger.LogApplicableModelRemoved(group.Name);
                 return;
             }
@@ -428,39 +443,30 @@ public partial class ShellViewModel : ObservableRecipient
         }
 
         ApplicableModels.Add(group);
+        InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
     }
 
     private async Task RunRequirementActionsAsync()
     {
-        foreach (var action in requirementsService.Actions)
+        foreach (var action in requirementsService.GetActions())
         {
             _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => startupModel.StatusText = action.DisplayText!);
             await Task.Delay(100);
             var timer = Stopwatch.StartNew();
-            var result = action.Execute();
+            RequirementsResult = action.Execute();
             timer.Stop();
             App.Logger.LogRequirementsActionExecute(action.Execute.Method.Name, timer);
 
-            if (result != RequirementsResult.AllCorrect)
+            if (RequirementsResult != RequirementsResult.AllCorrect)
             {
-                App.Logger.LogRequirementsFailureResult(result);
-                _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(result));
-                updateService.RunUpdateByReason(result);
+                App.Logger.LogRequirementsFailureResult(RequirementsResult);
+                _ = App.MainWindow.DispatcherQueue.TryEnqueue(() => NavigationService.NavigateTo(page: typeof(RequirementsFailureModel).FullName!, clearHistory: true, disablePageAnimation: true));
+                updateService.RunUpdateByReason(RequirementsResult);
                 taskContinueSource = new ();
                 await taskContinueSource.Task;
             }
         }
-    }
-
-    private void SetBitLockerProtectionStatus(bool runDecrypt)
-    {
-        if (runDecrypt)
-        {
-            powerShellService.Invoke("Disable-BitLocker -MountPoint $env:SystemDrive");
-        }
-
-        ContinueRequirementActionsExecute();
     }
 
     private void SetLogPageVisibility(bool visible) => LogPageVisibility = visible;
@@ -481,11 +487,13 @@ public partial class ShellViewModel : ObservableRecipient
         if (ApplicableModels.Contains(model))
         {
             ApplicableModels.Remove(model);
+            InfoBadgeCounters.DecrementCategory(model.Tag);
             App.Logger.LogApplicableModelRemoved(model.Name);
             return;
         }
 
         ApplicableModels.Add(model);
+        InfoBadgeCounters.IncrementCategory(model.Tag);
         App.Logger.LogApplicableModelAdded(model.Name);
     }
 

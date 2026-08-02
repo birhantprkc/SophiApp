@@ -46,11 +46,4 @@ public interface INavigationService
     /// <param name="clearHistory">Clear navigation history.</param>
     /// <param name="disablePageAnimation">Disable page transition animation.</param>
     bool NavigateTo(string page, object? parameter = null, bool clearHistory = false, bool disablePageAnimation = false);
-
-    /// <summary>
-    /// Causes the <see cref="Frame"/> to load content using <see cref="RequirementsResult"/>.
-    /// </summary>
-    /// <param name="result">Result of requirements execution.</param>
-    /// <param name="clearNavigation">Clears the navigation history.</param>
-    bool NavigateTo(RequirementsResult result, bool clearNavigation = true);
 }

@@ -14,11 +14,11 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Gets <see cref="RequirementAction"/> collection.
         /// </summary>
-        List<RequirementAction> Actions { get; }
+        List<RequirementAction> GetActions();
 
         /// <summary>
-        /// Gets or sets <see cref="RequirementAction"/> for debug.
+        /// Initialize <see cref="IRequirementsService"/> data.
         /// </summary>
-        string? ActionForDebug { get; set; }
+        void Initialize();
     }
 }

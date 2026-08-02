@@ -24,9 +24,6 @@ namespace SophiApp.Views
         /// <summary>
         /// Gets <see cref="StartupViewModel"/>.
         /// </summary>
-        public StartupViewModel ViewModel
-        {
-            get;
-        }
+        public StartupViewModel ViewModel { get; }
     }
 }

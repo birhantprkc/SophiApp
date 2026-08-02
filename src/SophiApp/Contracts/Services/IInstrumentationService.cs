@@ -16,28 +16,33 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Indicates that the DAC used in the video adapter is external type.
         /// </summary>
-        bool IsExternalDACType();
+        bool DetectDACType();
 
         /// <summary>
-        /// Defines the use of the virtual machine.
+        /// Defines the run on the virtual machine.
         /// </summary>
-        bool IsVirtualMachine();
+        bool DetectVM();
 
         /// <summary>
         /// Get the properties of the Win32_OperatingSystem class.
         /// </summary>
-        OsProperties GetOsPropertiesOrDefault();
+        OsProperties GetOsProperties();
 
         /// <summary>
-        /// Get the owner of the process.
+        /// Get the process owner name.
         /// </summary>
         /// <param name="process">The process for which to find an owner.</param>
-        string GetProcessOwnerOrDefault(Process? process);
+        string GetProcessOwnerName(Process? process);
 
         /// <summary>
         /// Get data from the AntiVirusProduct class.
         /// </summary>
-        List<ManagementObject> GetAntivirusProductsOrDefault();
+        List<ManagementObject> GetAntivirusProducts();
+
+        /// <summary>
+        /// Get processor caption from the CIM_Processor class.
+        /// </summary>
+        string GetProcessorCaption();
 
         /// <summary>
         /// Get data from the PowerPlan class.
@@ -63,7 +68,7 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Get Windows Hyper-V present state.
         /// </summary>
-        bool? HypervisorPresent();
+        bool? HypervisorIsPresent();
 
         /// <summary>
         /// Get Windows AI present state.

@@ -3,11 +3,10 @@
 // </copyright>
 
 namespace SophiApp.Services;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using SophiApp.Contracts.Services;
-using SophiApp.RequirementsViewModels;
-using SophiApp.RequirementsViews;
 using SophiApp.ViewModels;
 using SophiApp.Views;
 
@@ -21,29 +20,14 @@ public class PageService : IPageService
     /// </summary>
     public PageService()
     {
-        Configure<AntiSpywareDisabledViewModel, AntiSpywareDisabledPage>();
-        Configure<BitLockerEncryptOrDecryptViewModel, BitLockerEncryptOrDecryptPage>();
-        Configure<BitLockerProtectionStatusViewModel, BitLockerProtectionStatusPage>();
         Configure<ContextMenuViewModel, ContextMenuPage>();
         Configure<DebugViewModel, DebugPage>();
-        Configure<DefenderControlledFolderEnableViewModel, DefenderControlledFolderEnablePage>();
-        Configure<DefenderFileMissingViewModel, DefenderFileMissingPage>();
-        Configure<DefenderSecurityHealthFailureViewModel, DefenderSecurityHealthFailurePage>();
-        Configure<DefenderServiceFailureViewModel, DefenderServiceFailurePage>();
-        Configure<DefenderSettingsPageHiddenViewModel, DefenderSettingsPageHiddenPage>();
-        Configure<DetectHostFileEntriesViewModel, DetectHostFileEntriesPage>();
-        Configure<EventLogBrokenViewModel, EventLogBrokenPage>();
         Configure<FatalErrorViewModel, FatalErrorPage>();
-        Configure<FeatureExperiencePackRemovedViewModel, FeatureExperiencePackRemovedPage>();
-        Configure<Is32BitOsViewModel, Is32BitOsPage>();
         Configure<LogViewModel, LogPage>();
-        Configure<MalwareDetectedViewModel, MalwareDetectedPage>();
-        Configure<MsStoreRemovedViewModel, MsStoreRemovedPage>();
         Configure<PersonalizationViewModel, PersonalizationPage>();
         Configure<PrivacyViewModel, PrivacyPage>();
         Configure<ProVersionViewModel, ProVersionPage>();
-        Configure<RebootRequiredViewModel, RebootRequiredPage>();
-        Configure<RunByNotLoggedUserViewModel, RunByNotLoggedUserPage>();
+        Configure<RequirementsFailureModel, RequirementsFailurePage>();
         Configure<SearchViewModel, SearchPage>();
         Configure<SecurityViewModel, SecurityPage>();
         Configure<SettingsViewModel, SettingsPage>();
@@ -51,9 +35,6 @@ public class PageService : IPageService
         Configure<SystemViewModel, SystemPage>();
         Configure<TaskSchedulerViewModel, TaskSchedulerPage>();
         Configure<UwpViewModel, UwpPage>();
-        Configure<WinUnsupportedBuildViewModel, WinUnsupportedBuildPage>();
-        Configure<WinUnsupportedUbrViewModel, WinUnsupportedUbrPage>();
-        Configure<WmiBrokenViewModel, WmiBrokenPage>();
     }
 
     /// <inheritdoc/>

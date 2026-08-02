@@ -57,22 +57,13 @@ namespace SophiApp.Services
         public OsProperties OsProperties { get; private set; }
 
         /// <inheritdoc/>
-        public string DetectedMalware { get; set; } = string.Empty;
+        public bool DefenderMpPreferenceBroken { get; private set; } = false;
 
         /// <inheritdoc/>
-        public string DefenderFileMissing { get; set; } = string.Empty;
+        public bool DefenderEnabled { get; private set; } = false;
 
         /// <inheritdoc/>
-        public string DefenderServiceBroken { get; set; } = string.Empty;
-
-        /// <inheritdoc/>
-        public bool DefenderMpPreferenceBroken { get; set; } = false;
-
-        /// <inheritdoc/>
-        public bool DefenderEnabled { get; set; } = false;
-
-        /// <inheritdoc/>
-        public Version AppVersion => assembly.Version ?? new Version(0, 0, 0);
+        public Version AppVersion => assembly.Version!;
 
         /// <inheritdoc/>
         public AppVersion? LatestAppRelease { get; private set; }
@@ -90,6 +81,12 @@ namespace SophiApp.Services
         public VCRelease? LatestReleaseVC { get; private set; }
 
         /// <inheritdoc/>
+        public string RequirementsResult_1 { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public string RequirementsResult_2 { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
         public SupportedUBR SupportedUBR { get; private set; }
 
         /// <inheritdoc/>
@@ -97,7 +94,7 @@ namespace SophiApp.Services
         {
             await Task.Run(() =>
             {
-                OsProperties = instrumentationService.GetOsPropertiesOrDefault();
+                OsProperties = instrumentationService.GetOsProperties();
                 OsProperties.IsLTSC = OsProperties.Caption.Contains("LTSC");
                 App.Logger.LogAppProperties(version: assembly.Version!, directory: AppContext.BaseDirectory);
             });
@@ -126,14 +123,14 @@ namespace SophiApp.Services
         {
             await Task.Run(() =>
             {
-                var productState = instrumentationService.GetAntivirusProductsOrDefault()
+                var productState = instrumentationService.GetAntivirusProducts()
                 .Find(product => product.GetPropertyValue("instanceGuid")
                 .Equals("{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"))
                 ?.GetPropertyValue("productState");
                 var defenderState = productState is null ? "00" : string.Format("0x{0:x}", productState).Substring(3, 2);
-                var defenderDefaultAV = !(defenderState.Equals("00") || defenderState.Equals("01"));
-                App.Logger.LogDefenderIsDefault(defenderDefaultAV);
-                DefenderEnabled = defenderDefaultAV;
+                var defenderIsDefault = !(defenderState.Equals("00") || defenderState.Equals("01"));
+                App.Logger.LogDefenderIsDefault(defenderIsDefault);
+                DefenderEnabled = defenderIsDefault;
             });
         }
 

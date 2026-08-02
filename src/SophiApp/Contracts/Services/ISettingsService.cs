@@ -58,9 +58,14 @@ public interface ISettingsService
     void Initialize();
 
     /// <summary>
+    /// Delete requirement action name from a settings file.
+    /// </summary>
+    void DeleteDebugRequirementAction();
+
+    /// <summary>
     /// Read app <see cref="MainWindow"/> position from a settings file.
     /// </summary>
-    Task<PointInt32> ReadAppWindowPositionAsync();
+    Task <PointInt32> ReadAppWindowPositionAsync();
 
     /// <summary>
     /// Read app <see cref="MainWindow"/> height from a settings file.
@@ -85,7 +90,7 @@ public interface ISettingsService
     /// <summary>
     /// Read requirement action name from a settings file for debug.
     /// </summary>
-    string? ReadDebugRequirementAction();
+    string ReadDebugRequirementAction();
 
     /// <summary>
     /// Read UI elements descriptions size from a settings file.
@@ -128,7 +133,7 @@ public interface ISettingsService
     void SaveLogPageVisibility(bool isVisible);
 
     /// <summary>
-    /// Write requirement action name to a settings file for debug.
+    /// Write requirement action name to a settings file for run to debug in next app launch.
     /// </summary>
     /// <param name="action">Requirement action name or empty string.</param>
     Task SaveDebugRequirementActionAsync(string action);

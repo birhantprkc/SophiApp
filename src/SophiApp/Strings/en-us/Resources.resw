@@ -198,32 +198,20 @@
   <data name="SettingsPage_AppTester.WorkedOn" xml:space="preserve">
     <value>QC</value>
   </data>
-  <data name="OsRequirements_GetWmiState" xml:space="preserve">
-    <value>Checking WMI state</value>
+  <data name="OsRequirements_GetSupportedArchitecture" xml:space="preserve">
+    <value>Get CPU architecture</value>
   </data>
-  <data name="OsRequirements_GetOsVersion" xml:space="preserve">
-    <value>Checking Windows version</value>
+  <data name="OsRequirements_LoggedInUserNotAdmin_1.Text" xml:space="preserve">
+    <value>The logged-in user doesn't have admin rights:</value>
   </data>
-  <data name="OsRequirements_GetOsBitness" xml:space="preserve">
-    <value>Checking Windows bitness</value>
-  </data>
-  <data name="OsRequirementsFailure_Is32BitOs.Text" xml:space="preserve">
-    <value>SophiApp supports 64-bit Windows only.</value>
-  </data>
-  <data name="OsRequirementsFailure_WmiBroken.Text" xml:space="preserve">
-    <value>WMI service is broken.</value>
-  </data>
-  <data name="OsRequirementsFailure_RunByNotLoggedUser.Text" xml:space="preserve">
-    <value>The logged-in user "{0}" doesn't have admin rights. SophiApp 2 was ran on behalf of "{1}". Please log into account which has admin rights and run app again.</value>
-  </data>
-  <data name="OsRequirements_AppRunFromLoggedUser" xml:space="preserve">
+  <data name="OsRequirements_GetAppRunFromLoggedUser" xml:space="preserve">
     <value>Checking current user's rights</value>
   </data>
-  <data name="OsRequirements_MalwareDetection" xml:space="preserve">
-    <value>Checking whether Windows was broken by 3rd party harmful tweakers and trojans</value>
+  <data name="OsRequirements_GetHarmfulTweaker" xml:space="preserve">
+    <value>Detect harmful tweakers and trojans</value>
   </data>
-  <data name="OsRequirementsFailure_MalwareDetected" xml:space="preserve">
-    <value>Windows stability may have been compromised by using {0}.</value>
+  <data name="OsRequirements_HarmfulTweakerFound.Text" xml:space="preserve">
+    <value>Windows stability may have been compromised by using:</value>
   </data>
   <data name="OsRequirements_Malware_GhostToolbox" xml:space="preserve">
     <value>Ghost Toolbox</value>
@@ -249,29 +237,17 @@
   <data name="OsRequirements_Malware_ModernTweaker" xml:space="preserve">
     <value>Modern Tweaker</value>
   </data>
-  <data name="OsRequirements_GetFeatureExperiencePackState" xml:space="preserve">
-    <value>Check whether Windows Feature Experience Pack was removed by harmful tweakers</value>
+  <data name="OsRequirements_DefenderComponentsMissing.Text" xml:space="preserve">
+    <value>The component of Microsoft Defender is missing:</value>
   </data>
-  <data name="OsRequirementsFailure_FeatureExperiencePackRemoved.Text" xml:space="preserve">
-    <value>Windows Feature Experience Pack is broken or removed.</value>
+  <data name="OsRequirements_GetRebootPending" xml:space="preserve">
+    <value>Get pending reboot</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderFilesMissing" xml:space="preserve">
-    <value>"{0}" is broken or removed.</value>
-  </data>
-  <data name="OsRequirementsFailure_RebootRequired.Text" xml:space="preserve">
-    <value>Your PC is waiting to be restarted.</value>
-  </data>
-  <data name="OsRequirements_GetPendingRebootState" xml:space="preserve">
-    <value>Checking pending reboot state</value>
-  </data>
-  <data name="OsRequirements_UpdateDetection" xml:space="preserve">
+  <data name="OsRequirements_GetAppNewVersion" xml:space="preserve">
     <value>Checking if the current SophiApp build is the latest one</value>
   </data>
-  <data name="OsRequirementsFailure_AntiSpywareDisabled.Text" xml:space="preserve">
-    <value>Microsoft Defender is broken or removed.</value>
-  </data>
-  <data name="OsRequirements_GetMsDefenderState" xml:space="preserve">
-    <value>Checking Microsoft Defender state</value>
+  <data name="OsRequirements_GetDefenderComponents" xml:space="preserve">
+    <value>Getting Microsoft Defender components</value>
   </data>
   <data name="OsRequirements_ReadWindowsSettings" xml:space="preserve">
     <value>Reading Windows settings</value>
@@ -847,7 +823,7 @@
     <value>Choose UWP app to uninstall. UWP apps list is rendered in real-time with their native icon logos taken from Windows. That means that the UWP apps list is not pre-prepared like in other similar apps.</value>
   </data>
   <data name="UwpPage_UwpAppsNotFound.Text" xml:space="preserve">
-    <value>No data to display, or necessary packages were removed</value>
+    <value>No data to display, or necessary packages were removed!</value>
   </data>
   <data name="UwpPage_ForAllUsers.Text" xml:space="preserve">
     <value>Show packages for all users</value>
@@ -1017,9 +993,6 @@
   <data name="UIModel_OpenWindowsTerminalAdminContext_Title" xml:space="preserve">
     <value>Open Windows Terminal from context menu as administrator by default</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderServiceBroken" xml:space="preserve">
-    <value>Microsoft Defender service "{0}" is broken.</value>
-  </data>
   <data name="Panel_ApplyCustomizations_Apply.Text" xml:space="preserve">
     <value>Apply changes?</value>
   </data>
@@ -1029,20 +1002,11 @@
   <data name="Panel_SetupCustomizations_Applying" xml:space="preserve">
     <value>Applying customizations</value>
   </data>
-  <data name="OsRequirementsFailure_EventLogStopped.Text" xml:space="preserve">
-    <value>The Event Viewer is broken or removed.</value>
+  <data name="OsRequirements_UWPComponentsMissing.Text" xml:space="preserve">
+    <value>The UWP component is missing:</value>
   </data>
-  <data name="OsRequirementsFailure_MsStoreRemoved.Text" xml:space="preserve">
-    <value>Microsoft Store is broken or removed.</value>
-  </data>
-  <data name="OsRequirements_GetEventLogState" xml:space="preserve">
-    <value>Getting Eventlog state</value>
-  </data>
-  <data name="OsRequirements_GetMicrosoftStoreState" xml:space="preserve">
-    <value>Getting Microsoft Store state</value>
-  </data>
-  <data name="OsRequirementsFailure_DefenderSettingsPageHidden.Text" xml:space="preserve">
-    <value>Microsoft Defender settings page was hidden from UI.</value>
+  <data name="OsRequirements_GetUWPComponents" xml:space="preserve">
+    <value>Getting UWP components</value>
   </data>
   <data name="OsRequirements_GeneratingUserInterface" xml:space="preserve">
     <value>Generating UI</value>
@@ -1104,9 +1068,6 @@
   <data name="OsRequirements_Malware_Tron" xml:space="preserve">
     <value>Tron</value>
   </data>
-  <data name="OsRequirementsFailure_ReinstallWindows.Text" xml:space="preserve">
-    <value>Reinstall Windows using only a genuine ISO image.</value>
-  </data>
   <data name="UIModel_ContextMenu_CopyDescription.Label" xml:space="preserve">
     <value>Copy description</value>
   </data>
@@ -1125,13 +1086,13 @@
   <data name="SettingsPage_ShowLogPage.Text" xml:space="preserve">
     <value>Show log page in navigation menu</value>
   </data>
-  <data name="LogPage_ContextMenu_CopyAll.Label" xml:space="preserve">
+  <data name="Page_ContextMenu_CopyAll.Label" xml:space="preserve">
     <value>Copy all</value>
   </data>
   <data name="OsRequirements_Malware_Defendnot" xml:space="preserve">
     <value>Defendnot</value>
   </data>
-  <data name="AppFatalError.Text" xml:space="preserve">
+  <data name="AppFatalError_2.Text" xml:space="preserve">
     <value>Perhaps the root cause of the exception is due to a usage a Defender tampering utility like "Defender Killer".</value>
   </data>
   <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
@@ -1164,10 +1125,10 @@
   <data name="SettingsPage_UxDevelopment.NickName" xml:space="preserve">
     <value>Vladimir Nameless</value>
   </data>
-  <data name="LogPage_ContextMenu_OpenLogFile.Label" xml:space="preserve">
+  <data name="Page_ContextMenu_OpenLogFile.Label" xml:space="preserve">
     <value>Open log file</value>
   </data>
-  <data name="LogPage_ContextMenu_OpenLogFolder.Label" xml:space="preserve">
+  <data name="Page_ContextMenu_OpenLogFolder.Label" xml:space="preserve">
     <value>Open log folder</value>
   </data>
   <data name="OsRequirements_GetExternalServicesData" xml:space="preserve">
@@ -1179,38 +1140,20 @@
   <data name="OsRequirements_Malware_RemoveWindowsAI" xml:space="preserve">
     <value>RemoveWindowsAI</value>
   </data>
-  <data name="OsRequirementsFailure_DefenderControlledFolderEnable.Text" xml:space="preserve">
-    <value>Controlled folder access is enabled in Microsoft Defender. Please disable it and run app again.</value>
-  </data>
-  <data name="OsRequirementsFailure_DefenderSecurityHealthFailure.Text" xml:space="preserve">
-    <value>Security Health service of Microsoft Defender (SecurityHealthService) is broken.</value>
-  </data>
   <data name="UIModel_InstallDotNetRuntime_10_Description" xml:space="preserve">
     <value>.NET is a successor to .NET Framework. You need to install .NET 10 if an app was developed within this framework, even if you already installed any other .NET versions. NET 10 is a rapid branch version. Installer will be downloaded from the Microsoft resource (Internet connection required).</value>
   </data>
   <data name="UIModel_InstallDotNetRuntime_10_Title" xml:space="preserve">
     <value>Install latest .NET Desktop Runtime 10 x64</value>
   </data>
-  <data name="OsRequirementsFailure_UnsupportedBuild.Text" xml:space="preserve">
-    <value>SophiApp supports Windows 11 25H2+ and Windows 11 Enterprise LTSC 2024.</value>
-  </data>
-  <data name="OsRequirementsFailure_UnsupportedUBR" xml:space="preserve">
-    <value>You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher.</value>
-  </data>
-  <data name="OsRequirementsFailure_RunByAdmin.Text" xml:space="preserve">
-    <value>Please log into account which has admin rights and run app again.</value>
-  </data>
-  <data name="OsRequirementsFailure_UsingBuild" xml:space="preserve">
-    <value>You're using {0} {1}.</value>
-  </data>
-  <data name="OsRequirementsFailure_RunWinUpdate.Text" xml:space="preserve">
+  <data name="OsRequirements_RunWinUpdate.Text" xml:space="preserve">
     <value>Run Windows Update and try again.</value>
   </data>
-  <data name="OsRequirements_DetectHostFileEntries" xml:space="preserve">
+  <data name="OsRequirements_GetHostFileEntries" xml:space="preserve">
     <value>Detect third-party host file entries</value>
   </data>
-  <data name="OsRequirementsFailure_DetectHostFileEntries.Text" xml:space="preserve">
-    <value>Third-party entries found in the %SystemRoot%\System32\drivers\etc\hosts file. They may block connection to resources used in the script. Do you want to continue?</value>
+  <data name="OsRequirements_HostsEntriesFound_1.Text" xml:space="preserve">
+    <value>Third-party entries found in the file:</value>
   </data>
   <data name="Button_OpenHostFileFolder.Content" xml:space="preserve">
     <value>Open host file folder</value>
@@ -1218,17 +1161,8 @@
   <data name="Button_Continue.Content" xml:space="preserve">
     <value>Continue</value>
   </data>
-  <data name="OsRequirements_GetBitLockerState" xml:space="preserve">
-    <value>Getting BitLocker state</value>
-  </data>
-  <data name="OsRequirementsFailure_BitLockerEncryptOrDecryptState" xml:space="preserve">
-    <value>BitLocker is in action. Your C drive is {0}% encrypted. Complete BitLocker drive configuration and try again.</value>
-  </data>
   <data name="Button_OpenBitLockerSettings.Content" xml:space="preserve">
     <value>Open BitLocker settings</value>
-  </data>
-  <data name="OsRequirementsFailure_BitLockerProtectionState.Text" xml:space="preserve">
-    <value>C drive is encrypted, although BitLocker is turned off. Do you want to decrypt your drive?</value>
   </data>
   <data name="Button_Yes.Content" xml:space="preserve">
     <value>Yes</value>
@@ -1238,5 +1172,107 @@
   </data>
   <data name="Button_OpenDefenderControlledFolderSettings.Content" xml:space="preserve">
     <value>Open Controlled folder access settings</value>
+  </data>
+  <data name="OsRequirements_UnsupportedArchitecture_1" xml:space="preserve">
+    <value>Your're using "{0}" based CPU architecture.</value>
+  </data>
+  <data name="OsRequirements_NewAppVersionFound_1.Text" xml:space="preserve">
+    <value>A new SophiApp version is available:</value>
+  </data>
+  <data name="OsRequirements_HostsEntriesFound_3.Text" xml:space="preserve">
+    <value>They may block connection to resources used in the app.</value>
+  </data>
+  <data name="OsRequirements_DoYouWantToContinue.Text" xml:space="preserve">
+    <value>Do you want to continue?</value>
+  </data>
+  <data name="OsRequirements_HostsEntriesFound_2.Text" xml:space="preserve">
+    <value>"%SystemRoot%\System32\drivers\etc\hosts".</value>
+  </data>
+  <data name="OsRequirements_UnsupportedArchitecture_2.Text" xml:space="preserve">
+    <value>This app supports an x64 architecture-based CPU only.</value>
+  </data>
+  <data name="OsRequirements_NewAppVersionFound_2.Text" xml:space="preserve">
+    <value>Please update.</value>
+  </data>
+  <data name="Button_Update.Content" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="OsRequirements_LoggedInUserNotAdmin_2.Text" xml:space="preserve">
+    <value>SophiApp was ran on behalf of:</value>
+  </data>
+  <data name="OsRequirements_LoggedInUserNotAdmin_3.Text" xml:space="preserve">
+    <value>Please log into account which has admin rights and run app again.</value>
+  </data>
+  <data name="OsRequirements_ReinstallWindows.Text" xml:space="preserve">
+    <value>Reinstall Windows using only a genuine ISO image.</value>
+  </data>
+  <data name="OsRequirements_GetDefenderProperties" xml:space="preserve">
+    <value>Get Microsoft Defender properties</value>
+  </data>
+  <data name="OsRequirements_WindowsComponentStabilityDisrupted.Text" xml:space="preserve">
+    <value>An instability issue has been detected in the component:</value>
+  </data>
+  <data name="OsRequirements_MicrosoftDefender.Text" xml:space="preserve">
+    <value>Microsoft Defender</value>
+  </data>
+  <data name="OsRequirements_GetControlledFolderAccess" xml:space="preserve">
+    <value>Get controlled folder access</value>
+  </data>
+  <data name="OsRequirements_DisableControlledFolderAccessPanel_1.Text" xml:space="preserve">
+    <value>You have Сontrolled folder access enabled.</value>
+  </data>
+  <data name="OsRequirements_DisableControlledFolderAccessPanel_2.Text" xml:space="preserve">
+    <value>Please disable it and run SophiApp again.</value>
+  </data>
+  <data name="OsRequirements_RebootPending.Text" xml:space="preserve">
+    <value>Your PC is waiting to be restarted.</value>
+  </data>
+  <data name="OsRequirements_GetSystemDriveEncryptedBitLocker" xml:space="preserve">
+    <value>Get BitLocker system drive encryption</value>
+  </data>
+  <data name="OsRequirements_SystemDriveEncryptedBitLockerDisabled_1.Text" xml:space="preserve">
+    <value>C drive is encrypted, although BitLocker is turned off.</value>
+  </data>
+  <data name="OsRequirements_SystemDriveEncryptedBitLockerDisabled_2.Text" xml:space="preserve">
+    <value>Do you want to decrypt your drive?</value>
+  </data>
+  <data name="OsRequirements_GetUEFICertificates" xml:space="preserve">
+    <value>Detect UEFI expires certificates</value>
+  </data>
+  <data name="OsRequirements_UpdateUEFICertificates_1.Text" xml:space="preserve">
+    <value>The "Microsoft Windows Production PCA 2011" Secure Boot certificate expires in 2026.</value>
+  </data>
+  <data name="OsRequirements_UpdateUEFICertificates_2.Text" xml:space="preserve">
+    <value>Your device has not yet received the updated "Windows UEFI CA 2023" certificates.</value>
+  </data>
+  <data name="OsRequirements_UpdateUEFICertificates_3.Text" xml:space="preserve">
+    <value>Do you want to install "Microsoft Windows UEFI CA 2023" certificates manually?</value>
+  </data>
+  <data name="Button_UpdateUEFICertificates.Content" xml:space="preserve">
+    <value>Open manual</value>
+  </data>
+  <data name="OsRequirements_GetWindowsVersion" xml:space="preserve">
+    <value>Detect Windows version</value>
+  </data>
+  <data name="OsRequirements_WrongWindowsVersion_1" xml:space="preserve">
+    <value>SophiApp 2 supports Windows 11 25H2 and higher.</value>
+  </data>
+  <data name="OsRequirements_WrongWindowsVersion_2.Text" xml:space="preserve">
+    <value>You're using:</value>
+  </data>
+  <data name="OsRequirements_WrongWindowsVersion_LTSC" xml:space="preserve">
+    <value>SophiApp 2 supports Windows 11 Enterprise 2024 and higher.</value>
+  </data>
+  <data name="OsRequirements_GetWindowsBuild" xml:space="preserve">
+    <value>Detect Windows build</value>
+  </data>
+  <data name="OsRequirements_UpdateWindowsBuild_1.Text" xml:space="preserve">
+    <value>You're using Windows 11</value>
+  </data>
+  <data name="OsRequirements_UpdateWindowsBuild_2" xml:space="preserve">
+    <value>Supported builds are Windows 11 {0}.{1} and higher.</value>
+  </data>
+  <data name="AppFatalError_1.Text" xml:space="preserve">
+    <value>Fatal error:</value>
   </data>
 </root>

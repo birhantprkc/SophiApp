@@ -753,24 +753,27 @@
     },
     {
         "Name": "CleanupTask",
-        "Type": "CheckBox",
+        "Type": "IconCheckBox",
         "Tag": "TaskScheduler",
+        "IconIndex": 0,
         "ViewId": 500,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
     {
         "Name": "SoftwareDistributionTask",
-        "Type": "CheckBox",
+        "Type": "IconCheckBox",
         "Tag": "TaskScheduler",
+        "IconIndex": 1,
         "ViewId": 501,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
     {
         "Name": "TempTask",
-        "Type": "CheckBox",
+        "Type": "IconCheckBox",
         "Tag": "TaskScheduler",
+        "IconIndex": 1,
         "ViewId": 502,
         "Windows11LTSC": "True",
         "Windows11": "True"

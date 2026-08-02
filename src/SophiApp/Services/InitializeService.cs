@@ -15,6 +15,7 @@ public class InitializeService : IInitializeService
 {
     private readonly ICommonDataService dataService;
     private readonly IDisplayService displayService;
+    private readonly IRequirementsService requirementsService;
     private readonly ISettingsService settingsService;
     private readonly IThemesService themesService;
     private readonly ShellViewModel viewModel;
@@ -24,18 +25,21 @@ public class InitializeService : IInitializeService
     /// </summary>
     /// <param name="commonDataService">A service for working with common app data.</param>
     /// <param name="displayService">A service for working with display API.</param>
+    /// <param name="requirementsService">A service for working with app requirements.</param>
     /// <param name="settingsService">A service for working with app settings.</param>
     /// <param name="themesService">A service for working with app themes.</param>
     /// <param name="viewModel">Implements the <see cref="ShellViewModel"/> class.</param>
     public InitializeService(
         ICommonDataService commonDataService,
         IDisplayService displayService,
+        IRequirementsService requirementsService,
         ISettingsService settingsService,
         IThemesService themesService,
         ShellViewModel viewModel)
     {
-        this.dataService = commonDataService;
+        dataService = commonDataService;
         this.displayService = displayService;
+        this.requirementsService = requirementsService;
         this.settingsService = settingsService;
         this.themesService = themesService;
         this.viewModel = viewModel;
@@ -45,6 +49,7 @@ public class InitializeService : IInitializeService
     public async Task InitializeServicesDataAsync(object args)
     {
         settingsService.Initialize();
+        requirementsService.Initialize();
         await viewModel.FontOptions.InitializeAsync();
         await themesService.InitializeAsync();
         await themesService.SetRequestedThemeAsync();

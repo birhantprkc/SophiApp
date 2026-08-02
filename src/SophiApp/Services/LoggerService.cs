@@ -12,7 +12,6 @@ namespace SophiApp.Services
     using SophiApp.ViewModels;
     using System.Diagnostics;
     using System.Globalization;
-    using System.ServiceProcess;
 
     /// <inheritdoc/>
     public class LoggerService : ILoggerService
@@ -90,6 +89,13 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void LogDefenderFileMissing(string file)
+        {
+            Log.Error("[WRN] Microsoft Defender file missing: {File}", file);
+            shellViewModel.LoggedActions.Add($"[WRN] Microsoft Defender file missing: {file}");
+        }
+
+        /// <inheritdoc/>
         public void LogOpenedUrl(string url)
         {
             Log.Information("Opened url: {Url}", url);
@@ -118,20 +124,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogOsBitness(bool is64BitOs)
-        {
-            Log.Information("Is x64: {Is64BitOs}", is64BitOs);
-            shellViewModel.LoggedActions.Add($"Is x64: {is64BitOs}");
-        }
-
-        /// <inheritdoc/>
-        public void LogWMIState(ServiceControllerStatus serviceState, int repositoryExitCode, bool repositoryIsConsistent)
-        {
-            Log.Information("WMI service state: {ServiceState}, verify repository exit code: {ExitCode}, repository is consistent: {RepositoryIsConsistent}", serviceState, repositoryExitCode, repositoryIsConsistent);
-            shellViewModel.LoggedActions.Add($"WMI service state: {serviceState}, verify repository exit code: {repositoryExitCode}, repository is consistent: {repositoryIsConsistent}");
-        }
-
-        /// <inheritdoc/>
         public void LogMalwareDetected(string name)
         {
             Log.Warning("[WRN] {Service:l} detect malware: {Malware:l}", nameof(IRequirementsService), name);
@@ -139,7 +131,7 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogAppUpdate(Version version)
+        public void LogAppNewVersionFound(Version version)
         {
             Log.Information("App version available in the repository: {Version:l}", version);
             shellViewModel.LoggedActions.Add($"App version available in the repository: {version}");
@@ -233,11 +225,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogDefenderServiceState(string state)
+        public void LogDefenderServiceExist(string name, bool isExist)
         {
-            state = state[..state.LastIndexOf(',')];
-            Log.Information("Microsoft Defender services exist {State:l}", state);
-            shellViewModel.LoggedActions.Add($"Microsoft Defender services exist {state}");
+            Log.Information("Microsoft Defender services {Name:l} is exist: {State:l}", name, isExist);
+            shellViewModel.LoggedActions.Add($"Microsoft Defender services {name} is exist: {isExist}");
         }
 
         /// <inheritdoc/>
@@ -328,41 +319,6 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void LogWMIStateException(Exception exception)
-        {
-            Log.Error(exception, "[WRN] Failed to obtain WMI state requirements in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain WMI state requirements in the {nameof(IRequirementsService)}: {exception.Message}");
-        }
-
-        /// <inheritdoc/>
-        public void LogEventLogException(Exception exception)
-        {
-            Log.Error(exception, "[WRN] The EventLog broken or removed: {Message}", exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] The EventLog broken or removed: {exception.Message}");
-        }
-
-        /// <inheritdoc/>
-        public void LogDefenderFileMissing(string file)
-        {
-            Log.Error("[WRN] Microsoft Defender file missing: {File}", file);
-            shellViewModel.LoggedActions.Add($"[WRN] Microsoft Defender file missing: {file}");
-        }
-
-        /// <inheritdoc/>
-        public void LogDefenderAntivirusProductsIsNull()
-        {
-            Log.Error("[WRN] Class AntiVirusProduct from root/SecurityCenter2 namespace return null");
-            shellViewModel.LoggedActions.Add($"[WRN] Class AntiVirusProduct from root/SecurityCenter2 namespace return null");
-        }
-
-        /// <inheritdoc/>
-        public void LogDefenderServiceNotFound(string service)
-        {
-            Log.Error("[WRN] Microsoft Defender service not found: {Service:l}", service);
-            shellViewModel.LoggedActions.Add($"[WRN] Microsoft Defender service not found: {service}");
-        }
-
-        /// <inheritdoc/>
         public void LogDefenderControlledFolderState(byte state)
         {
             Log.Information("Microsoft Defender controlled folder access state: {State}", state);
@@ -374,27 +330,6 @@ namespace SophiApp.Services
         {
             Log.Information("Microsoft Defender is default AV: {IsDefault}", isDefault);
             shellViewModel.LoggedActions.Add($"Microsoft Defender is default AV: {isDefault}");
-        }
-
-        /// <inheritdoc/>
-        public void LogDefenderSecurityHealthStatus(ServiceControllerStatus status)
-        {
-            Log.Information("Microsoft Defender Security Health service status: {Status}", status);
-            shellViewModel.LoggedActions.Add($"Microsoft Defender Security Health service status: {status}");
-        }
-
-        /// <inheritdoc/>
-        public void LogDefenderSecurityHealthException(Exception exception)
-        {
-            Log.Error("[WRN] Failed to obtain Microsoft Defender Security Health service status in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender Security Health service status in the {nameof(IRequirementsService)}: {exception.Message}");
-        }
-
-        /// <inheritdoc/>
-        public void LogDefenderAntiSpywareEnabledException(Exception exception)
-        {
-            Log.Error("[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {Service:l}: {Message}", nameof(IRequirementsService), exception.Message);
-            shellViewModel.LoggedActions.Add($"[WRN] Failed to obtain Microsoft Defender AntiSpywareEnabled value in the {nameof(IRequirementsService)}: {exception.Message}");
         }
 
         /// <inheritdoc/>

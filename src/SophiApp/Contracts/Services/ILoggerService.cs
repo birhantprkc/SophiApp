@@ -9,7 +9,6 @@ namespace SophiApp.Contracts.Services
     using SophiApp.Views;
     using System;
     using System.Diagnostics;
-    using System.ServiceProcess;
 
     /// <summary>
     /// A service for working with app log.
@@ -52,6 +51,12 @@ namespace SophiApp.Contracts.Services
         void LogChangeTheme(ElementTheme theme);
 
         /// <summary>
+        /// Handles occur during the Microsoft Defender files is missing exception.
+        /// </summary>
+        /// <param name="file">A missing file.</param>
+        void LogDefenderFileMissing(string file);
+
+        /// <summary>
         /// Write the opened url in the log.
         /// </summary>
         /// <param name="url">Openable url.</param>
@@ -71,30 +76,16 @@ namespace SophiApp.Contracts.Services
         void LogOneDriveUserFilesExist(string path, int count);
 
         /// <summary>
-        /// Write the bitness of the os in the log.
-        /// </summary>
-        /// <param name="is64BitOs">Indicates whether the os is 64 bit.</param>
-        void LogOsBitness(bool is64BitOs);
-
-        /// <summary>
-        /// Write the WMI state in the log.
-        /// </summary>
-        /// <param name="serviceState">The WMI service state.</param>
-        /// <param name="repositoryExitCode">The verify WMI repository exit code.</param>
-        /// <param name="repositoryIsConsistent">The WMI repository is consistent.</param>
-        void LogWMIState(ServiceControllerStatus serviceState, int repositoryExitCode, bool repositoryIsConsistent);
-
-        /// <summary>
         /// Write the detected malware in the log.
         /// </summary>
         /// <param name="name">Malware name.</param>
         void LogMalwareDetected(string name);
 
         /// <summary>
-        /// Write the available version of the app in the log.
+        /// Write if new app version found in the log.
         /// </summary>
         /// <param name="version">Available app version.</param>
-        void LogAppUpdate(Version version);
+        void LogAppNewVersionFound(Version version);
 
         /// <summary>
         /// Write the start of all models state in the log.
@@ -179,8 +170,9 @@ namespace SophiApp.Contracts.Services
         /// <summary>
         /// Write Microsoft Defender services state in the log.
         /// </summary>
-        /// <param name="state">Microsoft Defender services state.</param>
-        void LogDefenderServiceState(string state);
+        /// <param name="name">Microsoft Defender services name.</param>
+        /// <param name="isExist">Microsoft Defender services state.</param>
+        void LogDefenderServiceExist(string name, bool isExist);
 
         /// <summary>
         /// Write information about state a "For all users" checkbox in the UWP page.
@@ -265,35 +257,6 @@ namespace SophiApp.Contracts.Services
         void LogRegisterNotificationSenderException(Exception exception);
 
         /// <summary>
-        /// Handles an exception when accessing to WMI API in the <see cref="IRequirementsService"/>.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogWMIStateException(Exception exception);
-
-        /// <summary>
-        /// Handles occur during the EventLog service is broken.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogEventLogException(Exception exception);
-
-        /// <summary>
-        /// Handles occur during the Microsoft Defender files is missing exception.
-        /// </summary>
-        /// <param name="file">A missing file.</param>
-        void LogDefenderFileMissing(string file);
-
-        /// <summary>
-        /// Handles occur when AntiVirusProduct class return null.
-        /// </summary>
-        void LogDefenderAntivirusProductsIsNull();
-
-        /// <summary>
-        /// Handles occur during the Microsoft Defender services not found.
-        /// </summary>
-        /// <param name="service">Microsoft Defender service name.</param>
-        void LogDefenderServiceNotFound(string service);
-
-        /// <summary>
         /// Write Microsoft Defender control folder state in the log.
         /// </summary>
         /// <param name="state">Microsoft Defender control folder state.</param>
@@ -304,24 +267,6 @@ namespace SophiApp.Contracts.Services
         /// </summary>
         /// <param name="isDefault">Microsoft Defender is default AV.</param>
         void LogDefenderIsDefault(bool isDefault);
-
-        /// <summary>
-        /// Write SecurityHealthService status in the log.
-        /// </summary>
-        /// <param name="status">SecurityHealthService status.</param>
-        void LogDefenderSecurityHealthStatus(ServiceControllerStatus status);
-
-        /// <summary>
-        /// Handles an exception when accessing to Security Health service status in the <see cref="IRequirementsService"/>.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogDefenderSecurityHealthException(Exception exception);
-
-        /// <summary>
-        /// Handles an exception when accessing to WMI MSFT_MpComputerStatus class in the <see cref="IInstrumentationService"/>.
-        /// </summary>
-        /// <param name="exception">Represents errors that occur during app executing.</param>
-        void LogDefenderAntiSpywareEnabledException(Exception exception);
 
         /// <summary>
         /// Handles occur exception of the Get-MpPreference cmdlet execution.

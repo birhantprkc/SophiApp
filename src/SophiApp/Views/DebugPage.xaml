@@ -87,7 +87,7 @@
                     <TeachingTip x:Name="DebugRequirementActionsTip"
                                  IsLightDismissEnabled="False"
                                  PreferredPlacement="Auto"
-                                 Subtitle="To apply selected action restart the app"
+                                 Subtitle="Restart the app to apply selected action"
                                  HorizontalContentAlignment="Center">
                     </TeachingTip>
                 </StackPanel>

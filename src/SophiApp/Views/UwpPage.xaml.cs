@@ -28,7 +28,6 @@ public sealed partial class UwpPage : Page, INotifyPropertyChanged
         InitializeComponent();
         ViewModel = App.GetService<ShellViewModel>();
         GamingModels = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.Gaming));
-        UWPModels = new (ViewModel.JsonModels.FilterByTag(UICategoryTag.UWP));
     }
 
     /// <summary>
@@ -58,11 +57,6 @@ public sealed partial class UwpPage : Page, INotifyPropertyChanged
     /// Gets a gaming <see cref="UIModel"/> collection.
     /// </summary>
     public ObservableCollection<UIModel> GamingModels { get; }
-
-    /// <summary>
-    /// Gets a uwp miscellaneous <see cref="UIModel"/> collection.
-    /// </summary>
-    public ObservableCollection<UIModel> UWPModels { get; }
 
     private void PageUwp_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e) => CurrentWidth = ActualWidth;
 

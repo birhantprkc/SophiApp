@@ -1097,18 +1097,18 @@ namespace SophiApp.Customizations
         {
             const int WDDMMinimalVersion = 2700;
             // Determining whether PC has an external graphics card
-            var isExternalDACType = InstrumentationService.IsExternalDACType();
-            var isVirtualMachine = InstrumentationService.IsVirtualMachine();
+            var isExternalDAC = InstrumentationService.DetectDACType();
+            var isVM = InstrumentationService.DetectVM();
             var wddmVersion = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\GraphicsDrivers\\FeatureSetUsage")?.GetValue("WddmVersion_Min") as int? ?? -1;
 
             // Checking whether a WDDM verion is 2.7 or higher
-            if (isExternalDACType && !isVirtualMachine && wddmVersion >= WDDMMinimalVersion)
+            if (isExternalDAC && !isVM && wddmVersion >= WDDMMinimalVersion)
             {
                 var hwSchMode = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\GraphicsDrivers")?.GetValue("HwSchMode") as int? ?? -1;
                 return hwSchMode == 2;
             }
 
-            throw new InvalidOperationException($"DAC type is external: {isExternalDACType}. PC is a VM: {isVirtualMachine}. WDDM version (minimal {WDDMMinimalVersion}): {wddmVersion}");
+            throw new InvalidOperationException($"DAC type is external: {isExternalDAC}. PC is a VM: {isVM}. WDDM version (minimal {WDDMMinimalVersion}): {wddmVersion}");
         }
 
         /// <summary>
@@ -1177,7 +1177,7 @@ namespace SophiApp.Customizations
         public static bool NetworkProtection()
         {
             var defenderEnabled = DataService.DefenderEnabled;
-            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
+            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken; // TODO: Always false!
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
             if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
@@ -1314,7 +1314,7 @@ else
             {
                 // Determining whether Hyper-V is enabled
                 var virtualizationIsEnabled = InstrumentationService.CpuVirtualizationFirmwareIsEnabled() ?? throw new InvalidOperationException("This CPU does not support virtualization");
-                var hypervisorPresent = InstrumentationService.HypervisorPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
+                var hypervisorPresent = InstrumentationService.HypervisorIsPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
 
                 if (virtualizationIsEnabled)
                 {
@@ -1337,7 +1337,7 @@ else
         public static bool LocalSecurityAuthority()
         {
             var virtualizationIsEnabled = InstrumentationService.CpuVirtualizationFirmwareIsEnabled() ?? throw new InvalidOperationException("This CPU does not support virtualization");
-            var hypervisorPresent = InstrumentationService.HypervisorPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
+            var hypervisorPresent = InstrumentationService.HypervisorIsPresent() ?? throw new InvalidOperationException("Enable virtualization in UEFI");
             var runAsPPL = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa")?.GetValue("RunAsPPL") ?? -1;
             var runAsPPLBoot = Registry.LocalMachine.OpenSubKey("System\\CurrentControlSet\\Control\\Lsa")?.GetValue("RunAsPPLBoot") ?? -1;
             var runAsPPLPolicy = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\System")?.GetValue("RunAsPPL") ?? -1;

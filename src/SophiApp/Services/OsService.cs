@@ -72,16 +72,22 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public void TryStart(string name)
+        public bool TryStart(string name)
         {
             try
             {
                 using var service = new ServiceController(name);
-                service.Start();
+
+                if (service.Status != ServiceControllerStatus.Running)
+                {
+                    service.Start();
+                }
+
+                return true;
             }
             catch
             {
-                // Do nothing.
+                return false;
             }
         }
 

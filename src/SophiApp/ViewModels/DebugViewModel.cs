@@ -19,13 +19,12 @@ namespace SophiApp.ViewModels
         /// </summary>
         /// <param name="settingsService">A service for working with app settings.</param>
         /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
-        public DebugViewModel(
-            ISettingsService settingsService,
-            ShellViewModel shellViewModel)
+        /// <param name="requirementsService">A service for working with app requirements.</param>
+        public DebugViewModel(ISettingsService settingsService, ShellViewModel shellViewModel, IRequirementsService requirementsService)
         {
             DebugOptions = shellViewModel.DebugOptions;
             DeleteLGPOFileCommand = shellViewModel.DeleteLGPOFile_Command;
-            RequirementActions = App.GetService<IRequirementsService>().Actions;
+            RequirementActions = requirementsService.GetActions();
             SaveDebugRequirementActionCommand = new AsyncRelayCommand<string>(s => settingsService.SaveDebugRequirementActionAsync(s!));
             SetShowFunctionsInfoCommand = shellViewModel.SetShowFunctionsInfo_Command;
         }

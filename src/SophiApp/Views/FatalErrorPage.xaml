@@ -7,23 +7,59 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Page.Resources>
+        <CommandBarFlyout x:Name="FatalErrorPageCommandsFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton x:Uid="Page_ContextMenu_OpenLogFile"
+                          Icon="OpenFile"
+                          Click="FatalErrorPageOpenLogFile_Clicked"/>
+                <AppBarButton x:Uid="Page_ContextMenu_OpenLogFolder"
+                          Icon="Folder"
+                          Click="FatalErrorPageOpenLogFolder_Clicked"/>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </Page.Resources>
 
-        <Image Grid.Row="0"
-           Source="/Assets/AppLogoBig.svg"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"
-           Width="373"
-           Height="103"/>
-
-        <StackPanel Grid.Row="1">
-            <TextBlock x:Uid="AppFatalError"
-                       Style="{StaticResource RequirementsFailurePageTextStyle}"
-                       Foreground="{ThemeResource WindowForeground}"/>
+    <Grid VerticalAlignment="Center"
+          HorizontalAlignment="Center"
+          ContextRequested="FatalErrorPage_ContextRequested">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+            <Image Source="/Assets/AppLogoBig.svg"
+                   Width="373"
+                   Height="103"/>
+            <Border BorderBrush="{ThemeResource UIControlBorderBackground}"
+                    Background="{ThemeResource UIControlBackground}"
+                    Style="{StaticResource UIControlBorderStyle}"
+                    Margin="0, 20, 0, 20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="10, 0, 10, 0">
+                        <Image Source="/Assets/AppLogo.svg"
+                               Width="52"
+                               Height="52"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"
+                                Margin="0, 20, 20, 20">
+                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
+                            <Run x:Uid="AppFatalError_1"
+                                 Foreground="{ThemeResource WindowAccent}"/>
+                            <Run x:Uid="AppFatalError_2"
+                                 Foreground="{ThemeResource WindowForeground}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </StackPanel>
     </Grid>
 </Page>

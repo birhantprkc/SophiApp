@@ -5,6 +5,7 @@
 namespace SophiApp.Views
 {
     using Microsoft.UI.Xaml.Controls;
+    using SophiApp.Helpers;
     using SophiApp.ViewModels;
 
     /// <summary>
@@ -25,5 +26,14 @@ namespace SophiApp.Views
         /// Gets view model for fatal error page.
         /// </summary>
         public FatalErrorViewModel ViewModel { get; }
+
+        private void FatalErrorPageOpenLogFile_Clicked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+            => ContextMenuHelper.OpenInExplorer(App.Logger.LogFile);
+
+        private void FatalErrorPageOpenLogFolder_Clicked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+            => ContextMenuHelper.OpenInExplorer(App.Logger.LogFolder);
+
+        private void FatalErrorPage_ContextRequested(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs args)
+            => ContextMenuHelper.ShowContextMenu(sender, FatalErrorPageCommandsFlyout, args);
     }
 }
