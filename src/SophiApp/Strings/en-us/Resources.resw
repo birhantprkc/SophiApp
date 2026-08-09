@@ -358,7 +358,7 @@
     <value>Show folder merge conflicts</value>
   </data>
   <data name="UIModel_OpenFileExplorerTo_Title" xml:space="preserve">
-    <value>Open File Explorer to:</value>
+    <value>File Explorer opens</value>
   </data>
   <data name="UIModel_OpenFileExplorerTo_Title_1" xml:space="preserve">
     <value>This PC</value>
@@ -379,7 +379,7 @@
     <value>When I snap a window, show what I can snap next to it</value>
   </data>
   <data name="UIModel_FileTransferDialog_Title" xml:space="preserve">
-    <value>Show more details in file transfer dialog</value>
+    <value>File transfer dialog view</value>
   </data>
   <data name="UIModel_FileTransferDialog_Title_1" xml:space="preserve">
     <value>Detailed</value>
@@ -412,7 +412,7 @@
     <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
   </data>
   <data name="UIModel_TaskbarSearch_Title" xml:space="preserve">
-    <value>Show search button on the taskbar</value>
+    <value>Search button on the taskbar</value>
   </data>
   <data name="UIModel_TaskbarSearch_Title_1" xml:space="preserve">
     <value>Hide</value>
@@ -445,7 +445,7 @@
     <value>Show time in Notification Center</value>
   </data>
   <data name="UIModel_TaskbarCombine_Title" xml:space="preserve">
-    <value>Combine taskbar buttons and hide labels</value>
+    <value>When the taskbar is full, combine taskbar buttons and hide labels</value>
   </data>
   <data name="UIModel_TaskbarCombine_Title_1" xml:space="preserve">
     <value>Always</value>

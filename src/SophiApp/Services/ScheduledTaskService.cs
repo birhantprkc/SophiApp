@@ -24,7 +24,8 @@ namespace SophiApp.Services
         private readonly FileInfo tempPsFile = new (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "Tasks\\Sophia\\TempTask.ps1"));
         private readonly FileInfo tempVbsFile = new (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "Tasks\\Sophia\\TempTask.vbs"));
 
-        private readonly string cleanupPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string cleanupPsAction = @"
+# https://github.com/Sophia-Community/SophiApp
 # https://t.me/sophia_chat
 
 Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
@@ -52,39 +53,37 @@ $Process.StartInfo = $ProcessInfo
 $Process.Start() | Out-Null";
 
         // Create vbs script that will help us calling Windows_Cleanup.ps1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-        private readonly string cleanupVbsAction = @"' https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string cleanupVbsAction = @"
+' https://github.com/Sophia-Community/SophiApp
 ' https://t.me/sophia_chat
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup.ps1"", 0";
 
         // We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
         // powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
-        // https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
-        // https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-        private readonly string notificationPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string notificationPsAction = @"
+# https://github.com/Sophia-Community/SophiApp
 # https://t.me/sophia_chat
 
-# Get Focus Assist status
-# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
-# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-
-$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new(""System.dll"")
-$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-$CompilerParameters.GenerateInMemory = $true
-$Signature = @{
+# Get Quite Hours status
+`$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new(""System.dll"")
+`$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
+`$CompilerParameters.GenerateInMemory = `$true
+`$Signature = @{
 	Namespace          = ""WinAPI""
-	Name               = ""Focus""
+	Name               = ""QuietHours""
 	Language           = ""CSharp""
-	CompilerParameters = $CompilerParameters
+	CompilerParameters = `$CompilerParameters
 	MemberDefinition   = @""
-[DllImport(""NtDll.dll"", SetLastError = true)]
-private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
-
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_TYPE_ID
-{
-	public Guid TypeId;
-}
+[DllImport(""ntdll.dll"")]
+private static extern uint NtQueryWnfStateData(
+	ref ulong StateName,
+	IntPtr TypeId,
+	IntPtr ExplicitScope,
+	out uint ChangeStamp,
+	out int Buffer,
+	ref uint BufferSize
+);
 
 [StructLayout(LayoutKind.Sequential)]
 public struct WNF_STATE_NAME
@@ -101,48 +100,26 @@ public struct WNF_STATE_NAME
 	}
 }
 
-public enum FocusAssistState
+// WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
+public static int GetState()
 {
-	NOT_SUPPORTED = -2,
-	FAILED = -1,
-	OFF = 0,
-	PRIORITY_ONLY = 1,
-	ALARMS_ONLY = 2
-};
-
-// Returns the state of Focus Assist if available on this computer
-public static FocusAssistState GetFocusAssistState()
-{
-	try
-	{
-		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
-		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
-		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
-		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
-
-		uint nChangeStamp = 0;
-		IntPtr pBuffer = IntPtr.Zero;
-		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
-		Marshal.FreeHGlobal(pStateName);
-
-		if (success)
-		{
-			return (FocusAssistState)pBuffer;
-		}
-	}
-	catch {}
-
-	return FocusAssistState.FAILED;
+	ulong stateName = 0x0D83063EA3BF1C75;
+	uint size = sizeof(int);
+	uint stamp;
+	int state;
+	uint status = NtQueryWnfStateData(ref stateName, IntPtr.Zero, IntPtr.Zero, out stamp, out state, ref size);
+	return (status == 0) ? state : -1;
 }
 ""@
 }
 
-if (-not (""WinAPI.Focus"" -as [type]))
+if (-not (""WinAPI.QuietHours"" -as [type]))
 {
 	Add-Type @Signature
 }
 
-while ([WinAPI.Focus]::GetFocusAssistState() -ne ""OFF"")
+# Wait until it will be 0
+while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -179,7 +156,8 @@ $ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
     .Replace("#TaskScheduler_WindowsCleanupToast_Description#", "TaskScheduler_WindowsCleanupToast_Description".GetLocalized())
     .Replace("#TaskScheduler_WindowsCleanupToast_Run#", "TaskScheduler_WindowsCleanupToast_Run".GetLocalized());
 
-        private readonly string notificationVbsAction = @"' https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string notificationVbsAction = @"
+' https://github.com/Sophia-Community/SophiApp
 ' https://t.me/sophia_chat
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"", 0";
@@ -188,7 +166,8 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         // powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
         // https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
         // https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-        private readonly string softwareDistributionPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string softwareDistributionPsAction = @"
+# https://github.com/Sophia-Community/SophiApp
 # https://t.me/sophia_chat
 
 # Get Focus Assist status
@@ -303,7 +282,8 @@ $ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 "
     .Replace("#TaskScheduler_SoftwareDistributionToast_Title#", "TaskScheduler_SoftwareDistributionToast_Title".GetLocalized());
 
-        private readonly string softwareDistributionVbsAction = @"' https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string softwareDistributionVbsAction = @"
+' https://github.com/Sophia-Community/SophiApp
 ' https://t.me/sophia_chat
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\SoftwareDistributionTask.ps1"", 0";
@@ -312,7 +292,8 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
         // powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
         // https://github.com/DCourtel/Windows_10_Focus_Assist/blob/master/FocusAssistLibrary/FocusAssistLib.cs
         // https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-        private readonly string tempPsAction = @"# https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string tempPsAction = @"
+# https://github.com/Sophia-Community/SophiApp
 # https://t.me/sophia_chat
 
 # Get Focus Assist status
@@ -404,7 +385,7 @@ Get-ChildItem -Path $env:TEMP -Recurse -Force | Where-Object -FilterScript {$_.C
 
 # Unnecessary folders to remove
 $Paths = @(
-	# Get ""C:\$WinREAgent"" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
+	# Get C:\$WinREAgent path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
 	(-join (""$env:SystemDrive\"", '$WinREAgent')),
 	(-join (""$env:SystemDrive\"", '$SysReset')),
 	(-join (""$env:SystemDrive\"", '$Windows.~WS')),
@@ -412,7 +393,8 @@ $Paths = @(
 	""$env:SystemDrive\ESD"",
 	""$env:SystemDrive\Intel"",
 	""$env:SystemDrive\PerfLogs"",
-	""$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp""
+	""$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp"",
+	""$env:LOCALAPPDATA\CrashDumps""
 )
 
 if ((Get-ChildItem -Path $env:SystemDrive\Recovery -Force | Where-Object -FilterScript {$_.Name -eq ""ReAgentOld.xml""}).FullName)
@@ -420,6 +402,10 @@ if ((Get-ChildItem -Path $env:SystemDrive\Recovery -Force | Where-Object -Filter
 	$Paths += ""$env:SystemDrive\Recovery""
 }
 Remove-Item -Path $Paths -Recurse -Force
+
+# C:\WINDOWS\System32\config\systemprofile\AppData\Local with garbage tw-*.tmp files
+# https://www.elevenforum.com/t/folder-c-windows-system32-config-systemprofile-app-data-local-running-full-with-empty-folders-after-latest-upgrade-to-25h2.40624/
+Get-ChildItem -Path ""$env:SystemRoot\System32\config\systemprofile\AppData\Local\tw-*.tmp"" -Force | Remove-Item -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -442,7 +428,8 @@ $ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(""Sophia"").Show($ToastMessage)"
     .Replace("#TaskScheduler_TempTaskToast_Title#", "TaskScheduler_TempTaskToast_Title".GetLocalized());
 
-        private readonly string tempVbsAction = @"' https://github.com/farag2/Sophia-Script-for-Windows
+        private readonly string tempVbsAction = @"
+' https://github.com/Sophia-Community/SophiApp
 ' https://t.me/sophia_chat
 
 CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\TempTask.ps1"", 0";
