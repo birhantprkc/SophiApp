@@ -65,7 +65,7 @@ CreateObject(""Wscript.Shell"").Run ""powershell.exe -ExecutionPolicy Bypass -No
 # https://github.com/Sophia-Community/SophiApp
 # https://t.me/sophia_chat
 
-# Get Quite Hours status
+# Get Quiet Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new(""System.dll"")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
