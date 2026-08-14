@@ -12,6 +12,28 @@ namespace SophiApp.Services
     /// <inheritdoc/>
     public class ProcessService : IProcessService
     {
+        private readonly IInstrumentationService instrumentationService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProcessService"/> class.
+        /// </summary>
+        /// <param name="instrumentationService">A service for working with WMI API.</param>
+        public ProcessService(IInstrumentationService instrumentationService)
+        {
+            this.instrumentationService = instrumentationService;
+        }
+
+        /// <inheritdoc/>
+        public void CloseEventViewerConsole()
+        {
+            instrumentationService.GetEventViewerConsoleProcessId()?.ForEach(id =>
+            {
+                var process = Process.GetProcessById(id);
+                process.Kill();
+                process.WaitForExit();
+            });
+        }
+
         /// <inheritdoc/>
         public bool Exist(string name) => Array.Exists(Process.GetProcessesByName(name), process => process.ProcessName.Equals(name));
 

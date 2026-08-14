@@ -24,6 +24,11 @@ namespace SophiApp.Contracts.Services
         bool DetectVM();
 
         /// <summary>
+        /// Get eventvwr.msc process ID.
+        /// </summary>
+        List<int>? GetEventViewerConsoleProcessId();
+
+        /// <summary>
         /// Get the properties of the Win32_OperatingSystem class.
         /// </summary>
         OsProperties GetOsProperties();
@@ -69,6 +74,11 @@ namespace SophiApp.Contracts.Services
         /// Get Windows Hyper-V present state.
         /// </summary>
         bool? HypervisorIsPresent();
+
+        /// <summary>
+        /// Set automatically manage paging file size for all drives.
+        /// </summary>
+        void SetPageFileAutoSize();
 
         /// <summary>
         /// Get Windows AI present state.

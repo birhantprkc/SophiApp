@@ -32,10 +32,10 @@ namespace SophiApp.Contracts.Services
             where T : class;
 
         /// <summary>
-        /// Opens a resource using an url.
+        /// Open resource by url.
         /// </summary>
         /// <param name="url">Discoverable url.</param>
-        Task OpenUrlAsync(string? url);
+        void OpenUrl(string url);
 
         /// <summary>
         /// Determines whether the specified URL is available.

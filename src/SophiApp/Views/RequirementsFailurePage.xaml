@@ -25,9 +25,8 @@
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
         <Style x:Key="RequirementsResultPanelStyle" TargetType="StackPanel">
-            <Setter Property="Grid.Column" Value="1"/>
             <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Margin" Value="0, 20, 20, 20"/>
+            <Setter Property="Margin" Value="20"/>
         </Style>
     </Page.Resources>
 
@@ -46,23 +45,11 @@
             <Border BorderBrush="{ThemeResource UIControlBorderBackground}"
                     Background="{ThemeResource UIControlBackground}"
                     Style="{StaticResource UIControlBorderStyle}"
-                    Margin="0, 20, 0, 20">
+                    Margin="0, 10, 0, 0">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Margin="10, 0, 10, 0">
-                        <Image Source="/Assets/AppLogo.svg"
-                               Width="52"
-                               Height="52"/>
-                    </StackPanel>
                     <StackPanel x:Name="UnsupportedArchitecturePanel"
                                 Style="{StaticResource RequirementsResultPanelStyle}">
-                        <TextBlock Text="{x:Bind RequirementsResult_1, Mode=OneWay}"
+                        <TextBlock Text="{x:Bind RequirementsResult_1}"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
                                    Foreground="{ThemeResource WindowForeground}"/>
                         <TextBlock x:Uid="OsRequirements_UnsupportedArchitecture_2"
@@ -74,7 +61,7 @@
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_NewAppVersionFound_1"
                                  Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1, Mode=OneWay}"
+                            <Run Text="{x:Bind RequirementsResult_1}"
                                  Foreground="{ThemeResource WindowAccent}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_NewAppVersionFound_2"
@@ -90,13 +77,13 @@
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_LoggedInUserNotAdmin_1"
                                  Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1, Mode=OneWay}"
+                            <Run Text="{x:Bind RequirementsResult_1}"
                                  Foreground="{ThemeResource WindowAccent}"/>
                         </TextBlock>
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_LoggedInUserNotAdmin_2"
                                  Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_2, Mode=OneWay}"
+                            <Run Text="{x:Bind RequirementsResult_2}"
                                  Foreground="{ThemeResource WindowAccent}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_LoggedInUserNotAdmin_3"
@@ -108,7 +95,7 @@
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_HarmfulTweakerFound"
                                  Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1, Mode=OneWay}"
+                            <Run Text="{x:Bind RequirementsResult_1}"
                                  Foreground="{ThemeResource WindowAccent}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"
@@ -130,7 +117,7 @@
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
                                    Foreground="{ThemeResource WindowForeground}"/>
                         <StackPanel Orientation="Horizontal"
-                                    Margin="0, 10, 20, 20">
+                                    Margin="0, 10, 0, 0">
                             <Button x:Uid="Button_Continue"
                                     Style="{ThemeResource AccentButtonStyle}"
                                     Command="{x:Bind ViewModel.ContinueRequirementActionsExecute_Command, Mode=OneWay}"/>
@@ -145,7 +132,7 @@
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_UWPComponentsMissing"
                                  Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1, Mode=OneWay}"
+                            <Run Text="{x:Bind RequirementsResult_1}"
                                  Foreground="{ThemeResource WindowAccent}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"
@@ -157,7 +144,7 @@
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_DefenderComponentsMissing"
                                  Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1, Mode=OneWay}"
+                            <Run Text="{x:Bind RequirementsResult_1}"
                                  Foreground="{ThemeResource WindowAccent}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"

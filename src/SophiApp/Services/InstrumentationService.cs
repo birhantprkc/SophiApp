@@ -141,6 +141,16 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void SetPageFileAutoSize()
+        {
+            new ManagementObjectSearcher("Select * from CIM_ComputerSystem")
+                .Get()
+                .Cast<ManagementObject>()
+                .FirstOrDefault()
+                ?.SetPropertyValue("AutomaticManagedPageFile", true);
+        }
+
+        /// <inheritdoc/>
         public bool DetectDACType()
         {
             // Determining whether PC has an external graphics card
@@ -165,6 +175,14 @@ namespace SophiApp.Services
 
             var model = managementObject?.GetPropertyValue("Model") as string ?? string.Empty;
             return Array.Exists(vmTokens, token => model.Contains(token, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <inheritdoc/>
+        public List<int>? GetEventViewerConsoleProcessId()
+        {
+            using var managementObject = new ManagementObjectSearcher(queryString: "SELECT ProcessId FROM Win32_Process WHERE Name = 'mmc.exe' AND CommandLine LIKE '%eventvwr.msc%'").Get();
+            var processesId = managementObject.Cast<ManagementBaseObject>().Select(m => Convert.ToInt32(m.GetPropertyValue("ProcessId"))).ToList();
+            return processesId.Count > 0 ? processesId : null;
         }
 
         /// <inheritdoc/>

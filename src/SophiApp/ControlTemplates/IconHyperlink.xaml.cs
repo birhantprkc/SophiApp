@@ -28,6 +28,12 @@ namespace SophiApp.ControlTemplates
             DependencyProperty.Register("Command", typeof(ICommand), typeof(IconHyperlink), new PropertyMetadata(default));
 
         /// <summary>
+        /// <see cref="ImageMargin"/>.
+        /// </summary>
+        public static readonly DependencyProperty ImageMarginProperty =
+            DependencyProperty.Register("IconMargin", typeof(Thickness), typeof(IconHyperlink), new PropertyMetadata(default));
+
+        /// <summary>
         /// <see cref="ImageSource"/>.
         /// </summary>
         public static readonly DependencyProperty ImageSourceProperty =
@@ -60,6 +66,15 @@ namespace SophiApp.ControlTemplates
         {
             get => (ICommand)GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets image margin.
+        /// </summary>
+        public Thickness ImageMargin
+        {
+            get => (Thickness)GetValue(ImageMarginProperty);
+            set => SetValue(ImageMarginProperty, value);
         }
 
         /// <summary>

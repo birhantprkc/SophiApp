@@ -11,7 +11,7 @@ namespace SophiApp.Services
     public class XmlService : IXmlService
     {
         /// <inheritdoc/>
-        public XmlDocument? TryLoad(string? path)
+        public XmlDocument? TryLoad(string path)
         {
             if (File.Exists(path))
             {
@@ -22,7 +22,7 @@ namespace SophiApp.Services
                     document.Load(path);
                     return document;
                 }
-                catch (Exception)
+                catch
                 {
                     return null;
                 }

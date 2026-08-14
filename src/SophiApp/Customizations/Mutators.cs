@@ -17,7 +17,7 @@ namespace SophiApp.Customizations
     using TaskScheduler = Microsoft.Win32.TaskScheduler;
 
     /// <summary>
-    /// Set the OS settings.
+    /// Set OS settings.
     /// </summary>
     public static class Mutators
     {
@@ -58,7 +58,6 @@ namespace SophiApp.Customizations
                 // Allow connection for the Unified Telemetry Client Outbound Traffic
                 firewallRule.Enabled = true;
                 firewallRule.Action = NetFwTypeLib.NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
-
                 return;
             }
 
@@ -845,6 +844,18 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Set Start all apps view state.
+        /// </summary>
+        /// <param name="state">Apps view state.</param>
+        public static void StartAppsView(int state)
+        {
+            // Remove all policies in order to make changes visible in UI
+            GroupPolicyService.DeleteRegistryValue("Software\\Policies\\Microsoft\\Windows\\Explorer", "HideCategoryView", Registry.CurrentUser, Registry.LocalMachine);
+            GroupPolicyService.ClearPolicyCache("Software\\Policies\\Microsoft\\Windows\\Explorer", "HideCategoryView", LGPOScope.User, LGPOScope.Computer);
+            Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start", true)?.SetValue("AllAppsViewMode", state - 1, RegistryValueKind.DWord);
+        }
+
+        /// <summary>
         /// Set most used apps in Start.
         /// </summary>
         /// <param name="enable">Start menu used apps state.</param>
@@ -1294,27 +1305,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Set network discovery state.
-        /// </summary>
-        /// <param name="enable">Network discovery state.</param>
-        public static void NetworkDiscovery(bool enable)
-        {
-            if (enable)
-            {
-                // File and printer sharing
-                FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-32752", enable: true, profileID: 2);
-                // Network discovery
-                FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-28502", enable: true, profileID: 2);
-                _ = PowerShellService.Invoke("Set-NetConnectionProfile -NetworkCategory Private");
-
-                return;
-            }
-
-            FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-32752", enable: false, profileID: 2);
-            FirewallService.SetGroupRules(name: "@FirewallAPI.dll,-28502", enable: false, profileID: 2);
-        }
-
-        /// <summary>
         /// Set power plan state.
         /// </summary>
         /// <param name="state">Power plan state.</param>
@@ -1649,82 +1639,55 @@ namespace SophiApp.Customizations
         /// <param name="enable">Event Viewer custom view state.</param>
         public static void EventViewerCustomView(bool enable)
         {
-            var viewerXml = $"{Environment.GetEnvironmentVariable("ALLUSERSPROFILE")}\\Microsoft\\Event Viewer\\Views\\ProcessCreation.xml";
-            var viewerGuid = "{0CCE922B-69AE-11D9-BED3-505054503030}";
-            var xml = @$"<ViewerConfig>
-  <QueryConfig>
-    <QueryParams>
-      <UserQuery />
-    </QueryParams>
-    <QueryNode>
-      <Name>{"EventViewerCustomView_ProcessCreationXml_Name".GetLocalized()}</Name>
-      <Description>{"EventViewerCustomView_ProcessCreationXml_Description".GetLocalized()}</Description>
-      <QueryList>
-        <Query Id=""0"" Path=""Security"">
-          <Select Path=""Security"">*[System[(EventID=4688)]]</Select>
-        </Query>
-      </QueryList>
-    </QueryNode>
-  </QueryConfig>
-</ViewerConfig>";
+            ProcessService.CloseEventViewerConsole();
 
-            // Enable events auditing generated when a process is created (starts)
             if (enable)
             {
-                _ = PowerShellService.Invoke($"auditpol /set /subcategory:\"{viewerGuid}\" /success:enable /failure:enable");
+                // Enable events auditing generated when a process is created (starts)
+                _ = PowerShellService.Invoke("auditpol /set /subcategory:\"{0CCE922B-69AE-11D9-BED3-505054503030}\" /success:enable /failure:enable");
                 // Include command line in process creation events
                 Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit", true)?.SetValue("ProcessCreationIncludeCmdLine_Enabled", 1, RegistryValueKind.DWord);
-                FileService.Save(file: viewerXml, content: xml, encoding: Encoding.UTF8);
-                // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
                 GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit", "ProcessCreationIncludeCmdLine_Enabled", "DWORD", "1");
+                // Enable logging for all Windows PowerShell modules
+                Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging\\ModuleNames").SetValue("*", "*", RegistryValueKind.String);
+                Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging", true)?.SetValue("EnableModuleLogging", 1, RegistryValueKind.DWord);
+                GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging\\ModuleNames", "*", "SZ", "*");
+                GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging", "EnableModuleLogging", "DWORD", "1");
+                // Enable logging for all PowerShell scripts input to the Windows PowerShell event log
+                Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging").SetValue("EnableScriptBlockLogging", 1, RegistryValueKind.DWord);
+                GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging", "EnableScriptBlockLogging", "DWORD", "1");
+                // Create custom "Process Creation" view in the Event Viewer
+                var eventsXml = $@"<ViewerConfig>
+	<QueryConfig>
+		<QueryNode>
+			<Name>{"UIModel_EventViewerCustomView_QueryName".GetLocalized()}</Name>
+			<Description>{"UIModel_EventViewerCustomView_QueryDescription".GetLocalized()}</Description>
+			<QueryList>
+				<Query Id=""0"">
+					<Select Path=""Microsoft-Windows-PowerShell/Operational"">*[System[(EventID=4103 or EventID=4104)]]</Select>
+					<Select Path=""Windows PowerShell"">*[System[(EventID=400 or EventID=403 or EventID=800)]]</Select>
+					<Select Path=""Security"">*[System[(EventID=4688)]]</Select>
+				</Query>
+			</QueryList>
+		</QueryNode>
+	</QueryConfig>
+</ViewerConfig>";
+                // Save ProcessCreation.xml in the UTF-8 without BOM encoding
+                FileService.Save(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Microsoft\\Event Viewer\\Views\\ProcessCreation.xml"), eventsXml, Encoding.Default);
                 return;
             }
 
+            // Remove the "Process Creation" custom view in the Event Viewer
             Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit", true)?.DeleteValue("ProcessCreationIncludeCmdLine_Enabled", false);
             GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit", "ProcessCreationIncludeCmdLine_Enabled");
-            File.Delete(viewerXml);
-        }
-
-        /// <summary>
-        /// Set Windows PowerShell modules logging state.
-        /// </summary>
-        /// <param name="enable">PowerShell modules logging state.</param>
-        public static void PowerShellModulesLogging(bool enable)
-        {
-            var loggingPath = "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging";
-            var namesPath = $"{loggingPath}\\ModuleNames";
-
-            if (enable)
-            {
-                Registry.LocalMachine.OpenOrCreateSubKey(namesPath).SetValue("*", "*");
-                Registry.LocalMachine.OpenSubKey(loggingPath, true)?.SetValue("EnableModuleLogging", 1, RegistryValueKind.DWord);
-                // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
-                GroupPolicyService.ClearPolicyCache(scope: LGPOScope.Computer, path: loggingPath, name: "EnableModuleLogging", type: "DWORD", value: "1");
-                GroupPolicyService.ClearPolicyCache(scope: LGPOScope.Computer, path: namesPath, name: "*", type: "SZ", value: "*");
-                return;
-            }
-
-            Registry.LocalMachine.OpenSubKey(loggingPath, true)?.DeleteValue("EnableModuleLogging", false);
-            Registry.LocalMachine.OpenSubKey(namesPath, true)?.DeleteValue("*", false);
-            GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, loggingPath, "EnableModuleLogging");
-        }
-
-        /// <summary>
-        /// Set Windows PowerShell scripts logging state.
-        /// </summary>
-        /// <param name="enable">PowerShell scripts logging state.</param>
-        public static void PowerShellScriptsLogging(bool enable)
-        {
-            if (enable)
-            {
-                Registry.LocalMachine.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging").SetValue("EnableScriptBlockLogging", 1, RegistryValueKind.DWord);
-                GroupPolicyService.ClearPolicyCache(scope: LGPOScope.Computer, path: "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging", name: "EnableScriptBlockLogging", type: "DWORD", value: "1");
-                return;
-            }
-
+            // Disable logging for all Windows PowerShell modules
+            Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging", true)?.DeleteValue("EnableModuleLogging", false);
+            Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging\\ModuleNames", true)?.DeleteValue("*", false);
+            GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging", "EnableModuleLogging");
+            // Disable logging for all PowerShell scripts input to the Windows PowerShell event log
             Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging", true)?.DeleteValue("EnableScriptBlockLogging", false);
-            // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
             GroupPolicyService.ClearPolicyCache(LGPOScope.Computer, "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging", "EnableScriptBlockLogging");
+            File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Microsoft\\Event Viewer\\Views\\ProcessCreation.xml"));
         }
 
         /// <summary>

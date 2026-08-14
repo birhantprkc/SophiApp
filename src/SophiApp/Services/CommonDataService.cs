@@ -57,9 +57,6 @@ namespace SophiApp.Services
         public OsProperties OsProperties { get; private set; }
 
         /// <inheritdoc/>
-        public bool DefenderMpPreferenceBroken { get; private set; } = false;
-
-        /// <inheritdoc/>
         public bool DefenderEnabled { get; private set; } = false;
 
         /// <inheritdoc/>
@@ -109,12 +106,6 @@ namespace SophiApp.Services
             SetNet10ReleaseAsync(),
             SetVCReleaseAsync(),
             SetSupportedBuildsAsync());
-
-        /// <inheritdoc/>
-        public string GetBuildName() => "Daria";
-
-        /// <inheritdoc/>
-        public string GetDelimiter() => "|";
 
         /// <inheritdoc/>
         public string GetFullName() => $"{assembly.Name} {assembly.Version!.Major}.{assembly.Version.Minor}.{assembly.Version.Build}";

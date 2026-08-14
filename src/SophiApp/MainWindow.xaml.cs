@@ -4,11 +4,14 @@
 
 namespace SophiApp;
 
+using Microsoft.UI.Windowing;
 using SophiApp.Contracts.Services;
 using SophiApp.Helpers;
+using System;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using WinRT.Interop;
 
 /// <summary>

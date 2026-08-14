@@ -34,24 +34,13 @@
     </Style>
 
     <Style x:Key="IconHyperlinkTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="FontSize" Value="{StaticResource MediumFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="13, 3, 0, 0" />
-    </Style>
-
-    <Style x:Key="TeamMateLinkWorkedOnStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
-        <Setter Property="Margin" Value="13, 3, 0, 0" />
-    </Style>
-
-    <Style x:Key="TeamMateLinkNickNameStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
-        <Setter Property="Margin" Value="0, 3, 5, 0" />
-        <Setter Property="Foreground" Value="{ThemeResource WindowAccent}" />
+        <Setter Property="Margin" Value="8, 2, 5, 0" />
     </Style>
 
     <Style x:Key="StartupPageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasedTextBlockStyle}">
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="TextAlignment" Value="Center" />
     </Style>

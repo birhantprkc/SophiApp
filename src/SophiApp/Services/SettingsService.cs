@@ -43,13 +43,13 @@ public class SettingsService : ISettingsService
     public double AppWindowDefaultWidth => 1115;
 
     /// <inheritdoc/>
-    public double AppWindowDefaultHeight => 646;
+    public double AppWindowDefaultHeight => 850;
 
     /// <inheritdoc/>
-    public double AppWindowMinHeight => 486;
+    public double AppWindowMinHeight => 600;
 
     /// <inheritdoc/>
-    public double AppWindowMinWidth => 686;
+    public double AppWindowMinWidth => 830;
 
     /// <inheritdoc/>
     public int DescriptionTextMinSize => 14;

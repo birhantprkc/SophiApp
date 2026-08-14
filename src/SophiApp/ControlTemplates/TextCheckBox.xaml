@@ -34,10 +34,23 @@
         </CommandBarFlyout>
     </UserControl.Resources>
 
-    <Border BorderBrush="{ThemeResource UIControlBorderBackground}"
+    <Border x:Name="TextCheckBoxBorder"
             Background="{ThemeResource UIControlBackground}"
+            BorderBrush="{ThemeResource UIControlBorderBackground}"
             Style="{StaticResource UIControlBorderStyle}"
             ContextRequested="TextCheckBox_ContextRequested">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="IsSelectedStatus">
+                <VisualState x:Name="SuccessSelected">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsSelected}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TextCheckBoxBorder.BorderBrush" Value="{ThemeResource WindowAccent}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -56,6 +69,7 @@
                     <Run Text="{Binding ViewId}"/>
                 </TextBlock>
                 <TextBlock x:Name="TitleTextBlock"
+                           Foreground="{ThemeResource WindowForeground}"
                            Style="{StaticResource UIControlTitleTextStyle}"
                            Margin="0, 10, 0, 10">
                     <Run Text="{Binding Title}"

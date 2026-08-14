@@ -16,7 +16,7 @@ namespace SophiApp.Customizations
     using Windows.ApplicationModel;
 
     /// <summary>
-    /// Get the OS settings.
+    /// Get OS settings.
     /// </summary>
     public static class Accessors
     {
@@ -588,6 +588,20 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
+        /// Get Start all apps view state.
+        /// </summary>
+        public static int StartAppsView()
+        {
+            if (ProcessService.Exist("Start11Srv", "StartAllBackCfg", "StartMenu"))
+            {
+                throw new InvalidOperationException("A third-party Start Menu is installed");
+            }
+
+            var appsView = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Start")?.GetValue("AllAppsViewMode") as int? ?? 0;
+            return appsView + 1;
+        }
+
+        /// <summary>
         /// Get most used apps in Start.
         /// </summary>
         public static bool MostUsedStartApps()
@@ -904,15 +918,6 @@ namespace SophiApp.Customizations
         }
 
         /// <summary>
-        /// Get network discovery state.
-        /// </summary>
-        public static bool NetworkDiscovery()
-        {
-            var discoveryGroupRules = FirewallService.GetGroupRules("@FirewallAPI.dll,-32752", "@FirewallAPI.dll,-28502");
-            return discoveryGroupRules.TrueForAll(rule => rule.Enabled);
-        }
-
-        /// <summary>
         /// Get power plan state.
         /// </summary>
         public static int PowerPlan()
@@ -1177,10 +1182,9 @@ namespace SophiApp.Customizations
         public static bool NetworkProtection()
         {
             var defenderEnabled = DataService.DefenderEnabled;
-            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken; // TODO: Always false!
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && antiSpywareEnabled)
             {
                 var networkProtection = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender\\Windows Defender Exploit Guard\\Network Protection")?.GetValue("EnableNetworkProtection") as int? ?? -1;
                 return networkProtection.Equals(1);
@@ -1195,10 +1199,9 @@ namespace SophiApp.Customizations
         public static bool PUAppsDetection()
         {
             var defenderEnabled = DataService.DefenderEnabled;
-            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && antiSpywareEnabled)
             {
                 var puaProtection = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows Defender")?.GetValue("PUAProtection") as int? ?? -1;
                 return puaProtection.Equals(1);
@@ -1213,10 +1216,9 @@ namespace SophiApp.Customizations
         public static bool DefenderSandbox()
         {
             var defenderEnabled = DataService.DefenderEnabled;
-            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && antiSpywareEnabled)
             {
                 return ProcessService.Exist("MsMpEngCP");
             }
@@ -1229,7 +1231,6 @@ namespace SophiApp.Customizations
         /// </summary>
         public static bool EventViewerCustomView()
         {
-            var processXmlPath = $"{Environment.GetEnvironmentVariable("ALLUSERSPROFILE")}\\Microsoft\\Event Viewer\\Views\\ProcessCreation.xml";
             var auditPolicyScript = @"$OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 $Enabled = auditpol /get /Subcategory:'{0CCE922B-69AE-11D9-BED3-505054503030}' /r | ConvertFrom-Csv | Select-Object -ExpandProperty 'Inclusion Setting'
 if ($Enabled -eq 'Success and Failure')
@@ -1240,34 +1241,14 @@ else
 {
     $false
 }";
-
-            var auditPolicyIsEnabled = PowerShellService.Invoke<bool>(auditPolicyScript);
-            var processAuditIsEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit")?.GetValue("ProcessCreationIncludeCmdLine_Enabled") as int? ?? -1;
-            var xmlAuditIsEnabled = XmlService.TryLoad(processXmlPath)?.SelectSingleNode("//Select[@Path=\"Security\"]")?.InnerText ?? string.Empty;
-
-            return auditPolicyIsEnabled && processAuditIsEnabled.Equals(1) && xmlAuditIsEnabled.Equals("*[System[(EventID=4688)]]");
-        }
-
-        /// <summary>
-        /// Get Windows PowerShell modules logging state.
-        /// </summary>
-        public static bool PowerShellModulesLogging()
-        {
-            var moduleLoggingPath = "Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging";
-            var moduleNamePath = $"{moduleLoggingPath}\\ModuleNames";
-
-            var moduleLoggingIsEnabled = Registry.LocalMachine.OpenSubKey(moduleLoggingPath)?.GetValue("EnableModuleLogging") as int? ?? -1;
-            var moduleNamesIsAny = Registry.LocalMachine.OpenSubKey(moduleNamePath)?.GetValue("*") as string ?? string.Empty;
-            return moduleLoggingIsEnabled.Equals(1) && moduleNamesIsAny.Equals("*");
-        }
-
-        /// <summary>
-        /// Get Windows PowerShell scripts logging state.
-        /// </summary>
-        public static bool PowerShellScriptsLogging()
-        {
-            var scriptLogging = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging")?.GetValue("EnableScriptBlockLogging") as int? ?? -1;
-            return scriptLogging.Equals(1);
+            var inclusionSettingEnabled = PowerShellService.Invoke<bool>(auditPolicyScript);
+            var processCreationEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit")?.GetValue("ProcessCreationIncludeCmdLine_Enabled") as int? ?? -1;
+            var eventXml = XmlService.TryLoad(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Microsoft\\Event Viewer\\Views\\ProcessCreation.xml"));
+            var eventQueryCount = eventXml?.SelectNodes("//QueryList/Query/Select")?.Count ?? -1;
+            var moduleLoggingEnabled = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging")?.GetValue("EnableModuleLogging") as int? ?? -1;
+            var powerShellAsterisk = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging\\ModuleNames")?.GetValue("*") as string ?? string.Empty;
+            var scriptLoggingEnabled = Registry.LocalMachine.OpenSubKey("Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging")?.GetValue("EnableScriptBlockLogging") as int? ?? -1;
+            return inclusionSettingEnabled && processCreationEnabled.Equals(1) && eventQueryCount.Equals(3) && moduleLoggingEnabled.Equals(1) && powerShellAsterisk.Equals("*") && scriptLoggingEnabled.Equals(1);
         }
 
         /// <summary>
@@ -1276,10 +1257,9 @@ else
         public static bool AppsSmartScreen()
         {
             var defenderEnabled = DataService.DefenderEnabled;
-            var mpPreferenceBroken = DataService.DefenderMpPreferenceBroken;
             var antiSpywareEnabled = InstrumentationService.GetAntiSpywareEnabled();
 
-            if (defenderEnabled && !mpPreferenceBroken && antiSpywareEnabled)
+            if (defenderEnabled && antiSpywareEnabled)
             {
                 var smartScreenIsEnabled = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")?.GetValue("SmartScreenEnabled") as string ?? string.Empty;
                 return !smartScreenIsEnabled.Equals("Off");

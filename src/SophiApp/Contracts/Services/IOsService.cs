@@ -36,7 +36,14 @@ namespace SophiApp.Contracts.Services
         bool VBSInstalled();
 
         /// <summary>
-        /// Try start, without any exceptions, Windows service.
+        /// Try set, without any exceptions, service startup mode.
+        /// </summary>
+        /// <param name="name">Service name.</param>
+        /// <param name="mode">Indicates the start mode of the service.</param>
+        void TrySetStartMode(string name, ServiceStartMode mode);
+
+        /// <summary>
+        /// Try start, without any exceptions, service.
         /// </summary>
         /// <param name="name">Service name.</param>
         bool TryStart(string name);

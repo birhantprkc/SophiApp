@@ -15,6 +15,11 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+        <DataTemplate x:Key="IconCheckBoxTemplate">
+            <controls:IconCheckBox Margin="{StaticResource UIControlsPageRightMargin}"
+                                   IconIndex="{Binding IconIndex}"
+                                   Command="{Binding ElementName=PageSearch, Path=ViewModel.UIModelClicked_Command}"/>
+        </DataTemplate>
         <DataTemplate x:Key="TextCheckBoxTemplate">
             <controls:TextCheckBox Margin="{StaticResource UIControlsPageRightMargin}"
                                    Command="{Binding ElementName=PageSearch, Path=ViewModel.UIModelClicked_Command}"/>
@@ -48,7 +53,8 @@
                             <StackLayout Spacing="10"/>
                         </ItemsRepeater.Layout>
                         <ItemsRepeater.ItemTemplate>
-                            <helpers:UIDataTemplateSelector TextCheckBox="{StaticResource TextCheckBoxTemplate}"
+                            <helpers:UIDataTemplateSelector IconCheckBox="{StaticResource IconCheckBoxTemplate}"
+                                                            TextCheckBox="{StaticResource TextCheckBoxTemplate}"
                                                             RadioButtonsGroup2="{StaticResource RadioButtonsGroup2Template}"
                                                             RadioButtonsGroup3="{StaticResource RadioButtonsGroup3Template}"
                                                             RadioButtonsGroup4="{StaticResource RadioButtonsGroup4Template}"/>
@@ -56,21 +62,42 @@
                     </ItemsRepeater>
                 </Grid>
             </StackPanel>
-            <StackPanel x:Name="NothingFoundPanel"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-                <TextBlock Style="{StaticResource UIControlTitleTextStyle}">
-                    <Run x:Uid="SearchPage_NothingFound" FontSize="{x:Bind ViewModel.FontOptions.TitleTextSize, Mode=OneWay}"/>
-                </TextBlock>
-            </StackPanel>
+            <Border x:Name="NothingFoundBorder"
+                    BorderBrush="{ThemeResource UIControlBorderBackground}"
+                    Background="{ThemeResource UIControlBackground}"
+                    Style="{StaticResource UIControlBorderStyle}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="10, 0, 10, 0">
+                        <Image Source="/Assets/AppLogo.svg"
+                               Width="52"
+                               Height="52"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"
+                                Margin="0, 20, 20, 20">
+                        <TextBlock Style="{StaticResource UIControlTitleTextStyle}">
+                            <Run x:Uid="SearchPage_NothingFound"
+                                 Foreground="{ThemeResource WindowForeground}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
         <i:Interaction.Behaviors>
             <i:DataTriggerBehavior Binding="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}" ComparisonCondition="Equal" Value="0">
-                <i:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundPanel}" PropertyName="Visibility" Value="Visible"/>
+                <i:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundBorder}" PropertyName="Visibility" Value="Visible"/>
                 <i:ChangePropertyAction TargetObject="{Binding ElementName=SearchItemsRepeater}" PropertyName="Visibility" Value="Collapsed"/>
             </i:DataTriggerBehavior>
             <i:DataTriggerBehavior Binding="{x:Bind ViewModel.FoundModels.Count, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                <i:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                <i:ChangePropertyAction TargetObject="{Binding ElementName=NothingFoundBorder}" PropertyName="Visibility" Value="Collapsed"/>
                 <i:ChangePropertyAction TargetObject="{Binding ElementName=SearchItemsRepeater}" PropertyName="Visibility" Value="Visible"/>
             </i:DataTriggerBehavior>
         </i:Interaction.Behaviors>

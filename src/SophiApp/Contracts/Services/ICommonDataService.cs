@@ -17,19 +17,14 @@ namespace SophiApp.Contracts.Services
         OsProperties OsProperties { get; }
 
         /// <summary>
-        /// Gets a value indicating whether Microsoft Defender preference state.
+        /// Gets app version.
         /// </summary>
-        bool DefenderMpPreferenceBroken { get; }
+        Version AppVersion { get; }
 
         /// <summary>
         /// Gets a value indicating whether Microsoft Defender enabled state.
         /// </summary>
         bool DefenderEnabled { get; }
-
-        /// <summary>
-        /// Gets app version.
-        /// </summary>
-        Version AppVersion { get; }
 
         /// <summary>
         /// Gets app latest release from GitHub repository.
@@ -85,15 +80,5 @@ namespace SophiApp.Contracts.Services
         /// Gets app name and version.
         /// </summary>
         string GetFullName();
-
-        /// <summary>
-        /// Gets the code name of the application build.
-        /// </summary>
-        string GetBuildName();
-
-        /// <summary>
-        /// Gets app name and version delimiter.
-        /// </summary>
-        string GetDelimiter();
     }
 }

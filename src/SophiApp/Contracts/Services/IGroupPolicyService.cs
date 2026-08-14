@@ -13,6 +13,11 @@ namespace SophiApp.Contracts.Services
     public interface IGroupPolicyService
     {
         /// <summary>
+        /// Delete "%TEMP\LGPO.txt" config file if exist.
+        /// </summary>
+        void DeleteLGPOConfig();
+
+        /// <summary>
         /// Delete registry value to make changes visible in group policy UI.
         /// </summary>
         /// <param name="registryKey">Represents a key-level node in the Windows registry.</param>

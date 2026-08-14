@@ -20,13 +20,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly IThemesService themesService;
 
     [ObservableProperty]
-    private string build;
-
-    [ObservableProperty]
     private ElementTheme elementTheme;
-
-    [ObservableProperty]
-    private string delimiter;
 
     [ObservableProperty]
     private bool navigationViewHitTestVisible;
@@ -46,21 +40,26 @@ public partial class SettingsViewModel : ObservableRecipient
     /// </summary>
     /// <param name="themesService">A service for working with app themes.</param>
     /// <param name="dataService">A service for transferring app data between layers of DI.</param>
-    /// <param name="httpService">A service for working with HTTP.</param>
     /// <param name="shellViewModel">Implements the <see cref="ShellViewModel"/> class.</param>
     public SettingsViewModel(
         IThemesService themesService,
         ICommonDataService dataService,
-        IHttpService httpService,
         ShellViewModel shellViewModel)
     {
-        build = dataService.GetBuildName();
-        delimiter = dataService.GetDelimiter();
         FontOptions = shellViewModel.FontOptions;
         NavigationViewHitTestVisible = shellViewModel.NavigationViewHitTestVisible;
         LogPageVisibility = shellViewModel.LogPageVisibility;
         LogPageVisibilityCommand = shellViewModel.SetLogPageVisibility_Command;
-        OpenLinkCommand = new AsyncRelayCommand<string>(httpService.OpenUrlAsync);
+        OpenAppAnimationDeveloperPage_Command = shellViewModel.OpenAppAnimationDeveloperPage_Command;
+        OpenAppDeveloperPage_Command = shellViewModel.OpenAppDeveloperPage_Command;
+        OpenAppDiscordPage_Command = shellViewModel.OpenAppDiscordPage_Command;
+        OpenAppGitHubPage_Command = shellViewModel.OpenAppGitHubPage_Command;
+        OpenAppProjectManagerPage_Command = shellViewModel.OpenAppProjectManagerPage_Command;
+        OpenAppTelegramPage_Command = shellViewModel.OpenAppTelegramPage_Command;
+        OpenAppTesterPage_Command = shellViewModel.OpenAppTesterPage_Command;
+        OpenAppUiDeveloperPage_Command = shellViewModel.OpenAppUiDeveloperPage_Command;
+        OpenAppUxDeveloperPage_Command = shellViewModel.OpenAppUxDeveloperPage_Command;
+        OpenLatestAppRelease_Command = shellViewModel.OpenLatestAppRelease_Command;
         selectedTheme = themes.First(wrapper => wrapper.ElementTheme.Equals(themesService.Theme));
         this.themesService = themesService;
         version = dataService.GetFullName();
@@ -93,9 +92,54 @@ public partial class SettingsViewModel : ObservableRecipient
     public bool LogPageVisibility { get; set; }
 
     /// <summary>
-    /// Gets a resource using an identifier.
+    /// Gets <see cref="IRelayCommand"/> to open app animation developer contacts page.
     /// </summary>
-    public IRelayCommand OpenLinkCommand { get; }
+    public IRelayCommand OpenAppAnimationDeveloperPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppDeveloperPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app Discord page.
+    /// </summary>
+    public IRelayCommand OpenAppDiscordPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app GitHub page.
+    /// </summary>
+    public IRelayCommand OpenAppGitHubPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app project manager page.
+    /// </summary>
+    public IRelayCommand OpenAppProjectManagerPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app Telegram page.
+    /// </summary>
+    public IRelayCommand OpenAppTelegramPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app tester contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppTesterPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app UI developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppUiDeveloperPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app UX developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppUxDeveloperPage_Command { get; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open latest app release URL.
+    /// </summary>
+    public IRelayCommand OpenLatestAppRelease_Command { get; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.

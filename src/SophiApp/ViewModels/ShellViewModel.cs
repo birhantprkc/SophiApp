@@ -15,17 +15,30 @@ using SophiApp.Helpers;
 using SophiApp.Models;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.ServiceProcess;
 
 /// <summary>
 /// Implements the <see cref="ShellViewModel"/> class.
 /// </summary>
 public partial class ShellViewModel : ObservableRecipient
 {
+    private const string AppAnimationDeveloperUrl = "https://www.linkedin.com/in/tmcrowmax";
+    private const string AppDeveloperUrl = "https://github.com/Inestic";
+    private const string AppDiscordUrl = "https://discord.gg/sSryhaEv79";
+    private const string AppGitHubUrl = "https://github.com/Sophia-Community/SophiApp";
+    private const string AppLatestReleaseUrl = "https://github.com/Sophia-Community/SophiApp/releases/latest";
+    private const string AppProjectManagerUrl = "https://github.com/farag2";
+    private const string AppTelegramUrl = "https://t.me/sophia_chat";
+    private const string AppTesterUrl = "https://github.com/lowl1f3";
+    private const string AppUiDeveloperUrl = "https://www.linkedin.com/in/artenjoyers";
+    private const string AppUxDeveloperUrl = "https://www.linkedin.com/in/vladimir-palii-132745a1";
+    private const string UpdateUEFICertificatesUrl = "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324";
     private readonly IAppNotificationService notificationService;
     private readonly IAppxPackagesService packagesService;
-    private readonly ICommonDataService dataService;
     private readonly IGroupPolicyService groupPolicyService;
+    private readonly IInstrumentationService instrumentationService;
     private readonly IModelService modelService;
+    private readonly IOsService osService;
     private readonly IProcessService processService;
     private readonly IRegistryService registryService;
     private readonly IRequirementsService requirementsService;
@@ -56,18 +69,18 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty]
     private RequirementsResult requirementsResult;
     [ObservableProperty]
-    private string delimiter;
-    [ObservableProperty]
     private string setUpCustomizationsPanelText = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
-    /// <param name="dataService">A service for working with common app data.</param>
     /// <param name="groupPolicyService">A service for working with group policy API.</param>
+    /// <param name="httpService">A service for working with HTTP API.</param>
+    /// <param name="instrumentationService">A service for working with WMI API.</param>
     /// <param name="modelService">A service for working with UI models using MVVM pattern.</param>
     /// <param name="navigationService">Page navigation service.</param>
     /// <param name="navigationViewService">A service for navigating to View.</param>
+    /// <param name="osService">A service for working with Windows services API.</param>
     /// <param name="notificationService">A service for working with toast notifications API.</param>
     /// <param name="packagesService">A service for working with appx packages API.</param>
     /// <param name="processService">A service for working with Windows process API.</param>
@@ -79,11 +92,13 @@ public partial class ShellViewModel : ObservableRecipient
     public ShellViewModel(
         IAppNotificationService notificationService,
         IAppxPackagesService packagesService,
-        ICommonDataService dataService,
         IGroupPolicyService groupPolicyService,
+        IHttpService httpService,
+        IInstrumentationService instrumentationService,
         IModelService modelService,
         INavigationService navigationService,
         INavigationViewService navigationViewService,
+        IOsService osService,
         IProcessService processService,
         IRegistryService registryService,
         IRequirementsService requirementsService,
@@ -91,10 +106,11 @@ public partial class ShellViewModel : ObservableRecipient
         IUpdateService updateService,
         StartupViewModel startupViewModel)
     {
-        this.dataService = dataService;
         this.groupPolicyService = groupPolicyService;
+        this.instrumentationService = instrumentationService;
         this.modelService = modelService;
         this.notificationService = notificationService;
+        this.osService = osService;
         this.packagesService = packagesService;
         this.processService = processService;
         this.registryService = registryService;
@@ -105,17 +121,25 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationViewService = navigationViewService;
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
-        delimiter = this.dataService.GetDelimiter();
-
         ApplicableModelsApply_Command = new AsyncRelayCommand(ApplicableModelsApplyAsync);
         ApplicableModelsClear_Command = new AsyncRelayCommand(ApplicableModelsClearAsync);
-        AppUpdate_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", "https://github.com/Sophia-Community/SophiApp/releases/latest"));
+        AppUpdate_Command = new RelayCommand(() => httpService.OpenUrl(AppLatestReleaseUrl));
         ContinueRequirementActionsExecute_Command = new RelayCommand(ContinueRequirementActionsExecute);
         DeleteLGPOFile_Command = new RelayCommand(() => DebugOptions.DeleteLGPOFile = !DebugOptions.DeleteLGPOFile);
+        OpenAppAnimationDeveloperPage_Command = new RelayCommand(() => httpService.OpenUrl(AppAnimationDeveloperUrl));
+        OpenAppDeveloperPage_Command = new RelayCommand(() => httpService.OpenUrl(AppDeveloperUrl));
+        OpenAppDiscordPage_Command = new RelayCommand(() => httpService.OpenUrl(AppDiscordUrl));
+        OpenAppGitHubPage_Command = new RelayCommand(() => httpService.OpenUrl(AppGitHubUrl));
+        OpenAppProjectManagerPage_Command = new RelayCommand(() => httpService.OpenUrl(AppProjectManagerUrl));
+        OpenAppTelegramPage_Command = new RelayCommand(() => httpService.OpenUrl(AppTelegramUrl));
+        OpenAppTesterPage_Command = new RelayCommand(() => httpService.OpenUrl(AppTesterUrl));
+        OpenAppUiDeveloperPage_Command = new RelayCommand(() => httpService.OpenUrl(AppUiDeveloperUrl));
+        OpenAppUxDeveloperPage_Command = new RelayCommand(() => httpService.OpenUrl(AppUxDeveloperUrl));
         OpenBitLockerSettings_Command = new RelayCommand(() => processService.StartProcessByName("control.exe", "/name Microsoft.BitLockerDriveEncryption"));
         OpenDefenderControlledFolder_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", "windowsdefender://RansomwareProtection"));
         OpenHostsFolder_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers\\etc")));
-        OpenTaskScheduler_Command = new AsyncRelayCommand(OpenTaskSchedulerAsync);
+        OpenTaskScheduler_Command = new AsyncRelayCommand(() => Task.Run(() => processService.StartProcessByName(name: "control.exe", arguments: "schedtasks")));
+        OpenLatestAppRelease_Command = new RelayCommand(() => httpService.OpenUrl(AppLatestReleaseUrl));
         RadioButtonsGroup2Clicked_Command = new RelayCommand<UIRadioButtonsGroup2Model>(group => RadioButtonsGroup2Clicked(group!));
         RadioButtonsGroup3Clicked_Command = new RelayCommand<UIRadioButtonsGroup3Model>(group => RadioButtonsGroup3Clicked(group!));
         RadioButtonsGroup4Clicked_Command = new RelayCommand<UIRadioButtonsGroup4Model>(group => RadioButtonsGroup4Clicked(group!));
@@ -124,104 +148,154 @@ public partial class ShellViewModel : ObservableRecipient
         SearchBoxQuerySubmitted_Command = new AsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args => SearchBoxQuerySubmittedAsync(args!));
         UIModelClicked_Command = new RelayCommand<UIModel>(model => UIModelClicked(model!));
         UIUwpAppModelClicked_Command = new RelayCommand<UIUwpAppModel>(model => UIUwpAppModelClicked(model!));
-        UpdateUEFICertificates_Command = new RelayCommand(() => processService.StartProcessByName("explorer.exe", "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"));
+        UpdateUEFICertificates_Command = new RelayCommand(() => httpService.OpenUrl(UpdateUEFICertificatesUrl));
         UwpForAllUsersClicked_Command = new RelayCommand(UwpForAllUsersClicked);
     }
 
     /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click an "Apply" button in the Apply Customizations Panel.
     /// </summary>
-    public IAsyncRelayCommand ApplicableModelsApply_Command { get; }
+    public IAsyncRelayCommand ApplicableModelsApply_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click an "Cancel" button in the Apply Customizations Panel.
     /// </summary>
-    public IAsyncRelayCommand ApplicableModelsClear_Command { get; }
+    public IAsyncRelayCommand ApplicableModelsClear_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Update" button in the RequirementsFailurePage.
     /// </summary>
-    public IRelayCommand AppUpdate_Command { get; }
+    public IRelayCommand AppUpdate_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to continue performing <see cref="RequirementAction"/> after fail result.
     /// </summary>
-    public IRelayCommand ContinueRequirementActionsExecute_Command { get; }
+    public IRelayCommand ContinueRequirementActionsExecute_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Delete LGPO.txt file" CheckBox in Settings page.
     /// </summary>
-    public IRelayCommand DeleteLGPOFile_Command { get; }
+    public IRelayCommand DeleteLGPOFile_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app animation developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppAnimationDeveloperPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppDeveloperPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app Discord page.
+    /// </summary>
+    public IRelayCommand OpenAppDiscordPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app GitHub page.
+    /// </summary>
+    public IRelayCommand OpenAppGitHubPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app project manager contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppProjectManagerPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app Telegram page.
+    /// </summary>
+    public IRelayCommand OpenAppTelegramPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app tester contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppTesterPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app UI developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppUiDeveloperPage_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open app UX developer contacts page.
+    /// </summary>
+    public IRelayCommand OpenAppUxDeveloperPage_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to open BitLocker settings.
     /// </summary>
-    public IRelayCommand OpenBitLockerSettings_Command { get; }
+    public IRelayCommand OpenBitLockerSettings_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to open Microsoft Defender controlled folder settings.
     /// </summary>
-    public IRelayCommand OpenDefenderControlledFolder_Command { get; }
+    public IRelayCommand OpenDefenderControlledFolder_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to open hosts file folder in explorer.
     /// </summary>
-    public IRelayCommand OpenHostsFolder_Command { get; }
+    public IRelayCommand OpenHostsFolder_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click an "Open" button in the Task Scheduler page.
     /// </summary>
-    public IAsyncRelayCommand OpenTaskScheduler_Command { get; }
+    public IAsyncRelayCommand OpenTaskScheduler_Command { get; private set; }
+
+    /// <summary>
+    /// Gets <see cref="IRelayCommand"/> to open latest app release URL.
+    /// </summary>
+    public IRelayCommand OpenLatestAppRelease_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup2"/> clicked.
     /// </summary>
-    public IRelayCommand<UIRadioButtonsGroup2Model> RadioButtonsGroup2Clicked_Command { get; }
+    public IRelayCommand<UIRadioButtonsGroup2Model> RadioButtonsGroup2Clicked_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup3"/> clicked.
     /// </summary>
-    public IRelayCommand<UIRadioButtonsGroup3Model> RadioButtonsGroup3Clicked_Command { get; }
+    public IRelayCommand<UIRadioButtonsGroup3Model> RadioButtonsGroup3Clicked_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to <see cref="RadioButtonsGroup4"/> clicked.
     /// </summary>
-    public IRelayCommand<UIRadioButtonsGroup4Model> RadioButtonsGroup4Clicked_Command { get; }
+    public IRelayCommand<UIRadioButtonsGroup4Model> RadioButtonsGroup4Clicked_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show log page in navigation menu" CheckBox in Settings page.
     /// </summary>
-    public IRelayCommand<bool> SetLogPageVisibility_Command { get; }
+    public IRelayCommand<bool> SetLogPageVisibility_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "Show functions name and ID" CheckBox in Settings page.
     /// </summary>
-    public IRelayCommand SetShowFunctionsInfo_Command { get; }
+    public IRelayCommand SetShowFunctionsInfo_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IAsyncRelayCommand"/> to click "Search" in AutoSuggestBox.
     /// </summary>
-    public IAsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs> SearchBoxQuerySubmitted_Command { get; }
+    public IAsyncRelayCommand<AutoSuggestBoxQuerySubmittedEventArgs> SearchBoxQuerySubmitted_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an element in the interface.
     /// </summary>
-    public IRelayCommand<UIModel> UIModelClicked_Command { get; }
+    public IRelayCommand<UIModel> UIModelClicked_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an <see cref="UIUwpAppModel"/> in the interface.
     /// </summary>
-    public IRelayCommand<UIUwpAppModel> UIUwpAppModelClicked_Command { get; }
+    public IRelayCommand<UIUwpAppModel> UIUwpAppModelClicked_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to open update UEFI certificates manual url.
     /// </summary>
-    public IRelayCommand UpdateUEFICertificates_Command { get; }
+    public IRelayCommand UpdateUEFICertificates_Command { get; private set; }
 
     /// <summary>
     /// Gets <see cref="IRelayCommand"/> to click an "For all users" checkbox in the UWP page.
     /// </summary>
-    public IRelayCommand UwpForAllUsersClicked_Command { get; }
+    public IRelayCommand UwpForAllUsersClicked_Command { get; private set; }
 
     /// <summary>
     /// Gets app debug mode options.
@@ -291,6 +365,7 @@ public partial class ShellViewModel : ObservableRecipient
     public async Task ExecuteAsync()
     {
         await RunRequirementActionsAsync();
+        await RunPostActionsAsync();
         await GenerateUIAsync();
     }
 
@@ -355,7 +430,6 @@ public partial class ShellViewModel : ObservableRecipient
         uwpAllUsersModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: true);
         uwpCurrentUserModels = await modelService.BuildUwpAppModelsAsync(forAllUsers: false);
         UwpAppsModels = new (uwpAllUsersModels);
-        registryService.UseLatestCLR();
         _ = App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             NavigationViewHitTestVisible = true;
@@ -378,13 +452,13 @@ public partial class ShellViewModel : ObservableRecipient
         }
     }
 
-    private async Task OpenTaskSchedulerAsync() => await Task.Run(() => processService.StartProcessByName(name: "control.exe", arguments: "schedtasks"));
-
     private void RadioButtonsGroup2Clicked(UIRadioButtonsGroup2Model group)
     {
         var selectedId = int.Parse(group.SelectedId);
+        var groupExist = ApplicableModels.Contains(group) && group.DefaultId == selectedId;
+        group.IsSelected = !groupExist;
 
-        if (ApplicableModels.Contains(group) && group.DefaultId == selectedId)
+        if (groupExist)
         {
             ApplicableModels.Remove(group);
             InfoBadgeCounters.DecrementCategory(group.Tag);
@@ -400,6 +474,7 @@ public partial class ShellViewModel : ObservableRecipient
     private void RadioButtonsGroup3Clicked(UIRadioButtonsGroup3Model group)
     {
         var selectedId = int.Parse(group.SelectedId);
+        group.IsSelected = group.DefaultId != selectedId;
 
         if (ApplicableModels.Contains(group))
         {
@@ -425,6 +500,7 @@ public partial class ShellViewModel : ObservableRecipient
     private void RadioButtonsGroup4Clicked(UIRadioButtonsGroup4Model group)
     {
         var selectedId = int.Parse(group.SelectedId);
+        group.IsSelected = group.DefaultId != selectedId;
 
         if (ApplicableModels.Contains(group))
         {
@@ -445,6 +521,22 @@ public partial class ShellViewModel : ObservableRecipient
         ApplicableModels.Add(group);
         InfoBadgeCounters.IncrementCategory(group.Tag);
         App.Logger.LogApplicableModelAdded(group.Name, selectedId);
+    }
+
+    private async Task RunPostActionsAsync()
+    {
+        await Task.Run(() =>
+        {
+            if (osService.Exist("SysMain") && osService.GetStatus("SysMain") == ServiceControllerStatus.Stopped)
+            {
+                osService.TrySetStartMode("SysMain", ServiceStartMode.Automatic);
+                _ = osService.TryStart("SysMain");
+            }
+
+            instrumentationService.SetPageFileAutoSize();
+            registryService.UseLatestCLR();
+            groupPolicyService.DeleteLGPOConfig();
+        });
     }
 
     private async Task RunRequirementActionsAsync()
@@ -484,7 +576,10 @@ public partial class ShellViewModel : ObservableRecipient
 
     private void UIModelClicked(UIModel model)
     {
-        if (ApplicableModels.Contains(model))
+        var modelExist = ApplicableModels.Contains(model);
+        model.IsSelected = !modelExist;
+
+        if (modelExist)
         {
             ApplicableModels.Remove(model);
             InfoBadgeCounters.DecrementCategory(model.Tag);

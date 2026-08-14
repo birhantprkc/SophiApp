@@ -26,6 +26,15 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void DeleteLGPOConfig()
+        {
+            if (File.Exists(lgpoSettings))
+            {
+                File.Delete(lgpoSettings);
+            }
+        }
+
+        /// <inheritdoc/>
         public void DeleteRegistryValue(RegistryKey registryKey, string subKey, string value)
         {
             registryKey.OpenSubKey(subKey, true)?.DeleteValue(value, false);

@@ -12,6 +12,11 @@ namespace SophiApp.Contracts.Services
     public interface IProcessService
     {
         /// <summary>
+        /// Close eventvwr.msc console if is running.
+        /// </summary>
+        void CloseEventViewerConsole();
+
+        /// <summary>
         /// Determines whether the specified process exists.
         /// </summary>
         /// <param name="name">Process name.</param>

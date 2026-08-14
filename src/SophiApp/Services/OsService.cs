@@ -72,6 +72,20 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
+        public void TrySetStartMode(string name, ServiceStartMode mode)
+        {
+            try
+            {
+                using var service = new ServiceController(name);
+                SetStartMode(service, mode);
+            }
+            catch
+            {
+                // Do nothing.
+            }
+        }
+
+        /// <inheritdoc/>
         public bool TryStart(string name)
         {
             try

@@ -58,7 +58,7 @@ namespace SophiApp.Services
         /// <inheritdoc/>
         public void SetJepriCreationsCursors(JepriCursorsTheme theme)
         {
-            var cursorsZip = Path.Combine(Environment.ExpandEnvironmentVariables("%SYSTEMDRIVE%"), "Windows11Cursors.zip");
+            var cursorsZip = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors", "Windows11Cursors.zip");
             var cursorsTheme = theme == JepriCursorsTheme.Light ? "W11 Cursor Light Free by Jepri Creations" : "W11 Cursor Dark Free by Jepri Creations";
             var extractPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), theme == JepriCursorsTheme.Light ? "Cursors\\W11 Cursor Light Free" : "Cursors\\W11 Cursor Dark Free");
             var extractArguments = $"-xvf \"{cursorsZip}\" -C \"{extractPath}\" --strip-components=1 {(theme == JepriCursorsTheme.Light ? "light" : "dark")}/";

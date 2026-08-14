@@ -174,29 +174,11 @@
   <data name="SettingsPage_Team.Title" xml:space="preserve">
     <value>Team Sophia</value>
   </data>
-  <data name="SettingsPage_Animation.WorkedOn" xml:space="preserve">
-    <value>Animation</value>
-  </data>
-  <data name="SettingsPage_DevelopedBy.WorkedOn" xml:space="preserve">
-    <value>Developed by</value>
-  </data>
-  <data name="SettingsPage_ProjectManager.WorkedOn" xml:space="preserve">
-    <value>PO &amp; QA</value>
-  </data>
-  <data name="SettingsPage_UiDevelopment.WorkedOn" xml:space="preserve">
-    <value>UI development</value>
-  </data>
-  <data name="SettingsPage_UxDevelopment.WorkedOn" xml:space="preserve">
-    <value>UX development</value>
-  </data>
   <data name="Button_Apply.Content" xml:space="preserve">
     <value>Apply</value>
   </data>
   <data name="SettingsPage_Links.Title" xml:space="preserve">
     <value>Links</value>
-  </data>
-  <data name="SettingsPage_AppTester.WorkedOn" xml:space="preserve">
-    <value>QC</value>
   </data>
   <data name="OsRequirements_GetSupportedArchitecture" xml:space="preserve">
     <value>Get CPU architecture</value>
@@ -910,25 +892,13 @@
     <value>Create "Process Creation" Custom View in the Event Viewer</value>
   </data>
   <data name="UIModel_EventViewerCustomView_Description" xml:space="preserve">
-    <value>"Process Creation" Custom View is designed to filter running processes and their arguments for better system security auditing. In order for this functionality to work, event and command line auditing in process creation events will be enabled. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
+    <value>Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer.</value>
   </data>
-  <data name="EventViewerCustomView_ProcessCreationXml_Description" xml:space="preserve">
+  <data name="UIModel_EventViewerCustomView_QueryDescription" xml:space="preserve">
     <value>Process creation and command-line auditing events.</value>
   </data>
-  <data name="EventViewerCustomView_ProcessCreationXml_Name" xml:space="preserve">
+  <data name="UIModel_EventViewerCustomView_QueryName" xml:space="preserve">
     <value>Process Creation</value>
-  </data>
-  <data name="UIModel_PowerShellModulesLogging_Title" xml:space="preserve">
-    <value>Enable logging for all Windows PowerShell modules</value>
-  </data>
-  <data name="UIModel_PowerShellModulesLogging_Description" xml:space="preserve">
-    <value>Pipeline execution events for members of the specified modules are recorded in Windows PowerShell log in the Event Viewer. For built-in Windows PowerShell 5.1 only. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
-  </data>
-  <data name="UIModel_PowerShellScriptsLogging_Title" xml:space="preserve">
-    <value>Enable logging for all PowerShell scripts input to the Windows PowerShell event log</value>
-  </data>
-  <data name="UIModel_PowerShellScriptsLogging_Description" xml:space="preserve">
-    <value>Windows PowerShell will log processing of commands, script blocks, functions, and scripts – whether invoked interactively, or through automation to "Applications and Services Logs\Microsoft\Windows\PowerShell\Operational" event log. For the built-in Windows PowerShell 5.1 only. In addition to creating a policy in the Windows registry, SophiApp 2.0 also displays applied policy in the Local Group Policy Editor (if the gpedit.msc snap-in is available on the system). This allows you to see which policies have been applied without having to search for keys in the Windows registry.</value>
   </data>
   <data name="UIModel_AppsSmartScreen_Title" xml:space="preserve">
     <value>Check apps and files within Microsoft Defender SmartScreen</value>
@@ -1099,31 +1069,31 @@
     <value>Applying customization</value>
   </data>
   <data name="App_Discord.Text" xml:space="preserve">
-    <value>Discord</value>
+    <value>Discord.gg/sSryhaEv79</value>
   </data>
   <data name="App_GitHub.Text" xml:space="preserve">
-    <value>GitHub</value>
+    <value>GitHub.com/Sophia-Community/SophiApp</value>
   </data>
   <data name="App_Telegram.Text" xml:space="preserve">
-    <value>Telegram</value>
+    <value>T.me/sophia_chat</value>
   </data>
-  <data name="SettingsPage_Animation.NickName" xml:space="preserve">
-    <value>Maxim Nechiporenko</value>
+  <data name="AppTeam_AnimationDeveloper.Text" xml:space="preserve">
+    <value>Animation development: Maxim Nechiporenko</value>
   </data>
-  <data name="SettingsPage_AppTester.NickName" xml:space="preserve">
-    <value>Yevhenii "lowlif3" Zabronskyi</value>
+  <data name="AppTeam_Tester.Text" xml:space="preserve">
+    <value>QC: Yevhenii "lowlif3" Zabronskyi</value>
   </data>
-  <data name="SettingsPage_DevelopedBy.NickName" xml:space="preserve">
-    <value>Dmitry "Inestic" Demin</value>
+  <data name="AppTeam_Developer.Text" xml:space="preserve">
+    <value>Application development: Dmitry "Inestic" Demin</value>
   </data>
-  <data name="SettingsPage_ProjectManager.NickName" xml:space="preserve">
-    <value>Dmitry Nefedov</value>
+  <data name="AppTeam_ProjectManager.Text" xml:space="preserve">
+    <value>PO &amp; QA: Dmitry Nefedov</value>
   </data>
-  <data name="SettingsPage_UiDevelopment.NickName" xml:space="preserve">
-    <value>Yaroslav Posmitiukh</value>
+  <data name="AppTeam_UiDeveloper.Text" xml:space="preserve">
+    <value>UI development: Yaroslav Posmitiukh</value>
   </data>
-  <data name="SettingsPage_UxDevelopment.NickName" xml:space="preserve">
-    <value>Vladimir Nameless</value>
+  <data name="AppTeam_UxDeveloper.Text" xml:space="preserve">
+    <value>UX development: Vladimir Nameless</value>
   </data>
   <data name="Page_ContextMenu_OpenLogFile.Label" xml:space="preserve">
     <value>Open log file</value>
@@ -1274,5 +1244,17 @@
   </data>
   <data name="AppFatalError_1.Text" xml:space="preserve">
     <value>Fatal error:</value>
+  </data>
+  <data name="UIModel_StartAppsView_Title" xml:space="preserve">
+    <value>Set Start all apps view</value>
+  </data>
+  <data name="UIModel_StartAppsView_Title_1" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="UIModel_StartAppsView_Title_2" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="UIModel_StartAppsView_Title_3" xml:space="preserve">
+    <value>List</value>
   </data>
 </root>

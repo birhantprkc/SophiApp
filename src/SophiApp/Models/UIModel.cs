@@ -14,6 +14,7 @@ namespace SophiApp.Models
     public abstract class UIModel : INotifyPropertyChanged
     {
         private bool isEnabled = true;
+        private bool isSelected = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UIModel"/> class.
@@ -72,7 +73,7 @@ namespace SophiApp.Models
         public string Title { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether model enabled state.
+        /// Gets or sets a value indicating whether model is enabled.
         /// </summary>
         public bool IsEnabled
         {
@@ -80,6 +81,19 @@ namespace SophiApp.Models
             protected set
             {
                 isEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether model is selected.
+        /// </summary>
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                isSelected = value;
                 OnPropertyChanged();
             }
         }

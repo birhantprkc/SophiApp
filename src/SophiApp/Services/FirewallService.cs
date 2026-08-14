@@ -28,28 +28,5 @@ namespace SophiApp.Services
             var rules = firewallPolicy.Rules.OfType<INetFwRule>().Where(rule => rule.Grouping == name);
             return rules.Any() ? rules : throw new ArgumentNullException(name, "No firewall rules were found for the group name");
         }
-
-        /// <inheritdoc/>
-        public List<INetFwRule> GetGroupRules(params string[] names)
-        {
-            List<INetFwRule> rules = [];
-
-            foreach (var name in names)
-            {
-                rules.AddRange(GetGroupRules(name));
-            }
-
-            return rules;
-        }
-
-        /// <inheritdoc/>
-        public void SetGroupRules(string name, bool enable, int profileID)
-        {
-            foreach (var rule in GetGroupRules(name))
-            {
-                rule.Enabled = enable;
-                rule.Profiles = profileID;
-            }
-        }
     }
 }

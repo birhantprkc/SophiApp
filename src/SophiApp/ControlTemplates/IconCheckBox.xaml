@@ -33,10 +33,22 @@
         </CommandBarFlyout>
     </UserControl.Resources>
 
-    <Border BorderBrush="{ThemeResource UIControlBorderBackground}"
+    <Border x:Name="IconCheckBoxBorder" BorderBrush="{ThemeResource UIControlBorderBackground}"
             Background="{ThemeResource UIControlBackground}"
             Style="{StaticResource UIControlBorderStyle}"
             ContextRequested="IconCheckBox_ContextRequested">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="IsSelectedStatus">
+                <VisualState x:Name="SuccessSelected">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsSelected}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="IconCheckBoxBorder.BorderBrush" Value="{ThemeResource WindowAccent}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

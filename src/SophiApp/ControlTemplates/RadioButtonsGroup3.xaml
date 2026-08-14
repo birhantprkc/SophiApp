@@ -42,9 +42,22 @@
         </Style>
     </UserControl.Resources>
 
-    <Border Style="{StaticResource UIControlBorderStyle}"
+    <Border x:Name="RadioButtonsGroup3Border"
+            Style="{StaticResource UIControlBorderStyle}"
             BorderBrush="{StaticResource UIControlBorderBackground}"
             SizeChanged="Border_SizeChanged">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="IsSelectedStatus">
+                <VisualState x:Name="SuccessSelected">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsSelected}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RadioButtonsGroup3Border.BorderBrush" Value="{ThemeResource WindowAccent}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Expander Style="{StaticResource UIControlExpanderStyle}"
                   Background="{ThemeResource NavigationViewContentBackground}"
                   ContextRequested="ExpandingRadioGroup_ContextRequested">

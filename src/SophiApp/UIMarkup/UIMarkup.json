@@ -400,15 +400,15 @@
         "Windows11": "True"
     },
     {
-        "Name": "MostUsedStartApps",
-        "Type": "CheckBox",
+        "Name": "StartAppsView",
+        "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
         "ViewId": 235,
-        "Windows11LTSC": "True",
+        "Windows11LTSC": "False",
         "Windows11": "True"
     },
     {
-        "Name": "StartRecommendedSection",
+        "Name": "MostUsedStartApps",
         "Type": "CheckBox",
         "Tag": "Personalization",
         "ViewId": 236,
@@ -416,7 +416,7 @@
         "Windows11": "True"
     },
     {
-        "Name": "StartRecommendationsTips",
+        "Name": "StartRecommendedSection",
         "Type": "CheckBox",
         "Tag": "Personalization",
         "ViewId": 237,
@@ -424,7 +424,7 @@
         "Windows11": "True"
     },
     {
-        "Name": "StartAccountNotifications",
+        "Name": "StartRecommendationsTips",
         "Type": "CheckBox",
         "Tag": "Personalization",
         "ViewId": 238,
@@ -432,10 +432,18 @@
         "Windows11": "True"
     },
     {
+        "Name": "StartAccountNotifications",
+        "Type": "CheckBox",
+        "Tag": "Personalization",
+        "ViewId": 239,
+        "Windows11LTSC": "True",
+        "Windows11": "True"
+    },
+    {
         "Name": "StartLayout",
         "Type": "RadioButtonsGroup3",
         "Tag": "Personalization",
-        "ViewId": 239,
+        "ViewId": 240,
         "Windows11LTSC": "True",
         "Windows11": "False"
     },
@@ -656,18 +664,10 @@
         "Windows11": "True"
     },
     {
-        "Name": "NetworkDiscovery",
-        "Type": "CheckBox",
-        "Tag": "System",
-        "ViewId": 327,
-        "Windows11LTSC": "True",
-        "Windows11": "True"
-    },
-    {
         "Name": "DefaultTerminalApp",
         "Type": "RadioButtonsGroup2",
         "Tag": "System",
-        "ViewId": 328,
+        "ViewId": 327,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -675,7 +675,7 @@
         "Name": "InstallDotNetRuntime_8",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 329,
+        "ViewId": 328,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -683,7 +683,7 @@
         "Name": "InstallDotNetRuntime_9",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 330,
+        "ViewId": 329,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -691,7 +691,7 @@
         "Name": "InstallDotNetRuntime_10",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 331,
+        "ViewId": 330,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -699,7 +699,7 @@
         "Name": "InstallVisualC_x86",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 332,
+        "ViewId": 331,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -707,7 +707,7 @@
         "Name": "InstallVisualC_x64",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 333,
+        "ViewId": 332,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -715,7 +715,7 @@
         "Name": "RegistryBackup",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 334,
+        "ViewId": 333,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },
@@ -723,7 +723,7 @@
         "Name": "RemoveWindowsAI",
         "Type": "CheckBox",
         "Tag": "System",
-        "ViewId": 335,
+        "ViewId": 334,
         "Windows11LTSC": "False",
         "Windows11": "True"
     },
@@ -811,7 +811,7 @@
         "Windows11": "True"
     },
     {
-        "Name": "PowerShellModulesLogging",
+        "Name": "AppsSmartScreen",
         "Type": "CheckBox",
         "Tag": "Security",
         "ViewId": 604,
@@ -819,7 +819,7 @@
         "Windows11": "True"
     },
     {
-        "Name": "PowerShellScriptsLogging",
+        "Name": "SaveZoneInformation",
         "Type": "CheckBox",
         "Tag": "Security",
         "ViewId": 605,
@@ -827,7 +827,7 @@
         "Windows11": "True"
     },
     {
-        "Name": "AppsSmartScreen",
+        "Name": "WindowsSandbox",
         "Type": "CheckBox",
         "Tag": "Security",
         "ViewId": 606,
@@ -835,26 +835,10 @@
         "Windows11": "True"
     },
     {
-        "Name": "SaveZoneInformation",
-        "Type": "CheckBox",
-        "Tag": "Security",
-        "ViewId": 607,
-        "Windows11LTSC": "True",
-        "Windows11": "True"
-    },
-    {
-        "Name": "WindowsSandbox",
-        "Type": "CheckBox",
-        "Tag": "Security",
-        "ViewId": 608,
-        "Windows11LTSC": "True",
-        "Windows11": "True"
-    },
-    {
         "Name": "LocalSecurityAuthority",
         "Type": "CheckBox",
         "Tag": "Security",
-        "ViewId": 609,
+        "ViewId": 607,
         "Windows11LTSC": "True",
         "Windows11": "True"
     },

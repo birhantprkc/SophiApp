@@ -191,6 +191,7 @@ namespace SophiApp.Services
             {
                 foreach (var model in models)
                 {
+                    model.IsSelected = false;
                     var timer = Stopwatch.StartNew();
                     model.GetState();
                     timer.Stop();
@@ -208,6 +209,7 @@ namespace SophiApp.Services
             {
                 foreach (var model in models)
                 {
+                    model.IsSelected = false;
                     var timer = Stopwatch.StartNew();
                     model.SetState();
                     timer.Stop();

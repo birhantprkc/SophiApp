@@ -51,16 +51,10 @@ namespace SophiApp.Services
         }
 
         /// <inheritdoc/>
-        public async Task OpenUrlAsync(string? url)
+        public void OpenUrl(string url)
         {
-            await Task.Run(() =>
-            {
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    Process.Start("explorer.exe", url);
-                    App.Logger.LogOpenedUrl(url);
-                }
-            });
+            Process.Start("explorer.exe", url);
+            App.Logger.LogOpenedUrl(url);
         }
 
         /// <inheritdoc/>

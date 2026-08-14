@@ -394,7 +394,7 @@ $Paths = @(
 	""$env:SystemDrive\Intel"",
 	""$env:SystemDrive\PerfLogs"",
 	""$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp"",
-	""$env:LOCALAPPDATA\CrashDumps""
+    ""$env:LOCALAPPDATA\CrashDumps""
 )
 
 if ((Get-ChildItem -Path $env:SystemDrive\Recovery -Force | Where-Object -FilterScript {$_.Name -eq ""ReAgentOld.xml""}).FullName)
