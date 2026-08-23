@@ -181,16 +181,16 @@
     <value>Links</value>
   </data>
   <data name="OsRequirements_GetSupportedArchitecture" xml:space="preserve">
-    <value>Get CPU architecture</value>
+    <value>Checking CPU architecture...</value>
   </data>
   <data name="OsRequirements_LoggedInUserNotAdmin_1.Text" xml:space="preserve">
     <value>The logged-in user doesn't have admin rights:</value>
   </data>
   <data name="OsRequirements_GetAppRunFromLoggedUser" xml:space="preserve">
-    <value>Checking current user's rights</value>
+    <value>Checking current user's rights...</value>
   </data>
   <data name="OsRequirements_GetHarmfulTweaker" xml:space="preserve">
-    <value>Detect harmful tweakers and trojans</value>
+    <value>Checking for harmful tweakers...</value>
   </data>
   <data name="OsRequirements_HarmfulTweakerFound.Text" xml:space="preserve">
     <value>Windows stability may have been compromised by using:</value>
@@ -223,13 +223,13 @@
     <value>The component of Microsoft Defender is missing:</value>
   </data>
   <data name="OsRequirements_GetRebootPending" xml:space="preserve">
-    <value>Get pending reboot</value>
+    <value>Checking pending reboot status...</value>
   </data>
   <data name="OsRequirements_GetAppNewVersion" xml:space="preserve">
-    <value>Checking if the current SophiApp build is the latest one</value>
+    <value>Checking latest SophiApp version...</value>
   </data>
   <data name="OsRequirements_GetDefenderComponents" xml:space="preserve">
-    <value>Getting Microsoft Defender components</value>
+    <value>Checking Microsoft Defender components status...</value>
   </data>
   <data name="OsRequirements_ReadWindowsSettings" xml:space="preserve">
     <value>Reading Windows settings</value>
@@ -412,10 +412,10 @@
     <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
   </data>
   <data name="UIModel_SearchHighlights_Title" xml:space="preserve">
-    <value>Show widgets icon on the taskbar</value>
+    <value>Show search highlights</value>
   </data>
   <data name="UIModel_SearchHighlights_Description" xml:space="preserve">
-    <value>Changes will be made via Windows API without disabling an UCDP driver.</value>
+    <value>By default, when you use search, it also includes web results from Bing.</value>
   </data>
   <data name="UIModel_TaskViewButton_Title" xml:space="preserve">
     <value>Show Task view button on the taskbar</value>
@@ -880,7 +880,7 @@
     <value>Network protection helps to prevent users from using any application to access dangerous domains that may host phishing scams, exploits, and other malicious content on the Internet.</value>
   </data>
   <data name="UIModel_PUAppsDetection_Title" xml:space="preserve">
-    <value>Enable detection in Microsoft Defender for potentially unwanted applications and block them</value>
+    <value>Enable detection for potentially unwanted applications and block them in Microsoft Defender</value>
   </data>
   <data name="UIModel_DefenderSandbox_Title" xml:space="preserve">
     <value>Enable sandboxing for Microsoft Defender</value>
@@ -976,7 +976,7 @@
     <value>The UWP component is missing:</value>
   </data>
   <data name="OsRequirements_GetUWPComponents" xml:space="preserve">
-    <value>Getting UWP components</value>
+    <value>Checking UWP components status...</value>
   </data>
   <data name="OsRequirements_GeneratingUserInterface" xml:space="preserve">
     <value>Generating UI</value>
@@ -1120,7 +1120,7 @@
     <value>Run Windows Update and try again.</value>
   </data>
   <data name="OsRequirements_GetHostFileEntries" xml:space="preserve">
-    <value>Detect third-party host file entries</value>
+    <value>Checking third-party host file entries...</value>
   </data>
   <data name="OsRequirements_HostsEntriesFound_1.Text" xml:space="preserve">
     <value>Third-party entries found in the file:</value>
@@ -1144,10 +1144,10 @@
     <value>Open Controlled folder access settings</value>
   </data>
   <data name="OsRequirements_UnsupportedArchitecture_1" xml:space="preserve">
-    <value>Your're using "{0}" based CPU architecture.</value>
+    <value>You're using "{0}" based CPU architecture.</value>
   </data>
   <data name="OsRequirements_NewAppVersionFound_1.Text" xml:space="preserve">
-    <value>A new SophiApp version is available:</value>
+    <value>A new version is available:</value>
   </data>
   <data name="OsRequirements_HostsEntriesFound_3.Text" xml:space="preserve">
     <value>They may block connection to resources used in the app.</value>
@@ -1159,7 +1159,7 @@
     <value>"%SystemRoot%\System32\drivers\etc\hosts".</value>
   </data>
   <data name="OsRequirements_UnsupportedArchitecture_2.Text" xml:space="preserve">
-    <value>This app supports an x64 architecture-based CPU only.</value>
+    <value>SophiApp supports the x64 architecture-based CPU only.</value>
   </data>
   <data name="OsRequirements_NewAppVersionFound_2.Text" xml:space="preserve">
     <value>Please update.</value>
@@ -1168,7 +1168,7 @@
     <value>Update</value>
   </data>
   <data name="OsRequirements_LoggedInUserNotAdmin_2.Text" xml:space="preserve">
-    <value>SophiApp was ran on behalf of:</value>
+    <value>SophiApp was run on behalf of:</value>
   </data>
   <data name="OsRequirements_LoggedInUserNotAdmin_3.Text" xml:space="preserve">
     <value>Please log into account which has admin rights and run app again.</value>
@@ -1177,7 +1177,7 @@
     <value>Reinstall Windows using only a genuine ISO image.</value>
   </data>
   <data name="OsRequirements_GetDefenderProperties" xml:space="preserve">
-    <value>Get Microsoft Defender properties</value>
+    <value>Checking Microsoft Defender properties...</value>
   </data>
   <data name="OsRequirements_WindowsComponentStabilityDisrupted.Text" xml:space="preserve">
     <value>An instability issue has been detected in the component:</value>
@@ -1186,10 +1186,10 @@
     <value>Microsoft Defender</value>
   </data>
   <data name="OsRequirements_GetControlledFolderAccess" xml:space="preserve">
-    <value>Get controlled folder access</value>
+    <value>Checking Controlled folder access status...</value>
   </data>
   <data name="OsRequirements_DisableControlledFolderAccessPanel_1.Text" xml:space="preserve">
-    <value>You have Сontrolled folder access enabled.</value>
+    <value>You have Controlled folder access enabled.</value>
   </data>
   <data name="OsRequirements_DisableControlledFolderAccessPanel_2.Text" xml:space="preserve">
     <value>Please disable it and run SophiApp again.</value>
@@ -1198,7 +1198,7 @@
     <value>Your PC is waiting to be restarted.</value>
   </data>
   <data name="OsRequirements_GetSystemDriveEncryptedBitLocker" xml:space="preserve">
-    <value>Get BitLocker system drive encryption</value>
+    <value>Checking BitLocker system drive encryption status...</value>
   </data>
   <data name="OsRequirements_SystemDriveEncryptedBitLockerDisabled_1.Text" xml:space="preserve">
     <value>C drive is encrypted, although BitLocker is turned off.</value>
@@ -1207,7 +1207,7 @@
     <value>Do you want to decrypt your drive?</value>
   </data>
   <data name="OsRequirements_GetUEFICertificates" xml:space="preserve">
-    <value>Detect UEFI expires certificates</value>
+    <value>Checking UEFI certificate expiration status...</value>
   </data>
   <data name="OsRequirements_UpdateUEFICertificates_1.Text" xml:space="preserve">
     <value>The "Microsoft Windows Production PCA 2011" Secure Boot certificate expires in 2026.</value>
@@ -1222,7 +1222,7 @@
     <value>Open manual</value>
   </data>
   <data name="OsRequirements_GetWindowsVersion" xml:space="preserve">
-    <value>Detect Windows version</value>
+    <value>Checking Windows version...</value>
   </data>
   <data name="OsRequirements_WrongWindowsVersion_1" xml:space="preserve">
     <value>SophiApp 2 supports Windows 11 25H2 and higher.</value>
@@ -1231,10 +1231,10 @@
     <value>You're using:</value>
   </data>
   <data name="OsRequirements_WrongWindowsVersion_LTSC" xml:space="preserve">
-    <value>SophiApp 2 supports Windows 11 Enterprise 2024 and higher.</value>
+    <value>SophiApp 2 supports Windows 11 Enterprise LTSC 2024.</value>
   </data>
   <data name="OsRequirements_GetWindowsBuild" xml:space="preserve">
-    <value>Detect Windows build</value>
+    <value>Checking Windows build...</value>
   </data>
   <data name="OsRequirements_UpdateWindowsBuild_1.Text" xml:space="preserve">
     <value>You're using Windows 11</value>
