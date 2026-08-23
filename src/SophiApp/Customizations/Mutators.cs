@@ -1672,8 +1672,8 @@ namespace SophiApp.Customizations
 		</QueryNode>
 	</QueryConfig>
 </ViewerConfig>";
-                // Save ProcessCreation.xml in the UTF-8 without BOM encoding
-                FileService.Save(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Microsoft\\Event Viewer\\Views\\ProcessCreation.xml"), eventsXml, Encoding.Default);
+                // Save ProcessCreation.xml in UTF-8 with BOM encoding
+                FileService.Save(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Microsoft\\Event Viewer\\Views\\ProcessCreation.xml"), eventsXml, Encoding.UTF8);
                 return;
             }
 
