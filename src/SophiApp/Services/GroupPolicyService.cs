@@ -107,7 +107,6 @@ namespace SophiApp.Services
             if (File.Exists(lgpoSettings) && File.Exists(lgpoExe))
             {
                 _ = processService.WaitForExit(name: lgpoExe, arguments: $"/t {lgpoSettings}");
-                _ = processService.WaitForExit(name: "gpupdate.exe", arguments: "/force");
 
                 if (deleteConfig)
                 {
