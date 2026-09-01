@@ -915,18 +915,10 @@
         "Windows11": "True"
     },
     {
-        "Name": "OpenWindowsTerminalContext",
-        "Type": "CheckBox",
-        "Tag": "ContextMenu",
-        "ViewId": 709,
-        "Windows11LTSC": "False",
-        "Windows11": "True"
-    },
-    {
         "Name": "OpenWindowsTerminalAdminContext",
         "Type": "CheckBox",
         "Tag": "ContextMenu",
-        "ViewId": 710,
+        "ViewId": 709,
         "Windows11LTSC": "False",
         "Windows11": "True"
     }

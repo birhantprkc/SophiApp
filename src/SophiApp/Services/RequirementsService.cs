@@ -221,7 +221,7 @@ namespace SophiApp.Services
 
             if (RunToDebug(nameof(GetUWPComponents)))
             {
-                dataService.RequirementsResult_1 = "MicrosoftWindows.Client.CBS";
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_UWPComponentsMissing".GetLocalized(), "MicrosoftWindows.Client.CBS");
                 return RequirementsResult.UWPComponentsMissing;
             }
 
@@ -232,7 +232,7 @@ namespace SophiApp.Services
                     return RequirementsResult.AllCorrect;
                 }
 
-                dataService.RequirementsResult_1 = "MicrosoftWindows.Client.CBS";
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_UWPComponentsMissing".GetLocalized(), "MicrosoftWindows.Client.CBS");
                 return RequirementsResult.UWPComponentsMissing;
             }
 
@@ -241,7 +241,7 @@ namespace SophiApp.Services
                 return RequirementsResult.AllCorrect;
             }
 
-            dataService.RequirementsResult_1 = windowsStoreExist ? "MicrosoftWindows.Client.CBS" : "Microsoft.WindowsStore";
+            dataService.RequirementsResult_1 = string.Format("OsRequirements_UWPComponentsMissing".GetLocalized(), windowsStoreExist ? "MicrosoftWindows.Client.CBS" : "Microsoft.WindowsStore");
             return RequirementsResult.UWPComponentsMissing;
         }
 
@@ -249,7 +249,7 @@ namespace SophiApp.Services
         {
             if (RunToDebug(nameof(GetDefenderComponents)))
             {
-                dataService.RequirementsResult_1 = "SecurityHealthSystray.exe";
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_DefenderComponentsMissing".GetLocalized(), "SecurityHealthSystray.exe");
                 return RequirementsResult.DefenderComponentsMissing;
             }
 
@@ -268,7 +268,7 @@ namespace SophiApp.Services
                 }
 
                 App.Logger.LogDefenderFileMissing(f);
-                dataService.RequirementsResult_1 = f;
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_DefenderComponentsMissing".GetLocalized(), f);
                 return false;
             }) ? RequirementsResult.AllCorrect : RequirementsResult.DefenderComponentsMissing;
         }
@@ -411,22 +411,22 @@ namespace SophiApp.Services
             if (RunToDebug(nameof(GetWindowsBuild)))
             {
                 settingsService.SaveDebugRequirementActionAsync(string.Empty);
-                dataService.RequirementsResult_1 = $"{dataService.OsProperties.Build}.{dataService.OsProperties.UBR}";
-                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_UpdateWindowsBuild_1".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.DisplayVersion, dataService.OsProperties.Build, dataService.OsProperties.UBR);
                 return RequirementsResult.UpdateWindowsBuild;
             }
 
             if (dataService.OsProperties.Build < 26200)
             {
-                dataService.RequirementsResult_1 = $"{dataService.OsProperties.Build}.{dataService.OsProperties.UBR}";
-                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_UpdateWindowsBuild_1".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.DisplayVersion, dataService.OsProperties.Build, dataService.OsProperties.UBR);
                 return RequirementsResult.UpdateWindowsBuild;
             }
 
             if (dataService.OsProperties.Build == 26200 && dataService.OsProperties.UBR < dataService.SupportedUBR.Win11)
             {
-                dataService.RequirementsResult_1 = $"{dataService.OsProperties.Build}.{dataService.OsProperties.UBR}";
-                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                dataService.RequirementsResult_1 = string.Format("OsRequirements_UpdateWindowsBuild_1".GetLocalized(), dataService.OsProperties.Build, dataService.SupportedUBR.Win11);
+                dataService.RequirementsResult_2 = string.Format("OsRequirements_UpdateWindowsBuild_2".GetLocalized(), dataService.OsProperties.DisplayVersion, dataService.OsProperties.Build, dataService.OsProperties.UBR);
                 return RequirementsResult.UpdateWindowsBuild;
             }
 

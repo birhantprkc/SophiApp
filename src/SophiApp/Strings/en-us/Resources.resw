@@ -219,8 +219,8 @@
   <data name="OsRequirements_Malware_ModernTweaker" xml:space="preserve">
     <value>Modern Tweaker</value>
   </data>
-  <data name="OsRequirements_DefenderComponentsMissing.Text" xml:space="preserve">
-    <value>The component of Microsoft Defender is missing:</value>
+  <data name="OsRequirements_DefenderComponentsMissing" xml:space="preserve">
+    <value>The "{0}" component of Microsoft Defender is missing.</value>
   </data>
   <data name="OsRequirements_GetRebootPending" xml:space="preserve">
     <value>Checking pending reboot status...</value>
@@ -972,8 +972,8 @@
   <data name="Panel_SetupCustomizations_Applying" xml:space="preserve">
     <value>Applying customizations</value>
   </data>
-  <data name="OsRequirements_UWPComponentsMissing.Text" xml:space="preserve">
-    <value>The UWP component is missing:</value>
+  <data name="OsRequirements_UWPComponentsMissing" xml:space="preserve">
+    <value>The "{0}" UWP component is missing.</value>
   </data>
   <data name="OsRequirements_GetUWPComponents" xml:space="preserve">
     <value>Checking UWP components status...</value>
@@ -1147,7 +1147,7 @@
     <value>You're using "{0}" based CPU architecture.</value>
   </data>
   <data name="OsRequirements_NewAppVersionFound_1.Text" xml:space="preserve">
-    <value>A new version is available:</value>
+    <value>A new version is available: SophiApp</value>
   </data>
   <data name="OsRequirements_HostsEntriesFound_3.Text" xml:space="preserve">
     <value>They may block connection to resources used in the app.</value>
@@ -1180,10 +1180,7 @@
     <value>Checking Microsoft Defender properties...</value>
   </data>
   <data name="OsRequirements_WindowsComponentStabilityDisrupted.Text" xml:space="preserve">
-    <value>An instability issue has been detected in the component:</value>
-  </data>
-  <data name="OsRequirements_MicrosoftDefender.Text" xml:space="preserve">
-    <value>Microsoft Defender</value>
+    <value>An instability issue has been detected in the Microsoft Defender component.</value>
   </data>
   <data name="OsRequirements_GetControlledFolderAccess" xml:space="preserve">
     <value>Checking Controlled folder access status...</value>
@@ -1236,11 +1233,11 @@
   <data name="OsRequirements_GetWindowsBuild" xml:space="preserve">
     <value>Checking Windows build...</value>
   </data>
-  <data name="OsRequirements_UpdateWindowsBuild_1.Text" xml:space="preserve">
-    <value>You're using Windows 11</value>
-  </data>
   <data name="OsRequirements_UpdateWindowsBuild_2" xml:space="preserve">
-    <value>Supported builds are Windows 11 {0}.{1} and higher.</value>
+    <value>You're using Windows 11 {0} {1}.{2}.</value>
+  </data>
+  <data name="OsRequirements_UpdateWindowsBuild_1" xml:space="preserve">
+    <value>SophiApp supports Windows 11 25H2 {0}.{1} build and higher.</value>
   </data>
   <data name="AppFatalError_1.Text" xml:space="preserve">
     <value>Fatal error:</value>

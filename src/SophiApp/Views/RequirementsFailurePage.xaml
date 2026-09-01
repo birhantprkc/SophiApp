@@ -62,7 +62,7 @@
                             <Run x:Uid="OsRequirements_NewAppVersionFound_1"
                                  Foreground="{ThemeResource WindowForeground}"/>
                             <Run Text="{x:Bind RequirementsResult_1}"
-                                 Foreground="{ThemeResource WindowAccent}"/>
+                                 Foreground="{ThemeResource WindowForeground}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_NewAppVersionFound_2"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
@@ -78,7 +78,7 @@
                             <Run x:Uid="OsRequirements_LoggedInUserNotAdmin_1"
                                  Foreground="{ThemeResource WindowForeground}"/>
                             <Run Text="{x:Bind RequirementsResult_1}"
-                                 Foreground="{ThemeResource WindowAccent}"/>
+                                 Foreground="{ThemeResource WindowForeground}"/>
                         </TextBlock>
                         <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
                             <Run x:Uid="OsRequirements_LoggedInUserNotAdmin_2"
@@ -96,7 +96,7 @@
                             <Run x:Uid="OsRequirements_HarmfulTweakerFound"
                                  Foreground="{ThemeResource WindowForeground}"/>
                             <Run Text="{x:Bind RequirementsResult_1}"
-                                 Foreground="{ThemeResource WindowAccent}"/>
+                                 Foreground="{ThemeResource WindowForeground}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
@@ -108,7 +108,7 @@
                             <Run x:Uid="OsRequirements_HostsEntriesFound_1"
                                  Foreground="{ThemeResource WindowForeground}"/>
                             <Run x:Uid="OsRequirements_HostsEntriesFound_2"
-                                 Foreground="{ThemeResource WindowAccent}"/>
+                                 Foreground="{ThemeResource WindowForeground}"/>
                         </TextBlock>
                         <TextBlock x:Uid="OsRequirements_HostsEntriesFound_3"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
@@ -129,36 +129,27 @@
                     </StackPanel>
                     <StackPanel x:Name="UWPComponentsMissingPanel"
                                 Style="{StaticResource RequirementsResultPanelStyle}">
-                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
-                            <Run x:Uid="OsRequirements_UWPComponentsMissing"
-                                 Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1}"
-                                 Foreground="{ThemeResource WindowAccent}"/>
-                        </TextBlock>
+                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}"
+                                   Text="{x:Bind RequirementsResult_1}"
+                                   Foreground="{ThemeResource WindowForeground}"/>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
                                    Foreground="{ThemeResource WindowForeground}"/>
                     </StackPanel>
                     <StackPanel x:Name="DefenderComponentsMissingPanel"
                                 Style="{StaticResource RequirementsResultPanelStyle}">
-                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
-                            <Run x:Uid="OsRequirements_DefenderComponentsMissing"
-                                 Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1}"
-                                 Foreground="{ThemeResource WindowAccent}"/>
-                        </TextBlock>
+                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}"
+                                   Text="{x:Bind RequirementsResult_1}"
+                                   Foreground="{ThemeResource WindowForeground}"/>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
                                    Foreground="{ThemeResource WindowForeground}"/>
                     </StackPanel>
                     <StackPanel x:Name="WindowsComponentStabilityDisruptedPanel"
                                 Style="{StaticResource RequirementsResultPanelStyle}">
-                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
-                            <Run x:Uid="OsRequirements_WindowsComponentStabilityDisrupted"
-                                 Foreground="{ThemeResource WindowForeground}"/>
-                            <Run x:Uid="OsRequirements_MicrosoftDefender"
-                                 Foreground="{ThemeResource WindowAccent}"/>
-                        </TextBlock>
+                        <TextBlock x:Uid="OsRequirements_WindowsComponentStabilityDisrupted"
+                                   Style="{StaticResource RequirementsFailurePageTextStyle}"
+                                   Foreground="{ThemeResource WindowForeground}"/>
                         <TextBlock x:Uid="OsRequirements_ReinstallWindows"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
                                    Foreground="{ThemeResource WindowForeground}"/>
@@ -225,12 +216,9 @@
                     </StackPanel>
                     <StackPanel x:Name="UpdateWindowsBuildPanel"
                                 Style="{StaticResource RequirementsResultPanelStyle}">
-                        <TextBlock Style="{StaticResource RequirementsFailurePageTextStyle}">
-                            <Run x:Uid="OsRequirements_UpdateWindowsBuild_1"
-                                 Foreground="{ThemeResource WindowForeground}"/>
-                            <Run Text="{x:Bind RequirementsResult_1}"
-                                 Foreground="{ThemeResource WindowAccent}"/>
-                        </TextBlock>
+                        <TextBlock Text="{x:Bind RequirementsResult_1}"
+                                   Style="{StaticResource RequirementsFailurePageTextStyle}"
+                                   Foreground="{ThemeResource WindowForeground}"/>
                         <TextBlock Text="{x:Bind RequirementsResult_2}"
                                    Style="{StaticResource RequirementsFailurePageTextStyle}"
                                    Foreground="{ThemeResource WindowForeground}"/>

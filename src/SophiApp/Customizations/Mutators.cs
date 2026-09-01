@@ -1556,7 +1556,6 @@ namespace SophiApp.Customizations
                 AppNotificationService.RegisterCleanupProtocolAsToastSender();
                 ScheduledTaskService.RegisterCleanupTask();
                 ScheduledTaskService.RegisterCleanupNotificationTask();
-
                 return;
             }
 
@@ -1923,25 +1922,6 @@ namespace SophiApp.Customizations
             Registry.CurrentUser.OpenOrCreateSubKey("Software\\Policies\\Microsoft\\Windows\\Explorer").SetValue("NoUseStoreOpenWith", 1, RegistryValueKind.DWord);
             // Call LGPO.exe to make changes in "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" or "C:\Windows\System32\GroupPolicy\User\Registry.pol" database
             GroupPolicyService.ClearPolicyCache(scope: LGPOScope.User, path: "Software\\Policies\\Microsoft\\Windows\\Explorer", name: "NoUseStoreOpenWith", type: "DWORD", value: "1");
-        }
-
-        /// <summary>
-        /// Set "Open in Windows Terminal" item in the folders context menu state.
-        /// </summary>
-        /// <param name="enable">"Open in Windows Terminal" item state.</param>
-        public static void OpenWindowsTerminalContext(bool enable)
-        {
-            Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked", true)?.DeleteValue("{9F156763-7844-4DC4-B2B1-901F640F5155}", false);
-
-            if (enable)
-            {
-                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked", true)
-                    ?.DeleteValue("{9F156763-7844-4DC4-B2B1-901F640F5155}", false);
-                return;
-            }
-
-            Registry.CurrentUser.OpenOrCreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")
-                .SetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}", string.Empty, RegistryValueKind.String);
         }
 
         /// <summary>

@@ -1447,23 +1447,6 @@ else
         }
 
         /// <summary>
-        /// Get "Open in Windows Terminal" item in the folders context menu state.
-        /// </summary>
-        public static bool OpenWindowsTerminalContext()
-        {
-            var appxTerminal = "Microsoft.WindowsTerminal";
-
-            if (AppxPackagesService.PackageExist(appxTerminal))
-            {
-                var userBlockedGuid = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}");
-                var machineBlockedGuid = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?.GetValue("{9F156763-7844-4DC4-B2B1-901F640F5155}");
-                return userBlockedGuid is null && machineBlockedGuid is null;
-            }
-
-            throw new InvalidOperationException($"AppX package {appxTerminal} is not installed");
-        }
-
-        /// <summary>
         /// Get Open Windows Terminal from context menu as administrator by default state.
         /// </summary>
         public static bool OpenWindowsTerminalAdminContext()
