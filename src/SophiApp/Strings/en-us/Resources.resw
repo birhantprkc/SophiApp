@@ -1068,32 +1068,32 @@
   <data name="Panel_SetupCustomization_Applying" xml:space="preserve">
     <value>Applying customization</value>
   </data>
-  <data name="App_Discord.Text" xml:space="preserve">
-    <value>Discord.gg/sSryhaEv79</value>
-  </data>
   <data name="App_GitHub.Text" xml:space="preserve">
-    <value>GitHub.com/Sophia-Community/SophiApp</value>
+    <value>GitHub</value>
   </data>
   <data name="App_Telegram.Text" xml:space="preserve">
-    <value>T.me/sophia_chat</value>
+    <value>Telegram</value>
+  </data>
+  <data name="App_Discord.Text" xml:space="preserve">
+    <value>Discord</value>
   </data>
   <data name="AppTeam_AnimationDeveloper.Text" xml:space="preserve">
-    <value>Animation development: Maxim Nechiporenko</value>
+    <value>Animation: Maxim Nechiporenko</value>
   </data>
   <data name="AppTeam_Tester.Text" xml:space="preserve">
     <value>QC: Yevhenii "lowlif3" Zabronskyi</value>
   </data>
   <data name="AppTeam_Developer.Text" xml:space="preserve">
-    <value>Application development: Dmitry "Inestic" Demin</value>
+    <value>CO &amp; Development: Dmitry "Inestic" Demin</value>
   </data>
   <data name="AppTeam_ProjectManager.Text" xml:space="preserve">
     <value>PO &amp; QA: Dmitry Nefedov</value>
   </data>
   <data name="AppTeam_UiDeveloper.Text" xml:space="preserve">
-    <value>UI development: Yaroslav Posmitiukh</value>
+    <value>UI: Yaroslav Posmitiukh</value>
   </data>
   <data name="AppTeam_UxDeveloper.Text" xml:space="preserve">
-    <value>UX development: Vladimir Nameless</value>
+    <value>UI/UX: Vladimir Nameless</value>
   </data>
   <data name="Page_ContextMenu_OpenLogFile.Label" xml:space="preserve">
     <value>Open log file</value>
